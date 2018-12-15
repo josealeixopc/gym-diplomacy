@@ -1,3 +1,8 @@
+### CUSTOM RULES
+
+log/
+
+### END OF CUSTOM RULES
 
 # Created by https://www.gitignore.io/api/gradle,intellij
 # Edit at https://www.gitignore.io/?templates=gradle,intellij
