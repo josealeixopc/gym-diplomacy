@@ -10,16 +10,17 @@ import ddejonge.bandana.tools.ProcessRunner;
 
 public class ParlanceRunner {
 
-	//Change this path to the location where you have installed parlance-server.
-	private static String PARLANCE_PATH = "C:\\Python27\\Scripts\\parlance-server.exe";
+	//Relative location of the parlance environment.
+	private static String PARLANCE_PATH = System.getProperty("user.dir") +
+			"/../../python-modules/parlance-server/init-server.sh";
 	
 	
 	//Set this path to your home folder.
 	//If set incorrectly Parlance will still work but you won't be able to change the deadlines.
-	private static String HOME_FOLDER = "C:\\Users\\30044279";
+	//private static String HOME_FOLDER = "C:\\Users\\30044279";
 	
 	//you can also try the following, but it does not seem to be working properly.
-	/*private static String HOME_FOLDER =  System.getProperty("user.home");*/  
+	private static String HOME_FOLDER =  System.getProperty("user.home");
 	
 	//Location of the config file (DO NOT CHANGE THESE TWO LINES!):
 	private static final String CONFIG_FOLDER = HOME_FOLDER + File.separator + ".config";
@@ -43,19 +44,19 @@ public class ParlanceRunner {
 		createConfigFile(moveTimeLimit, retreatTimeLimit, buildTimeLimit);
 
 		//Check if the parlance path exists.
-		File parlanceFile = new File(PARLANCE_PATH);
-		if( ! parlanceFile.exists()){
-			System.out.println("Error! the given path to parlance does not exist: " + PARLANCE_PATH);
-			System.out.println("Please adapt the class "+ ParlanceRunner.class.getName() + " with the correct path.");
-			return;
-		}
+//		File parlanceFile = new File(PARLANCE_PATH);
+//		if( ! parlanceFile.exists()){
+//			System.out.println("Error! the given path to parlance does not exist: " + PARLANCE_PATH);
+//			System.out.println("Please adapt the class "+ ParlanceRunner.class.getName() + " with the correct path.");
+//			return;
+//		}
 		
 		//Run parlance-server
 		String[] cmd = { PARLANCE_PATH, "-g"+ numGames , "standard"};
-		parlanceProcess = ProcessRunner.exec(cmd, "parlance");
-		
+		parlanceProcess = ProcessRunner.exec(cmd, "init-server.sh");
 
-		
+		System.out.println("Working Directory = " +
+				System.getProperty("user.dir"));
 		
     	//Note: an exception is thrown if parlance is started CORRECTLY.
     	try {
