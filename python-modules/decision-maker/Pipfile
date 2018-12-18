@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 tensorflow = "*"
 pandas = "*"
+flask = "*"
 
 [dev-packages]
 pylint = "*"

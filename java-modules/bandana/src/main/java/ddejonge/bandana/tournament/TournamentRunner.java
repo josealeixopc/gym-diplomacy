@@ -14,9 +14,10 @@ public class TournamentRunner {
 	//Command lines to start the various agents provided with the Bandana framework.
 	// Add your own line here to run your own bot.
 	final static String[] randomNegotiatorCommand = {"java", "-jar", "agents/RandomNegotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", "1905"};
-	final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
-	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
+	// final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
+	// final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", "1905"};
+	final static String[] dipQBotCommand = {"java", "-jar", "build/libs/dip-q-bot.jar", "-log", "log", "-name", "DipQBot", "-fy", "1905"};
 
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
 
@@ -100,25 +101,18 @@ public class TournamentRunner {
 				String[] command;
 				
 				//make sure that each player has a different name.
-				if(i<2){
+				if(i<3){
 					
-					name = "D-Brane " + i;
-					command = dbrane_1_1_Command; 
-
-				}else if(i<4){
-					
-					name = "D-BraneExampleBot " + i;
-					command = dbraneExampleBotCommand;
-					
-				}else if(i<6){
-				
 					name = "RandomNegotiator " + i;
 					command = randomNegotiatorCommand;
-					
-				}else{
-					
-					name = "DumbBot " + i;
-					command = dumbBot_1_4_Command;
+
+				} else if (i < 6) {
+					name = "D-Brane " + i;
+					command = dbraneExampleBotCommand;
+				}
+				else {
+					name = "DipQ " + i;
+					command = dipQBotCommand;
 				}
 				
 				//set the log folder for this agent to be a subfolder of the tournament log folder.
