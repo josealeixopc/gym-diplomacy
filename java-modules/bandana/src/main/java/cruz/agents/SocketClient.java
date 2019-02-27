@@ -9,7 +9,7 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class Client
+public class SocketClient
 {
     private static Socket socket;
     private String host;
@@ -17,17 +17,17 @@ public class Client
 
 
     public static void main(String[] args) {
-        Client c = new Client("127.0.1.1", 5000);
+        SocketClient c = new SocketClient("127.0.1.1", 5000);
         System.out.println(c.sendMessageAndReceiveResponse("Hello"));
     }
 
-    Client(String host, int port)
+    SocketClient(String host, int port)
     {
         this.host = host;
         this.port = port;
     }
 
-    private String sendMessageAndReceiveResponse(String messageToSend){
+    public String sendMessageAndReceiveResponse(String messageToSend){
         try {
             InetAddress address = InetAddress.getByName(host);
             socket = new Socket(address, port);
@@ -47,8 +47,6 @@ public class Client
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
             String message = br.readLine();
-            System.out.println("Message received from the server : '" + message + "'.");
-
             closeSocket();
             return message;
         }

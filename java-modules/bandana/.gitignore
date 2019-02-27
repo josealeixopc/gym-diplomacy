@@ -1,6 +1,7 @@
 ### CUSTOM RULES
 
 log/
+*.log
 
 ### END OF CUSTOM RULES
 
