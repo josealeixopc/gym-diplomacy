@@ -3,6 +3,7 @@ package cruz.agents;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -51,13 +52,14 @@ public class DipQBotNegotiator extends ANACNegotiator{
     public static void main(String[] args){
         // THE MAIN METHOD MUST CONSIST ONLY OF THE FOLLOWING TWO LINES ONCE EVERYTHING IS DONE
         // THIS IS EXPRESSED IN THE ANAC 2019 MANUAL
-        // DipQBotNegotiator myPlayer = new DipQBotNegotiator(args);
-        // myPlayer.run();
-
-        System.out.println("Hello");
+        System.out.println(Arrays.toString(args));
         DipQBotNegotiator myPlayer = new DipQBotNegotiator(args);
-        myPlayer.getDealFromDipQ();
-        System.out.println("Hello again");
+        myPlayer.run();
+
+//        System.out.println("Hello");
+//        DipQBotNegotiator myPlayer = new DipQBotNegotiator(args);
+//        myPlayer.getDealFromDipQ();
+//        System.out.println("Hello again");
     }
 
     public Random random = new Random();
@@ -100,6 +102,10 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
     @Override
     public void negotiate(long negotiationDeadline) {
+
+        // this.getLogger().logln(me.getName() + ".negotiate() Negotiation deadline: " + negotiationDeadline, true);
+
+        // getDealFromDipQ();
 
         BasicDeal newDealToPropose = null;
 
@@ -481,22 +487,38 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
     }
 
+    public GameData generateGameData(){
+        GameData gameData = new GameData();
+
+        for(Power pow : this.game.getPowers()){
+            List<Region> controlledRegions = pow.getControlledRegions();
+
+            for(Region r : controlledRegions){
+                Province pro = r.getProvince();
+                ProvinceData provinceData = new ProvinceData(pow.getName(), pro.isSC());
+                gameData.addProvince(provinceData);
+            }
+        }
+
+        return gameData;
+    }
+
     public void getDealFromDipQ(){
 
         Gson gson = new Gson();
 
-//        String game = gson.toJson(this.game);
+        String game = gson.toJson(generateGameData());
 
-        List<OrderCommitment> randomOrderCommitments = new ArrayList<>();
-
-        OrderCommitment oc = new OrderCommitment(2000, Phase.AUT, new HLDOrder(new Power("TestPower"), new Region("TestRegion")));
-
-        randomOrderCommitments.add(oc);
-        List<DMZ> demilitarizedZones = new ArrayList<>();
-        BasicDeal deal = new BasicDeal(randomOrderCommitments, demilitarizedZones);
+//        List<OrderCommitment> randomOrderCommitments = new ArrayList<>();
+//
+//        OrderCommitment oc = new OrderCommitment(2000, Phase.AUT, new HLDOrder(new Power("TestPower"), new Region("TestRegion")));
+//
+//        randomOrderCommitments.add(oc);
+//        List<DMZ> demilitarizedZones = new ArrayList<>();
+//        BasicDeal deal = new BasicDeal(randomOrderCommitments, demilitarizedZones);
 
         SocketClient socketClient = new SocketClient("127.0.1.1", 5000);
-        String message = socketClient.sendMessageAndReceiveResponse(gson.toJson(deal));
+        String message = socketClient.sendMessageAndReceiveResponse(game);
 
         System.out.println("Message received from the server : '" + message + "'.");
     }

@@ -2,8 +2,12 @@ import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 
+from .comm import LocalSocketServer
+
 import subprocess
 import os
+import json
+import atexit
 
 import logging
 
@@ -12,14 +16,35 @@ level = getattr(logging, logging_level)
 logger = logging.getLogger(__name__)
 logger.setLevel(level)
 
-
-# LEVELS OF LOGGING (in increasing order of severity)
+### LEVELS OF LOGGING (in increasing order of severity)
 # DEBUG	    Detailed information, typically of interest only when diagnosing problems.
 # INFO	    Confirmation that things are working as expected.
 # WARNING	An indication that something unexpected happened, or indicative of some problem in the near future
 # (e.g. ‘disk space low’). The software is still working as expected.
 # ERROR	    Due to a more serious problem, the software has not been able to perform some function.
 # CRITICAL	A serious error, indicating that the program itself may be unable to continue running.
+
+### CONSTANTS
+
+NUMBER_OF_PROVINCES = 75
+NUMBER_OF_OPPONENTS = 7
+
+
+class RequestHandler:
+    def handle(self, request: str):
+        request_json = json.loads(request)
+
+        command_type: str = request_json['command']
+
+        logger.info("Received request with command '{}'.".format(command_type))
+
+        if command_type.lower() == 'GET_ACTION'.lower():
+            self.get_action(request_json['data'])
+        else:
+            logger.warning("Command '{}' is not valid.".format(command_type))
+
+    def get_action(self, game_state):
+        pass
 
 
 class DiplomacyEnv(gym.Env):
@@ -54,19 +79,74 @@ class DiplomacyEnv(gym.Env):
 
     metadata = {'render.modes': ['human']}
 
-    # CUSTOM ATTRIBUTES
+    ### CUSTOM ATTRIBUTES
+
+    # BANDANA
+
+    init_bandana: bool = True
 
     bandana_root_path: str = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                           "../../../../java-modules/bandana"))
-    bandana_init_command: str = "gradle runTournament"
+    bandana_init_command: str = "sh init_bandana.sh"
+
+    bandana_subprocess = None
+
+    # Communication
+
+    handler = RequestHandler()
+    socketServer = None
+
+    # Env
+
+    waiting_for_action: bool = False
+    limit_action_time: int = 0
 
     def __init__(self):
-        self._init_bandana()
+        if self.init_bandana:
+            self._init_bandana()
+
+        atexit.register(self.close)
+
+        self._init_socket_server()
+        self._init_observation_space()
+        self._init_action_space()
+
+        self.socketServer.listen()
 
     def _init_bandana(self):
-        # logger.info("Starting BANDANA tournament...")
-        # p = subprocess.Popen(self.bandana_init_command, cwd=self.bandana_root_path, shell=True)
-        # logger.ingo("")
+        logger.info("Starting BANDANA tournament...")
+        logger.debug("Running '{}' command on directory '{}'."
+                     .format(self.bandana_init_command, self.bandana_root_path))
+
+        self.bandana_subprocess = subprocess.Popen(self.bandana_init_command, cwd=self.bandana_root_path, shell=True)
+
+        logger.info("Started BANDANA tournament.")
+
+
+    def _init_observation_space(self):
+        # Observation space: [[province owner, province has supply center] * number of provinces]
+        # Eg: If observation_space[2] isz [5, 0], then the second province belongs to player 5 and does NOT have a SC
+
+        observation_space_description = []
+
+        for i in range(NUMBER_OF_PROVINCES):
+            observation_space_description.append([NUMBER_OF_OPPONENTS, 2])
+
+        self.observation_space = spaces.MultiDiscrete(observation_space_description)
+
+    def _init_action_space(self):
+        # Action space: [opponent to propose OC to, province of unit to move, destination province]
+        # Eg: Action [2, 5, 6] proposes an order commitment to player 2 for moving a unit from province 5 to 6
+
+        self.action_space = spaces.MultiDiscrete([NUMBER_OF_OPPONENTS, NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES])
+
+    def _init_socket_server(self):
+        self.socketServer = LocalSocketServer(5000, self.handler)
+
+    def _to_observation(self, game):
+        raise NotImplementedError
+
+    def require_step(self):
         raise NotImplementedError
 
     def step(self, action):
@@ -82,7 +162,10 @@ class DiplomacyEnv(gym.Env):
             done (boolean): whether the episode has ended, in which case further step() calls will return undefined results
             info (dict): contains auxiliary diagnostic information (helpful for debugging, and sometimes learning)
         """
-        raise NotImplementedError
+        if not self.waiting_for_action:
+            raise Exception('Environment is not waiting for action')
+        else:
+            raise NotImplementedError
 
     def reset(self):
         """Resets the state of the environment and returns an initial observation.
@@ -128,7 +211,16 @@ class DiplomacyEnv(gym.Env):
         Environments will automatically close() themselves when
         garbage collected or when the program exits.
         """
-        return
+
+        if self.bandana_subprocess is None:
+            logger.info("No BANDANA process to terminate.")
+        else:
+            logger.info("Terminating BANDANA process...")
+
+            self.bandana_subprocess.terminate()
+            self.bandana_subprocess.wait()
+
+            logger.info("BANDANA process terminated.")
 
     def seed(self, seed=None):
         """Sets the seed for this env's random number generator(s).

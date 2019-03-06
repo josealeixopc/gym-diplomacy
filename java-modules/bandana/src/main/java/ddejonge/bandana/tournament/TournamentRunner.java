@@ -3,25 +3,36 @@ package ddejonge.bandana.tournament;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import cruz.agents.DipQBotNegotiator;
 import ddejonge.bandana.tools.ProcessRunner;
 import ddejonge.bandana.tools.Logger;
 
 
 public class TournamentRunner {
-	
+
+	// JC: CUSTOM SETTINGS BEGIN
+
+	final static int DEBUG = 1;	// determine whether I want to debug or not
+
+	// JC: CUSTOM SETTINGS END
+
 	//Command lines to start the various agents provided with the Bandana framework.
 	// Add your own line here to run your own bot.
 	final static String[] randomNegotiatorCommand = {"java", "-jar", "agents/RandomNegotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", "1905"};
 	// final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
 	// final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", "1905"};
-	final static String[] dipQBotCommand = {"java", "-jar", "build/libs/dip-q-bot.jar", "-log", "log", "-name", "DipQBot", "-fy", "1905"};
-
+	final static String[] dipQNegotiatorBotCommand = {"java", "-jar", "build/libs/dip-q-bot-negotiator.jar", "-log", "log", "-name", "DipQBotNegotiator", "-fy", "1905"};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
 
-	
+	// JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
+	final static String[] dipQNegotiatorBotCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "build/libs/dip-q-bot-negotiator.jar", "-log", "log", "-name", "DipQBotNegotiator", "-fy", "1905"};
+
+
+
 	//Main folder where all the logs are stored. For each tournament a new folder will be created inside this folder
 	// where the results of the tournament will be logged.
 	final static String LOG_FOLDER = "log";
@@ -111,8 +122,8 @@ public class TournamentRunner {
 					command = dbraneExampleBotCommand;
 				}
 				else {
-					name = "DipQ " + i;
-					command = dipQBotCommand;
+					name = "DipQNegotiator " + i;
+					command = dipQNegotiatorBotCommand;
 				}
 				
 				//set the log folder for this agent to be a subfolder of the tournament log folder.
@@ -122,7 +133,13 @@ public class TournamentRunner {
 				command[6] = name; 
 				
 				//set the year after which the agent will propose a draw to the other agents.
-				command[8] = "" + finalYear; 
+				command[8] = "" + finalYear;
+
+				// JC: If debug is on and the current command is a dipQNegotiator, then change the command to allow debug
+				// This is here, because otherwise we would need to change how the cycle reads the arguments
+				if(Arrays.equals(command, dipQNegotiatorBotCommand) && DEBUG != 0) {
+					command = dipQNegotiatorBotCommandDebug;
+				}
 				
 				//start the process
 				String processName = name;
@@ -145,7 +162,7 @@ public class TournamentRunner {
 			
 			//NOW WAIT TILL THE GAME IS FINISHED
 			while(tournamentObserver.getGameStatus() == TournamentObserver.GAME_ACTIVE || tournamentObserver.getGameStatus() == TournamentObserver.CONNECTED_WAITING_TO_START ){
-				
+
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -160,8 +177,8 @@ public class TournamentRunner {
 			
 			//Kill the player processes.
 			// (if everything is implemented okay this isn't necessary because the players should kill themselves. But just to be sure..)
-			for(Process playerProces : players){
-				playerProces.destroy();
+			for(Process playerProcess : players){
+				playerProcess.destroy();
 			}
 			
 		}

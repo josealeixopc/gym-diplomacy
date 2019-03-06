@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="bandana.main" target="1.10" />
       <module name="bandana.test" target="1.10" />
+      <module name="dip-q-bot.main" target="1.10" />
+      <module name="dip-q-bot.test" target="1.10" />
     </bytecodeTargetLevel>
   </component>
 </project>
