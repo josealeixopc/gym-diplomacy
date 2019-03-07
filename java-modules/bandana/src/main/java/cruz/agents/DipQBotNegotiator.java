@@ -52,7 +52,6 @@ public class DipQBotNegotiator extends ANACNegotiator{
     public static void main(String[] args){
         // THE MAIN METHOD MUST CONSIST ONLY OF THE FOLLOWING TWO LINES ONCE EVERYTHING IS DONE
         // THIS IS EXPRESSED IN THE ANAC 2019 MANUAL
-        System.out.println(Arrays.toString(args));
         DipQBotNegotiator myPlayer = new DipQBotNegotiator(args);
         myPlayer.run();
 
@@ -105,7 +104,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
         // this.getLogger().logln(me.getName() + ".negotiate() Negotiation deadline: " + negotiationDeadline, true);
 
-        // getDealFromDipQ();
+        getDealFromDipQ();
 
         BasicDeal newDealToPropose = null;
 

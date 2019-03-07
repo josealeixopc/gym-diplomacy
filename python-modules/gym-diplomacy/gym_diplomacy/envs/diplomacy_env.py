@@ -29,7 +29,6 @@ logger.setLevel(level)
 NUMBER_OF_PROVINCES = 75
 NUMBER_OF_OPPONENTS = 7
 
-
 class RequestHandler:
     def handle(self, request: str):
         request_json = json.loads(request)
@@ -121,7 +120,6 @@ class DiplomacyEnv(gym.Env):
         self.bandana_subprocess = subprocess.Popen(self.bandana_init_command, cwd=self.bandana_root_path, shell=True)
 
         logger.info("Started BANDANA tournament.")
-
 
     def _init_observation_space(self):
         # Observation space: [[province owner, province has supply center] * number of provinces]

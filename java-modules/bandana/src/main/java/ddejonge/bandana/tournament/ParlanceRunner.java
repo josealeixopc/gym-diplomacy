@@ -53,7 +53,7 @@ public class ParlanceRunner {
 		
 		//Run parlance-server
 		String[] cmd = { PARLANCE_PATH, "-g"+ numGames , "standard"};
-		parlanceProcess = ProcessRunner.exec(cmd, "init-server.sh");
+		parlanceProcess = ProcessRunner.exec(cmd, "parlance init-server.sh");
 
 		System.out.println("Working Directory = " +
 				System.getProperty("user.dir"));
