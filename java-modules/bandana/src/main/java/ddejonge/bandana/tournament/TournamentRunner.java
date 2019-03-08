@@ -14,7 +14,7 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
-	final static int REMOTE_DEBUG = 1;	// determine whether I want to remote debug the DipQ jar or not
+	final static int REMOTE_DEBUG = 0;	// determine whether I want to remote debug the DipQ jar or not
 
 	// JC: CUSTOM SETTINGS END
 
@@ -24,7 +24,7 @@ public class TournamentRunner {
 	// final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
 	// final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", "1905"};
-	final static String[] dipQNegotiatorBotCommand = {"java", "-jar", "build/libs/dip-q-bot-negotiator.jar", "-log", "log", "-name", "DipQBotNegotiator", "-fy", "1905"};
+	final static String[] dipQNegotiatorBotCommand = {"java", "-jar", "target/dip-q-negotiator-0.1-shaded.jar", "-log", "log", "-name", "DipQBotNegotiator", "-fy", "1905"};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
 
 	// JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime

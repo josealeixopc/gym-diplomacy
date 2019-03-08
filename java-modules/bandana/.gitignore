@@ -5,11 +5,9 @@ log/
 
 ### END OF CUSTOM RULES
 
-# Created by https://www.gitignore.io/api/gradle,intellij
-# Edit at https://www.gitignore.io/?templates=gradle,intellij
 
-# Created by https://www.gitignore.io/api/intellij
-# Edit at https://www.gitignore.io/?templates=intellij
+# Created by https://www.gitignore.io/api/maven,intellij
+# Edit at https://www.gitignore.io/?templates=maven,intellij
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
@@ -90,4 +88,16 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
-# End of https://www.gitignore.io/api/intellij
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# End of https://www.gitignore.io/api/maven,intellij
