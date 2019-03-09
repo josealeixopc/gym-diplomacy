@@ -3,6 +3,6 @@
 ## Installation
 
 ```bash
-cd gym-soccer
+cd gym-diplomacy
 pip install -e .
 ```
