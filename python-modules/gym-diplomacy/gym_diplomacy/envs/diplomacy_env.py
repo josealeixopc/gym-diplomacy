@@ -6,6 +6,7 @@ from .comm import LocalSocketServer
 
 import subprocess
 import os
+import signal
 import json
 import atexit
 
@@ -28,6 +29,7 @@ logger.setLevel(level)
 
 NUMBER_OF_PROVINCES = 75
 NUMBER_OF_OPPONENTS = 7
+
 
 class RequestHandler:
     def handle(self, request: str):
@@ -86,7 +88,7 @@ class DiplomacyEnv(gym.Env):
 
     bandana_root_path: str = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                           "../../../../java-modules/bandana"))
-    bandana_init_command: str = "sh init_bandana.sh"
+    bandana_init_command: str = "./run-tournament.sh"
 
     bandana_subprocess = None
 
@@ -101,24 +103,28 @@ class DiplomacyEnv(gym.Env):
     limit_action_time: int = 0
 
     def __init__(self):
-        if self.init_bandana:
-            self._init_bandana()
+        try:
+            if self.init_bandana:
+                self._init_bandana()
 
-        atexit.register(self.close)
+            atexit.register(self.close)
 
-        self._init_socket_server()
-        self._init_observation_space()
-        self._init_action_space()
+            self._init_socket_server()
+            self._init_observation_space()
+            self._init_action_space()
 
-        self.socketServer.listen()
+            self.socketServer.listen()
+
+        finally:
+            self.close()
 
     def _init_bandana(self):
         logger.info("Starting BANDANA tournament...")
         logger.debug("Running '{}' command on directory '{}'."
                      .format(self.bandana_init_command, self.bandana_root_path))
 
-        self.bandana_subprocess = subprocess.Popen(self.bandana_init_command, cwd=self.bandana_root_path, shell=True)
-
+        self.bandana_subprocess = subprocess.Popen(self.bandana_init_command, cwd=self.bandana_root_path,
+                                                   shell=True, preexec_fn=os.setsid)
         logger.info("Started BANDANA tournament.")
 
     def _init_observation_space(self):
@@ -215,7 +221,7 @@ class DiplomacyEnv(gym.Env):
         else:
             logger.info("Terminating BANDANA process...")
 
-            self.bandana_subprocess.terminate()
+            os.killpg(os.getpgid(self.bandana_subprocess.pid), signal.SIGTERM)
             self.bandana_subprocess.wait()
 
             logger.info("BANDANA process terminated.")
