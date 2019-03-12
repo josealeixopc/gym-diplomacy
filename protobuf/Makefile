@@ -3,10 +3,10 @@
 #
 
 CC          :=protoc
-SRC         :=message.proto
+SRC         :=proto_message.proto
 
-PYTHON_NAME  :=message_pb2.py
-JAVA_NAME    :=Message.java
+PYTHON_NAME  :=proto_message_pb2.py
+JAVA_NAME    :=ProtoMessage.java
 
 PYTHON_RELATIVE_DEST_DIR 	:= ../python-modules/gym-diplomacy/gym_diplomacy/envs
 JAVA_RELATIVE_DEST_DIR 		:= ../java-modules/bandana/src/main/java

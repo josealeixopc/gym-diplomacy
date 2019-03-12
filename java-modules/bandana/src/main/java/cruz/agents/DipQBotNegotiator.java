@@ -26,6 +26,8 @@ import es.csic.iiia.fabregues.dip.orders.HLDOrder;
 import es.csic.iiia.fabregues.dip.orders.MTOOrder;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
+import cruz.agents.ProtoMessage;
+
 @SuppressWarnings("Duplicates")
 
 public class DipQBotNegotiator extends ANACNegotiator{
@@ -497,7 +499,10 @@ public class DipQBotNegotiator extends ANACNegotiator{
                 ProvinceData provinceData = new ProvinceData(pow.getName(), pro.isSC());
                 gameData.addProvince(provinceData);
             }
+
         }
+
+        ProtoMessage.Command.Builder pm = ProtoMessage.Command.newBuilder();
 
         return gameData;
     }
