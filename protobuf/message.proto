@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package dip_q;
+
+option java_package = "cruz.agents";
+
+message Command {
+
+  enum CommandType {
+    START_TEST = 0;
+    RESULTS = 1;
+    SHUTDOWN = 3;
+  }
+
+  // Using "required" is often bad practice. Generally, the validation
+  // should be application-specific in order to make maintenance easier.
+
+  CommandType type = 1;
+  string name = 2;
+
+  string data = 3;
+}

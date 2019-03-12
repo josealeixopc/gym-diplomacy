@@ -103,20 +103,16 @@ class DiplomacyEnv(gym.Env):
     limit_action_time: int = 0
 
     def __init__(self):
-        try:
-            if self.init_bandana:
-                self._init_bandana()
+        if self.init_bandana:
+            self._init_bandana()
 
-            atexit.register(self.close)
+        atexit.register(self.close)
 
-            self._init_socket_server()
-            self._init_observation_space()
-            self._init_action_space()
+        self._init_socket_server()
+        self._init_observation_space()
+        self._init_action_space()
 
-            self.socketServer.listen()
-
-        finally:
-            self.close()
+        self.socketServer.listen()
 
     def _init_bandana(self):
         logger.info("Starting BANDANA tournament...")
@@ -221,6 +217,7 @@ class DiplomacyEnv(gym.Env):
         else:
             logger.info("Terminating BANDANA process...")
 
+            # Killing the process group (pg) also kills the children, whereas killing the process would leave the children as orphan processes
             os.killpg(os.getpgid(self.bandana_subprocess.pid), signal.SIGTERM)
             self.bandana_subprocess.wait()
 
