@@ -10,6 +10,8 @@ import signal
 import json
 import atexit
 
+from . import proto_message_pb2
+
 import logging
 
 logging_level = 'DEBUG'
@@ -32,17 +34,12 @@ NUMBER_OF_OPPONENTS = 7
 
 
 class RequestHandler:
-    def handle(self, request: str):
-        request_json = json.loads(request)
+    def handle(self, request: bytearray):
 
-        command_type: str = request_json['command']
+        command = proto_message_pb2.Command()
+        command.ParseFromString(request)
 
-        logger.info("Received request with command '{}'.".format(command_type))
-
-        if command_type.lower() == 'GET_ACTION'.lower():
-            self.get_action(request_json['data'])
-        else:
-            logger.warning("Command '{}' is not valid.".format(command_type))
+        self.get_action(command)
 
     def get_action(self, game_state):
         pass

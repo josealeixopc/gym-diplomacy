@@ -18,7 +18,7 @@ public class SocketClient
 
     public static void main(String[] args) {
         SocketClient c = new SocketClient("127.0.1.1", 5000);
-        System.out.println(c.sendMessageAndReceiveResponse("Hello"));
+        System.out.println(c.sendMessageAndReceiveResponse("Hello".getBytes()));
     }
 
     SocketClient(String host, int port)
@@ -27,20 +27,17 @@ public class SocketClient
         this.port = port;
     }
 
-    public String sendMessageAndReceiveResponse(String messageToSend){
+    public String sendMessageAndReceiveResponse(byte[] messageToSend){
         try {
+            String messageString = new String(messageToSend);
             InetAddress address = InetAddress.getByName(host);
             socket = new Socket(address, port);
 
             //Send the message to the server
             OutputStream os = socket.getOutputStream();
-            OutputStreamWriter osw = new OutputStreamWriter(os);
-            BufferedWriter bw = new BufferedWriter(osw);
+            os.write(messageToSend);
 
-            String completeMessage = messageToSend + "\n";
-            bw.write(completeMessage);
-            bw.flush();
-            System.out.println("Message sent to the server : '" + messageToSend + "'.");
+            System.out.println("Message sent to the server : '" + messageString + "'.");
 
             //Get the return message from the server
             InputStream is = socket.getInputStream();

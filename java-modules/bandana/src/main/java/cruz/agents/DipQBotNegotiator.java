@@ -1,24 +1,11 @@
 package cruz.agents;
 
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import com.google.gson.Gson;
 import ddejonge.bandana.anac.ANACNegotiator;
 import ddejonge.bandana.dbraneTactics.DBraneTactics;
 import ddejonge.bandana.dbraneTactics.Plan;
-import ddejonge.bandana.negoProtocol.BasicDeal;
-import ddejonge.bandana.negoProtocol.DMZ;
-import ddejonge.bandana.negoProtocol.DiplomacyNegoClient;
-import ddejonge.bandana.negoProtocol.DiplomacyProposal;
-import ddejonge.bandana.negoProtocol.OrderCommitment;
+import ddejonge.bandana.negoProtocol.*;
 import ddejonge.bandana.tools.Utilities;
 import ddejonge.negoServer.Message;
-import es.csic.iiia.fabregues.dip.board.Phase;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
@@ -26,7 +13,9 @@ import es.csic.iiia.fabregues.dip.orders.HLDOrder;
 import es.csic.iiia.fabregues.dip.orders.MTOOrder;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
-import cruz.agents.ProtoMessage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @SuppressWarnings("Duplicates")
 
@@ -488,30 +477,35 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
     }
 
-    public GameData generateGameData(){
-        GameData gameData = new GameData();
+    public ProtoMessage.GameData generateGameData(){
+        ProtoMessage.GameData.Builder gameDataBuilder = ProtoMessage.GameData.newBuilder();
 
         for(Power pow : this.game.getPowers()){
             List<Region> controlledRegions = pow.getControlledRegions();
 
             for(Region r : controlledRegions){
                 Province pro = r.getProvince();
-                ProvinceData provinceData = new ProvinceData(pow.getName(), pro.isSC());
-                gameData.addProvince(provinceData);
+
+                // Building the Protobuf information
+                ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder();
+
+                ProtoMessage.PowerData.PowerName powerName = ProtoMessage.PowerData.PowerName.valueOf(pow.getName());
+                provinceDataBuilder.setOwner(ProtoMessage.PowerData.newBuilder().setName(powerName));
+                provinceDataBuilder.setSc(pro.isSC());
+
+                gameDataBuilder.addProvinces(provinceDataBuilder.build());
             }
 
         }
 
-        ProtoMessage.Command.Builder pm = ProtoMessage.Command.newBuilder();
-
-        return gameData;
+        return gameDataBuilder.build();
     }
 
     public void getDealFromDipQ(){
 
-        Gson gson = new Gson();
+        ProtoMessage.GameData gameData = generateGameData();
 
-        String game = gson.toJson(generateGameData());
+        byte[] gameByteArray = gameData.toByteArray();
 
 //        List<OrderCommitment> randomOrderCommitments = new ArrayList<>();
 //
@@ -522,7 +516,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
 //        BasicDeal deal = new BasicDeal(randomOrderCommitments, demilitarizedZones);
 
         SocketClient socketClient = new SocketClient("127.0.1.1", 5000);
-        String message = socketClient.sendMessageAndReceiveResponse(game);
+        String message = socketClient.sendMessageAndReceiveResponse(gameByteArray);
 
         System.out.println("Message received from the server : '" + message + "'.");
     }

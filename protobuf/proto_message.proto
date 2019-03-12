@@ -1,4 +1,4 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package dip_q;
 
@@ -15,8 +15,32 @@ message Command {
   // Using "required" is often bad practice. Generally, the validation
   // should be application-specific in order to make maintenance easier.
 
-  CommandType type = 1;
-  string name = 2;
+  optional CommandType type = 1;
+  optional string name = 2;
 
-  string data = 3;
+  repeated GameData data = 3;
+}
+
+message PowerData {
+  enum PowerName {
+    None = 0;
+    AUS = 1;
+    ENG = 2;
+    FRA = 3;
+    GER = 4;
+    ITA = 5;
+    RUS = 6;
+    TUR = 7;
+  }
+
+  optional PowerName name = 1;
+}
+
+message ProvinceData {
+  optional PowerData owner = 1;
+  optional bool sc = 2;
+}
+
+message GameData {
+  repeated ProvinceData provinces = 1;
 }

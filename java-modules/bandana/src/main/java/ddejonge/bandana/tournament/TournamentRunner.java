@@ -28,7 +28,7 @@ public class TournamentRunner {
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
 
 	// JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
-	final static String[] dipQNegotiatorBotCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "build/libs/dip-q-bot-negotiator.jar", "-log", "log", "-name", "DipQBotNegotiator", "-fy", "1905"};
+    final static String[] dipQNegotiatorBotCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "target/dip-q-negotiator-0.1-shaded.jar", "-log", "log", "-name", "DipQBotNegotiator", "-fy", "1905"};
 
 
 

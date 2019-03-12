@@ -1,13 +1,17 @@
 # load additional Python module
 import socket
 import json
+import sys
 
 import logging
 
+from gym_diplomacy.envs import proto_message_pb2
+
 logging_level = 'DEBUG'
 level = getattr(logging, logging_level)
+logging.basicConfig(stream=sys.stdout, level=level)
 logger = logging.getLogger(__name__)
-logger.setLevel(level)
+
 
 class LocalSocketServer:
     sock = None
@@ -50,7 +54,7 @@ class LocalSocketServer:
                 # show who connected to us
                 logger.debug('connection from', client_address)
 
-                byte_string = ""
+                byte_array = bytearray()
 
                 # receive the data in small chunks and print it
                 while True:
@@ -58,9 +62,7 @@ class LocalSocketServer:
                     if data:
                         # output received data
                         logger.debug("Data: %s" % data)
-
-                        # concatenate input to string
-                        byte_string += data.decode('utf-8')
+                        byte_array.extend(data)
 
                     else:
                         # no more data -- quit the loop
@@ -69,10 +71,31 @@ class LocalSocketServer:
 
                     connection.send('Hello. I got something from you.\n'.encode('UTF-8'))
 
-                byte_string = byte_string.rstrip() 
-
-                self.handler.handle(byte_string)
+                self.handler.handle(byte_array)
 
             finally:
                 # Clean up the connection
                 connection.close()
+
+
+class RequestHandler:
+    def handle(self, request: bytearray):
+        logger.debug("RECEIVED GAME")
+        game = proto_message_pb2.GameData()
+        game.ParseFromString(request)
+
+        logger.debug(game)
+
+
+def get_action(self, game_state):
+        pass
+
+
+def main():
+    handler = RequestHandler()
+    sock = LocalSocketServer(5000, handler)
+    sock.listen()
+
+
+if __name__ == "__main__":
+    main()
