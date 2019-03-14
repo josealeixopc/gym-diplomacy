@@ -1,11 +1,8 @@
 # load additional Python module
 import socket
-import json
 import sys
 
 import logging
-
-from gym_diplomacy.envs import proto_message_pb2
 
 logging_level = 'DEBUG'
 level = getattr(logging, logging_level)
@@ -80,22 +77,15 @@ class LocalSocketServer:
 
 class RequestHandler:
     def handle(self, request: bytearray):
-        logger.debug("RECEIVED GAME")
-        game = proto_message_pb2.GameData()
-        game.ParseFromString(request)
-
-        logger.debug(game)
+        logger.debug("RECEIVED MESSAGE")
+        logger.debug(request)
 
 
-def get_action(self, game_state):
-        pass
-
-
-def main():
-    handler = RequestHandler()
-    sock = LocalSocketServer(5000, handler)
-    sock.listen()
-
-
-if __name__ == "__main__":
-    main()
+# def main_f():
+#     handler = RequestHandler()
+#     sock = LocalSocketServer(5000, handler)
+#     sock.listen()
+#
+#
+# if __name__ == "__main__":
+#     main_f()

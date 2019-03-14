@@ -18,9 +18,9 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='proto_message.proto',
   package='dip_q',
-  syntax='proto3',
+  syntax='proto2',
   serialized_options=_b('\n\013cruz.agents'),
-  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\x9a\x01\n\x07\x43ommand\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.Command.CommandType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1d\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\x0f.dip_q.GameData\"8\n\x0b\x43ommandType\x12\x0e\n\nSTART_TEST\x10\x00\x12\x0b\n\x07RESULTS\x10\x01\x12\x0c\n\x08SHUTDOWN\x10\x03\"\x8b\x01\n\tPowerData\x12(\n\x04name\x18\x01 \x01(\x0e\x32\x1a.dip_q.PowerData.PowerName\"T\n\tPowerName\x12\x08\n\x04None\x10\x00\x12\x07\n\x03\x41US\x10\x01\x12\x07\n\x03\x45NG\x10\x02\x12\x07\n\x03\x46RA\x10\x03\x12\x07\n\x03GER\x10\x04\x12\x07\n\x03ITA\x10\x05\x12\x07\n\x03RUS\x10\x06\x12\x07\n\x03TUR\x10\x07\";\n\x0cProvinceData\x12\x1f\n\x05owner\x18\x01 \x01(\x0b\x32\x10.dip_q.PowerData\x12\n\n\x02sc\x18\x02 \x01(\x08\"2\n\x08GameData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceDataB\r\n\x0b\x63ruz.agentsb\x06proto3')
+  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\x9a\x01\n\x07\x43ommand\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.Command.CommandType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1d\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\x0f.dip_q.GameData\"8\n\x0b\x43ommandType\x12\x0e\n\nSTART_TEST\x10\x00\x12\x0b\n\x07RESULTS\x10\x01\x12\x0c\n\x08SHUTDOWN\x10\x03\"\x8b\x01\n\tPowerData\x12(\n\x04name\x18\x01 \x01(\x0e\x32\x1a.dip_q.PowerData.PowerName\"T\n\tPowerName\x12\x08\n\x04None\x10\x00\x12\x07\n\x03\x41US\x10\x01\x12\x07\n\x03\x45NG\x10\x02\x12\x07\n\x03\x46RA\x10\x03\x12\x07\n\x03GER\x10\x04\x12\x07\n\x03ITA\x10\x05\x12\x07\n\x03RUS\x10\x06\x12\x07\n\x03TUR\x10\x07\";\n\x0cProvinceData\x12\x1f\n\x05owner\x18\x01 \x01(\x0b\x32\x10.dip_q.PowerData\x12\n\n\x02sc\x18\x02 \x01(\x08\"2\n\x08GameData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceDataB\r\n\x0b\x63ruz.agents')
 )
 
 
@@ -135,7 +135,7 @@ _COMMAND = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto3',
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
@@ -167,7 +167,7 @@ _POWERDATA = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto3',
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
@@ -205,7 +205,7 @@ _PROVINCEDATA = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto3',
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
@@ -236,7 +236,7 @@ _GAMEDATA = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto3',
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],

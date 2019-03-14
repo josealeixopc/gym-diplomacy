@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax = "proto3";
 
 package dip_q;
 
@@ -14,9 +14,10 @@ message Command {
 
   // Using "required" is often bad practice. Generally, the validation
   // should be application-specific in order to make maintenance easier.
-
-  optional CommandType type = 1;
-  optional string name = 2;
+  // In proto3 syntax, "optional" is the default field
+  
+  CommandType type = 1;
+  string name = 2;
 
   repeated GameData data = 3;
 }
@@ -33,12 +34,12 @@ message PowerData {
     TUR = 7;
   }
 
-  optional PowerName name = 1;
+  PowerName name = 1;
 }
 
 message ProvinceData {
-  optional PowerData owner = 1;
-  optional bool sc = 2;
+  PowerData owner = 1;
+  bool sc = 2;
 }
 
 message GameData {

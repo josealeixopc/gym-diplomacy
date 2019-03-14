@@ -19,24 +19,20 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .dip_q.Command.CommandType type = 1;</code>
+     * <code>.dip_q.Command.CommandType type = 1;</code>
      */
-    boolean hasType();
+    int getTypeValue();
     /**
-     * <code>optional .dip_q.Command.CommandType type = 1;</code>
+     * <code>.dip_q.Command.CommandType type = 1;</code>
      */
     cruz.agents.ProtoMessage.Command.CommandType getType();
 
     /**
-     * <code>optional string name = 2;</code>
-     */
-    boolean hasName();
-    /**
-     * <code>optional string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     java.lang.String getName();
     /**
-     * <code>optional string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     com.google.protobuf.ByteString
         getNameBytes();
@@ -109,20 +105,14 @@ public final class ProtoMessage {
               break;
             case 8: {
               int rawValue = input.readEnum();
-                @SuppressWarnings("deprecation")
-              cruz.agents.ProtoMessage.Command.CommandType value = cruz.agents.ProtoMessage.Command.CommandType.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                type_ = rawValue;
-              }
+
+              type_ = rawValue;
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              name_ = bs;
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
               break;
             }
             case 26: {
@@ -131,7 +121,7 @@ public final class ProtoMessage {
                 mutable_bitField0_ |= 0x00000004;
               }
               data_.add(
-                  input.readMessage(cruz.agents.ProtoMessage.GameData.PARSER, extensionRegistry));
+                  input.readMessage(cruz.agents.ProtoMessage.GameData.parser(), extensionRegistry));
               break;
             }
             default: {
@@ -186,6 +176,7 @@ public final class ProtoMessage {
        * <code>SHUTDOWN = 3;</code>
        */
       SHUTDOWN(3),
+      UNRECOGNIZED(-1),
       ;
 
       /**
@@ -203,6 +194,10 @@ public final class ProtoMessage {
 
 
       public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
         return value;
       }
 
@@ -256,6 +251,9 @@ public final class ProtoMessage {
           throw new java.lang.IllegalArgumentException(
             "EnumValueDescriptor is not for this type.");
         }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
         return VALUES[desc.getIndex()];
       }
 
@@ -272,30 +270,24 @@ public final class ProtoMessage {
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
-     * <code>optional .dip_q.Command.CommandType type = 1;</code>
+     * <code>.dip_q.Command.CommandType type = 1;</code>
      */
-    public boolean hasType() {
-      return ((bitField0_ & 0x00000001) != 0);
+    public int getTypeValue() {
+      return type_;
     }
     /**
-     * <code>optional .dip_q.Command.CommandType type = 1;</code>
+     * <code>.dip_q.Command.CommandType type = 1;</code>
      */
     public cruz.agents.ProtoMessage.Command.CommandType getType() {
       @SuppressWarnings("deprecation")
       cruz.agents.ProtoMessage.Command.CommandType result = cruz.agents.ProtoMessage.Command.CommandType.valueOf(type_);
-      return result == null ? cruz.agents.ProtoMessage.Command.CommandType.START_TEST : result;
+      return result == null ? cruz.agents.ProtoMessage.Command.CommandType.UNRECOGNIZED : result;
     }
 
     public static final int NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object name_;
     /**
-     * <code>optional string name = 2;</code>
-     */
-    public boolean hasName() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>optional string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -305,14 +297,12 @@ public final class ProtoMessage {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          name_ = s;
-        }
+        name_ = s;
         return s;
       }
     }
     /**
-     * <code>optional string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -377,10 +367,10 @@ public final class ProtoMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) != 0)) {
+      if (type_ != cruz.agents.ProtoMessage.Command.CommandType.START_TEST.getNumber()) {
         output.writeEnum(1, type_);
       }
-      if (((bitField0_ & 0x00000002) != 0)) {
+      if (!getNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
       }
       for (int i = 0; i < data_.size(); i++) {
@@ -395,11 +385,11 @@ public final class ProtoMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) != 0)) {
+      if (type_ != cruz.agents.ProtoMessage.Command.CommandType.START_TEST.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, type_);
       }
-      if (((bitField0_ & 0x00000002) != 0)) {
+      if (!getNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
       }
       for (int i = 0; i < data_.size(); i++) {
@@ -421,15 +411,9 @@ public final class ProtoMessage {
       }
       cruz.agents.ProtoMessage.Command other = (cruz.agents.ProtoMessage.Command) obj;
 
-      if (hasType() != other.hasType()) return false;
-      if (hasType()) {
-        if (type_ != other.type_) return false;
-      }
-      if (hasName() != other.hasName()) return false;
-      if (hasName()) {
-        if (!getName()
-            .equals(other.getName())) return false;
-      }
+      if (type_ != other.type_) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
       if (!getDataList()
           .equals(other.getDataList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -443,14 +427,10 @@ public final class ProtoMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasType()) {
-        hash = (37 * hash) + TYPE_FIELD_NUMBER;
-        hash = (53 * hash) + type_;
-      }
-      if (hasName()) {
-        hash = (37 * hash) + NAME_FIELD_NUMBER;
-        hash = (53 * hash) + getName().hashCode();
-      }
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + type_;
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
       if (getDataCount() > 0) {
         hash = (37 * hash) + DATA_FIELD_NUMBER;
         hash = (53 * hash) + getDataList().hashCode();
@@ -590,9 +570,9 @@ public final class ProtoMessage {
       public Builder clear() {
         super.clear();
         type_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
+
         name_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
+
         if (dataBuilder_ == null) {
           data_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000004);
@@ -627,13 +607,7 @@ public final class ProtoMessage {
         cruz.agents.ProtoMessage.Command result = new cruz.agents.ProtoMessage.Command(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
         result.type_ = type_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
         result.name_ = name_;
         if (dataBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0)) {
@@ -693,11 +667,10 @@ public final class ProtoMessage {
 
       public Builder mergeFrom(cruz.agents.ProtoMessage.Command other) {
         if (other == cruz.agents.ProtoMessage.Command.getDefaultInstance()) return this;
-        if (other.hasType()) {
-          setType(other.getType());
+        if (other.type_ != 0) {
+          setTypeValue(other.getTypeValue());
         }
-        if (other.hasName()) {
-          bitField0_ |= 0x00000002;
+        if (!other.getName().isEmpty()) {
           name_ = other.name_;
           onChanged();
         }
@@ -759,36 +732,44 @@ public final class ProtoMessage {
 
       private int type_ = 0;
       /**
-       * <code>optional .dip_q.Command.CommandType type = 1;</code>
+       * <code>.dip_q.Command.CommandType type = 1;</code>
        */
-      public boolean hasType() {
-        return ((bitField0_ & 0x00000001) != 0);
+      public int getTypeValue() {
+        return type_;
       }
       /**
-       * <code>optional .dip_q.Command.CommandType type = 1;</code>
+       * <code>.dip_q.Command.CommandType type = 1;</code>
+       */
+      public Builder setTypeValue(int value) {
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.dip_q.Command.CommandType type = 1;</code>
        */
       public cruz.agents.ProtoMessage.Command.CommandType getType() {
         @SuppressWarnings("deprecation")
         cruz.agents.ProtoMessage.Command.CommandType result = cruz.agents.ProtoMessage.Command.CommandType.valueOf(type_);
-        return result == null ? cruz.agents.ProtoMessage.Command.CommandType.START_TEST : result;
+        return result == null ? cruz.agents.ProtoMessage.Command.CommandType.UNRECOGNIZED : result;
       }
       /**
-       * <code>optional .dip_q.Command.CommandType type = 1;</code>
+       * <code>.dip_q.Command.CommandType type = 1;</code>
        */
       public Builder setType(cruz.agents.ProtoMessage.Command.CommandType value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000001;
+        
         type_ = value.getNumber();
         onChanged();
         return this;
       }
       /**
-       * <code>optional .dip_q.Command.CommandType type = 1;</code>
+       * <code>.dip_q.Command.CommandType type = 1;</code>
        */
       public Builder clearType() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        
         type_ = 0;
         onChanged();
         return this;
@@ -796,13 +777,7 @@ public final class ProtoMessage {
 
       private java.lang.Object name_ = "";
       /**
-       * <code>optional string name = 2;</code>
-       */
-      public boolean hasName() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -810,16 +785,14 @@ public final class ProtoMessage {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            name_ = s;
-          }
+          name_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -835,36 +808,37 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public Builder setName(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  
         name_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public Builder clearName() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        
         name_ = getDefaultInstance().getName();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string name = 2;</code>
+       * <code>string name = 2;</code>
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  checkByteStringIsUtf8(value);
+        
         name_ = value;
         onChanged();
         return this;
@@ -1135,7 +1109,7 @@ public final class ProtoMessage {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Command>
+    private static final com.google.protobuf.Parser<Command>
         PARSER = new com.google.protobuf.AbstractParser<Command>() {
       @java.lang.Override
       public Command parsePartialFrom(
@@ -1167,11 +1141,11 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .dip_q.PowerData.PowerName name = 1;</code>
+     * <code>.dip_q.PowerData.PowerName name = 1;</code>
      */
-    boolean hasName();
+    int getNameValue();
     /**
-     * <code>optional .dip_q.PowerData.PowerName name = 1;</code>
+     * <code>.dip_q.PowerData.PowerName name = 1;</code>
      */
     cruz.agents.ProtoMessage.PowerData.PowerName getName();
   }
@@ -1217,14 +1191,8 @@ public final class ProtoMessage {
               break;
             case 8: {
               int rawValue = input.readEnum();
-                @SuppressWarnings("deprecation")
-              cruz.agents.ProtoMessage.PowerData.PowerName value = cruz.agents.ProtoMessage.PowerData.PowerName.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                name_ = rawValue;
-              }
+
+              name_ = rawValue;
               break;
             }
             default: {
@@ -1296,6 +1264,7 @@ public final class ProtoMessage {
        * <code>TUR = 7;</code>
        */
       TUR(7),
+      UNRECOGNIZED(-1),
       ;
 
       /**
@@ -1333,6 +1302,10 @@ public final class ProtoMessage {
 
 
       public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
         return value;
       }
 
@@ -1391,6 +1364,9 @@ public final class ProtoMessage {
           throw new java.lang.IllegalArgumentException(
             "EnumValueDescriptor is not for this type.");
         }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
         return VALUES[desc.getIndex()];
       }
 
@@ -1403,22 +1379,21 @@ public final class ProtoMessage {
       // @@protoc_insertion_point(enum_scope:dip_q.PowerData.PowerName)
     }
 
-    private int bitField0_;
     public static final int NAME_FIELD_NUMBER = 1;
     private int name_;
     /**
-     * <code>optional .dip_q.PowerData.PowerName name = 1;</code>
+     * <code>.dip_q.PowerData.PowerName name = 1;</code>
      */
-    public boolean hasName() {
-      return ((bitField0_ & 0x00000001) != 0);
+    public int getNameValue() {
+      return name_;
     }
     /**
-     * <code>optional .dip_q.PowerData.PowerName name = 1;</code>
+     * <code>.dip_q.PowerData.PowerName name = 1;</code>
      */
     public cruz.agents.ProtoMessage.PowerData.PowerName getName() {
       @SuppressWarnings("deprecation")
       cruz.agents.ProtoMessage.PowerData.PowerName result = cruz.agents.ProtoMessage.PowerData.PowerName.valueOf(name_);
-      return result == null ? cruz.agents.ProtoMessage.PowerData.PowerName.None : result;
+      return result == null ? cruz.agents.ProtoMessage.PowerData.PowerName.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1435,7 +1410,7 @@ public final class ProtoMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) != 0)) {
+      if (name_ != cruz.agents.ProtoMessage.PowerData.PowerName.None.getNumber()) {
         output.writeEnum(1, name_);
       }
       unknownFields.writeTo(output);
@@ -1447,7 +1422,7 @@ public final class ProtoMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) != 0)) {
+      if (name_ != cruz.agents.ProtoMessage.PowerData.PowerName.None.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, name_);
       }
@@ -1466,10 +1441,7 @@ public final class ProtoMessage {
       }
       cruz.agents.ProtoMessage.PowerData other = (cruz.agents.ProtoMessage.PowerData) obj;
 
-      if (hasName() != other.hasName()) return false;
-      if (hasName()) {
-        if (name_ != other.name_) return false;
-      }
+      if (name_ != other.name_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1481,10 +1453,8 @@ public final class ProtoMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasName()) {
-        hash = (37 * hash) + NAME_FIELD_NUMBER;
-        hash = (53 * hash) + name_;
-      }
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + name_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1619,7 +1589,7 @@ public final class ProtoMessage {
       public Builder clear() {
         super.clear();
         name_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
+
         return this;
       }
 
@@ -1646,13 +1616,7 @@ public final class ProtoMessage {
       @java.lang.Override
       public cruz.agents.ProtoMessage.PowerData buildPartial() {
         cruz.agents.ProtoMessage.PowerData result = new cruz.agents.ProtoMessage.PowerData(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
         result.name_ = name_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1701,8 +1665,8 @@ public final class ProtoMessage {
 
       public Builder mergeFrom(cruz.agents.ProtoMessage.PowerData other) {
         if (other == cruz.agents.ProtoMessage.PowerData.getDefaultInstance()) return this;
-        if (other.hasName()) {
-          setName(other.getName());
+        if (other.name_ != 0) {
+          setNameValue(other.getNameValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1732,40 +1696,47 @@ public final class ProtoMessage {
         }
         return this;
       }
-      private int bitField0_;
 
       private int name_ = 0;
       /**
-       * <code>optional .dip_q.PowerData.PowerName name = 1;</code>
+       * <code>.dip_q.PowerData.PowerName name = 1;</code>
        */
-      public boolean hasName() {
-        return ((bitField0_ & 0x00000001) != 0);
+      public int getNameValue() {
+        return name_;
       }
       /**
-       * <code>optional .dip_q.PowerData.PowerName name = 1;</code>
+       * <code>.dip_q.PowerData.PowerName name = 1;</code>
+       */
+      public Builder setNameValue(int value) {
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.dip_q.PowerData.PowerName name = 1;</code>
        */
       public cruz.agents.ProtoMessage.PowerData.PowerName getName() {
         @SuppressWarnings("deprecation")
         cruz.agents.ProtoMessage.PowerData.PowerName result = cruz.agents.ProtoMessage.PowerData.PowerName.valueOf(name_);
-        return result == null ? cruz.agents.ProtoMessage.PowerData.PowerName.None : result;
+        return result == null ? cruz.agents.ProtoMessage.PowerData.PowerName.UNRECOGNIZED : result;
       }
       /**
-       * <code>optional .dip_q.PowerData.PowerName name = 1;</code>
+       * <code>.dip_q.PowerData.PowerName name = 1;</code>
        */
       public Builder setName(cruz.agents.ProtoMessage.PowerData.PowerName value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000001;
+        
         name_ = value.getNumber();
         onChanged();
         return this;
       }
       /**
-       * <code>optional .dip_q.PowerData.PowerName name = 1;</code>
+       * <code>.dip_q.PowerData.PowerName name = 1;</code>
        */
       public Builder clearName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        
         name_ = 0;
         onChanged();
         return this;
@@ -1796,7 +1767,7 @@ public final class ProtoMessage {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<PowerData>
+    private static final com.google.protobuf.Parser<PowerData>
         PARSER = new com.google.protobuf.AbstractParser<PowerData>() {
       @java.lang.Override
       public PowerData parsePartialFrom(
@@ -1828,24 +1799,20 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .dip_q.PowerData owner = 1;</code>
+     * <code>.dip_q.PowerData owner = 1;</code>
      */
     boolean hasOwner();
     /**
-     * <code>optional .dip_q.PowerData owner = 1;</code>
+     * <code>.dip_q.PowerData owner = 1;</code>
      */
     cruz.agents.ProtoMessage.PowerData getOwner();
     /**
-     * <code>optional .dip_q.PowerData owner = 1;</code>
+     * <code>.dip_q.PowerData owner = 1;</code>
      */
     cruz.agents.ProtoMessage.PowerDataOrBuilder getOwnerOrBuilder();
 
     /**
-     * <code>optional bool sc = 2;</code>
-     */
-    boolean hasSc();
-    /**
-     * <code>optional bool sc = 2;</code>
+     * <code>bool sc = 2;</code>
      */
     boolean getSc();
   }
@@ -1890,19 +1857,19 @@ public final class ProtoMessage {
               break;
             case 10: {
               cruz.agents.ProtoMessage.PowerData.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) != 0)) {
+              if (owner_ != null) {
                 subBuilder = owner_.toBuilder();
               }
-              owner_ = input.readMessage(cruz.agents.ProtoMessage.PowerData.PARSER, extensionRegistry);
+              owner_ = input.readMessage(cruz.agents.ProtoMessage.PowerData.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(owner_);
                 owner_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000001;
+
               break;
             }
             case 16: {
-              bitField0_ |= 0x00000002;
+
               sc_ = input.readBool();
               break;
             }
@@ -1938,38 +1905,31 @@ public final class ProtoMessage {
               cruz.agents.ProtoMessage.ProvinceData.class, cruz.agents.ProtoMessage.ProvinceData.Builder.class);
     }
 
-    private int bitField0_;
     public static final int OWNER_FIELD_NUMBER = 1;
     private cruz.agents.ProtoMessage.PowerData owner_;
     /**
-     * <code>optional .dip_q.PowerData owner = 1;</code>
+     * <code>.dip_q.PowerData owner = 1;</code>
      */
     public boolean hasOwner() {
-      return ((bitField0_ & 0x00000001) != 0);
+      return owner_ != null;
     }
     /**
-     * <code>optional .dip_q.PowerData owner = 1;</code>
+     * <code>.dip_q.PowerData owner = 1;</code>
      */
     public cruz.agents.ProtoMessage.PowerData getOwner() {
       return owner_ == null ? cruz.agents.ProtoMessage.PowerData.getDefaultInstance() : owner_;
     }
     /**
-     * <code>optional .dip_q.PowerData owner = 1;</code>
+     * <code>.dip_q.PowerData owner = 1;</code>
      */
     public cruz.agents.ProtoMessage.PowerDataOrBuilder getOwnerOrBuilder() {
-      return owner_ == null ? cruz.agents.ProtoMessage.PowerData.getDefaultInstance() : owner_;
+      return getOwner();
     }
 
     public static final int SC_FIELD_NUMBER = 2;
     private boolean sc_;
     /**
-     * <code>optional bool sc = 2;</code>
-     */
-    public boolean hasSc() {
-      return ((bitField0_ & 0x00000002) != 0);
-    }
-    /**
-     * <code>optional bool sc = 2;</code>
+     * <code>bool sc = 2;</code>
      */
     public boolean getSc() {
       return sc_;
@@ -1989,10 +1949,10 @@ public final class ProtoMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) != 0)) {
+      if (owner_ != null) {
         output.writeMessage(1, getOwner());
       }
-      if (((bitField0_ & 0x00000002) != 0)) {
+      if (sc_ != false) {
         output.writeBool(2, sc_);
       }
       unknownFields.writeTo(output);
@@ -2004,11 +1964,11 @@ public final class ProtoMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) != 0)) {
+      if (owner_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getOwner());
       }
-      if (((bitField0_ & 0x00000002) != 0)) {
+      if (sc_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, sc_);
       }
@@ -2032,11 +1992,8 @@ public final class ProtoMessage {
         if (!getOwner()
             .equals(other.getOwner())) return false;
       }
-      if (hasSc() != other.hasSc()) return false;
-      if (hasSc()) {
-        if (getSc()
-            != other.getSc()) return false;
-      }
+      if (getSc()
+          != other.getSc()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -2052,11 +2009,9 @@ public final class ProtoMessage {
         hash = (37 * hash) + OWNER_FIELD_NUMBER;
         hash = (53 * hash) + getOwner().hashCode();
       }
-      if (hasSc()) {
-        hash = (37 * hash) + SC_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-            getSc());
-      }
+      hash = (37 * hash) + SC_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getSc());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2185,7 +2140,6 @@ public final class ProtoMessage {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getOwnerFieldBuilder();
         }
       }
       @java.lang.Override
@@ -2194,11 +2148,11 @@ public final class ProtoMessage {
         if (ownerBuilder_ == null) {
           owner_ = null;
         } else {
-          ownerBuilder_.clear();
+          owner_ = null;
+          ownerBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         sc_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
+
         return this;
       }
 
@@ -2225,21 +2179,12 @@ public final class ProtoMessage {
       @java.lang.Override
       public cruz.agents.ProtoMessage.ProvinceData buildPartial() {
         cruz.agents.ProtoMessage.ProvinceData result = new cruz.agents.ProtoMessage.ProvinceData(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (ownerBuilder_ == null) {
-            result.owner_ = owner_;
-          } else {
-            result.owner_ = ownerBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
+        if (ownerBuilder_ == null) {
+          result.owner_ = owner_;
+        } else {
+          result.owner_ = ownerBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.sc_ = sc_;
-          to_bitField0_ |= 0x00000002;
-        }
-        result.bitField0_ = to_bitField0_;
+        result.sc_ = sc_;
         onBuilt();
         return result;
       }
@@ -2291,7 +2236,7 @@ public final class ProtoMessage {
         if (other.hasOwner()) {
           mergeOwner(other.getOwner());
         }
-        if (other.hasSc()) {
+        if (other.getSc() != false) {
           setSc(other.getSc());
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -2322,19 +2267,18 @@ public final class ProtoMessage {
         }
         return this;
       }
-      private int bitField0_;
 
       private cruz.agents.ProtoMessage.PowerData owner_;
       private com.google.protobuf.SingleFieldBuilderV3<
           cruz.agents.ProtoMessage.PowerData, cruz.agents.ProtoMessage.PowerData.Builder, cruz.agents.ProtoMessage.PowerDataOrBuilder> ownerBuilder_;
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       public boolean hasOwner() {
-        return ((bitField0_ & 0x00000001) != 0);
+        return ownerBuilder_ != null || owner_ != null;
       }
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       public cruz.agents.ProtoMessage.PowerData getOwner() {
         if (ownerBuilder_ == null) {
@@ -2344,7 +2288,7 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       public Builder setOwner(cruz.agents.ProtoMessage.PowerData value) {
         if (ownerBuilder_ == null) {
@@ -2356,11 +2300,11 @@ public final class ProtoMessage {
         } else {
           ownerBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000001;
+
         return this;
       }
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       public Builder setOwner(
           cruz.agents.ProtoMessage.PowerData.Builder builderForValue) {
@@ -2370,17 +2314,15 @@ public final class ProtoMessage {
         } else {
           ownerBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
+
         return this;
       }
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       public Builder mergeOwner(cruz.agents.ProtoMessage.PowerData value) {
         if (ownerBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0) &&
-              owner_ != null &&
-              owner_ != cruz.agents.ProtoMessage.PowerData.getDefaultInstance()) {
+          if (owner_ != null) {
             owner_ =
               cruz.agents.ProtoMessage.PowerData.newBuilder(owner_).mergeFrom(value).buildPartial();
           } else {
@@ -2390,32 +2332,33 @@ public final class ProtoMessage {
         } else {
           ownerBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000001;
+
         return this;
       }
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       public Builder clearOwner() {
         if (ownerBuilder_ == null) {
           owner_ = null;
           onChanged();
         } else {
-          ownerBuilder_.clear();
+          owner_ = null;
+          ownerBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
+
         return this;
       }
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       public cruz.agents.ProtoMessage.PowerData.Builder getOwnerBuilder() {
-        bitField0_ |= 0x00000001;
+        
         onChanged();
         return getOwnerFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       public cruz.agents.ProtoMessage.PowerDataOrBuilder getOwnerOrBuilder() {
         if (ownerBuilder_ != null) {
@@ -2426,7 +2369,7 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <code>optional .dip_q.PowerData owner = 1;</code>
+       * <code>.dip_q.PowerData owner = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           cruz.agents.ProtoMessage.PowerData, cruz.agents.ProtoMessage.PowerData.Builder, cruz.agents.ProtoMessage.PowerDataOrBuilder> 
@@ -2444,31 +2387,25 @@ public final class ProtoMessage {
 
       private boolean sc_ ;
       /**
-       * <code>optional bool sc = 2;</code>
-       */
-      public boolean hasSc() {
-        return ((bitField0_ & 0x00000002) != 0);
-      }
-      /**
-       * <code>optional bool sc = 2;</code>
+       * <code>bool sc = 2;</code>
        */
       public boolean getSc() {
         return sc_;
       }
       /**
-       * <code>optional bool sc = 2;</code>
+       * <code>bool sc = 2;</code>
        */
       public Builder setSc(boolean value) {
-        bitField0_ |= 0x00000002;
+        
         sc_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool sc = 2;</code>
+       * <code>bool sc = 2;</code>
        */
       public Builder clearSc() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        
         sc_ = false;
         onChanged();
         return this;
@@ -2499,7 +2436,7 @@ public final class ProtoMessage {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<ProvinceData>
+    private static final com.google.protobuf.Parser<ProvinceData>
         PARSER = new com.google.protobuf.AbstractParser<ProvinceData>() {
       @java.lang.Override
       public ProvinceData parsePartialFrom(
@@ -2600,7 +2537,7 @@ public final class ProtoMessage {
                 mutable_bitField0_ |= 0x00000001;
               }
               provinces_.add(
-                  input.readMessage(cruz.agents.ProtoMessage.ProvinceData.PARSER, extensionRegistry));
+                  input.readMessage(cruz.agents.ProtoMessage.ProvinceData.parser(), extensionRegistry));
               break;
             }
             default: {
@@ -3280,7 +3217,7 @@ public final class ProtoMessage {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<GameData>
+    private static final com.google.protobuf.Parser<GameData>
         PARSER = new com.google.protobuf.AbstractParser<GameData>() {
       @java.lang.Override
       public GameData parsePartialFrom(
@@ -3347,7 +3284,7 @@ public final class ProtoMessage {
       "\n\003TUR\020\007\";\n\014ProvinceData\022\037\n\005owner\030\001 \001(\0132\020" +
       ".dip_q.PowerData\022\n\n\002sc\030\002 \001(\010\"2\n\010GameData" +
       "\022&\n\tprovinces\030\001 \003(\0132\023.dip_q.ProvinceData" +
-      "B\r\n\013cruz.agents"
+      "B\r\n\013cruz.agentsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

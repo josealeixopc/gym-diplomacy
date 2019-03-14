@@ -2,15 +2,14 @@ import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 
-from .comm import LocalSocketServer
-
 import subprocess
 import os
 import signal
 import json
 import atexit
 
-from . import proto_message_pb2
+from gym_diplomacy.envs import proto_message_pb2
+from gym_diplomacy.envs import comm
 
 import logging
 
@@ -32,14 +31,30 @@ logger.setLevel(level)
 NUMBER_OF_PROVINCES = 75
 NUMBER_OF_OPPONENTS = 7
 
+test_game = b'\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08' \
+            b'\x06\x10\x01\n\x06\n\x02\x08\x01\x10\x00\n\x06\n\x02\x08\x01\x10\x01\n\x06\n\x02\x08\x01\x10\x01\n\x06' \
+            b'\n\x02\x08\x04\x10\x00' \
+            b'\n\x06\n\x02\x08\x04\x10\x01\n\x06\n\x02\x08\x04\x10\x01\n\x06\n\x02\x08\x07\x10\x00\n\x06\n\x02\x08' \
+            b'\x07\x10\x01\n\x06\n\x02\x08\x07\x10\x01\n\x06\n\x02\x08\x03\x10\x00\n\x06\n\x02\x08\x03\x10\x01\n\x06' \
+            b'\n\x02\x08\x03\x10\x00' \
+            b'\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08' \
+            b'\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x00'
+
+
+def game_data_to_observation(game: proto_message_pb2.GameData) -> spaces.MultiDiscrete:
+    for province in game.provinces:
+        province: proto_message_pb2.ProvinceData = province  # simply for type hint and auto-completion
+        print("Province: ", province.owner, province.sc)
+
+    return None
+
 
 class RequestHandler:
     def handle(self, request: bytearray):
+        game: proto_message_pb2.GameData = proto_message_pb2.GameData()
+        game.ParseFromString(request)
 
-        command = proto_message_pb2.Command()
-        command.ParseFromString(request)
-
-        self.get_action(command)
+        self.get_action(game)
 
     def get_action(self, game_state):
         pass
@@ -81,7 +96,7 @@ class DiplomacyEnv(gym.Env):
 
     # BANDANA
 
-    init_bandana: bool = True
+    init_bandana: bool = False
 
     bandana_root_path: str = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                           "../../../../java-modules/bandana"))
@@ -138,10 +153,7 @@ class DiplomacyEnv(gym.Env):
         self.action_space = spaces.MultiDiscrete([NUMBER_OF_OPPONENTS, NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES])
 
     def _init_socket_server(self):
-        self.socketServer = LocalSocketServer(5000, self.handler)
-
-    def _to_observation(self, game):
-        raise NotImplementedError
+        self.socketServer = comm.LocalSocketServer(5000, self.handler)
 
     def require_step(self):
         raise NotImplementedError
@@ -235,3 +247,14 @@ class DiplomacyEnv(gym.Env):
         """
         logger.warning("Could not seed environment %s", self)
         return
+
+
+def main_f():
+    game: proto_message_pb2.GameData = proto_message_pb2.GameData()
+    game.ParseFromString(test_game)
+    print(game)
+    game_data_to_observation(game)
+
+
+if __name__ == "__main__":
+    main_f()
