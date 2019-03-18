@@ -7,6 +7,7 @@ import os
 import signal
 import json
 import atexit
+import numpy as np
 
 from gym_diplomacy.envs import proto_message_pb2
 from gym_diplomacy.envs import comm
@@ -31,23 +32,66 @@ logger.setLevel(level)
 NUMBER_OF_PROVINCES = 75
 NUMBER_OF_OPPONENTS = 7
 
-test_game = b'\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08' \
-            b'\x06\x10\x01\n\x06\n\x02\x08\x01\x10\x00\n\x06\n\x02\x08\x01\x10\x01\n\x06\n\x02\x08\x01\x10\x01\n\x06' \
-            b'\n\x02\x08\x04\x10\x00' \
-            b'\n\x06\n\x02\x08\x04\x10\x01\n\x06\n\x02\x08\x04\x10\x01\n\x06\n\x02\x08\x07\x10\x00\n\x06\n\x02\x08' \
-            b'\x07\x10\x01\n\x06\n\x02\x08\x07\x10\x01\n\x06\n\x02\x08\x03\x10\x00\n\x06\n\x02\x08\x03\x10\x01\n\x06' \
-            b'\n\x02\x08\x03\x10\x00' \
-            b'\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08' \
-            b'\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x00'
+fh = open("/home/jazz/Projects/FEUP/dip-q/java-modules/bandana/log/game_data.txt", "rb")
+
+test_game = bytearray(fh.read())
+
+fh.close()
+
+test_game_2 = b'\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08' \
+              b'\x06\x10\x01\n\x06\n\x02\x08\x01\x10\x00\n\x06\n\x02\x08\x01\x10\x01\n\x06\n\x02\x08\x01\x10\x01\n\x06' \
+              b'\n\x02\x08\x04\x10\x00' \
+              b'\n\x06\n\x02\x08\x04\x10\x01\n\x06\n\x02\x08\x04\x10\x01\n\x06\n\x02\x08\x07\x10\x00\n\x06\n\x02\x08' \
+              b'\x07\x10\x01\n\x06\n\x02\x08\x07\x10\x01\n\x06\n\x02\x08\x03\x10\x00\n\x06\n\x02\x08\x03\x10\x01\n\x06' \
+              b'\n\x02\x08\x03\x10\x00' \
+              b'\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08' \
+              b'\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x00'
 
 
-def game_data_to_observation(game: proto_message_pb2.GameData) -> spaces.MultiDiscrete:
-    for province in game.provinces:
-        province: proto_message_pb2.ProvinceData = province  # simply for type hint and auto-completion
-        print("Province: ", province.owner, province.sc)
+def game_data_to_observation(game: proto_message_pb2.GameData) -> np.array:
+    observation = np.zeros((NUMBER_OF_PROVINCES, 2))
 
-    return None
+    list_of_province_names = list(game.nameToProvinces.keys())
 
+    province_index = 0
+
+    for province_name in sorted(list_of_province_names):
+        # simply for type hint and auto-completion.
+        province: proto_message_pb2.ProvinceData = game.nameToProvinces[province_name]
+
+        observation[province_index] = [province.owner.name, province.sc]
+        province_index += 1
+
+    return observation
+
+
+def action_to_deal_data(action: np.ndarray, game: proto_message_pb2.GameData) -> proto_message_pb2.DealData:
+    deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
+
+    if action.size != 3:
+        raise ValueError("The array given does not have the correct number of elements.", action)
+
+    sorted_list_of_province_names = sorted(list(game.nameToProvinces.keys()))
+
+    move_order: proto_message_pb2.MoveOrder = proto_message_pb2.MoveOrder()
+    move_order.startRegion = action[1]
+    move_order.destinationRegion = action[2]
+
+    return deal_data
+
+def is_valid_move_order(start_province_index: int, destination_province_index: int, game: proto_message_pb2.GameData) -> bool:
+
+    valid = False
+
+    sorted_list_of_province_names = sorted(list(game.nameToProvinces.keys()))
+
+    start_province: proto_message_pb2.ProvinceData = sorted_list_of_province_names[start_province_index]
+    destination_province: proto_message_pb2.ProvinceData = sorted_list_of_province_names[destination_province_index]
+
+    if start_province.owner is game.ownPower:
+        for bs
+
+    return valid
 
 class RequestHandler:
     def handle(self, request: bytearray):
@@ -252,8 +296,8 @@ class DiplomacyEnv(gym.Env):
 def main_f():
     game: proto_message_pb2.GameData = proto_message_pb2.GameData()
     game.ParseFromString(test_game)
-    print(game)
-    game_data_to_observation(game)
+    # print(game)
+    print(game_data_to_observation(game))
 
 
 if __name__ == "__main__":

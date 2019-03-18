@@ -15,7 +15,7 @@ message Command {
   // Using "required" is often bad practice. Generally, the validation
   // should be application-specific in order to make maintenance easier.
   // In proto3 syntax, "optional" is the default field
-  
+
   CommandType type = 1;
   string name = 2;
 
@@ -24,7 +24,10 @@ message Command {
 
 message PowerData {
   enum PowerName {
-    None = 0;
+    // The '0' value is default and implicit. Therefore, every PowerName is NONE until it is otherwise defined.
+    // Check: https://developers.google.com/protocol-buffers/docs/proto3#default
+
+    NONE = 0;
     AUS = 1;
     ENG = 2;
     FRA = 3;
@@ -37,11 +40,41 @@ message PowerData {
   PowerName name = 1;
 }
 
+message RegionData {
+  // Type becomes redundant once we know the adjacent regions, right?
+
+  // enum RegionType {
+  //   ARMY = 0;
+  //   FLEET = 1;
+  // }
+
+  string name = 1;
+  // RegionType type = 2;
+  repeated string adjacentRegionsName = 3;
+}
+
 message ProvinceData {
-  PowerData owner = 1;
-  bool sc = 2;
+  string name = 1;
+  PowerData owner = 2;
+  bool sc = 3;
+  map<string,RegionData> nameToRegions = 4;
 }
 
 message GameData {
-  repeated ProvinceData provinces = 1;
+  map<string,ProvinceData> nameToProvinces = 1;
+  PowerData ownPower = 2;
+}
+
+message MoveOrder {
+  RegionData startRegion = 1;
+  RegionData destinationRegion = 2;
+}
+
+message OrderCommitment {
+  repeated MoveOrder move = 1;
+}
+
+message DealData {
+  repeated OrderCommitment oc = 1;
+  // repeated DemilitarizedZones dmz = 2;
 }

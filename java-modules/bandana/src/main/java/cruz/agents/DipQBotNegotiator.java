@@ -13,9 +13,11 @@ import es.csic.iiia.fabregues.dip.orders.HLDOrder;
 import es.csic.iiia.fabregues.dip.orders.MTOOrder;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 @SuppressWarnings("Duplicates")
 
@@ -480,24 +482,85 @@ public class DipQBotNegotiator extends ANACNegotiator{
     public ProtoMessage.GameData generateGameData(){
         ProtoMessage.GameData.Builder gameDataBuilder = ProtoMessage.GameData.newBuilder();
 
-        for(Power pow : this.game.getPowers()){
-            List<Region> controlledRegions = pow.getControlledRegions();
+        // FIRST CREATE REGIONS
+        // For every region, create RegionData and ProvinceData
+        for(Region r : this.game.getRegions()) {
+            ProtoMessage.RegionData.Builder regionDataBuilder = ProtoMessage.RegionData.newBuilder();
+            regionDataBuilder.setName(r.getName());
 
-            for(Region r : controlledRegions){
-                Province pro = r.getProvince();
+            // Add adjacent regions names
+            for (Region adjRegion : r.getAdjacentRegions()) {
+                regionDataBuilder.addAdjacentRegionsName(adjRegion.getName());
+            }
 
+            ProtoMessage.RegionData regionData = regionDataBuilder.build();
+
+            Province pro = r.getProvince();
+
+            // Check if province has been previously added to the game data
+            ProtoMessage.ProvinceData provinceData = gameDataBuilder.getNameToProvincesMap().get(pro.getName());
+
+            // If there isn't any province with the given name yet, add a new one
+            if (provinceData == null) {
                 // Building the Protobuf information
                 ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder();
 
-                ProtoMessage.PowerData.PowerName powerName = ProtoMessage.PowerData.PowerName.valueOf(pow.getName());
-                provinceDataBuilder.setOwner(ProtoMessage.PowerData.newBuilder().setName(powerName));
-                provinceDataBuilder.setSc(pro.isSC());
+                // For now, create province with no owner
+                ProtoMessage.PowerData.Builder powerDataBuilder = ProtoMessage.PowerData.newBuilder();
+                powerDataBuilder.setName(ProtoMessage.PowerData.PowerName.NONE);
 
-                gameDataBuilder.addProvinces(provinceDataBuilder.build());
+                ProtoMessage.PowerData owner = powerDataBuilder.build();
+
+                provinceDataBuilder.setName(pro.getName());
+                provinceDataBuilder.setOwner(owner);
+                provinceDataBuilder.setSc(pro.isSC());
+                provinceDataBuilder.putNameToRegions(regionData.getName(), regionData);
+
+                provinceData = provinceDataBuilder.build();
+            }
+            // If there is a province, build a new one from the one that exists and update it with the new region
+            else {
+                ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder(provinceData);
+                provinceDataBuilder.putNameToRegions(regionData.getName(), regionData);
+                provinceData = provinceDataBuilder.build();
+            }
+
+            gameDataBuilder.putNameToProvinces(provinceData.getName(), provinceData);
+        }
+
+        // THEN ADD THE OWNERS OF EACH REGION
+        for(Power pow : this.game.getPowers()){
+            List<Region> controlledRegions = pow.getControlledRegions();
+
+            // Set the owner of the province
+            for(Region r : controlledRegions) {
+                Province pro = r.getProvince();
+
+                // In this case, the province is the one that has an owner
+                ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder(gameDataBuilder.getNameToProvincesMap().get(pro.getName()));
+
+                ProtoMessage.PowerData.Builder powerDataBuilder = ProtoMessage.PowerData.newBuilder();
+                powerDataBuilder.setName(ProtoMessage.PowerData.PowerName.valueOf(pow.getName()));
+
+                ProtoMessage.PowerData owner = powerDataBuilder.build();
+
+                provinceDataBuilder.setOwner(owner);
+
+                ProtoMessage.ProvinceData provinceData = provinceDataBuilder.build();
+                gameDataBuilder.putNameToProvinces(provinceData.getName(), provinceData);
             }
 
         }
 
+        // SAVE WHAT POWER WE ARE
+
+        ProtoMessage.PowerData.Builder powerDataBuilder = ProtoMessage.PowerData.newBuilder();
+        powerDataBuilder.setName(ProtoMessage.PowerData.PowerName.valueOf(me.getName()));
+
+        ProtoMessage.PowerData ownPower = powerDataBuilder.build();
+
+        gameDataBuilder.setOwnPower(ownPower);
+                
         return gameDataBuilder.build();
     }
 
@@ -507,6 +570,19 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
         byte[] gameByteArray = gameData.toByteArray();
 
+        File gameDataFile = new File("log/game_data.txt");
+        try {
+            gameDataFile.createNewFile(); // if file already exists will do nothing
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (FileOutputStream fos = new FileOutputStream(gameDataFile, false)) {
+            fos.write(gameByteArray);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 //        List<OrderCommitment> randomOrderCommitments = new ArrayList<>();
 //
 //        OrderCommitment oc = new OrderCommitment(2000, Phase.AUT, new HLDOrder(new Power("TestPower"), new Region("TestRegion")));
@@ -515,10 +591,10 @@ public class DipQBotNegotiator extends ANACNegotiator{
 //        List<DMZ> demilitarizedZones = new ArrayList<>();
 //        BasicDeal deal = new BasicDeal(randomOrderCommitments, demilitarizedZones);
 
-        SocketClient socketClient = new SocketClient("127.0.1.1", 5000);
-        String message = socketClient.sendMessageAndReceiveResponse(gameByteArray);
-
-        System.out.println("Message received from the server : '" + message + "'.");
+//        SocketClient socketClient = new SocketClient("127.0.1.1", 5000);
+//        String message = socketClient.sendMessageAndReceiveResponse(gameByteArray);
+//
+//        System.out.println("Message received from the server : '" + message + "'.");
     }
 
 
