@@ -74,24 +74,23 @@ def action_to_deal_data(action: np.ndarray, game: proto_message_pb2.GameData) ->
     sorted_list_of_province_names = sorted(list(game.nameToProvinces.keys()))
 
     move_order: proto_message_pb2.MoveOrder = proto_message_pb2.MoveOrder()
-    move_order.startRegion = action[1]
-    move_order.destinationRegion = action[2]
+    start_province_name = sorted_list_of_province_names[action[1]]
+    destination_province_name = sorted_list_of_province_names[action[2]]
+
+    move_order.startProvince.MergeFrom(game.nameToProvinces[start_province_name])
+    move_order.destinationProvince.MergeFrom(game.nameToProvinces[destination_province_name])
+
+    power_data: proto_message_pb2.PowerData = proto_message_pb2.PowerData()
+    power_data.name = action[0]
+
+    order_commitment_data: proto_message_pb2.OrderCommitment = proto_message_pb2.OrderCommitment()
+    order_commitment_data.move.extend([move_order])
+
+    deal_data.proposeTo.CopyFrom(power_data)
+    deal_data.oc.extend([order_commitment_data])
 
     return deal_data
 
-def is_valid_move_order(start_province_index: int, destination_province_index: int, game: proto_message_pb2.GameData) -> bool:
-
-    valid = False
-
-    sorted_list_of_province_names = sorted(list(game.nameToProvinces.keys()))
-
-    start_province: proto_message_pb2.ProvinceData = sorted_list_of_province_names[start_province_index]
-    destination_province: proto_message_pb2.ProvinceData = sorted_list_of_province_names[destination_province_index]
-
-    if start_province.owner is game.ownPower:
-        for bs
-
-    return valid
 
 class RequestHandler:
     def handle(self, request: bytearray):
@@ -297,7 +296,10 @@ def main_f():
     game: proto_message_pb2.GameData = proto_message_pb2.GameData()
     game.ParseFromString(test_game)
     # print(game)
-    print(game_data_to_observation(game))
+    # print(game_data_to_observation(game))
+
+    action = np.array([5, 7, 8])
+    action_to_deal_data(action, game)
 
 
 if __name__ == "__main__":

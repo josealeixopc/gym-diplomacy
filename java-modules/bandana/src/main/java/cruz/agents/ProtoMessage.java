@@ -4659,30 +4659,30 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.dip_q.RegionData startRegion = 1;</code>
+     * <code>.dip_q.ProvinceData startProvince = 1;</code>
      */
-    boolean hasStartRegion();
+    boolean hasStartProvince();
     /**
-     * <code>.dip_q.RegionData startRegion = 1;</code>
+     * <code>.dip_q.ProvinceData startProvince = 1;</code>
      */
-    cruz.agents.ProtoMessage.RegionData getStartRegion();
+    cruz.agents.ProtoMessage.ProvinceData getStartProvince();
     /**
-     * <code>.dip_q.RegionData startRegion = 1;</code>
+     * <code>.dip_q.ProvinceData startProvince = 1;</code>
      */
-    cruz.agents.ProtoMessage.RegionDataOrBuilder getStartRegionOrBuilder();
+    cruz.agents.ProtoMessage.ProvinceDataOrBuilder getStartProvinceOrBuilder();
 
     /**
-     * <code>.dip_q.RegionData destinationRegion = 2;</code>
+     * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
      */
-    boolean hasDestinationRegion();
+    boolean hasDestinationProvince();
     /**
-     * <code>.dip_q.RegionData destinationRegion = 2;</code>
+     * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
      */
-    cruz.agents.ProtoMessage.RegionData getDestinationRegion();
+    cruz.agents.ProtoMessage.ProvinceData getDestinationProvince();
     /**
-     * <code>.dip_q.RegionData destinationRegion = 2;</code>
+     * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
      */
-    cruz.agents.ProtoMessage.RegionDataOrBuilder getDestinationRegionOrBuilder();
+    cruz.agents.ProtoMessage.ProvinceDataOrBuilder getDestinationProvinceOrBuilder();
   }
   /**
    * Protobuf type {@code dip_q.MoveOrder}
@@ -4724,27 +4724,27 @@ public final class ProtoMessage {
               done = true;
               break;
             case 10: {
-              cruz.agents.ProtoMessage.RegionData.Builder subBuilder = null;
-              if (startRegion_ != null) {
-                subBuilder = startRegion_.toBuilder();
+              cruz.agents.ProtoMessage.ProvinceData.Builder subBuilder = null;
+              if (startProvince_ != null) {
+                subBuilder = startProvince_.toBuilder();
               }
-              startRegion_ = input.readMessage(cruz.agents.ProtoMessage.RegionData.parser(), extensionRegistry);
+              startProvince_ = input.readMessage(cruz.agents.ProtoMessage.ProvinceData.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(startRegion_);
-                startRegion_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(startProvince_);
+                startProvince_ = subBuilder.buildPartial();
               }
 
               break;
             }
             case 18: {
-              cruz.agents.ProtoMessage.RegionData.Builder subBuilder = null;
-              if (destinationRegion_ != null) {
-                subBuilder = destinationRegion_.toBuilder();
+              cruz.agents.ProtoMessage.ProvinceData.Builder subBuilder = null;
+              if (destinationProvince_ != null) {
+                subBuilder = destinationProvince_.toBuilder();
               }
-              destinationRegion_ = input.readMessage(cruz.agents.ProtoMessage.RegionData.parser(), extensionRegistry);
+              destinationProvince_ = input.readMessage(cruz.agents.ProtoMessage.ProvinceData.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(destinationRegion_);
-                destinationRegion_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(destinationProvince_);
+                destinationProvince_ = subBuilder.buildPartial();
               }
 
               break;
@@ -4781,46 +4781,46 @@ public final class ProtoMessage {
               cruz.agents.ProtoMessage.MoveOrder.class, cruz.agents.ProtoMessage.MoveOrder.Builder.class);
     }
 
-    public static final int STARTREGION_FIELD_NUMBER = 1;
-    private cruz.agents.ProtoMessage.RegionData startRegion_;
+    public static final int STARTPROVINCE_FIELD_NUMBER = 1;
+    private cruz.agents.ProtoMessage.ProvinceData startProvince_;
     /**
-     * <code>.dip_q.RegionData startRegion = 1;</code>
+     * <code>.dip_q.ProvinceData startProvince = 1;</code>
      */
-    public boolean hasStartRegion() {
-      return startRegion_ != null;
+    public boolean hasStartProvince() {
+      return startProvince_ != null;
     }
     /**
-     * <code>.dip_q.RegionData startRegion = 1;</code>
+     * <code>.dip_q.ProvinceData startProvince = 1;</code>
      */
-    public cruz.agents.ProtoMessage.RegionData getStartRegion() {
-      return startRegion_ == null ? cruz.agents.ProtoMessage.RegionData.getDefaultInstance() : startRegion_;
+    public cruz.agents.ProtoMessage.ProvinceData getStartProvince() {
+      return startProvince_ == null ? cruz.agents.ProtoMessage.ProvinceData.getDefaultInstance() : startProvince_;
     }
     /**
-     * <code>.dip_q.RegionData startRegion = 1;</code>
+     * <code>.dip_q.ProvinceData startProvince = 1;</code>
      */
-    public cruz.agents.ProtoMessage.RegionDataOrBuilder getStartRegionOrBuilder() {
-      return getStartRegion();
+    public cruz.agents.ProtoMessage.ProvinceDataOrBuilder getStartProvinceOrBuilder() {
+      return getStartProvince();
     }
 
-    public static final int DESTINATIONREGION_FIELD_NUMBER = 2;
-    private cruz.agents.ProtoMessage.RegionData destinationRegion_;
+    public static final int DESTINATIONPROVINCE_FIELD_NUMBER = 2;
+    private cruz.agents.ProtoMessage.ProvinceData destinationProvince_;
     /**
-     * <code>.dip_q.RegionData destinationRegion = 2;</code>
+     * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
      */
-    public boolean hasDestinationRegion() {
-      return destinationRegion_ != null;
+    public boolean hasDestinationProvince() {
+      return destinationProvince_ != null;
     }
     /**
-     * <code>.dip_q.RegionData destinationRegion = 2;</code>
+     * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
      */
-    public cruz.agents.ProtoMessage.RegionData getDestinationRegion() {
-      return destinationRegion_ == null ? cruz.agents.ProtoMessage.RegionData.getDefaultInstance() : destinationRegion_;
+    public cruz.agents.ProtoMessage.ProvinceData getDestinationProvince() {
+      return destinationProvince_ == null ? cruz.agents.ProtoMessage.ProvinceData.getDefaultInstance() : destinationProvince_;
     }
     /**
-     * <code>.dip_q.RegionData destinationRegion = 2;</code>
+     * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
      */
-    public cruz.agents.ProtoMessage.RegionDataOrBuilder getDestinationRegionOrBuilder() {
-      return getDestinationRegion();
+    public cruz.agents.ProtoMessage.ProvinceDataOrBuilder getDestinationProvinceOrBuilder() {
+      return getDestinationProvince();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4837,11 +4837,11 @@ public final class ProtoMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (startRegion_ != null) {
-        output.writeMessage(1, getStartRegion());
+      if (startProvince_ != null) {
+        output.writeMessage(1, getStartProvince());
       }
-      if (destinationRegion_ != null) {
-        output.writeMessage(2, getDestinationRegion());
+      if (destinationProvince_ != null) {
+        output.writeMessage(2, getDestinationProvince());
       }
       unknownFields.writeTo(output);
     }
@@ -4852,13 +4852,13 @@ public final class ProtoMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (startRegion_ != null) {
+      if (startProvince_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getStartRegion());
+          .computeMessageSize(1, getStartProvince());
       }
-      if (destinationRegion_ != null) {
+      if (destinationProvince_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getDestinationRegion());
+          .computeMessageSize(2, getDestinationProvince());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4875,15 +4875,15 @@ public final class ProtoMessage {
       }
       cruz.agents.ProtoMessage.MoveOrder other = (cruz.agents.ProtoMessage.MoveOrder) obj;
 
-      if (hasStartRegion() != other.hasStartRegion()) return false;
-      if (hasStartRegion()) {
-        if (!getStartRegion()
-            .equals(other.getStartRegion())) return false;
+      if (hasStartProvince() != other.hasStartProvince()) return false;
+      if (hasStartProvince()) {
+        if (!getStartProvince()
+            .equals(other.getStartProvince())) return false;
       }
-      if (hasDestinationRegion() != other.hasDestinationRegion()) return false;
-      if (hasDestinationRegion()) {
-        if (!getDestinationRegion()
-            .equals(other.getDestinationRegion())) return false;
+      if (hasDestinationProvince() != other.hasDestinationProvince()) return false;
+      if (hasDestinationProvince()) {
+        if (!getDestinationProvince()
+            .equals(other.getDestinationProvince())) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -4896,13 +4896,13 @@ public final class ProtoMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasStartRegion()) {
-        hash = (37 * hash) + STARTREGION_FIELD_NUMBER;
-        hash = (53 * hash) + getStartRegion().hashCode();
+      if (hasStartProvince()) {
+        hash = (37 * hash) + STARTPROVINCE_FIELD_NUMBER;
+        hash = (53 * hash) + getStartProvince().hashCode();
       }
-      if (hasDestinationRegion()) {
-        hash = (37 * hash) + DESTINATIONREGION_FIELD_NUMBER;
-        hash = (53 * hash) + getDestinationRegion().hashCode();
+      if (hasDestinationProvince()) {
+        hash = (37 * hash) + DESTINATIONPROVINCE_FIELD_NUMBER;
+        hash = (53 * hash) + getDestinationProvince().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -5037,17 +5037,17 @@ public final class ProtoMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (startRegionBuilder_ == null) {
-          startRegion_ = null;
+        if (startProvinceBuilder_ == null) {
+          startProvince_ = null;
         } else {
-          startRegion_ = null;
-          startRegionBuilder_ = null;
+          startProvince_ = null;
+          startProvinceBuilder_ = null;
         }
-        if (destinationRegionBuilder_ == null) {
-          destinationRegion_ = null;
+        if (destinationProvinceBuilder_ == null) {
+          destinationProvince_ = null;
         } else {
-          destinationRegion_ = null;
-          destinationRegionBuilder_ = null;
+          destinationProvince_ = null;
+          destinationProvinceBuilder_ = null;
         }
         return this;
       }
@@ -5075,15 +5075,15 @@ public final class ProtoMessage {
       @java.lang.Override
       public cruz.agents.ProtoMessage.MoveOrder buildPartial() {
         cruz.agents.ProtoMessage.MoveOrder result = new cruz.agents.ProtoMessage.MoveOrder(this);
-        if (startRegionBuilder_ == null) {
-          result.startRegion_ = startRegion_;
+        if (startProvinceBuilder_ == null) {
+          result.startProvince_ = startProvince_;
         } else {
-          result.startRegion_ = startRegionBuilder_.build();
+          result.startProvince_ = startProvinceBuilder_.build();
         }
-        if (destinationRegionBuilder_ == null) {
-          result.destinationRegion_ = destinationRegion_;
+        if (destinationProvinceBuilder_ == null) {
+          result.destinationProvince_ = destinationProvince_;
         } else {
-          result.destinationRegion_ = destinationRegionBuilder_.build();
+          result.destinationProvince_ = destinationProvinceBuilder_.build();
         }
         onBuilt();
         return result;
@@ -5133,11 +5133,11 @@ public final class ProtoMessage {
 
       public Builder mergeFrom(cruz.agents.ProtoMessage.MoveOrder other) {
         if (other == cruz.agents.ProtoMessage.MoveOrder.getDefaultInstance()) return this;
-        if (other.hasStartRegion()) {
-          mergeStartRegion(other.getStartRegion());
+        if (other.hasStartProvince()) {
+          mergeStartProvince(other.getStartProvince());
         }
-        if (other.hasDestinationRegion()) {
-          mergeDestinationRegion(other.getDestinationRegion());
+        if (other.hasDestinationProvince()) {
+          mergeDestinationProvince(other.getDestinationProvince());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -5168,238 +5168,238 @@ public final class ProtoMessage {
         return this;
       }
 
-      private cruz.agents.ProtoMessage.RegionData startRegion_;
+      private cruz.agents.ProtoMessage.ProvinceData startProvince_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          cruz.agents.ProtoMessage.RegionData, cruz.agents.ProtoMessage.RegionData.Builder, cruz.agents.ProtoMessage.RegionDataOrBuilder> startRegionBuilder_;
+          cruz.agents.ProtoMessage.ProvinceData, cruz.agents.ProtoMessage.ProvinceData.Builder, cruz.agents.ProtoMessage.ProvinceDataOrBuilder> startProvinceBuilder_;
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
-      public boolean hasStartRegion() {
-        return startRegionBuilder_ != null || startRegion_ != null;
+      public boolean hasStartProvince() {
+        return startProvinceBuilder_ != null || startProvince_ != null;
       }
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
-      public cruz.agents.ProtoMessage.RegionData getStartRegion() {
-        if (startRegionBuilder_ == null) {
-          return startRegion_ == null ? cruz.agents.ProtoMessage.RegionData.getDefaultInstance() : startRegion_;
+      public cruz.agents.ProtoMessage.ProvinceData getStartProvince() {
+        if (startProvinceBuilder_ == null) {
+          return startProvince_ == null ? cruz.agents.ProtoMessage.ProvinceData.getDefaultInstance() : startProvince_;
         } else {
-          return startRegionBuilder_.getMessage();
+          return startProvinceBuilder_.getMessage();
         }
       }
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
-      public Builder setStartRegion(cruz.agents.ProtoMessage.RegionData value) {
-        if (startRegionBuilder_ == null) {
+      public Builder setStartProvince(cruz.agents.ProtoMessage.ProvinceData value) {
+        if (startProvinceBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          startRegion_ = value;
+          startProvince_ = value;
           onChanged();
         } else {
-          startRegionBuilder_.setMessage(value);
+          startProvinceBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
-      public Builder setStartRegion(
-          cruz.agents.ProtoMessage.RegionData.Builder builderForValue) {
-        if (startRegionBuilder_ == null) {
-          startRegion_ = builderForValue.build();
+      public Builder setStartProvince(
+          cruz.agents.ProtoMessage.ProvinceData.Builder builderForValue) {
+        if (startProvinceBuilder_ == null) {
+          startProvince_ = builderForValue.build();
           onChanged();
         } else {
-          startRegionBuilder_.setMessage(builderForValue.build());
+          startProvinceBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
-      public Builder mergeStartRegion(cruz.agents.ProtoMessage.RegionData value) {
-        if (startRegionBuilder_ == null) {
-          if (startRegion_ != null) {
-            startRegion_ =
-              cruz.agents.ProtoMessage.RegionData.newBuilder(startRegion_).mergeFrom(value).buildPartial();
+      public Builder mergeStartProvince(cruz.agents.ProtoMessage.ProvinceData value) {
+        if (startProvinceBuilder_ == null) {
+          if (startProvince_ != null) {
+            startProvince_ =
+              cruz.agents.ProtoMessage.ProvinceData.newBuilder(startProvince_).mergeFrom(value).buildPartial();
           } else {
-            startRegion_ = value;
+            startProvince_ = value;
           }
           onChanged();
         } else {
-          startRegionBuilder_.mergeFrom(value);
+          startProvinceBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
-      public Builder clearStartRegion() {
-        if (startRegionBuilder_ == null) {
-          startRegion_ = null;
+      public Builder clearStartProvince() {
+        if (startProvinceBuilder_ == null) {
+          startProvince_ = null;
           onChanged();
         } else {
-          startRegion_ = null;
-          startRegionBuilder_ = null;
+          startProvince_ = null;
+          startProvinceBuilder_ = null;
         }
 
         return this;
       }
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
-      public cruz.agents.ProtoMessage.RegionData.Builder getStartRegionBuilder() {
+      public cruz.agents.ProtoMessage.ProvinceData.Builder getStartProvinceBuilder() {
         
         onChanged();
-        return getStartRegionFieldBuilder().getBuilder();
+        return getStartProvinceFieldBuilder().getBuilder();
       }
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
-      public cruz.agents.ProtoMessage.RegionDataOrBuilder getStartRegionOrBuilder() {
-        if (startRegionBuilder_ != null) {
-          return startRegionBuilder_.getMessageOrBuilder();
+      public cruz.agents.ProtoMessage.ProvinceDataOrBuilder getStartProvinceOrBuilder() {
+        if (startProvinceBuilder_ != null) {
+          return startProvinceBuilder_.getMessageOrBuilder();
         } else {
-          return startRegion_ == null ?
-              cruz.agents.ProtoMessage.RegionData.getDefaultInstance() : startRegion_;
+          return startProvince_ == null ?
+              cruz.agents.ProtoMessage.ProvinceData.getDefaultInstance() : startProvince_;
         }
       }
       /**
-       * <code>.dip_q.RegionData startRegion = 1;</code>
+       * <code>.dip_q.ProvinceData startProvince = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cruz.agents.ProtoMessage.RegionData, cruz.agents.ProtoMessage.RegionData.Builder, cruz.agents.ProtoMessage.RegionDataOrBuilder> 
-          getStartRegionFieldBuilder() {
-        if (startRegionBuilder_ == null) {
-          startRegionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cruz.agents.ProtoMessage.RegionData, cruz.agents.ProtoMessage.RegionData.Builder, cruz.agents.ProtoMessage.RegionDataOrBuilder>(
-                  getStartRegion(),
+          cruz.agents.ProtoMessage.ProvinceData, cruz.agents.ProtoMessage.ProvinceData.Builder, cruz.agents.ProtoMessage.ProvinceDataOrBuilder> 
+          getStartProvinceFieldBuilder() {
+        if (startProvinceBuilder_ == null) {
+          startProvinceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cruz.agents.ProtoMessage.ProvinceData, cruz.agents.ProtoMessage.ProvinceData.Builder, cruz.agents.ProtoMessage.ProvinceDataOrBuilder>(
+                  getStartProvince(),
                   getParentForChildren(),
                   isClean());
-          startRegion_ = null;
+          startProvince_ = null;
         }
-        return startRegionBuilder_;
+        return startProvinceBuilder_;
       }
 
-      private cruz.agents.ProtoMessage.RegionData destinationRegion_;
+      private cruz.agents.ProtoMessage.ProvinceData destinationProvince_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          cruz.agents.ProtoMessage.RegionData, cruz.agents.ProtoMessage.RegionData.Builder, cruz.agents.ProtoMessage.RegionDataOrBuilder> destinationRegionBuilder_;
+          cruz.agents.ProtoMessage.ProvinceData, cruz.agents.ProtoMessage.ProvinceData.Builder, cruz.agents.ProtoMessage.ProvinceDataOrBuilder> destinationProvinceBuilder_;
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
-      public boolean hasDestinationRegion() {
-        return destinationRegionBuilder_ != null || destinationRegion_ != null;
+      public boolean hasDestinationProvince() {
+        return destinationProvinceBuilder_ != null || destinationProvince_ != null;
       }
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
-      public cruz.agents.ProtoMessage.RegionData getDestinationRegion() {
-        if (destinationRegionBuilder_ == null) {
-          return destinationRegion_ == null ? cruz.agents.ProtoMessage.RegionData.getDefaultInstance() : destinationRegion_;
+      public cruz.agents.ProtoMessage.ProvinceData getDestinationProvince() {
+        if (destinationProvinceBuilder_ == null) {
+          return destinationProvince_ == null ? cruz.agents.ProtoMessage.ProvinceData.getDefaultInstance() : destinationProvince_;
         } else {
-          return destinationRegionBuilder_.getMessage();
+          return destinationProvinceBuilder_.getMessage();
         }
       }
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
-      public Builder setDestinationRegion(cruz.agents.ProtoMessage.RegionData value) {
-        if (destinationRegionBuilder_ == null) {
+      public Builder setDestinationProvince(cruz.agents.ProtoMessage.ProvinceData value) {
+        if (destinationProvinceBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          destinationRegion_ = value;
+          destinationProvince_ = value;
           onChanged();
         } else {
-          destinationRegionBuilder_.setMessage(value);
+          destinationProvinceBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
-      public Builder setDestinationRegion(
-          cruz.agents.ProtoMessage.RegionData.Builder builderForValue) {
-        if (destinationRegionBuilder_ == null) {
-          destinationRegion_ = builderForValue.build();
+      public Builder setDestinationProvince(
+          cruz.agents.ProtoMessage.ProvinceData.Builder builderForValue) {
+        if (destinationProvinceBuilder_ == null) {
+          destinationProvince_ = builderForValue.build();
           onChanged();
         } else {
-          destinationRegionBuilder_.setMessage(builderForValue.build());
+          destinationProvinceBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
-      public Builder mergeDestinationRegion(cruz.agents.ProtoMessage.RegionData value) {
-        if (destinationRegionBuilder_ == null) {
-          if (destinationRegion_ != null) {
-            destinationRegion_ =
-              cruz.agents.ProtoMessage.RegionData.newBuilder(destinationRegion_).mergeFrom(value).buildPartial();
+      public Builder mergeDestinationProvince(cruz.agents.ProtoMessage.ProvinceData value) {
+        if (destinationProvinceBuilder_ == null) {
+          if (destinationProvince_ != null) {
+            destinationProvince_ =
+              cruz.agents.ProtoMessage.ProvinceData.newBuilder(destinationProvince_).mergeFrom(value).buildPartial();
           } else {
-            destinationRegion_ = value;
+            destinationProvince_ = value;
           }
           onChanged();
         } else {
-          destinationRegionBuilder_.mergeFrom(value);
+          destinationProvinceBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
-      public Builder clearDestinationRegion() {
-        if (destinationRegionBuilder_ == null) {
-          destinationRegion_ = null;
+      public Builder clearDestinationProvince() {
+        if (destinationProvinceBuilder_ == null) {
+          destinationProvince_ = null;
           onChanged();
         } else {
-          destinationRegion_ = null;
-          destinationRegionBuilder_ = null;
+          destinationProvince_ = null;
+          destinationProvinceBuilder_ = null;
         }
 
         return this;
       }
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
-      public cruz.agents.ProtoMessage.RegionData.Builder getDestinationRegionBuilder() {
+      public cruz.agents.ProtoMessage.ProvinceData.Builder getDestinationProvinceBuilder() {
         
         onChanged();
-        return getDestinationRegionFieldBuilder().getBuilder();
+        return getDestinationProvinceFieldBuilder().getBuilder();
       }
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
-      public cruz.agents.ProtoMessage.RegionDataOrBuilder getDestinationRegionOrBuilder() {
-        if (destinationRegionBuilder_ != null) {
-          return destinationRegionBuilder_.getMessageOrBuilder();
+      public cruz.agents.ProtoMessage.ProvinceDataOrBuilder getDestinationProvinceOrBuilder() {
+        if (destinationProvinceBuilder_ != null) {
+          return destinationProvinceBuilder_.getMessageOrBuilder();
         } else {
-          return destinationRegion_ == null ?
-              cruz.agents.ProtoMessage.RegionData.getDefaultInstance() : destinationRegion_;
+          return destinationProvince_ == null ?
+              cruz.agents.ProtoMessage.ProvinceData.getDefaultInstance() : destinationProvince_;
         }
       }
       /**
-       * <code>.dip_q.RegionData destinationRegion = 2;</code>
+       * <code>.dip_q.ProvinceData destinationProvince = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cruz.agents.ProtoMessage.RegionData, cruz.agents.ProtoMessage.RegionData.Builder, cruz.agents.ProtoMessage.RegionDataOrBuilder> 
-          getDestinationRegionFieldBuilder() {
-        if (destinationRegionBuilder_ == null) {
-          destinationRegionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cruz.agents.ProtoMessage.RegionData, cruz.agents.ProtoMessage.RegionData.Builder, cruz.agents.ProtoMessage.RegionDataOrBuilder>(
-                  getDestinationRegion(),
+          cruz.agents.ProtoMessage.ProvinceData, cruz.agents.ProtoMessage.ProvinceData.Builder, cruz.agents.ProtoMessage.ProvinceDataOrBuilder> 
+          getDestinationProvinceFieldBuilder() {
+        if (destinationProvinceBuilder_ == null) {
+          destinationProvinceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cruz.agents.ProtoMessage.ProvinceData, cruz.agents.ProtoMessage.ProvinceData.Builder, cruz.agents.ProtoMessage.ProvinceDataOrBuilder>(
+                  getDestinationProvince(),
                   getParentForChildren(),
                   isClean());
-          destinationRegion_ = null;
+          destinationProvince_ = null;
         }
-        return destinationRegionBuilder_;
+        return destinationProvinceBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -6240,48 +6240,53 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     java.util.List<cruz.agents.ProtoMessage.OrderCommitment> 
         getOcList();
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     cruz.agents.ProtoMessage.OrderCommitment getOc(int index);
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     int getOcCount();
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     java.util.List<? extends cruz.agents.ProtoMessage.OrderCommitmentOrBuilder> 
         getOcOrBuilderList();
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     cruz.agents.ProtoMessage.OrderCommitmentOrBuilder getOcOrBuilder(
         int index);
+
+    /**
+     * <pre>
+     * repeated DemilitarizedZones dmz = 2;
+     * </pre>
+     *
+     * <code>.dip_q.PowerData proposeTo = 3;</code>
+     */
+    boolean hasProposeTo();
+    /**
+     * <pre>
+     * repeated DemilitarizedZones dmz = 2;
+     * </pre>
+     *
+     * <code>.dip_q.PowerData proposeTo = 3;</code>
+     */
+    cruz.agents.ProtoMessage.PowerData getProposeTo();
+    /**
+     * <pre>
+     * repeated DemilitarizedZones dmz = 2;
+     * </pre>
+     *
+     * <code>.dip_q.PowerData proposeTo = 3;</code>
+     */
+    cruz.agents.ProtoMessage.PowerDataOrBuilder getProposeToOrBuilder();
   }
   /**
    * Protobuf type {@code dip_q.DealData}
@@ -6332,6 +6337,19 @@ public final class ProtoMessage {
                   input.readMessage(cruz.agents.ProtoMessage.OrderCommitment.parser(), extensionRegistry));
               break;
             }
+            case 26: {
+              cruz.agents.ProtoMessage.PowerData.Builder subBuilder = null;
+              if (proposeTo_ != null) {
+                subBuilder = proposeTo_.toBuilder();
+              }
+              proposeTo_ = input.readMessage(cruz.agents.ProtoMessage.PowerData.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(proposeTo_);
+                proposeTo_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -6367,23 +6385,16 @@ public final class ProtoMessage {
               cruz.agents.ProtoMessage.DealData.class, cruz.agents.ProtoMessage.DealData.Builder.class);
     }
 
+    private int bitField0_;
     public static final int OC_FIELD_NUMBER = 1;
     private java.util.List<cruz.agents.ProtoMessage.OrderCommitment> oc_;
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     public java.util.List<cruz.agents.ProtoMessage.OrderCommitment> getOcList() {
       return oc_;
     }
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     public java.util.List<? extends cruz.agents.ProtoMessage.OrderCommitmentOrBuilder> 
@@ -6391,35 +6402,56 @@ public final class ProtoMessage {
       return oc_;
     }
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     public int getOcCount() {
       return oc_.size();
     }
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     public cruz.agents.ProtoMessage.OrderCommitment getOc(int index) {
       return oc_.get(index);
     }
     /**
-     * <pre>
-     * repeated DemilitarizedZones dmz = 2;
-     * </pre>
-     *
      * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
      */
     public cruz.agents.ProtoMessage.OrderCommitmentOrBuilder getOcOrBuilder(
         int index) {
       return oc_.get(index);
+    }
+
+    public static final int PROPOSETO_FIELD_NUMBER = 3;
+    private cruz.agents.ProtoMessage.PowerData proposeTo_;
+    /**
+     * <pre>
+     * repeated DemilitarizedZones dmz = 2;
+     * </pre>
+     *
+     * <code>.dip_q.PowerData proposeTo = 3;</code>
+     */
+    public boolean hasProposeTo() {
+      return proposeTo_ != null;
+    }
+    /**
+     * <pre>
+     * repeated DemilitarizedZones dmz = 2;
+     * </pre>
+     *
+     * <code>.dip_q.PowerData proposeTo = 3;</code>
+     */
+    public cruz.agents.ProtoMessage.PowerData getProposeTo() {
+      return proposeTo_ == null ? cruz.agents.ProtoMessage.PowerData.getDefaultInstance() : proposeTo_;
+    }
+    /**
+     * <pre>
+     * repeated DemilitarizedZones dmz = 2;
+     * </pre>
+     *
+     * <code>.dip_q.PowerData proposeTo = 3;</code>
+     */
+    public cruz.agents.ProtoMessage.PowerDataOrBuilder getProposeToOrBuilder() {
+      return getProposeTo();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -6439,6 +6471,9 @@ public final class ProtoMessage {
       for (int i = 0; i < oc_.size(); i++) {
         output.writeMessage(1, oc_.get(i));
       }
+      if (proposeTo_ != null) {
+        output.writeMessage(3, getProposeTo());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -6451,6 +6486,10 @@ public final class ProtoMessage {
       for (int i = 0; i < oc_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, oc_.get(i));
+      }
+      if (proposeTo_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getProposeTo());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6469,6 +6508,11 @@ public final class ProtoMessage {
 
       if (!getOcList()
           .equals(other.getOcList())) return false;
+      if (hasProposeTo() != other.hasProposeTo()) return false;
+      if (hasProposeTo()) {
+        if (!getProposeTo()
+            .equals(other.getProposeTo())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -6483,6 +6527,10 @@ public final class ProtoMessage {
       if (getOcCount() > 0) {
         hash = (37 * hash) + OC_FIELD_NUMBER;
         hash = (53 * hash) + getOcList().hashCode();
+      }
+      if (hasProposeTo()) {
+        hash = (37 * hash) + PROPOSETO_FIELD_NUMBER;
+        hash = (53 * hash) + getProposeTo().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -6624,6 +6672,12 @@ public final class ProtoMessage {
         } else {
           ocBuilder_.clear();
         }
+        if (proposeToBuilder_ == null) {
+          proposeTo_ = null;
+        } else {
+          proposeTo_ = null;
+          proposeToBuilder_ = null;
+        }
         return this;
       }
 
@@ -6651,6 +6705,7 @@ public final class ProtoMessage {
       public cruz.agents.ProtoMessage.DealData buildPartial() {
         cruz.agents.ProtoMessage.DealData result = new cruz.agents.ProtoMessage.DealData(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (ocBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             oc_ = java.util.Collections.unmodifiableList(oc_);
@@ -6660,6 +6715,12 @@ public final class ProtoMessage {
         } else {
           result.oc_ = ocBuilder_.build();
         }
+        if (proposeToBuilder_ == null) {
+          result.proposeTo_ = proposeTo_;
+        } else {
+          result.proposeTo_ = proposeToBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -6734,6 +6795,9 @@ public final class ProtoMessage {
             }
           }
         }
+        if (other.hasProposeTo()) {
+          mergeProposeTo(other.getProposeTo());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -6777,10 +6841,6 @@ public final class ProtoMessage {
           cruz.agents.ProtoMessage.OrderCommitment, cruz.agents.ProtoMessage.OrderCommitment.Builder, cruz.agents.ProtoMessage.OrderCommitmentOrBuilder> ocBuilder_;
 
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public java.util.List<cruz.agents.ProtoMessage.OrderCommitment> getOcList() {
@@ -6791,10 +6851,6 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public int getOcCount() {
@@ -6805,10 +6861,6 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public cruz.agents.ProtoMessage.OrderCommitment getOc(int index) {
@@ -6819,10 +6871,6 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder setOc(
@@ -6840,10 +6888,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder setOc(
@@ -6858,10 +6902,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder addOc(cruz.agents.ProtoMessage.OrderCommitment value) {
@@ -6878,10 +6918,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder addOc(
@@ -6899,10 +6935,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder addOc(
@@ -6917,10 +6949,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder addOc(
@@ -6935,10 +6963,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder addAllOc(
@@ -6954,10 +6978,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder clearOc() {
@@ -6971,10 +6991,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public Builder removeOc(int index) {
@@ -6988,10 +7004,6 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public cruz.agents.ProtoMessage.OrderCommitment.Builder getOcBuilder(
@@ -6999,10 +7011,6 @@ public final class ProtoMessage {
         return getOcFieldBuilder().getBuilder(index);
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public cruz.agents.ProtoMessage.OrderCommitmentOrBuilder getOcOrBuilder(
@@ -7013,10 +7021,6 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public java.util.List<? extends cruz.agents.ProtoMessage.OrderCommitmentOrBuilder> 
@@ -7028,10 +7032,6 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public cruz.agents.ProtoMessage.OrderCommitment.Builder addOcBuilder() {
@@ -7039,10 +7039,6 @@ public final class ProtoMessage {
             cruz.agents.ProtoMessage.OrderCommitment.getDefaultInstance());
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public cruz.agents.ProtoMessage.OrderCommitment.Builder addOcBuilder(
@@ -7051,10 +7047,6 @@ public final class ProtoMessage {
             index, cruz.agents.ProtoMessage.OrderCommitment.getDefaultInstance());
       }
       /**
-       * <pre>
-       * repeated DemilitarizedZones dmz = 2;
-       * </pre>
-       *
        * <code>repeated .dip_q.OrderCommitment oc = 1;</code>
        */
       public java.util.List<cruz.agents.ProtoMessage.OrderCommitment.Builder> 
@@ -7074,6 +7066,159 @@ public final class ProtoMessage {
           oc_ = null;
         }
         return ocBuilder_;
+      }
+
+      private cruz.agents.ProtoMessage.PowerData proposeTo_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cruz.agents.ProtoMessage.PowerData, cruz.agents.ProtoMessage.PowerData.Builder, cruz.agents.ProtoMessage.PowerDataOrBuilder> proposeToBuilder_;
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      public boolean hasProposeTo() {
+        return proposeToBuilder_ != null || proposeTo_ != null;
+      }
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      public cruz.agents.ProtoMessage.PowerData getProposeTo() {
+        if (proposeToBuilder_ == null) {
+          return proposeTo_ == null ? cruz.agents.ProtoMessage.PowerData.getDefaultInstance() : proposeTo_;
+        } else {
+          return proposeToBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      public Builder setProposeTo(cruz.agents.ProtoMessage.PowerData value) {
+        if (proposeToBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          proposeTo_ = value;
+          onChanged();
+        } else {
+          proposeToBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      public Builder setProposeTo(
+          cruz.agents.ProtoMessage.PowerData.Builder builderForValue) {
+        if (proposeToBuilder_ == null) {
+          proposeTo_ = builderForValue.build();
+          onChanged();
+        } else {
+          proposeToBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      public Builder mergeProposeTo(cruz.agents.ProtoMessage.PowerData value) {
+        if (proposeToBuilder_ == null) {
+          if (proposeTo_ != null) {
+            proposeTo_ =
+              cruz.agents.ProtoMessage.PowerData.newBuilder(proposeTo_).mergeFrom(value).buildPartial();
+          } else {
+            proposeTo_ = value;
+          }
+          onChanged();
+        } else {
+          proposeToBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      public Builder clearProposeTo() {
+        if (proposeToBuilder_ == null) {
+          proposeTo_ = null;
+          onChanged();
+        } else {
+          proposeTo_ = null;
+          proposeToBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      public cruz.agents.ProtoMessage.PowerData.Builder getProposeToBuilder() {
+        
+        onChanged();
+        return getProposeToFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      public cruz.agents.ProtoMessage.PowerDataOrBuilder getProposeToOrBuilder() {
+        if (proposeToBuilder_ != null) {
+          return proposeToBuilder_.getMessageOrBuilder();
+        } else {
+          return proposeTo_ == null ?
+              cruz.agents.ProtoMessage.PowerData.getDefaultInstance() : proposeTo_;
+        }
+      }
+      /**
+       * <pre>
+       * repeated DemilitarizedZones dmz = 2;
+       * </pre>
+       *
+       * <code>.dip_q.PowerData proposeTo = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cruz.agents.ProtoMessage.PowerData, cruz.agents.ProtoMessage.PowerData.Builder, cruz.agents.ProtoMessage.PowerDataOrBuilder> 
+          getProposeToFieldBuilder() {
+        if (proposeToBuilder_ == null) {
+          proposeToBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cruz.agents.ProtoMessage.PowerData, cruz.agents.ProtoMessage.PowerData.Builder, cruz.agents.ProtoMessage.PowerDataOrBuilder>(
+                  getProposeTo(),
+                  getParentForChildren(),
+                  isClean());
+          proposeTo_ = null;
+        }
+        return proposeToBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -7206,13 +7351,14 @@ public final class ProtoMessage {
       "_q.GameData.NameToProvincesEntry\022\"\n\010ownP" +
       "ower\030\002 \001(\0132\020.dip_q.PowerData\032K\n\024NameToPr" +
       "ovincesEntry\022\013\n\003key\030\001 \001(\t\022\"\n\005value\030\002 \001(\013" +
-      "2\023.dip_q.ProvinceData:\0028\001\"a\n\tMoveOrder\022&" +
-      "\n\013startRegion\030\001 \001(\0132\021.dip_q.RegionData\022," +
-      "\n\021destinationRegion\030\002 \001(\0132\021.dip_q.Region" +
-      "Data\"1\n\017OrderCommitment\022\036\n\004move\030\001 \003(\0132\020." +
-      "dip_q.MoveOrder\".\n\010DealData\022\"\n\002oc\030\001 \003(\0132" +
-      "\026.dip_q.OrderCommitmentB\r\n\013cruz.agentsb\006" +
-      "proto3"
+      "2\023.dip_q.ProvinceData:\0028\001\"i\n\tMoveOrder\022*" +
+      "\n\rstartProvince\030\001 \001(\0132\023.dip_q.ProvinceDa" +
+      "ta\0220\n\023destinationProvince\030\002 \001(\0132\023.dip_q." +
+      "ProvinceData\"1\n\017OrderCommitment\022\036\n\004move\030" +
+      "\001 \003(\0132\020.dip_q.MoveOrder\"S\n\010DealData\022\"\n\002o" +
+      "c\030\001 \003(\0132\026.dip_q.OrderCommitment\022#\n\tpropo" +
+      "seTo\030\003 \001(\0132\020.dip_q.PowerDataB\r\n\013cruz.age" +
+      "ntsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7273,7 +7419,7 @@ public final class ProtoMessage {
     internal_static_dip_q_MoveOrder_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_MoveOrder_descriptor,
-        new java.lang.String[] { "StartRegion", "DestinationRegion", });
+        new java.lang.String[] { "StartProvince", "DestinationProvince", });
     internal_static_dip_q_OrderCommitment_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_dip_q_OrderCommitment_fieldAccessorTable = new
@@ -7285,7 +7431,7 @@ public final class ProtoMessage {
     internal_static_dip_q_DealData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_DealData_descriptor,
-        new java.lang.String[] { "Oc", });
+        new java.lang.String[] { "Oc", "ProposeTo", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

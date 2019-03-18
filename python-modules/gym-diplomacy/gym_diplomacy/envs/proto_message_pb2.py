@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dip_q',
   syntax='proto3',
   serialized_options=_b('\n\013cruz.agents'),
-  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\x9a\x01\n\x07\x43ommand\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.Command.CommandType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1d\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\x0f.dip_q.GameData\"8\n\x0b\x43ommandType\x12\x0e\n\nSTART_TEST\x10\x00\x12\x0b\n\x07RESULTS\x10\x01\x12\x0c\n\x08SHUTDOWN\x10\x03\"\x8b\x01\n\tPowerData\x12(\n\x04name\x18\x01 \x01(\x0e\x32\x1a.dip_q.PowerData.PowerName\"T\n\tPowerName\x12\x08\n\x04NONE\x10\x00\x12\x07\n\x03\x41US\x10\x01\x12\x07\n\x03\x45NG\x10\x02\x12\x07\n\x03\x46RA\x10\x03\x12\x07\n\x03GER\x10\x04\x12\x07\n\x03ITA\x10\x05\x12\x07\n\x03RUS\x10\x06\x12\x07\n\x03TUR\x10\x07\"7\n\nRegionData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1b\n\x13\x61\x64jacentRegionsName\x18\x03 \x03(\t\"\xd1\x01\n\x0cProvinceData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1f\n\x05owner\x18\x02 \x01(\x0b\x32\x10.dip_q.PowerData\x12\n\n\x02sc\x18\x03 \x01(\x08\x12=\n\rnameToRegions\x18\x04 \x03(\x0b\x32&.dip_q.ProvinceData.NameToRegionsEntry\x1aG\n\x12NameToRegionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dip_q.RegionData:\x02\x38\x01\"\xba\x01\n\x08GameData\x12=\n\x0fnameToProvinces\x18\x01 \x03(\x0b\x32$.dip_q.GameData.NameToProvincesEntry\x12\"\n\x08ownPower\x18\x02 \x01(\x0b\x32\x10.dip_q.PowerData\x1aK\n\x14NameToProvincesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dip_q.ProvinceData:\x02\x38\x01\"a\n\tMoveOrder\x12&\n\x0bstartRegion\x18\x01 \x01(\x0b\x32\x11.dip_q.RegionData\x12,\n\x11\x64\x65stinationRegion\x18\x02 \x01(\x0b\x32\x11.dip_q.RegionData\"1\n\x0fOrderCommitment\x12\x1e\n\x04move\x18\x01 \x03(\x0b\x32\x10.dip_q.MoveOrder\".\n\x08\x44\x65\x61lData\x12\"\n\x02oc\x18\x01 \x03(\x0b\x32\x16.dip_q.OrderCommitmentB\r\n\x0b\x63ruz.agentsb\x06proto3')
+  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\x9a\x01\n\x07\x43ommand\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.Command.CommandType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1d\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\x0f.dip_q.GameData\"8\n\x0b\x43ommandType\x12\x0e\n\nSTART_TEST\x10\x00\x12\x0b\n\x07RESULTS\x10\x01\x12\x0c\n\x08SHUTDOWN\x10\x03\"\x8b\x01\n\tPowerData\x12(\n\x04name\x18\x01 \x01(\x0e\x32\x1a.dip_q.PowerData.PowerName\"T\n\tPowerName\x12\x08\n\x04NONE\x10\x00\x12\x07\n\x03\x41US\x10\x01\x12\x07\n\x03\x45NG\x10\x02\x12\x07\n\x03\x46RA\x10\x03\x12\x07\n\x03GER\x10\x04\x12\x07\n\x03ITA\x10\x05\x12\x07\n\x03RUS\x10\x06\x12\x07\n\x03TUR\x10\x07\"7\n\nRegionData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1b\n\x13\x61\x64jacentRegionsName\x18\x03 \x03(\t\"\xd1\x01\n\x0cProvinceData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1f\n\x05owner\x18\x02 \x01(\x0b\x32\x10.dip_q.PowerData\x12\n\n\x02sc\x18\x03 \x01(\x08\x12=\n\rnameToRegions\x18\x04 \x03(\x0b\x32&.dip_q.ProvinceData.NameToRegionsEntry\x1aG\n\x12NameToRegionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dip_q.RegionData:\x02\x38\x01\"\xba\x01\n\x08GameData\x12=\n\x0fnameToProvinces\x18\x01 \x03(\x0b\x32$.dip_q.GameData.NameToProvincesEntry\x12\"\n\x08ownPower\x18\x02 \x01(\x0b\x32\x10.dip_q.PowerData\x1aK\n\x14NameToProvincesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dip_q.ProvinceData:\x02\x38\x01\"i\n\tMoveOrder\x12*\n\rstartProvince\x18\x01 \x01(\x0b\x32\x13.dip_q.ProvinceData\x12\x30\n\x13\x64\x65stinationProvince\x18\x02 \x01(\x0b\x32\x13.dip_q.ProvinceData\"1\n\x0fOrderCommitment\x12\x1e\n\x04move\x18\x01 \x03(\x0b\x32\x10.dip_q.MoveOrder\"S\n\x08\x44\x65\x61lData\x12\"\n\x02oc\x18\x01 \x03(\x0b\x32\x16.dip_q.OrderCommitment\x12#\n\tproposeTo\x18\x03 \x01(\x0b\x32\x10.dip_q.PowerDataB\r\n\x0b\x63ruz.agentsb\x06proto3')
 )
 
 
@@ -386,14 +386,14 @@ _MOVEORDER = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='startRegion', full_name='dip_q.MoveOrder.startRegion', index=0,
+      name='startProvince', full_name='dip_q.MoveOrder.startProvince', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='destinationRegion', full_name='dip_q.MoveOrder.destinationRegion', index=1,
+      name='destinationProvince', full_name='dip_q.MoveOrder.destinationProvince', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -412,7 +412,7 @@ _MOVEORDER = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=787,
-  serialized_end=884,
+  serialized_end=892,
 )
 
 
@@ -442,8 +442,8 @@ _ORDERCOMMITMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=886,
-  serialized_end=935,
+  serialized_start=894,
+  serialized_end=943,
 )
 
 
@@ -461,6 +461,13 @@ _DEALDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='proposeTo', full_name='dip_q.DealData.proposeTo', index=1,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -473,8 +480,8 @@ _DEALDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=937,
-  serialized_end=983,
+  serialized_start=945,
+  serialized_end=1028,
 )
 
 _COMMAND.fields_by_name['type'].enum_type = _COMMAND_COMMANDTYPE
@@ -490,10 +497,11 @@ _GAMEDATA_NAMETOPROVINCESENTRY.fields_by_name['value'].message_type = _PROVINCED
 _GAMEDATA_NAMETOPROVINCESENTRY.containing_type = _GAMEDATA
 _GAMEDATA.fields_by_name['nameToProvinces'].message_type = _GAMEDATA_NAMETOPROVINCESENTRY
 _GAMEDATA.fields_by_name['ownPower'].message_type = _POWERDATA
-_MOVEORDER.fields_by_name['startRegion'].message_type = _REGIONDATA
-_MOVEORDER.fields_by_name['destinationRegion'].message_type = _REGIONDATA
+_MOVEORDER.fields_by_name['startProvince'].message_type = _PROVINCEDATA
+_MOVEORDER.fields_by_name['destinationProvince'].message_type = _PROVINCEDATA
 _ORDERCOMMITMENT.fields_by_name['move'].message_type = _MOVEORDER
 _DEALDATA.fields_by_name['oc'].message_type = _ORDERCOMMITMENT
+_DEALDATA.fields_by_name['proposeTo'].message_type = _POWERDATA
 DESCRIPTOR.message_types_by_name['Command'] = _COMMAND
 DESCRIPTOR.message_types_by_name['PowerData'] = _POWERDATA
 DESCRIPTOR.message_types_by_name['RegionData'] = _REGIONDATA

@@ -66,8 +66,8 @@ message GameData {
 }
 
 message MoveOrder {
-  RegionData startRegion = 1;
-  RegionData destinationRegion = 2;
+  ProvinceData startProvince = 1;
+  ProvinceData destinationProvince = 2;
 }
 
 message OrderCommitment {
@@ -77,4 +77,5 @@ message OrderCommitment {
 message DealData {
   repeated OrderCommitment oc = 1;
   // repeated DemilitarizedZones dmz = 2;
+  PowerData proposeTo = 3;
 }

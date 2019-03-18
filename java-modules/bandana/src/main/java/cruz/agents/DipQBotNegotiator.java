@@ -1,5 +1,6 @@
 package cruz.agents;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import ddejonge.bandana.anac.ANACNegotiator;
 import ddejonge.bandana.dbraneTactics.DBraneTactics;
 import ddejonge.bandana.dbraneTactics.Plan;
@@ -21,28 +22,28 @@ import java.util.*;
 
 @SuppressWarnings("Duplicates")
 
-public class DipQBotNegotiator extends ANACNegotiator{
+public class DipQBotNegotiator extends ANACNegotiator {
 
     /**
      * Main method to start the agent.
-     *
+     * <p>
      * This player can be started with the following arguments:
      * -name  	[the name of your agent]
      * -log		[the path to the folder where you want the log files to be stored]
      * -fy 		[the year after which your agent will propose a draw]
      * -gamePort  [the port of the game server]
      * -negoPort  [the port of the negotiation server]
-     *
+     * <p>
      * e.g. java -jar ANACExampleNegotiator.jar -name alice -log C:\\documents\log -fy 1920 -gamePort 16713 -negoPort 16714
-     *
+     * <p>
      * All of these arguments are optional.
-     *
+     * <p>
      * Note however that during the competition the values of these arguments will be chosen by the organizers
      * of the competition, so you can only control them during the development of your negotiator.
      *
      * @param args
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // THE MAIN METHOD MUST CONSIST ONLY OF THE FOLLOWING TWO LINES ONCE EVERYTHING IS DONE
         // THIS IS EXPRESSED IN THE ANAC 2019 MANUAL
         DipQBotNegotiator myPlayer = new DipQBotNegotiator(args);
@@ -58,10 +59,12 @@ public class DipQBotNegotiator extends ANACNegotiator{
     DBraneTactics dBraneTactics;
 
     //Constructor
+
     /**
      * You must implement a Constructor with exactly this signature.
      * The body of the Constructor must start with the line <code>super(args)</code>
      * but below that line you can put whatever you like.
+     *
      * @param args
      */
     public DipQBotNegotiator(String[] args) {
@@ -73,12 +76,11 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
     /**
      * This method is automatically called at the start of the game, after the 'game' field is set.
-     *
+     * <p>
      * It is called when the first NOW message is received from the game server.
      * The NOW message contains the current phase and the positions of all the units.
-     *
+     * <p>
      * You are allowed, but not required, to implement this method
-     *
      */
     @Override
     public void start() {
@@ -104,7 +106,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
         //This loop repeats 2 steps. The first step is to handle any incoming messages,
         // while the second step tries to find deals to propose to the other negotiators.
-        while(System.currentTimeMillis() < negotiationDeadline){
+        while (System.currentTimeMillis() < negotiationDeadline) {
 
             // I (the player) is responsible for sending/accepting new deals during this time period
 
@@ -114,7 +116,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
             //See if we have received any message from any of the other negotiators.
             // e.g. a new proposal or an acceptance of a proposal made earlier.
-            while(hasMessage()){
+            while (hasMessage()) {
 
                 //Warning: you may want to add some extra code to break out of this loop,
                 // just in case the other agents send so many proposals that your agent can't get
@@ -123,9 +125,9 @@ public class DipQBotNegotiator extends ANACNegotiator{
                 //if yes, remove it from the message queue.
                 Message receivedMessage = removeMessageFromQueue();
 
-                if(receivedMessage.getPerformative().equals(DiplomacyNegoClient.ACCEPT)){
+                if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.ACCEPT)) {
 
-                    DiplomacyProposal acceptedProposal = (DiplomacyProposal)receivedMessage.getContent();
+                    DiplomacyProposal acceptedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
                     this.getLogger().logln(me.getName() + ".negotiate() Received acceptance from " + receivedMessage.getSender() + ": " + acceptedProposal, true);
 
@@ -139,21 +141,21 @@ public class DipQBotNegotiator extends ANACNegotiator{
                     // message from the last agent that accepted it. Instead, you will directly receive a CONFIRM message from the
                     // Protocol Manager.
 
-                }else if(receivedMessage.getPerformative().equals(DiplomacyNegoClient.PROPOSE)){
+                } else if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.PROPOSE)) {
 
-                    DiplomacyProposal receivedProposal = (DiplomacyProposal)receivedMessage.getContent();
+                    DiplomacyProposal receivedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
                     this.getLogger().logln(me.getName() + ".negotiate() Received proposal: " + receivedProposal, true);
 
-                    BasicDeal deal = (BasicDeal)receivedProposal.getProposedDeal();
+                    BasicDeal deal = (BasicDeal) receivedProposal.getProposedDeal();
 
                     boolean outDated = false;
 
-                    for(DMZ dmz : deal.getDemilitarizedZones()){
+                    for (DMZ dmz : deal.getDemilitarizedZones()) {
 
                         // Sometimes we may receive messages too late, so we check if the proposal does not
                         // refer to some round of the game that has already passed.
-                        if( isHistory(dmz.getPhase(), dmz.getYear())){
+                        if (isHistory(dmz.getPhase(), dmz.getYear())) {
                             outDated = true;
                             break;
                         }
@@ -165,12 +167,12 @@ public class DipQBotNegotiator extends ANACNegotiator{
 						*/
 
                     }
-                    for(OrderCommitment orderCommitment : deal.getOrderCommitments()){
+                    for (OrderCommitment orderCommitment : deal.getOrderCommitments()) {
 
 
                         // Sometimes we may receive messages too late, so we check if the proposal does not
                         // refer to some round of the game that has already passed.
-                        if( isHistory(orderCommitment.getPhase(), orderCommitment.getYear())){
+                        if (isHistory(orderCommitment.getPhase(), orderCommitment.getYear())) {
                             outDated = true;
                             break;
                         }
@@ -181,7 +183,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
                     //If the deal is not outdated, then check that it is consistent with the deals we are already committed to.
                     String consistencyReport = null;
-                    if(!outDated){
+                    if (!outDated) {
 
                         List<BasicDeal> commitments = new ArrayList<BasicDeal>();
                         commitments.addAll(this.getConfirmedDeals());
@@ -191,26 +193,30 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
                     }
 
-                    if(!outDated && consistencyReport == null){
+                    if (!outDated && consistencyReport == null) {
+                        // DECIDE WHETHER OR NOT TO ACCEPT THE DEAL
+
+                        // JC: In order to study simpler scenarios first, reject all incoming negotiations
+                        this.rejectProposal(receivedProposal.getId());
+                        this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, true);
 
                         // This agent simply flips a coin to determine whether to accept the proposal or not.
-                        if(random.nextInt(2) == 0){ // accept with 50% probability.
-                            this.acceptProposal(receivedProposal.getId());
-                            this.getLogger().logln(me.getName() + ".negotiate()  Accepting: " + receivedProposal, true);
-                        }
+                        // if (random.nextInt(2) == 0) { // accept with 50% probability.
+                        //     this.acceptProposal(receivedProposal.getId());
+                        //     this.getLogger().logln(me.getName() + ".negotiate()  Accepting: " + receivedProposal, true);
+                        // }
                     }
 
-                }else if(receivedMessage.getPerformative().equals(DiplomacyNegoClient.CONFIRM)){
+                } else if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.CONFIRM)) {
 
                     // The protocol manager confirms that a certain proposal has been accepted by all players involved in it.
                     // From now on we consider the deal as a binding agreement.
 
-                    DiplomacyProposal confirmedProposal = (DiplomacyProposal)receivedMessage.getContent();
+                    DiplomacyProposal confirmedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
                     this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, true);
 
-                    BasicDeal confirmedDeal = (BasicDeal)confirmedProposal.getProposedDeal();
-
+                    BasicDeal confirmedDeal = (BasicDeal) confirmedProposal.getProposedDeal();
 
 
                     //Reject any proposal that has not yet been confirmed and that is inconsistent with the confirmed deal.
@@ -218,12 +224,12 @@ public class DipQBotNegotiator extends ANACNegotiator{
                     // any deal is consistent with earlier confirmed deals before it becomes confirmed.
                     List<BasicDeal> deals = new ArrayList<BasicDeal>(2);
                     deals.add(confirmedDeal);
-                    for(DiplomacyProposal standingProposal : this.getUnconfirmedProposals()){
+                    for (DiplomacyProposal standingProposal : this.getUnconfirmedProposals()) {
 
                         //add this proposal to the list of deals.
-                        deals.add((BasicDeal)standingProposal.getProposedDeal());
+                        deals.add((BasicDeal) standingProposal.getProposedDeal());
 
-                        if(Utilities.testConsistency(game, deals) != null){
+                        if (Utilities.testConsistency(game, deals) != null) {
                             this.rejectProposal(standingProposal.getId());
                         }
 
@@ -232,10 +238,9 @@ public class DipQBotNegotiator extends ANACNegotiator{
                     }
 
 
+                } else if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.REJECT)) {
 
-                }else if(receivedMessage.getPerformative().equals(DiplomacyNegoClient.REJECT)){
-
-                    DiplomacyProposal rejectedProposal = (DiplomacyProposal)receivedMessage.getContent();
+                    DiplomacyProposal rejectedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
                     // Some player has rejected a certain proposal.
                     // This example agent doesn't do anything with such messages however.
@@ -244,7 +249,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
                     // his earlier accept proposal.
                     // However, this is not true if the reject message is sent after the Notary has already sent a confirm
                     // message for that proposal. Once a proposal is confirmed it cannot be undone anymore.
-                }else{
+                } else {
 
                     //We have received any other kind of message.
 
@@ -255,13 +260,14 @@ public class DipQBotNegotiator extends ANACNegotiator{
             }
 
 
-
             //STEP 2:  try to find a proposal to make, and if we do find one, propose it.
 
-            if(newDealToPropose == null){ //we only make one proposal per round, so we skip this if we have already proposed something.
-                newDealToPropose = searchForNewDealToPropose();
+            if (newDealToPropose == null) { //we only make one proposal per round, so we skip this if we have already proposed something.
 
-                if(newDealToPropose != null){
+                newDealToPropose = getDealFromDipQ();
+                // newDealToPropose = searchForNewDealToPropose();
+
+                if (newDealToPropose != null) {
 
                     this.getLogger().logln(me.getName() + ".negotiate() Proposing: " + newDealToPropose, true);
                     this.proposeDeal(newDealToPropose);
@@ -283,8 +289,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
     }
 
 
-
-    BasicDeal searchForNewDealToPropose(){
+    BasicDeal searchForNewDealToPropose() {
 
         BasicDeal bestDeal = null;
         Plan bestPlan = null;
@@ -297,17 +302,17 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
         //If our current commitments are already inconsistent then we certainly
         // shouldn't make any more commitments.
-        if(bestPlan == null){
+        if (bestPlan == null) {
             return null;
         }
 
         //let's generate 10 random deals and pick the best one.
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
 
             //generate a random deal.
             BasicDeal randomDeal = generateRandomDeal();
 
-            if(randomDeal == null){
+            if (randomDeal == null) {
                 continue;
             }
 
@@ -320,14 +325,14 @@ public class DipQBotNegotiator extends ANACNegotiator{
             Plan plan = this.dBraneTactics.determineBestPlan(game, me, commitments);
 
             //Check if the returned plan is better than the best plan found so far.
-            if(plan != null && plan.getValue() > bestPlan.getValue()){
+            if (plan != null && plan.getValue() > bestPlan.getValue()) {
                 bestPlan = plan;
                 bestDeal = randomDeal;
             }
 
 
             //Remove the randomDeal from the list, for the next iteration.
-            commitments.remove(commitments.size()-1);
+            commitments.remove(commitments.size() - 1);
 
             //NOTE: the value returned by plan.getValue() represents the number of Supply Centers that the D-Brane Tactical Module
             // expects to conquer in the current round under the given commitments.
@@ -344,11 +349,10 @@ public class DipQBotNegotiator extends ANACNegotiator{
         return bestDeal;
 
 
-
     }
 
 
-    public BasicDeal generateRandomDeal(){
+    public BasicDeal generateRandomDeal() {
 
 
         //Get the names of all the powers that are connected to the negotiation server and which have not been eliminated.
@@ -356,13 +360,13 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
         //if there are less than 2 negotiating powers left alive (only me), then it makes no sense to negotiate.
         int numAliveNegoPowers = aliveNegotiatingPowers.size();
-        if(numAliveNegoPowers < 2){
+        if (numAliveNegoPowers < 2) {
             return null;
         }
 
         //Let's generate 3 random demilitarized zones.
         List<DMZ> demilitarizedZones = new ArrayList<DMZ>(3);
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
 
             //1. Create a list of powers
             ArrayList<Power> powers = new ArrayList<Power>(2);
@@ -372,7 +376,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
             //1b. add a random other power to the list.
             Power randomPower = me;
-            while(randomPower.equals(me)){
+            while (randomPower.equals(me)) {
 
                 int numNegoPowers = aliveNegotiatingPowers.size();
                 randomPower = aliveNegotiatingPowers.get(random.nextInt(numNegoPowers));
@@ -381,7 +385,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
             //2. Create a list containing 3 random provinces.
             ArrayList<Province> provinces = new ArrayList<Province>();
-            for(int j=0; j<3; j++){
+            for (int j = 0; j < 3; j++) {
                 int numProvinces = this.game.getProvinces().size();
                 Province randomProvince = this.game.getProvinces().get(random.nextInt(numProvinces));
                 provinces.add(randomProvince);
@@ -392,7 +396,7 @@ public class DipQBotNegotiator extends ANACNegotiator{
             // However, you can pick any year and phase here, as long as they do not lie in the past.
             // (actually, you can also propose deals for rounds in the past, but it doesn't make any sense
             //  since you obviously cannot obey such deals).
-            demilitarizedZones.add(new DMZ( game.getYear(), game.getPhase(), powers, provinces));
+            demilitarizedZones.add(new DMZ(game.getYear(), game.getPhase(), powers, provinces));
 
         }
 
@@ -403,15 +407,15 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
         //get all units of the negotiating powers.
         List<Region> units = new ArrayList<Region>();
-        for(Power power : aliveNegotiatingPowers){
+        for (Power power : aliveNegotiatingPowers) {
             units.addAll(power.getControlledRegions());
         }
 
 
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
 
             //Pick a random unit and remove it from the list
-            if(units.size() == 0){
+            if (units.size() == 0) {
                 break;
             }
             Region randomUnit = units.remove(random.nextInt(units.size()));
@@ -428,14 +432,14 @@ public class DipQBotNegotiator extends ANACNegotiator{
             List<Region> adjacentRegions = new ArrayList<>(randomUnit.getAdjacentRegions());
             adjacentRegions.add(randomUnit);
 
-            for(Region adjacentRegion : adjacentRegions){
+            for (Region adjacentRegion : adjacentRegions) {
 
                 Province adjacentProvince = adjacentRegion.getProvince();
 
                 //Check that the adjacent Region is not demilitarized for the power controlling the unit.
                 boolean isDemilitarized = false;
-                for(DMZ dmz : demilitarizedZones){
-                    if(dmz.getPowers().contains(power) && dmz.getProvinces().contains(adjacentProvince)){
+                for (DMZ dmz : demilitarizedZones) {
+                    if (dmz.getPowers().contains(power) && dmz.getProvinces().contains(adjacentProvince)) {
                         isDemilitarized = true;
                         break;
                     }
@@ -443,21 +447,21 @@ public class DipQBotNegotiator extends ANACNegotiator{
                 }
 
                 //If it is not demilitarized, then we can add the region to the list of potential destinations.
-                if(!isDemilitarized){
+                if (!isDemilitarized) {
                     potentialDestinations.add(adjacentRegion);
                 }
             }
 
 
             int numPotentialDestinations = potentialDestinations.size();
-            if(numPotentialDestinations > 0){
+            if (numPotentialDestinations > 0) {
 
                 Region randomDestination = potentialDestinations.get(random.nextInt(numPotentialDestinations));
 
                 Order randomOrder;
-                if(randomDestination.equals(randomUnit)){
+                if (randomDestination.equals(randomUnit)) {
                     randomOrder = new HLDOrder(power, randomUnit);
-                }else{
+                } else {
                     randomOrder = new MTOOrder(power, randomUnit, randomDestination);
                 }
                 // Of course we could also propose random support orders, but we don't do that here.
@@ -479,12 +483,12 @@ public class DipQBotNegotiator extends ANACNegotiator{
 
     }
 
-    public ProtoMessage.GameData generateGameData(){
+    public ProtoMessage.GameData generateGameData() {
         ProtoMessage.GameData.Builder gameDataBuilder = ProtoMessage.GameData.newBuilder();
 
         // FIRST CREATE REGIONS
         // For every region, create RegionData and ProvinceData
-        for(Region r : this.game.getRegions()) {
+        for (Region r : this.game.getRegions()) {
             ProtoMessage.RegionData.Builder regionDataBuilder = ProtoMessage.RegionData.newBuilder();
             regionDataBuilder.setName(r.getName());
 
@@ -529,11 +533,11 @@ public class DipQBotNegotiator extends ANACNegotiator{
         }
 
         // THEN ADD THE OWNERS OF EACH REGION
-        for(Power pow : this.game.getPowers()){
+        for (Power pow : this.game.getPowers()) {
             List<Region> controlledRegions = pow.getControlledRegions();
 
             // Set the owner of the province
-            for(Region r : controlledRegions) {
+            for (Region r : controlledRegions) {
                 Province pro = r.getProvince();
 
                 // In this case, the province is the one that has an owner
@@ -560,48 +564,66 @@ public class DipQBotNegotiator extends ANACNegotiator{
         ProtoMessage.PowerData ownPower = powerDataBuilder.build();
 
         gameDataBuilder.setOwnPower(ownPower);
-                
+
         return gameDataBuilder.build();
     }
 
-    public void getDealFromDipQ(){
+    public BasicDeal dealDataToDeal(ProtoMessage.DealData dealData) {
 
-        ProtoMessage.GameData gameData = generateGameData();
+        List<DMZ> dmzs = new ArrayList<>();
+        List<OrderCommitment> ocs = new ArrayList<>();
 
-        byte[] gameByteArray = gameData.toByteArray();
+        ProtoMessage.OrderCommitment ocData = dealData.getOc(0);
+        ProtoMessage.MoveOrder moData = ocData.getMove(0);
 
-        File gameDataFile = new File("log/game_data.txt");
+        Order o = new MTOOrder(me, this.game.getRegion(moData.getStartProvince().getName() + "AMY"), this.game.getRegion(moData.getDestinationProvince().getName() + "AMY"));
+        OrderCommitment oc = new OrderCommitment(this.game.getYear(), this.game.getPhase(), o);
+
+        ocs.add(oc);
+
+        return new BasicDeal(ocs, dmzs);
+    }
+
+    public BasicDeal getDealFromDipQ() {
         try {
-            gameDataFile.createNewFile(); // if file already exists will do nothing
-        } catch (IOException e) {
+
+            ProtoMessage.GameData gameData = generateGameData();
+
+            byte[] gameByteArray = gameData.toByteArray();
+
+            File gameDataFile = new File("log/game_data.txt");
+            try {
+                gameDataFile.createNewFile(); // if file already exists will do nothing
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(gameDataFile, false)) {
+                fos.write(gameByteArray);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000);
+            String message = socketClient.sendMessageAndReceiveResponse(gameByteArray);
+            System.out.println("Message received from the server : '" + message + "'.");
+
+            // TODO: CHECK IF THIS WORKS WITH PYTHON
+            ProtoMessage.DealData dealData = ProtoMessage.DealData.parseFrom(message.getBytes());
+
+            return dealDataToDeal(dealData);
+
+        } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
 
-        try (FileOutputStream fos = new FileOutputStream(gameDataFile, false)) {
-            fos.write(gameByteArray);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-//        List<OrderCommitment> randomOrderCommitments = new ArrayList<>();
-//
-//        OrderCommitment oc = new OrderCommitment(2000, Phase.AUT, new HLDOrder(new Power("TestPower"), new Region("TestRegion")));
-//
-//        randomOrderCommitments.add(oc);
-//        List<DMZ> demilitarizedZones = new ArrayList<>();
-//        BasicDeal deal = new BasicDeal(randomOrderCommitments, demilitarizedZones);
-
-//        SocketClient socketClient = new SocketClient("127.0.1.1", 5000);
-//        String message = socketClient.sendMessageAndReceiveResponse(gameByteArray);
-//
-//        System.out.println("Message received from the server : '" + message + "'.");
+        return null;
     }
 
 
     /**
      * Each round, after each power has submitted its orders, this method is called several times:
      * once for each order submitted by any other power.
-     *
      *
      * @param arg0 An order submitted by any of the other powers.
      */
