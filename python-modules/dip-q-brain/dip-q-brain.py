@@ -1,9 +1,7 @@
-import argparse
-import sys
-
 import gym
-from gym import wrappers, logger
+# noinspection PyUnresolvedReferences
 import gym_diplomacy
+from gym import wrappers, logger
 
 
 class RandomAgent(object):
