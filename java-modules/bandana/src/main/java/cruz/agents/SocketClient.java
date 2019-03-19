@@ -1,13 +1,9 @@
 package cruz.agents;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class SocketClient
 {
@@ -18,7 +14,7 @@ public class SocketClient
 
     public static void main(String[] args) {
         SocketClient c = new SocketClient("127.0.1.1", 5000);
-        System.out.println(c.sendMessageAndReceiveResponse("Hello".getBytes()));
+        System.out.println(Arrays.toString(c.sendMessageAndReceiveResponse("Hello".getBytes())));
     }
 
     SocketClient(String host, int port)
@@ -27,25 +23,43 @@ public class SocketClient
         this.port = port;
     }
 
-    public String sendMessageAndReceiveResponse(byte[] messageToSend){
+    public byte[] sendMessageAndReceiveResponse(byte[] messageToSend){
         try {
-            String messageString = new String(messageToSend);
             InetAddress address = InetAddress.getByName(host);
             socket = new Socket(address, port);
 
             //Send the message to the server
             OutputStream os = socket.getOutputStream();
             os.write(messageToSend);
+            os.flush();
 
-            System.out.println("Message sent to the server : '" + messageString + "'.");
+            System.out.println("Sending message");
+
+            System.out.println("Sent message. Waiting for response...");
 
             //Get the return message from the server
             InputStream is = socket.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            String message = br.readLine();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024 * 20];
+
+            while(true)
+            {
+                int n = is.read(buffer);
+
+                if(n < 0) {
+                    break;
+                }
+
+                System.out.println("Received message with size: " + n);
+
+                baos.write(buffer, 0, n);
+            }
+
+            System.out.println("Got response:");
+            System.out.println(Arrays.toString(baos.toByteArray()));
+
             closeSocket();
-            return message;
+            return baos.toByteArray();
         }
         catch (Exception exception)
         {

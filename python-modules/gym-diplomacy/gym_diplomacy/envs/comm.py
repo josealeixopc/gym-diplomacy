@@ -41,6 +41,8 @@ class LocalSocketServer:
         # listen for incoming connections (server mode) with one connection at a time
         self.sock.listen(1)
 
+        # self.sock.setblocking(False)
+
     def listen(self):
         while True:
             # wait for a connection
@@ -49,26 +51,13 @@ class LocalSocketServer:
 
             try:
                 # show who connected to us
-                logger.debug('connection from', client_address)
+                logger.debug('connection from {}'.format(client_address))
 
-                byte_array = bytearray()
+                data = connection.recv(1024 * 20)
 
-                # receive the data in small chunks and print it
-                while True:
-                    data = connection.recv(64)
-                    if data:
-                        # output received data
-                        logger.debug("Data: %s" % data)
-                        byte_array.extend(data)
-
-                    else:
-                        # no more data -- quit the loop
-                        logger.debug("no more data.")
-                        break
-
-                    connection.send('Hello. I got something from you.\n'.encode('UTF-8'))
-
-                self.handler.handle(byte_array)
+                logger.info("Generating response...")
+                connection.send(self.handler.handle(data))
+                logger.info("Sent response.")
 
             finally:
                 # Clean up the connection
@@ -77,15 +66,14 @@ class LocalSocketServer:
 
 class RequestHandler:
     def handle(self, request: bytearray):
-        logger.debug("RECEIVED MESSAGE")
-        logger.debug(request)
+        return request
 
 
-# def main_f():
-#     handler = RequestHandler()
-#     sock = LocalSocketServer(5000, handler)
-#     sock.listen()
-#
-#
-# if __name__ == "__main__":
-#     main_f()
+def main_f():
+    handler = RequestHandler()
+    sock = LocalSocketServer(5000, handler)
+    sock.listen()
+
+
+if __name__ == "__main__":
+    main_f()

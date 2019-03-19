@@ -605,11 +605,11 @@ public class DipQBotNegotiator extends ANACNegotiator {
             }
 
             SocketClient socketClient = new SocketClient("127.0.1.1", 5000);
-            String message = socketClient.sendMessageAndReceiveResponse(gameByteArray);
-            System.out.println("Message received from the server : '" + message + "'.");
+            byte[] message = socketClient.sendMessageAndReceiveResponse(gameByteArray);
+
 
             // TODO: CHECK IF THIS WORKS WITH PYTHON
-            ProtoMessage.DealData dealData = ProtoMessage.DealData.parseFrom(message.getBytes());
+            ProtoMessage.DealData dealData = ProtoMessage.DealData.parseFrom(message);
 
             return dealDataToDeal(dealData);
 

@@ -5,7 +5,7 @@ from gym.utils import seeding
 import subprocess
 import os
 import signal
-import json
+import socket
 import atexit
 import numpy as np
 
@@ -93,14 +93,19 @@ def action_to_deal_data(action: np.ndarray, game: proto_message_pb2.GameData) ->
 
 
 class RequestHandler:
-    def handle(self, request: bytearray):
-        game: proto_message_pb2.GameData = proto_message_pb2.GameData()
-        game.ParseFromString(request)
+    def handle(self, request: bytearray) -> bytearray:
+        game_data: proto_message_pb2.GameData = proto_message_pb2.GameData()
+        game_data.ParseFromString(request)
 
-        self.get_action(game)
+        deal_data_bytes = self.get_action(game_data)
+        return deal_data_bytes
 
-    def get_action(self, game_state):
-        pass
+    def get_action(self, game_data) -> bytearray:
+        # observation = game_data_to_observation(game_data)
+
+        action = np.array([5, 21, 8])
+        deal_data: proto_message_pb2.DealData = action_to_deal_data(action, game_data)
+        return deal_data.SerializeToString()
 
 
 class DiplomacyEnv(gym.Env):
@@ -139,7 +144,7 @@ class DiplomacyEnv(gym.Env):
 
     # BANDANA
 
-    init_bandana: bool = False
+    init_bandana: bool = True
 
     bandana_root_path: str = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                           "../../../../java-modules/bandana"))
@@ -293,13 +298,22 @@ class DiplomacyEnv(gym.Env):
 
 
 def main_f():
-    game: proto_message_pb2.GameData = proto_message_pb2.GameData()
-    game.ParseFromString(test_game)
+    # game: proto_message_pb2.GameData = proto_message_pb2.GameData()
+    # game.ParseFromString(test_game)
     # print(game)
     # print(game_data_to_observation(game))
 
-    action = np.array([5, 7, 8])
-    action_to_deal_data(action, game)
+    # handler = RequestHandler()
+    # deal_data_bytes = handler.handle(test_game)
+    # deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
+    # deal_data.ParseFromString(deal_data_bytes)
+
+    # action = np.array([5, 7, 8])
+    # action_to_deal_data(action, game)
+
+    # print(deal_data)
+
+    gym = DiplomacyEnv()
 
 
 if __name__ == "__main__":
