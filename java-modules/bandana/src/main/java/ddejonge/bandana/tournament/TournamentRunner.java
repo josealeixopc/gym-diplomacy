@@ -14,7 +14,7 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
-	final static int REMOTE_DEBUG = 1;	// determine whether I want to remote debug the DipQ jar or not
+	final static int REMOTE_DEBUG = 0;	// determine whether I want to remote debug the DipQ jar or not
 
 	// JC: CUSTOM SETTINGS END
 
