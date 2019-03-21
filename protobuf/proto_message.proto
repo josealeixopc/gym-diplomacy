@@ -4,78 +4,45 @@ package dip_q;
 
 option java_package = "cruz.agents";
 
-message Command {
+/**
+It's important that the communication between modules remains as simple as possible.
+Therefore, in this message, we are ONLY sending and receiving arrays of integers.
+**/
 
-  enum CommandType {
-    START_TEST = 0;
-    RESULTS = 1;
-    SHUTDOWN = 3;
+message Message {
+
+  enum Type {
+    INVALID = 0;
+    GET_DEAL_REQUEST = 1;
+    GET_ACCEPTANCE_REQUEST = 2;
   }
 
   // Using "required" is often bad practice. Generally, the validation
   // should be application-specific in order to make maintenance easier.
   // In proto3 syntax, "optional" is the default field
 
-  CommandType type = 1;
-  string name = 2;
-
-  repeated GameData data = 3;
-}
-
-message PowerData {
-  enum PowerName {
-    // The '0' value is default and implicit. Therefore, every PowerName is NONE until it is otherwise defined.
-    // Check: https://developers.google.com/protocol-buffers/docs/proto3#default
-
-    NONE = 0;
-    AUS = 1;
-    ENG = 2;
-    FRA = 3;
-    GER = 4;
-    ITA = 5;
-    RUS = 6;
-    TUR = 7;
-  }
-
-  PowerName name = 1;
-}
-
-message RegionData {
-  // Type becomes redundant once we know the adjacent regions, right?
-
-  // enum RegionType {
-  //   ARMY = 0;
-  //   FLEET = 1;
-  // }
-
-  string name = 1;
-  // RegionType type = 2;
-  repeated string adjacentRegionsName = 3;
+  Type type = 1;
+  ObservationData observation = 2;
+  DealData deal = 3;
+  AcceptanceData acceptance = 4;
 }
 
 message ProvinceData {
-  string name = 1;
-  PowerData owner = 2;
-  bool sc = 3;
-  map<string,RegionData> nameToRegions = 4;
+  int32 id = 1;
+  int32 owner = 2;
+  int32 sc = 3;
 }
 
-message GameData {
-  map<string,ProvinceData> nameToProvinces = 1;
-  PowerData ownPower = 2;
+message ObservationData {
+  repeated ProvinceData provinces = 1;
 }
 
-message MoveOrder {
-  ProvinceData startProvince = 1;
-  ProvinceData destinationProvince = 2;
-}
+message AcceptanceData {
 
-message OrderCommitment {
-  repeated MoveOrder move = 1;
 }
 
 message DealData {
-  repeated OrderCommitment oc = 1;
-  // repeated DemilitarizedZones dmz = 2;
-  PowerData proposeTo = 3;
+  int32 powerToPropose = 1;
+  int32 startProvince = 2;
+  int32 destinationProvince = 3;
 }

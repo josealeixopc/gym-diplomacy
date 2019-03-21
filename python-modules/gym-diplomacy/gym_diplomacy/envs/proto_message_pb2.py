@@ -20,217 +20,69 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dip_q',
   syntax='proto3',
   serialized_options=_b('\n\013cruz.agents'),
-  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\x9a\x01\n\x07\x43ommand\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.Command.CommandType\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1d\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\x0f.dip_q.GameData\"8\n\x0b\x43ommandType\x12\x0e\n\nSTART_TEST\x10\x00\x12\x0b\n\x07RESULTS\x10\x01\x12\x0c\n\x08SHUTDOWN\x10\x03\"\x8b\x01\n\tPowerData\x12(\n\x04name\x18\x01 \x01(\x0e\x32\x1a.dip_q.PowerData.PowerName\"T\n\tPowerName\x12\x08\n\x04NONE\x10\x00\x12\x07\n\x03\x41US\x10\x01\x12\x07\n\x03\x45NG\x10\x02\x12\x07\n\x03\x46RA\x10\x03\x12\x07\n\x03GER\x10\x04\x12\x07\n\x03ITA\x10\x05\x12\x07\n\x03RUS\x10\x06\x12\x07\n\x03TUR\x10\x07\"7\n\nRegionData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1b\n\x13\x61\x64jacentRegionsName\x18\x03 \x03(\t\"\xd1\x01\n\x0cProvinceData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1f\n\x05owner\x18\x02 \x01(\x0b\x32\x10.dip_q.PowerData\x12\n\n\x02sc\x18\x03 \x01(\x08\x12=\n\rnameToRegions\x18\x04 \x03(\x0b\x32&.dip_q.ProvinceData.NameToRegionsEntry\x1aG\n\x12NameToRegionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12 \n\x05value\x18\x02 \x01(\x0b\x32\x11.dip_q.RegionData:\x02\x38\x01\"\xba\x01\n\x08GameData\x12=\n\x0fnameToProvinces\x18\x01 \x03(\x0b\x32$.dip_q.GameData.NameToProvincesEntry\x12\"\n\x08ownPower\x18\x02 \x01(\x0b\x32\x10.dip_q.PowerData\x1aK\n\x14NameToProvincesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.dip_q.ProvinceData:\x02\x38\x01\"i\n\tMoveOrder\x12*\n\rstartProvince\x18\x01 \x01(\x0b\x32\x13.dip_q.ProvinceData\x12\x30\n\x13\x64\x65stinationProvince\x18\x02 \x01(\x0b\x32\x13.dip_q.ProvinceData\"1\n\x0fOrderCommitment\x12\x1e\n\x04move\x18\x01 \x03(\x0b\x32\x10.dip_q.MoveOrder\"S\n\x08\x44\x65\x61lData\x12\"\n\x02oc\x18\x01 \x03(\x0b\x32\x16.dip_q.OrderCommitment\x12#\n\tproposeTo\x18\x03 \x01(\x0b\x32\x10.dip_q.PowerDataB\r\n\x0b\x63ruz.agentsb\x06proto3')
+  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\xea\x01\n\x07Message\x12!\n\x04type\x18\x01 \x01(\x0e\x32\x13.dip_q.Message.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\x12\x1d\n\x04\x64\x65\x61l\x18\x03 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x04 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"E\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x14\n\x10GET_DEAL_REQUEST\x10\x01\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x02\"5\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\"9\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"V\n\x08\x44\x65\x61lData\x12\x16\n\x0epowerToPropose\x18\x01 \x01(\x05\x12\x15\n\rstartProvince\x18\x02 \x01(\x05\x12\x1b\n\x13\x64\x65stinationProvince\x18\x03 \x01(\x05\x42\r\n\x0b\x63ruz.agentsb\x06proto3')
 )
 
 
 
-_COMMAND_COMMANDTYPE = _descriptor.EnumDescriptor(
-  name='CommandType',
-  full_name='dip_q.Command.CommandType',
+_MESSAGE_TYPE = _descriptor.EnumDescriptor(
+  name='Type',
+  full_name='dip_q.Message.Type',
   filename=None,
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='START_TEST', index=0, number=0,
+      name='INVALID', index=0, number=0,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='RESULTS', index=1, number=1,
+      name='GET_DEAL_REQUEST', index=1, number=1,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='SHUTDOWN', index=2, number=3,
+      name='GET_ACCEPTANCE_REQUEST', index=2, number=2,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=129,
-  serialized_end=185,
+  serialized_start=196,
+  serialized_end=265,
 )
-_sym_db.RegisterEnumDescriptor(_COMMAND_COMMANDTYPE)
-
-_POWERDATA_POWERNAME = _descriptor.EnumDescriptor(
-  name='PowerName',
-  full_name='dip_q.PowerData.PowerName',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='NONE', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUS', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ENG', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FRA', index=3, number=3,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='GER', index=4, number=4,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ITA', index=5, number=5,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='RUS', index=6, number=6,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='TUR', index=7, number=7,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=243,
-  serialized_end=327,
-)
-_sym_db.RegisterEnumDescriptor(_POWERDATA_POWERNAME)
+_sym_db.RegisterEnumDescriptor(_MESSAGE_TYPE)
 
 
-_COMMAND = _descriptor.Descriptor(
-  name='Command',
-  full_name='dip_q.Command',
+_MESSAGE = _descriptor.Descriptor(
+  name='Message',
+  full_name='dip_q.Message',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='type', full_name='dip_q.Command.type', index=0,
+      name='type', full_name='dip_q.Message.type', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='dip_q.Command.name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data', full_name='dip_q.Command.data', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _COMMAND_COMMANDTYPE,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=31,
-  serialized_end=185,
-)
-
-
-_POWERDATA = _descriptor.Descriptor(
-  name='PowerData',
-  full_name='dip_q.PowerData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='dip_q.PowerData.name', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _POWERDATA_POWERNAME,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=188,
-  serialized_end=327,
-)
-
-
-_REGIONDATA = _descriptor.Descriptor(
-  name='RegionData',
-  full_name='dip_q.RegionData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='dip_q.RegionData.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='adjacentRegionsName', full_name='dip_q.RegionData.adjacentRegionsName', index=1,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=329,
-  serialized_end=384,
-)
-
-
-_PROVINCEDATA_NAMETOREGIONSENTRY = _descriptor.Descriptor(
-  name='NameToRegionsEntry',
-  full_name='dip_q.ProvinceData.NameToRegionsEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='dip_q.ProvinceData.NameToRegionsEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='dip_q.ProvinceData.NameToRegionsEntry.value', index=1,
+      name='observation', full_name='dip_q.Message.observation', index=1,
       number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='deal', full_name='dip_q.Message.deal', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='acceptance', full_name='dip_q.Message.acceptance', index=3,
+      number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -240,16 +92,18 @@ _PROVINCEDATA_NAMETOREGIONSENTRY = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
+    _MESSAGE_TYPE,
   ],
-  serialized_options=_b('8\001'),
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=525,
-  serialized_end=596,
+  serialized_start=31,
+  serialized_end=265,
 )
+
 
 _PROVINCEDATA = _descriptor.Descriptor(
   name='ProvinceData',
@@ -259,143 +113,23 @@ _PROVINCEDATA = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='dip_q.ProvinceData.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='id', full_name='dip_q.ProvinceData.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='owner', full_name='dip_q.ProvinceData.owner', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sc', full_name='dip_q.ProvinceData.sc', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='nameToRegions', full_name='dip_q.ProvinceData.nameToRegions', index=3,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_PROVINCEDATA_NAMETOREGIONSENTRY, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=387,
-  serialized_end=596,
-)
-
-
-_GAMEDATA_NAMETOPROVINCESENTRY = _descriptor.Descriptor(
-  name='NameToProvincesEntry',
-  full_name='dip_q.GameData.NameToProvincesEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='dip_q.GameData.NameToProvincesEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='dip_q.GameData.NameToProvincesEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=_b('8\001'),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=710,
-  serialized_end=785,
-)
-
-_GAMEDATA = _descriptor.Descriptor(
-  name='GameData',
-  full_name='dip_q.GameData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='nameToProvinces', full_name='dip_q.GameData.nameToProvinces', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='ownPower', full_name='dip_q.GameData.ownPower', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_GAMEDATA_NAMETOPROVINCESENTRY, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=599,
-  serialized_end=785,
-)
-
-
-_MOVEORDER = _descriptor.Descriptor(
-  name='MoveOrder',
-  full_name='dip_q.MoveOrder',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='startProvince', full_name='dip_q.MoveOrder.startProvince', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='destinationProvince', full_name='dip_q.MoveOrder.destinationProvince', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -411,20 +145,20 @@ _MOVEORDER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=787,
-  serialized_end=892,
+  serialized_start=267,
+  serialized_end=320,
 )
 
 
-_ORDERCOMMITMENT = _descriptor.Descriptor(
-  name='OrderCommitment',
-  full_name='dip_q.OrderCommitment',
+_OBSERVATIONDATA = _descriptor.Descriptor(
+  name='ObservationData',
+  full_name='dip_q.ObservationData',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='move', full_name='dip_q.OrderCommitment.move', index=0,
+      name='provinces', full_name='dip_q.ObservationData.provinces', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -442,8 +176,32 @@ _ORDERCOMMITMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=894,
-  serialized_end=943,
+  serialized_start=322,
+  serialized_end=379,
+)
+
+
+_ACCEPTANCEDATA = _descriptor.Descriptor(
+  name='AcceptanceData',
+  full_name='dip_q.AcceptanceData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=381,
+  serialized_end=397,
 )
 
 
@@ -455,16 +213,23 @@ _DEALDATA = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='oc', full_name='dip_q.DealData.oc', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
+      name='powerToPropose', full_name='dip_q.DealData.powerToPropose', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='proposeTo', full_name='dip_q.DealData.proposeTo', index=1,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='startProvince', full_name='dip_q.DealData.startProvince', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='destinationProvince', full_name='dip_q.DealData.destinationProvince', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -480,102 +245,50 @@ _DEALDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=945,
-  serialized_end=1028,
+  serialized_start=399,
+  serialized_end=485,
 )
 
-_COMMAND.fields_by_name['type'].enum_type = _COMMAND_COMMANDTYPE
-_COMMAND.fields_by_name['data'].message_type = _GAMEDATA
-_COMMAND_COMMANDTYPE.containing_type = _COMMAND
-_POWERDATA.fields_by_name['name'].enum_type = _POWERDATA_POWERNAME
-_POWERDATA_POWERNAME.containing_type = _POWERDATA
-_PROVINCEDATA_NAMETOREGIONSENTRY.fields_by_name['value'].message_type = _REGIONDATA
-_PROVINCEDATA_NAMETOREGIONSENTRY.containing_type = _PROVINCEDATA
-_PROVINCEDATA.fields_by_name['owner'].message_type = _POWERDATA
-_PROVINCEDATA.fields_by_name['nameToRegions'].message_type = _PROVINCEDATA_NAMETOREGIONSENTRY
-_GAMEDATA_NAMETOPROVINCESENTRY.fields_by_name['value'].message_type = _PROVINCEDATA
-_GAMEDATA_NAMETOPROVINCESENTRY.containing_type = _GAMEDATA
-_GAMEDATA.fields_by_name['nameToProvinces'].message_type = _GAMEDATA_NAMETOPROVINCESENTRY
-_GAMEDATA.fields_by_name['ownPower'].message_type = _POWERDATA
-_MOVEORDER.fields_by_name['startProvince'].message_type = _PROVINCEDATA
-_MOVEORDER.fields_by_name['destinationProvince'].message_type = _PROVINCEDATA
-_ORDERCOMMITMENT.fields_by_name['move'].message_type = _MOVEORDER
-_DEALDATA.fields_by_name['oc'].message_type = _ORDERCOMMITMENT
-_DEALDATA.fields_by_name['proposeTo'].message_type = _POWERDATA
-DESCRIPTOR.message_types_by_name['Command'] = _COMMAND
-DESCRIPTOR.message_types_by_name['PowerData'] = _POWERDATA
-DESCRIPTOR.message_types_by_name['RegionData'] = _REGIONDATA
+_MESSAGE.fields_by_name['type'].enum_type = _MESSAGE_TYPE
+_MESSAGE.fields_by_name['observation'].message_type = _OBSERVATIONDATA
+_MESSAGE.fields_by_name['deal'].message_type = _DEALDATA
+_MESSAGE.fields_by_name['acceptance'].message_type = _ACCEPTANCEDATA
+_MESSAGE_TYPE.containing_type = _MESSAGE
+_OBSERVATIONDATA.fields_by_name['provinces'].message_type = _PROVINCEDATA
+DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
 DESCRIPTOR.message_types_by_name['ProvinceData'] = _PROVINCEDATA
-DESCRIPTOR.message_types_by_name['GameData'] = _GAMEDATA
-DESCRIPTOR.message_types_by_name['MoveOrder'] = _MOVEORDER
-DESCRIPTOR.message_types_by_name['OrderCommitment'] = _ORDERCOMMITMENT
+DESCRIPTOR.message_types_by_name['ObservationData'] = _OBSERVATIONDATA
+DESCRIPTOR.message_types_by_name['AcceptanceData'] = _ACCEPTANCEDATA
 DESCRIPTOR.message_types_by_name['DealData'] = _DEALDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Command = _reflection.GeneratedProtocolMessageType('Command', (_message.Message,), dict(
-  DESCRIPTOR = _COMMAND,
+Message = _reflection.GeneratedProtocolMessageType('Message', (_message.Message,), dict(
+  DESCRIPTOR = _MESSAGE,
   __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.Command)
+  # @@protoc_insertion_point(class_scope:dip_q.Message)
   ))
-_sym_db.RegisterMessage(Command)
-
-PowerData = _reflection.GeneratedProtocolMessageType('PowerData', (_message.Message,), dict(
-  DESCRIPTOR = _POWERDATA,
-  __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.PowerData)
-  ))
-_sym_db.RegisterMessage(PowerData)
-
-RegionData = _reflection.GeneratedProtocolMessageType('RegionData', (_message.Message,), dict(
-  DESCRIPTOR = _REGIONDATA,
-  __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.RegionData)
-  ))
-_sym_db.RegisterMessage(RegionData)
+_sym_db.RegisterMessage(Message)
 
 ProvinceData = _reflection.GeneratedProtocolMessageType('ProvinceData', (_message.Message,), dict(
-
-  NameToRegionsEntry = _reflection.GeneratedProtocolMessageType('NameToRegionsEntry', (_message.Message,), dict(
-    DESCRIPTOR = _PROVINCEDATA_NAMETOREGIONSENTRY,
-    __module__ = 'proto_message_pb2'
-    # @@protoc_insertion_point(class_scope:dip_q.ProvinceData.NameToRegionsEntry)
-    ))
-  ,
   DESCRIPTOR = _PROVINCEDATA,
   __module__ = 'proto_message_pb2'
   # @@protoc_insertion_point(class_scope:dip_q.ProvinceData)
   ))
 _sym_db.RegisterMessage(ProvinceData)
-_sym_db.RegisterMessage(ProvinceData.NameToRegionsEntry)
 
-GameData = _reflection.GeneratedProtocolMessageType('GameData', (_message.Message,), dict(
-
-  NameToProvincesEntry = _reflection.GeneratedProtocolMessageType('NameToProvincesEntry', (_message.Message,), dict(
-    DESCRIPTOR = _GAMEDATA_NAMETOPROVINCESENTRY,
-    __module__ = 'proto_message_pb2'
-    # @@protoc_insertion_point(class_scope:dip_q.GameData.NameToProvincesEntry)
-    ))
-  ,
-  DESCRIPTOR = _GAMEDATA,
+ObservationData = _reflection.GeneratedProtocolMessageType('ObservationData', (_message.Message,), dict(
+  DESCRIPTOR = _OBSERVATIONDATA,
   __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.GameData)
+  # @@protoc_insertion_point(class_scope:dip_q.ObservationData)
   ))
-_sym_db.RegisterMessage(GameData)
-_sym_db.RegisterMessage(GameData.NameToProvincesEntry)
+_sym_db.RegisterMessage(ObservationData)
 
-MoveOrder = _reflection.GeneratedProtocolMessageType('MoveOrder', (_message.Message,), dict(
-  DESCRIPTOR = _MOVEORDER,
+AcceptanceData = _reflection.GeneratedProtocolMessageType('AcceptanceData', (_message.Message,), dict(
+  DESCRIPTOR = _ACCEPTANCEDATA,
   __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.MoveOrder)
+  # @@protoc_insertion_point(class_scope:dip_q.AcceptanceData)
   ))
-_sym_db.RegisterMessage(MoveOrder)
-
-OrderCommitment = _reflection.GeneratedProtocolMessageType('OrderCommitment', (_message.Message,), dict(
-  DESCRIPTOR = _ORDERCOMMITMENT,
-  __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.OrderCommitment)
-  ))
-_sym_db.RegisterMessage(OrderCommitment)
+_sym_db.RegisterMessage(AcceptanceData)
 
 DealData = _reflection.GeneratedProtocolMessageType('DealData', (_message.Message,), dict(
   DESCRIPTOR = _DEALDATA,
@@ -586,6 +299,4 @@ _sym_db.RegisterMessage(DealData)
 
 
 DESCRIPTOR._options = None
-_PROVINCEDATA_NAMETOREGIONSENTRY._options = None
-_GAMEDATA_NAMETOPROVINCESENTRY._options = None
 # @@protoc_insertion_point(module_scope)
