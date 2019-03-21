@@ -29,8 +29,8 @@ logger.setLevel(level)
 
 ### CONSTANTS
 
-NUMBER_OF_PROVINCES = 75
 NUMBER_OF_OPPONENTS = 7
+NUMBER_OF_PROVINCES = 75
 
 fh = open("/home/jazz/Projects/FEUP/dip-q/java-modules/bandana/log/game_data.txt", "rb")
 
@@ -48,63 +48,49 @@ test_game_2 = b'\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n
               b'\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x00'
 
 
-def game_data_to_observation(game: proto_message_pb2.GameData) -> np.array:
-    observation = np.zeros((NUMBER_OF_PROVINCES, 2))
+def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
+    number_of_provinces = len(observation_data.provinces)
+    
+    if number_of_provinces != NUMBER_OF_PROVINCES:
+        raise ValueError("Number of provinces is not consistent. Constant variable is '{}' while received number of "
+                         "provinces is '{}'.".format(NUMBER_OF_PROVINCES, number_of_provinces))
 
-    list_of_province_names = list(game.nameToProvinces.keys())
+    observation = np.zeros((number_of_provinces, 2))
 
-    province_index = 0
+    for province in observation_data.provinces:
+        # simply for type hint and auto-completion
+        province: proto_message_pb2.ProvinceData = province
 
-    for province_name in sorted(list_of_province_names):
-        # simply for type hint and auto-completion.
-        province: proto_message_pb2.ProvinceData = game.nameToProvinces[province_name]
-
-        observation[province_index] = [province.owner.name, province.sc]
-        province_index += 1
+        # id - 1 because the ids begin at 1
+        observation[province.id - 1] = [province.owner, province.sc]
 
     return observation
 
 
-def action_to_deal_data(action: np.ndarray, game: proto_message_pb2.GameData) -> proto_message_pb2.DealData:
+def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
 
     if action.size != 3:
         raise ValueError("The array given does not have the correct number of elements.", action)
 
-    sorted_list_of_province_names = sorted(list(game.nameToProvinces.keys()))
-
-    move_order: proto_message_pb2.MoveOrder = proto_message_pb2.MoveOrder()
-    start_province_name = sorted_list_of_province_names[action[1]]
-    destination_province_name = sorted_list_of_province_names[action[2]]
-
-    move_order.startProvince.MergeFrom(game.nameToProvinces[start_province_name])
-    move_order.destinationProvince.MergeFrom(game.nameToProvinces[destination_province_name])
-
-    power_data: proto_message_pb2.PowerData = proto_message_pb2.PowerData()
-    power_data.name = action[0]
-
-    order_commitment_data: proto_message_pb2.OrderCommitment = proto_message_pb2.OrderCommitment()
-    order_commitment_data.move.extend([move_order])
-
-    deal_data.proposeTo.CopyFrom(power_data)
-    deal_data.oc.extend([order_commitment_data])
+    deal_data.powerToPropose = action[0]
+    deal_data.startProvince = action[1]
+    deal_data.destinationProvince = action[2]
 
     return deal_data
 
 
 class RequestHandler:
     def handle(self, request: bytearray) -> bytearray:
-        game_data: proto_message_pb2.GameData = proto_message_pb2.GameData()
-        game_data.ParseFromString(request)
+        observation_data: proto_message_pb2.ObservationData = proto_message_pb2.ObservationData()
+        observation_data.ParseFromString(request)
 
-        deal_data_bytes = self.get_action(game_data)
+        deal_data_bytes = self.get_action(observation_data)
         return deal_data_bytes
 
-    def get_action(self, game_data) -> bytearray:
-        # observation = game_data_to_observation(game_data)
-
+    def get_action(self, observation_data) -> bytearray:
         action = np.array([5, 21, 8])
-        deal_data: proto_message_pb2.DealData = action_to_deal_data(action, game_data)
+        deal_data: proto_message_pb2.DealData = action_to_deal_data(action)
         return deal_data.SerializeToString()
 
 
