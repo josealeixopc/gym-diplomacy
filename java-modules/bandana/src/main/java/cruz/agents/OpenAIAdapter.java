@@ -3,8 +3,6 @@ package cruz.agents;
 import ddejonge.bandana.negoProtocol.BasicDeal;
 import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.OrderCommitment;
-import es.csic.iiia.fabregues.dip.Player;
-import es.csic.iiia.fabregues.dip.board.Game;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
@@ -19,9 +17,9 @@ import java.util.Map;
 public class OpenAIAdapter {
 
     private Map<String, Integer> powerNameToInt;
-    private DipQBotNegotiator agent;
+    private OpenAINegotiator agent;
 
-    public OpenAIAdapter(DipQBotNegotiator agent) {
+    public OpenAIAdapter(OpenAINegotiator agent) {
         this.agent = agent;
         this.generatePowerNameToIntMap();
     }

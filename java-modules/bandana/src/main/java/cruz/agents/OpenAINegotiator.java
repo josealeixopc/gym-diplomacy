@@ -15,14 +15,19 @@ import es.csic.iiia.fabregues.dip.orders.MTOOrder;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @SuppressWarnings("Duplicates")
 
-public class DipQBotNegotiator extends ANACNegotiator {
+/**
+ *
+ */
+
+public class OpenAINegotiator extends ANACNegotiator {
 
     /**
      * Main method to start the agent.
@@ -46,11 +51,11 @@ public class DipQBotNegotiator extends ANACNegotiator {
     public static void main(String[] args) {
         // THE MAIN METHOD MUST CONSIST ONLY OF THE FOLLOWING TWO LINES ONCE EVERYTHING IS DONE
         // THIS IS EXPRESSED IN THE ANAC 2019 MANUAL
-        DipQBotNegotiator myPlayer = new DipQBotNegotiator(args);
+        OpenAINegotiator myPlayer = new OpenAINegotiator(args);
         myPlayer.run();
 
 //        System.out.println("Hello");
-//        DipQBotNegotiator myPlayer = new DipQBotNegotiator(args);
+//        OpenAINegotiator myPlayer = new OpenAINegotiator(args);
 //        myPlayer.getDealFromDipQ();
 //        System.out.println("Hello again");
     }
@@ -67,7 +72,7 @@ public class DipQBotNegotiator extends ANACNegotiator {
      *
      * @param args
      */
-    public DipQBotNegotiator(String[] args) {
+    public OpenAINegotiator(String[] args) {
         super(args);
 
         dBraneTactics = this.getTacticalModule();
@@ -262,13 +267,16 @@ public class DipQBotNegotiator extends ANACNegotiator {
             if (newDealToPropose == null) { //we only make one proposal per round, so we skip this if we have already proposed something.
 
                 newDealToPropose = getDealFromDipQ();
-                // newDealToPropose = searchForNewDealToPropose();
+
+                // If the Python module does not return anything or connection could not be made, use the default function to find deals
+                if(newDealToPropose == null) {
+                    this.getLogger().logln("No deal was received from DipQ. Proceeding with default deal proposal.", true);
+                    newDealToPropose = searchForNewDealToPropose();
+                }
 
                 if (newDealToPropose != null) {
-
                     this.getLogger().logln(me.getName() + ".negotiate() Proposing: " + newDealToPropose, true);
                     this.proposeDeal(newDealToPropose);
-
                 }
             }
 
@@ -480,7 +488,7 @@ public class DipQBotNegotiator extends ANACNegotiator {
 
     }
 
-    public BasicDeal getDealFromDipQ() {
+    private BasicDeal getDealFromDipQ() {
         try {
 
             OpenAIAdapter openAIAdapter = new OpenAIAdapter(this);
@@ -488,21 +496,13 @@ public class DipQBotNegotiator extends ANACNegotiator {
 
             byte[] observationByteArray = observationData.toByteArray();
 
-            File gameDataFile = new File("log/game_data.txt");
-            try {
-                gameDataFile.createNewFile(); // if file already exists will do nothing
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try (FileOutputStream fos = new FileOutputStream(gameDataFile, false)) {
-                fos.write(observationByteArray);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000);
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.getLogger());
             byte[] message = socketClient.sendMessageAndReceiveResponse(observationByteArray);
+
+            // If something went wrong with getting the message from Python module
+            if(message == null) {
+                return null;
+            }
 
             ProtoMessage.DealData dealData = ProtoMessage.DealData.parseFrom(message);
 

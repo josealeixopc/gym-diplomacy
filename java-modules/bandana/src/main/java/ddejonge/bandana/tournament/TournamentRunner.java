@@ -14,7 +14,7 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
-	final static int REMOTE_DEBUG = 0;	// determine whether I want to remote debug the DipQ jar or not
+	final static int REMOTE_DEBUG = 0;	// determine whether I want to remote debug the OpenAI jar or not
 
 	// JC: CUSTOM SETTINGS END
 
@@ -24,11 +24,11 @@ public class TournamentRunner {
 	// final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
 	// final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", "1905"};
-	final static String[] dipQNegotiatorBotCommand = {"java", "-jar", "target/dip-q-negotiator-0.1-shaded.jar", "-log", "log", "-name", "DipQBotNegotiator", "-fy", "1905"};
+	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", "1905"};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
 
 	// JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
-    final static String[] dipQNegotiatorBotCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "target/dip-q-negotiator-0.1-shaded.jar", "-log", "log", "-name", "DipQBotNegotiator", "-fy", "1905"};
+    final static String[] openAIBotNegotiatorCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", "1905"};
 
 
 
@@ -55,7 +55,6 @@ public class TournamentRunner {
 
             @Override
             public void run() {
-                System.out.println("KILLING MEEE 2");
                 NegoServerRunner.stop();
                 ParlanceRunner.stop();
             }
@@ -120,8 +119,8 @@ public class TournamentRunner {
                         name = "D-Brane " + i;
                         command = dbraneExampleBotCommand;
                     } else {
-                        name = "DipQNegotiator " + i;
-                        command = dipQNegotiatorBotCommand;
+                        name = "OpenAINegotiator " + i;
+                        command = openAIBotNegotiatorCommand;
                     }
 
                     //set the log folder for this agent to be a subfolder of the tournament log folder.
@@ -133,10 +132,10 @@ public class TournamentRunner {
                     //set the year after which the agent will propose a draw to the other agents.
                     command[8] = "" + finalYear;
 
-                    // JC: If debug is on and the current command is a dipQNegotiator, then change the command to allow debug
+                    // JC: If debug is on and the current command is a OpenAINegotiator, then change the command to allow debug
                     // This is here, because otherwise we would need to change how the cycle reads the arguments
-                    if (Arrays.equals(command, dipQNegotiatorBotCommand) && REMOTE_DEBUG != 0) {
-                        command = dipQNegotiatorBotCommandDebug;
+                    if (Arrays.equals(command, openAIBotNegotiatorCommand) && REMOTE_DEBUG != 0) {
+                        command = openAIBotNegotiatorCommandDebug;
                     }
 
                     //start the process
@@ -183,8 +182,6 @@ public class TournamentRunner {
             ArrayList<GameResult> results = tournamentObserver.getGameResults();
         }
 	    finally {
-            System.out.println("KILLING MEEEEEEEE");
-
             //Kill the player processes.
             // (if everything is implemented okay this isn't necessary because the players should kill themselves. But just to be sure..)
             for (Process playerProcess : players) {

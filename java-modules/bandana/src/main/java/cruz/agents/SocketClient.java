@@ -1,29 +1,28 @@
 package cruz.agents;
 
+import ddejonge.bandana.tools.Logger;
+
 import java.io.*;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 
-public class SocketClient
+class SocketClient
 {
     private static Socket socket;
     private String host;
     private int port;
+    private Logger logger;
 
-
-    public static void main(String[] args) {
-        SocketClient c = new SocketClient("127.0.1.1", 5000);
-        System.out.println(Arrays.toString(c.sendMessageAndReceiveResponse("Hello".getBytes())));
-    }
-
-    SocketClient(String host, int port)
+    SocketClient(String host, int port, Logger logger)
     {
         this.host = host;
         this.port = port;
+        this.logger = logger;
     }
 
-    public byte[] sendMessageAndReceiveResponse(byte[] messageToSend){
+    byte[] sendMessageAndReceiveResponse(byte[] messageToSend){
         try {
             InetAddress address = InetAddress.getByName(host);
             socket = new Socket(address, port);
@@ -33,10 +32,6 @@ public class SocketClient
             os.write(messageToSend);
             os.flush();
 
-            System.out.println("Sending message");
-
-            System.out.println("Sent message. Waiting for response...");
-
             //Get the return message from the server
             InputStream is = socket.getInputStream();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -45,21 +40,18 @@ public class SocketClient
             while(true)
             {
                 int n = is.read(buffer);
-
                 if(n < 0) {
                     break;
                 }
-
-                System.out.println("Received message with size: " + n);
-
                 baos.write(buffer, 0, n);
             }
 
-            System.out.println("Got response:");
-            System.out.println(Arrays.toString(baos.toByteArray()));
-
             closeSocket();
             return baos.toByteArray();
+        }
+        catch (ConnectException exception) {
+            this.logger.logln("ATTENTION! Could not connect to socket. No deal was retrieved from the Python module.", true);
+            return null;
         }
         catch (Exception exception)
         {
@@ -68,17 +60,15 @@ public class SocketClient
         }
     }
 
-    private boolean closeSocket(){
+    private void closeSocket(){
         //Closing the socket
         try
         {
             socket.close();
-            return true;
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            return false;
         }
     }
 }

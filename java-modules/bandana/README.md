@@ -9,8 +9,7 @@ This module of DipQ is responsible the BANDANA framework (v1.3.1) management. It
 - The DipQ bot tactical module and negotiation module. This bot will retrieve information from the game, communicate it through sockets to the Python modules, receive the actions to take and transmit them to the Parlance server.
     - `src\main\java\cruz.agents`
 
-The whole dependencies are managed by Gradle.
-
+The whole dependencies are managed by Maven.
 
 ## Getting Started
 
@@ -18,9 +17,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites (TODO)
 
+These are the prerequisites for development
+
 - JDK
-- Gradle
-- Parlance Server
+- Maven
+- This repo (including the Python modules directory)
+
+
 
 ```
 Give examples
