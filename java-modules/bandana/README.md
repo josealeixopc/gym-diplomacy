@@ -15,15 +15,14 @@ The whole dependencies are managed by Maven.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites (TODO)
+### Prerequisites
 
 These are the prerequisites for development
 
 - JDK
 - Maven
 - This repo (including the Python modules directory)
-
-
+- Maybe something is missing...
 
 ```
 Give examples
@@ -31,9 +30,7 @@ Give examples
 
 ### Installing (TODO)
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+A step by step series of examples that tell you how to get a development env running.
 
 ```
 Give the example

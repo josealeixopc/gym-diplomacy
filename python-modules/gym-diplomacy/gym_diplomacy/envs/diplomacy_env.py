@@ -5,7 +5,6 @@ from gym.utils import seeding
 import subprocess
 import os
 import signal
-import socket
 import atexit
 import numpy as np
 
@@ -32,25 +31,10 @@ logger.setLevel(level)
 NUMBER_OF_OPPONENTS = 7
 NUMBER_OF_PROVINCES = 75
 
-fh = open("/home/jazz/Projects/FEUP/dip-q/java-modules/bandana/log/game_data.txt", "rb")
-
-test_game = bytearray(fh.read())
-
-fh.close()
-
-test_game_2 = b'\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08\x06\x10\x01\n\x06\n\x02\x08' \
-              b'\x06\x10\x01\n\x06\n\x02\x08\x01\x10\x00\n\x06\n\x02\x08\x01\x10\x01\n\x06\n\x02\x08\x01\x10\x01\n\x06' \
-              b'\n\x02\x08\x04\x10\x00' \
-              b'\n\x06\n\x02\x08\x04\x10\x01\n\x06\n\x02\x08\x04\x10\x01\n\x06\n\x02\x08\x07\x10\x00\n\x06\n\x02\x08' \
-              b'\x07\x10\x01\n\x06\n\x02\x08\x07\x10\x01\n\x06\n\x02\x08\x03\x10\x00\n\x06\n\x02\x08\x03\x10\x01\n\x06' \
-              b'\n\x02\x08\x03\x10\x00' \
-              b'\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08\x02\x10\x00\n\x06\n\x02\x08' \
-              b'\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x01\n\x06\n\x02\x08\x05\x10\x00'
-
 
 def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
     number_of_provinces = len(observation_data.provinces)
-    
+
     if number_of_provinces != NUMBER_OF_PROVINCES:
         raise ValueError("Number of provinces is not consistent. Constant variable is '{}' while received number of "
                          "provinces is '{}'.".format(NUMBER_OF_PROVINCES, number_of_provinces))
@@ -78,20 +62,6 @@ def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     deal_data.destinationProvince = action[2]
 
     return deal_data
-
-
-class RequestHandler:
-    def handle(self, request: bytearray) -> bytearray:
-        observation_data: proto_message_pb2.ObservationData = proto_message_pb2.ObservationData()
-        observation_data.ParseFromString(request)
-
-        deal_data_bytes = self.get_action(observation_data)
-        return deal_data_bytes
-
-    def get_action(self, observation_data) -> bytearray:
-        action = np.array([5, 21, 8])
-        deal_data: proto_message_pb2.DealData = action_to_deal_data(action)
-        return deal_data.SerializeToString()
 
 
 class DiplomacyEnv(gym.Env):
@@ -130,7 +100,7 @@ class DiplomacyEnv(gym.Env):
 
     # BANDANA
 
-    init_bandana: bool = True
+    init_bandana: bool = False
 
     bandana_root_path: str = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                           "../../../../java-modules/bandana"))
@@ -140,25 +110,24 @@ class DiplomacyEnv(gym.Env):
 
     # Communication
 
-    handler = RequestHandler()
-    socketServer = None
+    socket_server = None
 
     # Env
 
     waiting_for_action: bool = False
     limit_action_time: int = 0
+    action: np.ndarray = None
 
     def __init__(self):
-        if self.init_bandana:
-            self._init_bandana()
-
-        atexit.register(self.close)
-
-        self._init_socket_server()
         self._init_observation_space()
         self._init_action_space()
 
-        self.socketServer.listen()
+        if self.init_bandana:
+            self._init_bandana()
+            self._init_socket_server()
+            self.socket_server.listen()
+
+        atexit.register(self.close)
 
     def _init_bandana(self):
         logger.info("Starting BANDANA tournament...")
@@ -169,9 +138,22 @@ class DiplomacyEnv(gym.Env):
                                                    shell=True, preexec_fn=os.setsid)
         logger.info("Started BANDANA tournament.")
 
+    def _kill_bandana(self):
+        if self.bandana_subprocess is None:
+            logger.info("No BANDANA process to terminate.")
+        else:
+            logger.info("Terminating BANDANA process...")
+
+            # Killing the process group (pg) also kills the children, whereas killing the process would leave the
+            # children as orphan processes
+            os.killpg(os.getpgid(self.bandana_subprocess.pid), signal.SIGTERM)
+            self.bandana_subprocess.wait()
+
+            logger.info("BANDANA process terminated.")
+
     def _init_observation_space(self):
         # Observation space: [[province owner, province has supply center] * number of provinces]
-        # Eg: If observation_space[2] isz [5, 0], then the second province belongs to player 5 and does NOT have a SC
+        # Eg: If observation_space[2] is [5, 0], then the second province belongs to player 5 and does NOT have a SC
 
         observation_space_description = []
 
@@ -187,7 +169,19 @@ class DiplomacyEnv(gym.Env):
         self.action_space = spaces.MultiDiscrete([NUMBER_OF_OPPONENTS, NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES])
 
     def _init_socket_server(self):
-        self.socketServer = comm.LocalSocketServer(5000, self.handler)
+        self.socket_server = comm.LocalSocketServer(5000, self.handle)
+
+    def handle(self, request: bytearray) -> bytearray:
+        observation_data: proto_message_pb2.ObservationData = proto_message_pb2.ObservationData()
+        observation_data.ParseFromString(request)
+
+        deal_data_bytes = self.get_action(observation_data)
+        return deal_data_bytes
+
+    def get_action(self, observation_data) -> bytearray:
+        action = np.array([5, 21, 8])
+        deal_data: proto_message_pb2.DealData = action_to_deal_data(action)
+        return deal_data.SerializeToString()
 
     def require_step(self):
         raise NotImplementedError
@@ -215,7 +209,11 @@ class DiplomacyEnv(gym.Env):
         Returns: observation (object): the initial observation of the
             space.
         """
-        raise NotImplementedError
+
+        # In this case we simply restart Bandana
+        if self.init_bandana is True:
+            self._kill_bandana()
+            self._init_bandana()
 
     def render(self, mode='human'):
         """Renders the environment.
@@ -255,16 +253,7 @@ class DiplomacyEnv(gym.Env):
         garbage collected or when the program exits.
         """
 
-        if self.bandana_subprocess is None:
-            logger.info("No BANDANA process to terminate.")
-        else:
-            logger.info("Terminating BANDANA process...")
-
-            # Killing the process group (pg) also kills the children, whereas killing the process would leave the children as orphan processes
-            os.killpg(os.getpgid(self.bandana_subprocess.pid), signal.SIGTERM)
-            self.bandana_subprocess.wait()
-
-            logger.info("BANDANA process terminated.")
+        self._kill_bandana()
 
     def seed(self, seed=None):
         """Sets the seed for this env's random number generator(s).
@@ -283,24 +272,9 @@ class DiplomacyEnv(gym.Env):
         return
 
 
-def main_f():
-    # game: proto_message_pb2.GameData = proto_message_pb2.GameData()
-    # game.ParseFromString(test_game)
-    # print(game)
-    # print(game_data_to_observation(game))
-
-    # handler = RequestHandler()
-    # deal_data_bytes = handler.handle(test_game)
-    # deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
-    # deal_data.ParseFromString(deal_data_bytes)
-
-    # action = np.array([5, 7, 8])
-    # action_to_deal_data(action, game)
-
-    # print(deal_data)
-
+def main():
     gym = DiplomacyEnv()
 
 
 if __name__ == "__main__":
-    main_f()
+    main()

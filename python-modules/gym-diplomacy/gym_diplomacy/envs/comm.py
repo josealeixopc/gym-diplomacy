@@ -1,6 +1,7 @@
 # load additional Python module
 import socket
 import sys
+import typing
 
 import logging
 
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class LocalSocketServer:
     sock = None
-    handler = None
+    handle: typing.Callable = None
 
     def __init__(self, port, handler):
         self.handler = handler
@@ -41,8 +42,6 @@ class LocalSocketServer:
         # listen for incoming connections (server mode) with one connection at a time
         self.sock.listen(1)
 
-        # self.sock.setblocking(False)
-
     def listen(self):
         while True:
             # wait for a connection
@@ -56,7 +55,7 @@ class LocalSocketServer:
                 data = connection.recv(1024 * 20)
 
                 logger.info("Generating response...")
-                connection.send(self.handler.handle(data))
+                connection.send(self.handle(data))
                 logger.info("Sent response.")
 
             finally:
@@ -64,14 +63,12 @@ class LocalSocketServer:
                 connection.close()
 
 
-class RequestHandler:
-    def handle(self, request: bytearray):
-        return request
+def handle(request: bytearray):
+    return request
 
 
 def main_f():
-    handler = RequestHandler()
-    sock = LocalSocketServer(5000, handler)
+    sock = LocalSocketServer(5000, handle)
     sock.listen()
 
 
