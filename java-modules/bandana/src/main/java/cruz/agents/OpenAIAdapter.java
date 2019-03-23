@@ -16,12 +16,20 @@ import java.util.Map;
 
 public class OpenAIAdapter {
 
-    private Map<String, Integer> powerNameToInt;
-    private OpenAINegotiator agent;
+    public static final int REJECTED_DEAL_REWARD = -5;
+    public static final int ACCEPTED_DEAL_REWARD = +5;
 
-    public OpenAIAdapter(OpenAINegotiator agent) {
+    private OpenAINegotiator agent;
+    private Map<String, Integer> powerNameToInt;
+    private int previousActionReward;
+
+    public boolean firstTurn;
+
+    OpenAIAdapter(OpenAINegotiator agent) {
         this.agent = agent;
         this.generatePowerNameToIntMap();
+        this.resetReward();
+        this.firstTurn = true;
     }
 
     private void generatePowerNameToIntMap() {
@@ -91,5 +99,13 @@ public class OpenAIAdapter {
         ocs.add(oc);
 
         return new BasicDeal(ocs, dmzs);
+    }
+
+    public void addReward(int reward) {
+        this.previousActionReward += reward;
+    }
+
+    public void resetReward() {
+        this.previousActionReward = 0;
     }
 }

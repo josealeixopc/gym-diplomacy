@@ -1,6 +1,5 @@
 import gym
-from gym import error, spaces, utils
-from gym.utils import seeding
+from gym import spaces
 
 import subprocess
 import os
@@ -8,8 +7,9 @@ import signal
 import atexit
 import numpy as np
 
-from gym_diplomacy.envs import proto_message_pb2
-from gym_diplomacy.envs import comm
+from gym_diplomacy import proto_message_pb2
+from gym_diplomacy import comm
+from gym_diplomacy.agents import dip_q_brain
 
 import logging
 
@@ -100,10 +100,8 @@ class DiplomacyEnv(gym.Env):
 
     # BANDANA
 
-    init_bandana: bool = False
-
     bandana_root_path: str = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                          "../../../../java-modules/bandana"))
+                                                          "../../../java-modules/bandana"))
     bandana_init_command: str = "./run-tournament.sh"
 
     bandana_subprocess = None
@@ -116,16 +114,24 @@ class DiplomacyEnv(gym.Env):
 
     waiting_for_action: bool = False
     limit_action_time: int = 0
+
+    observation: np.ndarray = None
     action: np.ndarray = None
+
+    done: bool = False
+    reward: float = 0
+
+    current_agent = None
 
     def __init__(self):
         self._init_observation_space()
         self._init_action_space()
 
-        if self.init_bandana:
-            self._init_bandana()
-            self._init_socket_server()
-            self.socket_server.listen()
+        self.current_agent = dip_q_brain.RandomAgent(self.action_space)
+
+        self._init_bandana()
+        self._init_socket_server()
+        self.socket_server.listen()
 
         atexit.register(self.close)
 
@@ -175,12 +181,17 @@ class DiplomacyEnv(gym.Env):
         observation_data: proto_message_pb2.ObservationData = proto_message_pb2.ObservationData()
         observation_data.ParseFromString(request)
 
-        deal_data_bytes = self.get_action(observation_data)
+        ob = observation_data_to_observation(observation_data)
+
+        deal_data_bytes = self.get_action(ob)
+
         return deal_data_bytes
 
-    def get_action(self, observation_data) -> bytearray:
-        action = np.array([5, 21, 8])
+    def get_action(self, observation) -> bytearray:
+        action = self.current_agent.act(observation, self.reward, self.done)
+
         deal_data: proto_message_pb2.DealData = action_to_deal_data(action)
+
         return deal_data.SerializeToString()
 
     def require_step(self):
@@ -211,8 +222,10 @@ class DiplomacyEnv(gym.Env):
         """
 
         # In this case we simply restart Bandana
-        if self.init_bandana is True:
+        if self.bandana_subprocess is not None:
             self._kill_bandana()
+            self._init_bandana()
+        else:
             self._init_bandana()
 
     def render(self, mode='human'):

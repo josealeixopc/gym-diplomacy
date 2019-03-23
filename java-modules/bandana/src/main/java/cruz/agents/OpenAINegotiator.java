@@ -63,6 +63,9 @@ public class OpenAINegotiator extends ANACNegotiator {
     public Random random = new Random();
     DBraneTactics dBraneTactics;
 
+    // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
+    OpenAIAdapter openAIAdapter;
+
     //Constructor
 
     /**
@@ -76,6 +79,9 @@ public class OpenAINegotiator extends ANACNegotiator {
         super(args);
 
         dBraneTactics = this.getTacticalModule();
+
+        // Create OpenAI Adapter
+        this.openAIAdapter = new OpenAIAdapter(this);
     }
 
 
@@ -239,6 +245,9 @@ public class OpenAINegotiator extends ANACNegotiator {
                         deals.remove(1);
                     }
 
+                    // JC: If deal was accepted and confirmed, give positive reward
+                    this.openAIAdapter.addReward(OpenAIAdapter.ACCEPTED_DEAL_REWARD);
+
 
                 } else if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.REJECT)) {
 
@@ -247,10 +256,13 @@ public class OpenAINegotiator extends ANACNegotiator {
                     // Some player has rejected a certain proposal.
                     // This example agent doesn't do anything with such messages however.
 
-                    //If a player first accepts a proposal and then rejects the same proposal the reject message cancels
+                    // If a player first accepts a proposal and then rejects the same proposal the reject message cancels
                     // his earlier accept proposal.
                     // However, this is not true if the reject message is sent after the Notary has already sent a confirm
                     // message for that proposal. Once a proposal is confirmed it cannot be undone anymore.
+
+                    // JC: If deal was rejected, give negative reward
+                    this.openAIAdapter.addReward(OpenAIAdapter.REJECTED_DEAL_REWARD);
                 } else {
 
                     //We have received any other kind of message.
@@ -266,9 +278,11 @@ public class OpenAINegotiator extends ANACNegotiator {
 
             if (newDealToPropose == null) { //we only make one proposal per round, so we skip this if we have already proposed something.
 
+                // JC: IMPORTANT LINE
+                // It is here that the DipQ is called to generate a new deal
                 newDealToPropose = getDealFromDipQ();
 
-                // If the Python module does not return anything or connection could not be made, use the default function to find deals
+                // JC: If the Python module does not return anything or connection could not be made, use the default function to find deals
                 if(newDealToPropose == null) {
                     this.getLogger().logln("No deal was received from DipQ. Proceeding with default deal proposal.", true);
                     newDealToPropose = searchForNewDealToPropose();
@@ -488,12 +502,17 @@ public class OpenAINegotiator extends ANACNegotiator {
 
     }
 
+    // JC: This function does all of the necessary logic to retrieve a deal from the Open AI environment.
     private BasicDeal getDealFromDipQ() {
         try {
+            this.openAIAdapter.resetReward();
 
-            OpenAIAdapter openAIAdapter = new OpenAIAdapter(this);
-            ProtoMessage.ObservationData observationData = openAIAdapter.generateObservationData();
+            // If it is the first turn, there is no reward, so only send the observation.
+            if(!this.openAIAdapter.firstTurn){
 
+            }
+
+            ProtoMessage.ObservationData observationData = this.openAIAdapter.generateObservationData();
             byte[] observationByteArray = observationData.toByteArray();
 
             SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.getLogger());
@@ -506,7 +525,9 @@ public class OpenAINegotiator extends ANACNegotiator {
 
             ProtoMessage.DealData dealData = ProtoMessage.DealData.parseFrom(message);
 
-            return openAIAdapter.generateDeal(dealData);
+            this.openAIAdapter.firstTurn = false;
+
+            return this.openAIAdapter.generateDeal(dealData);
 
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
