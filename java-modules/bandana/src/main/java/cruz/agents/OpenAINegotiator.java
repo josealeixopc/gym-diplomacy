@@ -1,6 +1,5 @@
 package cruz.agents;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import ddejonge.bandana.anac.ANACNegotiator;
 import ddejonge.bandana.dbraneTactics.DBraneTactics;
 import ddejonge.bandana.dbraneTactics.Plan;
@@ -14,9 +13,6 @@ import es.csic.iiia.fabregues.dip.orders.HLDOrder;
 import es.csic.iiia.fabregues.dip.orders.MTOOrder;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -280,7 +276,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                 // JC: IMPORTANT LINE
                 // It is here that the DipQ is called to generate a new deal
-                newDealToPropose = getDealFromDipQ();
+                newDealToPropose = this.openAIAdapter.getDealFromDipQ();
 
                 // JC: If the Python module does not return anything or connection could not be made, use the default function to find deals
                 if(newDealToPropose == null) {
@@ -500,40 +496,6 @@ public class OpenAINegotiator extends ANACNegotiator {
 
         return deal;
 
-    }
-
-    // JC: This function does all of the necessary logic to retrieve a deal from the Open AI environment.
-    private BasicDeal getDealFromDipQ() {
-        try {
-            this.openAIAdapter.resetReward();
-
-            // If it is the first turn, there is no reward, so only send the observation.
-            if(!this.openAIAdapter.firstTurn){
-
-            }
-
-            ProtoMessage.ObservationData observationData = this.openAIAdapter.generateObservationData();
-            byte[] observationByteArray = observationData.toByteArray();
-
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.getLogger());
-            byte[] message = socketClient.sendMessageAndReceiveResponse(observationByteArray);
-
-            // If something went wrong with getting the message from Python module
-            if(message == null) {
-                return null;
-            }
-
-            ProtoMessage.DealData dealData = ProtoMessage.DealData.parseFrom(message);
-
-            this.openAIAdapter.firstTurn = false;
-
-            return this.openAIAdapter.generateDeal(dealData);
-
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
 

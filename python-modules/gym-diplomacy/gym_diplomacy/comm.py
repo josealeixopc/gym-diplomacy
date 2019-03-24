@@ -15,8 +15,8 @@ class LocalSocketServer:
     sock = None
     handle: typing.Callable = None
 
-    def __init__(self, port, handler):
-        self.handler = handler
+    def __init__(self, port, handle):
+        self.handle = handle
 
         # create TCP (SOCK_STREAM) /IP socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -63,12 +63,12 @@ class LocalSocketServer:
                 connection.close()
 
 
-def handle(request: bytearray):
+def handle_f(request: bytearray):
     return request
 
 
 def main_f():
-    sock = LocalSocketServer(5000, handle)
+    sock = LocalSocketServer(5000, handle_f)
     sock.listen()
 
 

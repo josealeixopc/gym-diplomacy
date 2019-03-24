@@ -35,6 +35,9 @@ message ProvinceData {
 
 message ObservationData {
   repeated ProvinceData provinces = 1;
+  float previousActionReward = 2;
+  bool done = 3;
+  string info = 4;
 }
 
 message AcceptanceData {

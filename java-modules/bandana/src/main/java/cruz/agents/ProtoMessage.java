@@ -1834,6 +1834,26 @@ public final class ProtoMessage {
      */
     cruz.agents.ProtoMessage.ProvinceDataOrBuilder getProvincesOrBuilder(
         int index);
+
+    /**
+     * <code>float previousActionReward = 2;</code>
+     */
+    float getPreviousActionReward();
+
+    /**
+     * <code>bool done = 3;</code>
+     */
+    boolean getDone();
+
+    /**
+     * <code>string info = 4;</code>
+     */
+    java.lang.String getInfo();
+    /**
+     * <code>string info = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getInfoBytes();
   }
   /**
    * Protobuf type {@code dip_q.ObservationData}
@@ -1849,6 +1869,7 @@ public final class ProtoMessage {
     }
     private ObservationData() {
       provinces_ = java.util.Collections.emptyList();
+      info_ = "";
     }
 
     @java.lang.Override
@@ -1882,6 +1903,22 @@ public final class ProtoMessage {
               }
               provinces_.add(
                   input.readMessage(cruz.agents.ProtoMessage.ProvinceData.parser(), extensionRegistry));
+              break;
+            }
+            case 21: {
+
+              previousActionReward_ = input.readFloat();
+              break;
+            }
+            case 24: {
+
+              done_ = input.readBool();
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              info_ = s;
               break;
             }
             default: {
@@ -1919,6 +1956,7 @@ public final class ProtoMessage {
               cruz.agents.ProtoMessage.ObservationData.class, cruz.agents.ProtoMessage.ObservationData.Builder.class);
     }
 
+    private int bitField0_;
     public static final int PROVINCES_FIELD_NUMBER = 1;
     private java.util.List<cruz.agents.ProtoMessage.ProvinceData> provinces_;
     /**
@@ -1954,6 +1992,58 @@ public final class ProtoMessage {
       return provinces_.get(index);
     }
 
+    public static final int PREVIOUSACTIONREWARD_FIELD_NUMBER = 2;
+    private float previousActionReward_;
+    /**
+     * <code>float previousActionReward = 2;</code>
+     */
+    public float getPreviousActionReward() {
+      return previousActionReward_;
+    }
+
+    public static final int DONE_FIELD_NUMBER = 3;
+    private boolean done_;
+    /**
+     * <code>bool done = 3;</code>
+     */
+    public boolean getDone() {
+      return done_;
+    }
+
+    public static final int INFO_FIELD_NUMBER = 4;
+    private volatile java.lang.Object info_;
+    /**
+     * <code>string info = 4;</code>
+     */
+    public java.lang.String getInfo() {
+      java.lang.Object ref = info_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        info_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string info = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getInfoBytes() {
+      java.lang.Object ref = info_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        info_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1971,6 +2061,15 @@ public final class ProtoMessage {
       for (int i = 0; i < provinces_.size(); i++) {
         output.writeMessage(1, provinces_.get(i));
       }
+      if (previousActionReward_ != 0F) {
+        output.writeFloat(2, previousActionReward_);
+      }
+      if (done_ != false) {
+        output.writeBool(3, done_);
+      }
+      if (!getInfoBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, info_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1983,6 +2082,17 @@ public final class ProtoMessage {
       for (int i = 0; i < provinces_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, provinces_.get(i));
+      }
+      if (previousActionReward_ != 0F) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(2, previousActionReward_);
+      }
+      if (done_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, done_);
+      }
+      if (!getInfoBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, info_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2001,6 +2111,13 @@ public final class ProtoMessage {
 
       if (!getProvincesList()
           .equals(other.getProvincesList())) return false;
+      if (java.lang.Float.floatToIntBits(getPreviousActionReward())
+          != java.lang.Float.floatToIntBits(
+              other.getPreviousActionReward())) return false;
+      if (getDone()
+          != other.getDone()) return false;
+      if (!getInfo()
+          .equals(other.getInfo())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -2016,6 +2133,14 @@ public final class ProtoMessage {
         hash = (37 * hash) + PROVINCES_FIELD_NUMBER;
         hash = (53 * hash) + getProvincesList().hashCode();
       }
+      hash = (37 * hash) + PREVIOUSACTIONREWARD_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPreviousActionReward());
+      hash = (37 * hash) + DONE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getDone());
+      hash = (37 * hash) + INFO_FIELD_NUMBER;
+      hash = (53 * hash) + getInfo().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2156,6 +2281,12 @@ public final class ProtoMessage {
         } else {
           provincesBuilder_.clear();
         }
+        previousActionReward_ = 0F;
+
+        done_ = false;
+
+        info_ = "";
+
         return this;
       }
 
@@ -2183,6 +2314,7 @@ public final class ProtoMessage {
       public cruz.agents.ProtoMessage.ObservationData buildPartial() {
         cruz.agents.ProtoMessage.ObservationData result = new cruz.agents.ProtoMessage.ObservationData(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (provincesBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             provinces_ = java.util.Collections.unmodifiableList(provinces_);
@@ -2192,6 +2324,10 @@ public final class ProtoMessage {
         } else {
           result.provinces_ = provincesBuilder_.build();
         }
+        result.previousActionReward_ = previousActionReward_;
+        result.done_ = done_;
+        result.info_ = info_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -2265,6 +2401,16 @@ public final class ProtoMessage {
               provincesBuilder_.addAllMessages(other.provinces_);
             }
           }
+        }
+        if (other.getPreviousActionReward() != 0F) {
+          setPreviousActionReward(other.getPreviousActionReward());
+        }
+        if (other.getDone() != false) {
+          setDone(other.getDone());
+        }
+        if (!other.getInfo().isEmpty()) {
+          info_ = other.info_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2534,6 +2680,127 @@ public final class ProtoMessage {
           provinces_ = null;
         }
         return provincesBuilder_;
+      }
+
+      private float previousActionReward_ ;
+      /**
+       * <code>float previousActionReward = 2;</code>
+       */
+      public float getPreviousActionReward() {
+        return previousActionReward_;
+      }
+      /**
+       * <code>float previousActionReward = 2;</code>
+       */
+      public Builder setPreviousActionReward(float value) {
+        
+        previousActionReward_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float previousActionReward = 2;</code>
+       */
+      public Builder clearPreviousActionReward() {
+        
+        previousActionReward_ = 0F;
+        onChanged();
+        return this;
+      }
+
+      private boolean done_ ;
+      /**
+       * <code>bool done = 3;</code>
+       */
+      public boolean getDone() {
+        return done_;
+      }
+      /**
+       * <code>bool done = 3;</code>
+       */
+      public Builder setDone(boolean value) {
+        
+        done_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool done = 3;</code>
+       */
+      public Builder clearDone() {
+        
+        done_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object info_ = "";
+      /**
+       * <code>string info = 4;</code>
+       */
+      public java.lang.String getInfo() {
+        java.lang.Object ref = info_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          info_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string info = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getInfoBytes() {
+        java.lang.Object ref = info_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          info_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string info = 4;</code>
+       */
+      public Builder setInfo(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        info_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string info = 4;</code>
+       */
+      public Builder clearInfo() {
+        
+        info_ = getDefaultInstance().getInfo();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string info = 4;</code>
+       */
+      public Builder setInfoBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        info_ = value;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -3639,11 +3906,13 @@ public final class ProtoMessage {
       "pe\022\013\n\007INVALID\020\000\022\024\n\020GET_DEAL_REQUEST\020\001\022\032\n" +
       "\026GET_ACCEPTANCE_REQUEST\020\002\"5\n\014ProvinceDat" +
       "a\022\n\n\002id\030\001 \001(\005\022\r\n\005owner\030\002 \001(\005\022\n\n\002sc\030\003 \001(\005" +
-      "\"9\n\017ObservationData\022&\n\tprovinces\030\001 \003(\0132\023" +
-      ".dip_q.ProvinceData\"\020\n\016AcceptanceData\"V\n" +
-      "\010DealData\022\026\n\016powerToPropose\030\001 \001(\005\022\025\n\rsta" +
-      "rtProvince\030\002 \001(\005\022\033\n\023destinationProvince\030" +
-      "\003 \001(\005B\r\n\013cruz.agentsb\006proto3"
+      "\"s\n\017ObservationData\022&\n\tprovinces\030\001 \003(\0132\023" +
+      ".dip_q.ProvinceData\022\034\n\024previousActionRew" +
+      "ard\030\002 \001(\002\022\014\n\004done\030\003 \001(\010\022\014\n\004info\030\004 \001(\t\"\020\n" +
+      "\016AcceptanceData\"V\n\010DealData\022\026\n\016powerToPr" +
+      "opose\030\001 \001(\005\022\025\n\rstartProvince\030\002 \001(\005\022\033\n\023de" +
+      "stinationProvince\030\003 \001(\005B\r\n\013cruz.agentsb\006" +
+      "proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3674,7 +3943,7 @@ public final class ProtoMessage {
     internal_static_dip_q_ObservationData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_ObservationData_descriptor,
-        new java.lang.String[] { "Provinces", });
+        new java.lang.String[] { "Provinces", "PreviousActionReward", "Done", "Info", });
     internal_static_dip_q_AcceptanceData_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_dip_q_AcceptanceData_fieldAccessorTable = new

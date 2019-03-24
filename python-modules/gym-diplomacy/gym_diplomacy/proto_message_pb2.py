@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dip_q',
   syntax='proto3',
   serialized_options=_b('\n\013cruz.agents'),
-  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\xea\x01\n\x07Message\x12!\n\x04type\x18\x01 \x01(\x0e\x32\x13.dip_q.Message.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\x12\x1d\n\x04\x64\x65\x61l\x18\x03 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x04 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"E\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x14\n\x10GET_DEAL_REQUEST\x10\x01\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x02\"5\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\"9\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"V\n\x08\x44\x65\x61lData\x12\x16\n\x0epowerToPropose\x18\x01 \x01(\x05\x12\x15\n\rstartProvince\x18\x02 \x01(\x05\x12\x1b\n\x13\x64\x65stinationProvince\x18\x03 \x01(\x05\x42\r\n\x0b\x63ruz.agentsb\x06proto3')
+  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\xea\x01\n\x07Message\x12!\n\x04type\x18\x01 \x01(\x0e\x32\x13.dip_q.Message.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\x12\x1d\n\x04\x64\x65\x61l\x18\x03 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x04 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"E\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x14\n\x10GET_DEAL_REQUEST\x10\x01\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x02\"5\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\"s\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\x12\x1c\n\x14previousActionReward\x18\x02 \x01(\x02\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08\x12\x0c\n\x04info\x18\x04 \x01(\t\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"V\n\x08\x44\x65\x61lData\x12\x16\n\x0epowerToPropose\x18\x01 \x01(\x05\x12\x15\n\rstartProvince\x18\x02 \x01(\x05\x12\x1b\n\x13\x64\x65stinationProvince\x18\x03 \x01(\x05\x42\r\n\x0b\x63ruz.agentsb\x06proto3')
 )
 
 
@@ -164,6 +164,27 @@ _OBSERVATIONDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='previousActionReward', full_name='dip_q.ObservationData.previousActionReward', index=1,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='done', full_name='dip_q.ObservationData.done', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='info', full_name='dip_q.ObservationData.info', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -177,7 +198,7 @@ _OBSERVATIONDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=322,
-  serialized_end=379,
+  serialized_end=437,
 )
 
 
@@ -200,8 +221,8 @@ _ACCEPTANCEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=381,
-  serialized_end=397,
+  serialized_start=439,
+  serialized_end=455,
 )
 
 
@@ -245,8 +266,8 @@ _DEALDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=399,
-  serialized_end=485,
+  serialized_start=457,
+  serialized_end=543,
 )
 
 _MESSAGE.fields_by_name['type'].enum_type = _MESSAGE_TYPE

@@ -5,4 +5,5 @@ class RandomAgent(object):
         self.action_space = action_space
 
     def act(self, observation, reward, done):
+        print(observation, reward, done)
         return self.action_space.sample()

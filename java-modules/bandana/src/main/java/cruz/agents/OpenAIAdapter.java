@@ -1,5 +1,6 @@
 package cruz.agents;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import ddejonge.bandana.negoProtocol.BasicDeal;
 import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.OrderCommitment;
@@ -21,15 +22,52 @@ public class OpenAIAdapter {
 
     private OpenAINegotiator agent;
     private Map<String, Integer> powerNameToInt;
-    private int previousActionReward;
+
+    private float previousActionReward;
+    private boolean done;
+    private String info;
 
     public boolean firstTurn;
 
     OpenAIAdapter(OpenAINegotiator agent) {
         this.agent = agent;
-        this.generatePowerNameToIntMap();
+
         this.resetReward();
+        this.done = false;
+        this.info = null;
+
         this.firstTurn = true;
+    }
+
+    /**
+     * This function retrieves a deal from the Open AI module that is connected to the localhost on port 5000.
+     *
+     * @return A BasicDeal created with data from the Open AI module.
+     */
+    public BasicDeal getDealFromDipQ() {
+        try {
+            this.generatePowerNameToIntMap();
+
+            ProtoMessage.ObservationData observationData = this.generateObservationData();
+            byte[] observationByteArray = observationData.toByteArray();
+
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent.getLogger());
+            byte[] message = socketClient.sendMessageAndReceiveResponse(observationByteArray);
+
+            // If something went wrong with getting the message from Python module
+            if(message == null) {
+                return null;
+            }
+
+            ProtoMessage.DealData dealData = ProtoMessage.DealData.parseFrom(message);
+
+            return this.generateDeal(dealData);
+
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private void generatePowerNameToIntMap() {
@@ -61,6 +99,8 @@ public class OpenAIAdapter {
             provinceDataBuilder.setSc(isSc);
 
             nameToProvinceDataBuilder.put(p.getName(), provinceDataBuilder);
+
+            id++;
         }
 
         // THEN ADD THE OWNERS OF EACH PROVINCE
@@ -79,10 +119,17 @@ public class OpenAIAdapter {
             observationDataBuilder.addProvinces(entry.getValue().build());
         }
 
+        observationDataBuilder.setPreviousActionReward(this.previousActionReward);
+        observationDataBuilder.setDone(this.done);
+
+        if(this.info != null){
+            observationDataBuilder.setInfo(this.info);
+        }
+
         return observationDataBuilder.build();
     }
 
-    public BasicDeal generateDeal(ProtoMessage.DealData dealData) {
+    private BasicDeal generateDeal(ProtoMessage.DealData dealData) {
         List<DMZ> dmzs = new ArrayList<>();
         List<OrderCommitment> ocs = new ArrayList<>();
 
@@ -101,11 +148,19 @@ public class OpenAIAdapter {
         return new BasicDeal(ocs, dmzs);
     }
 
-    public void addReward(int reward) {
+    void addReward(int reward) {
         this.previousActionReward += reward;
     }
 
-    public void resetReward() {
+    private void resetReward() {
         this.previousActionReward = 0;
+    }
+
+    public void finish() {
+        this.done = true;
+    }
+
+    public void setInfo(String s) {
+        this.info = s;
     }
 }

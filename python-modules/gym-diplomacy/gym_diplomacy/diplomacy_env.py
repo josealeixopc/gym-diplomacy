@@ -33,6 +33,13 @@ NUMBER_OF_PROVINCES = 75
 
 
 def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
+    """
+    This function takes a Protobuf ObservationData and generates the necessary information for the agent to act.
+
+    :param observation_data: A Protobug ObservationData object.
+    :return: A list with the structure [observation, reward, done, info]. Observation is an np array, reward is a float,
+    done is a boolean and info is a string.
+    """
     number_of_provinces = len(observation_data.provinces)
 
     if number_of_provinces != NUMBER_OF_PROVINCES:
@@ -48,7 +55,11 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
         # id - 1 because the ids begin at 1
         observation[province.id - 1] = [province.owner, province.sc]
 
-    return observation
+    reward = observation_data.previousActionReward
+    done = observation_data.done
+    info = observation_data.info
+
+    return observation, reward, done, info
 
 
 def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
@@ -181,14 +192,14 @@ class DiplomacyEnv(gym.Env):
         observation_data: proto_message_pb2.ObservationData = proto_message_pb2.ObservationData()
         observation_data.ParseFromString(request)
 
-        ob = observation_data_to_observation(observation_data)
+        observation, reward, done, info = observation_data_to_observation(observation_data)
 
-        deal_data_bytes = self.get_action(ob)
+        deal_data_bytes = self.get_action(observation, reward, done, info)
 
         return deal_data_bytes
 
-    def get_action(self, observation) -> bytearray:
-        action = self.current_agent.act(observation, self.reward, self.done)
+    def get_action(self, observation, reward, done, info) -> bytearray:
+        action = self.current_agent.act(observation, reward, done)
 
         deal_data: proto_message_pb2.DealData = action_to_deal_data(action)
 
