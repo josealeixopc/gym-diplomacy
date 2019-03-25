@@ -8,7 +8,7 @@ import atexit
 import numpy as np
 
 from gym_diplomacy import proto_message_pb2
-from gym_diplomacy import comm
+from gym_diplomacy.envs import comm
 from gym_diplomacy.agents import dip_q_brain
 
 import logging
@@ -188,22 +188,18 @@ class DiplomacyEnv(gym.Env):
     def _init_socket_server(self):
         self.socket_server = comm.LocalSocketServer(5000, self.handle)
 
-    def handle(self, request: bytearray) -> bytearray:
+    def handle(self, request: bytearray) -> None:
         observation_data: proto_message_pb2.ObservationData = proto_message_pb2.ObservationData()
         observation_data.ParseFromString(request)
 
         observation, reward, done, info = observation_data_to_observation(observation_data)
 
-        deal_data_bytes = self.get_action(observation, reward, done, info)
+        self.get_action(observation, reward, done, info)
 
-        return deal_data_bytes
+    def get_action(self, observation, reward, done, info) -> None:
+        while self.waiting_for_action:
+            pass
 
-    def get_action(self, observation, reward, done, info) -> bytearray:
-        action = self.current_agent.act(observation, reward, done)
-
-        deal_data: proto_message_pb2.DealData = action_to_deal_data(action)
-
-        return deal_data.SerializeToString()
 
     def require_step(self):
         raise NotImplementedError
@@ -224,7 +220,11 @@ class DiplomacyEnv(gym.Env):
         if not self.waiting_for_action:
             raise Exception('Environment is not waiting for action')
         else:
-            raise NotImplementedError
+            self.action = action
+            self.waiting_for_action = False
+
+            deal_data: proto_message_pb2.DealData = action_to_deal_data(self.action)
+            self.socket_server.
 
     def reset(self):
         """Resets the state of the environment and returns an initial observation.

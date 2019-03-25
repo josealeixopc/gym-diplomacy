@@ -54,9 +54,8 @@ class LocalSocketServer:
 
                 data = connection.recv(1024 * 20)
 
-                logger.info("Generating response...")
-                connection.send(self.handle(data))
-                logger.info("Sent response.")
+                logger.info("Calling handler...")
+                self.handle(data)
 
             finally:
                 # Clean up the connection
