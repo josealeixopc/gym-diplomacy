@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import ddejonge.bandana.tools.DiplomacyMonitor;
 import ddejonge.bandana.tools.FileIO;
+import ddejonge.bandana.tools.Logger;
 import es.csic.iiia.fabregues.dip.Observer;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.comm.CommException;
@@ -14,7 +15,7 @@ import es.csic.iiia.fabregues.dip.comm.IComm;
 import es.csic.iiia.fabregues.dip.comm.daide.DaideComm;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
-public class OpenAIObserver extends Observer implements Runnable{
+public class OpenAIObserver extends Observer {
 
     public static final int NO_GAME_ACTIVE = 0;
     public static final int CONNECTED_WAITING_TO_START = 1;
@@ -34,20 +35,12 @@ public class OpenAIObserver extends Observer implements Runnable{
 
 
 
-    public OpenAIObserver(OpenAIAdapter openAIAdapter) {
-        super();
+    public OpenAIObserver(String logPath, OpenAIAdapter openAIAdapter) {
+        super(logPath);
 
         this.openAIAdapter = openAIAdapter;
-
-        this.run();
     }
 
-
-
-    @Override
-    public void run() {
-        connectToServer();
-    }
 
 
     public void connectToServer(){
@@ -137,7 +130,7 @@ public class OpenAIObserver extends Observer implements Runnable{
         // super.handleSMR(message);
 
         // System.out.println("INSIDE HANDLE SMR");
-        // this.openAIAdapter.sendGameEndNotification();
+        this.openAIAdapter.sendGameEndNotification();
         // super.handleSMR(message);
     }
 

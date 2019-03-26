@@ -4,12 +4,14 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import ddejonge.bandana.negoProtocol.BasicDeal;
 import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.OrderCommitment;
+import ddejonge.bandana.tools.Logger;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
 import es.csic.iiia.fabregues.dip.orders.MTOOrder;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +42,16 @@ public class OpenAIAdapter {
         this.info = null;
 
         this.numberOfGamesStarted = 0;
-        this.openAIObserver = new OpenAIObserver(this);
+        this.createObserver();
+    }
+
+    public void createObserver() {
+        String openAIObserverPath = "log" + File.separator + "OpenAIObserver" + Logger.getDateString();
+        File logFile = new File(openAIObserverPath);
+        logFile.mkdirs();
+
+        this.openAIObserver = new OpenAIObserver(openAIObserverPath, this);
+        this.openAIObserver.connectToServer();
     }
 
     /**
