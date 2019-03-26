@@ -50,7 +50,7 @@ class SocketClient
             return baos.toByteArray();
         }
         catch (ConnectException exception) {
-            this.logger.logln("ATTENTION! Could not connect to socket. No deal was retrieved from the Python module.", true);
+            System.out.println("ATTENTION! Could not connect to socket. No deal was retrieved from the Python module.");
             return null;
         }
         catch (Exception exception)

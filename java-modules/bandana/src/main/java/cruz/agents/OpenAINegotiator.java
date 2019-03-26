@@ -61,6 +61,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
     // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
     OpenAIAdapter openAIAdapter;
+    int numberOfNegotiations;
 
     //Constructor
 
@@ -78,6 +79,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
         // Create OpenAI Adapter
         this.openAIAdapter = new OpenAIAdapter(this);
+        this.numberOfNegotiations = 0;
     }
 
 
@@ -99,12 +101,19 @@ public class OpenAINegotiator extends ANACNegotiator {
         boolean printToConsole = true; //if set to true the text will be written to file, as well as printed to the standard output stream. If set to false it will only be written to file.
         this.getLogger().logln("game is starting!", printToConsole);
 
+        // JC: It's important to know whether or not it is the first turn
+        this.openAIAdapter.done = false;
+        this.openAIAdapter.firstTurn = true;
+        this.openAIAdapter.numberOfGamesStarted++;
     }
 
     @Override
     public void negotiate(long negotiationDeadline) {
 
-        // this.getLogger().logln(me.getName() + ".negotiate() Negotiation deadline: " + negotiationDeadline, true);
+        this.getLogger().logln(me.getName() + ".negotiate() Starting negotiation number: " + this.numberOfNegotiations, true);
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation deadline: " + negotiationDeadline, true);
+
+        this.numberOfNegotiations++;
 
         BasicDeal newDealToPropose = null;
 
@@ -497,7 +506,6 @@ public class OpenAINegotiator extends ANACNegotiator {
         return deal;
 
     }
-
 
     /**
      * Each round, after each power has submitted its orders, this method is called several times:

@@ -64,10 +64,11 @@ class LocalSocketServer:
                 data = connection.recv(1024 * 20)
 
                 logger.info("Calling handler...")
-                self.handle(data)
+                connection.send(self.handle(data))
 
             finally:
                 # Clean up the connection
+                logger.debug("Connection closed")
                 connection.close()
 
     def close(self) -> None:

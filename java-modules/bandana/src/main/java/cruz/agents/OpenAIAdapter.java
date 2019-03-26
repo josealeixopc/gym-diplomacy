@@ -20,14 +20,17 @@ public class OpenAIAdapter {
     public static final int REJECTED_DEAL_REWARD = -5;
     public static final int ACCEPTED_DEAL_REWARD = +5;
 
-    private OpenAINegotiator agent;
+    public OpenAINegotiator agent;
     private Map<String, Integer> powerNameToInt;
 
     private float previousActionReward;
-    private boolean done;
+    public boolean done;
     private String info;
 
     public boolean firstTurn;
+    public int numberOfGamesStarted;
+
+    public OpenAIObserver openAIObserver;
 
     OpenAIAdapter(OpenAINegotiator agent) {
         this.agent = agent;
@@ -36,7 +39,8 @@ public class OpenAIAdapter {
         this.done = false;
         this.info = null;
 
-        this.firstTurn = true;
+        this.numberOfGamesStarted = 0;
+        this.openAIObserver = new OpenAIObserver(this);
     }
 
     /**
@@ -46,6 +50,7 @@ public class OpenAIAdapter {
      */
     public BasicDeal getDealFromDipQ() {
         try {
+            // this.agent.getLogger().logln("GAME STATUS: " + this.openAIObserver.getGameStatus(), true);
             this.generatePowerNameToIntMap();
 
             ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
@@ -68,10 +73,8 @@ public class OpenAIAdapter {
                 }
 
                 ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymResponse.parseFrom(response);
-
-                this.firstTurn = false;
-
-                return this.generateDeal(diplomacyGymResponse.getDeal());
+                BasicDeal generatedDeal = this.generateDeal(diplomacyGymResponse.getDeal());
+                return generatedDeal;
             }
             else {
                 return null;
@@ -82,6 +85,11 @@ public class OpenAIAdapter {
         }
 
         return null;
+    }
+
+    public void sendGameEndNotification() {
+        this.done = true;
+        // this.getDealFromDipQ();
     }
 
     private void generatePowerNameToIntMap() {

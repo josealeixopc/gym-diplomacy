@@ -128,12 +128,16 @@ class DiplomacyEnv(gym.Env):
     # Env
 
     received_first_observation: bool = False
+
     waiting_for_action: bool = False
+    waiting_for_response: bool = True
+
     limit_action_time: int = 0
 
     observation: np.ndarray = None
     action: np.ndarray = None
 
+    info: dict = {}
     done: bool = False
     reward: float = 0
 
@@ -171,9 +175,16 @@ class DiplomacyEnv(gym.Env):
             pass
 
         self.action = action
-        self.waiting_for_action = False
 
+        self.waiting_for_action = False
         # After setting 'waiting_for_action' to false, the 'handle' function should send the chosen action
+
+        self.waiting_for_response = True
+
+        while self.waiting_for_response:
+            pass
+
+        return self.observation, self.reward, self.done, self.info
 
     def reset(self):
         """Resets the state of the environment and returns an initial observation.
@@ -321,30 +332,27 @@ class DiplomacyEnv(gym.Env):
             raise ValueError("Type of BandanaRequest is INVALID.", request_data)
 
         observation_data: proto_message_pb2.ObservationData = request_data.observation
-        observation, reward, done, info = observation_data_to_observation(observation_data)
+        self.observation, self.reward, self.done, self.info = observation_data_to_observation(observation_data)
 
         response_data: proto_message_pb2.DiplomacyGymResponse = proto_message_pb2.DiplomacyGymResponse()
+        response_data.type = proto_message_pb2.DiplomacyGymResponse.CONFIRM
 
-        if request_data.type == proto_message_pb2.BandanaRequest.SEND_INITIAL_OBSERVATION:
-            self.observation = observation
+        self.waiting_for_action = True
+        self.received_first_observation = True
+        self.waiting_for_response = False
 
-            response_data.type = proto_message_pb2.DiplomacyGymResponse.CONFIRM
+        logger.debug("WAITING FOR ACTION: {}".format(self.waiting_for_action))
 
-            self.waiting_for_action = True
-            self.received_first_observation = True
+        # Wait for action to be taken. If env should terminate, then stop waiting.
+        while self.waiting_for_action:
+            if self.done:
+                # Return empty deal just to finalize program
+                logger.debug("Sending empty deal to finalize program.")
+                return response_data.SerializeToString()
 
-            logger.debug("WAITING FOR ACTION: {}".format(self.waiting_for_action))
-
-            logger.debug("Waiting for action to be taken.")
-
-            # Wait for action to be taken. If env should terminate, then stop waiting.
-            while self.waiting_for_action:
-                if self.terminate:
-                    return None
-
-            # Once we have the action, send it as a deal
-            deal_data: proto_message_pb2.DealData = action_to_deal_data(self.action)
-            response_data.deal.CopyFrom(deal_data)
+        # Once we have the action, send it as a deal
+        deal_data: proto_message_pb2.DealData = action_to_deal_data(self.action)
+        response_data.deal.CopyFrom(deal_data)
 
         return response_data.SerializeToString()
 

@@ -41,12 +41,13 @@ if __name__ == '__main__':
 
     for i in range(episode_count):
         ob = env.reset()
-        print(ob)
-        # while True:
-        #     action = agent.act(ob, reward, done)
-        #     ob, reward, done, _ = env.step(action)
-        #     if done:
-        #         break
+        logger.debug("First observation: {}".format(ob))
+        while True:
+            action = agent.act(ob, reward, done)
+            ob, reward, done, info = env.step(action)
+            if done:
+                logger.info("Game/episode {} has ended.".format(i))
+                break
             # Note there's no env.render() here. But the environment still can open window and
             # render if asked by env.monitor: it calls env.render('rgb_array') to record video.
             # Video is not recorded every episode, see capped_cubic_video_schedule for details.
