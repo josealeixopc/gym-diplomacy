@@ -20,14 +20,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dip_q',
   syntax='proto3',
   serialized_options=_b('\n\013cruz.agents'),
-  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\xea\x01\n\x07Message\x12!\n\x04type\x18\x01 \x01(\x0e\x32\x13.dip_q.Message.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\x12\x1d\n\x04\x64\x65\x61l\x18\x03 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x04 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"E\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x14\n\x10GET_DEAL_REQUEST\x10\x01\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x02\"5\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\"s\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\x12\x1c\n\x14previousActionReward\x18\x02 \x01(\x02\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08\x12\x0c\n\x04info\x18\x04 \x01(\t\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"V\n\x08\x44\x65\x61lData\x12\x16\n\x0epowerToPropose\x18\x01 \x01(\x05\x12\x15\n\rstartProvince\x18\x02 \x01(\x05\x12\x1b\n\x13\x64\x65stinationProvince\x18\x03 \x01(\x05\x42\r\n\x0b\x63ruz.agentsb\x06proto3')
+  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\xcc\x01\n\x0e\x42\x61ndanaRequest\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.BandanaRequest.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\"c\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x1c\n\x18SEND_INITIAL_OBSERVATION\x10\x01\x12\x14\n\x10GET_DEAL_REQUEST\x10\x02\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x03\"\xd6\x01\n\x14\x44iplomacyGymResponse\x12.\n\x04type\x18\x01 \x01(\x0e\x32 .dip_q.DiplomacyGymResponse.Type\x12\x1d\n\x04\x64\x65\x61l\x18\x02 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x03 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"D\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x0b\n\x07\x43ONFIRM\x10\x01\x12\r\n\tSEND_DEAL\x10\x02\x12\x13\n\x0fSEND_ACCEPTANCE\x10\x03\"5\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\"s\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\x12\x1c\n\x14previousActionReward\x18\x02 \x01(\x02\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08\x12\x0c\n\x04info\x18\x04 \x01(\t\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"V\n\x08\x44\x65\x61lData\x12\x16\n\x0epowerToPropose\x18\x01 \x01(\x05\x12\x15\n\rstartProvince\x18\x02 \x01(\x05\x12\x1b\n\x13\x64\x65stinationProvince\x18\x03 \x01(\x05\x42\r\n\x0b\x63ruz.agentsb\x06proto3')
 )
 
 
 
-_MESSAGE_TYPE = _descriptor.EnumDescriptor(
+_BANDANAREQUEST_TYPE = _descriptor.EnumDescriptor(
   name='Type',
-  full_name='dip_q.Message.Type',
+  full_name='dip_q.BandanaRequest.Type',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -36,53 +36,73 @@ _MESSAGE_TYPE = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GET_DEAL_REQUEST', index=1, number=1,
+      name='SEND_INITIAL_OBSERVATION', index=1, number=1,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GET_ACCEPTANCE_REQUEST', index=2, number=2,
+      name='GET_DEAL_REQUEST', index=2, number=2,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GET_ACCEPTANCE_REQUEST', index=3, number=3,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=196,
-  serialized_end=265,
+  serialized_start=136,
+  serialized_end=235,
 )
-_sym_db.RegisterEnumDescriptor(_MESSAGE_TYPE)
+_sym_db.RegisterEnumDescriptor(_BANDANAREQUEST_TYPE)
+
+_DIPLOMACYGYMRESPONSE_TYPE = _descriptor.EnumDescriptor(
+  name='Type',
+  full_name='dip_q.DiplomacyGymResponse.Type',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='INVALID', index=0, number=0,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='CONFIRM', index=1, number=1,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SEND_DEAL', index=2, number=2,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SEND_ACCEPTANCE', index=3, number=3,
+      serialized_options=None,
+      type=None),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=384,
+  serialized_end=452,
+)
+_sym_db.RegisterEnumDescriptor(_DIPLOMACYGYMRESPONSE_TYPE)
 
 
-_MESSAGE = _descriptor.Descriptor(
-  name='Message',
-  full_name='dip_q.Message',
+_BANDANAREQUEST = _descriptor.Descriptor(
+  name='BandanaRequest',
+  full_name='dip_q.BandanaRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='type', full_name='dip_q.Message.type', index=0,
+      name='type', full_name='dip_q.BandanaRequest.type', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='observation', full_name='dip_q.Message.observation', index=1,
+      name='observation', full_name='dip_q.BandanaRequest.observation', index=1,
       number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='deal', full_name='dip_q.Message.deal', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='acceptance', full_name='dip_q.Message.acceptance', index=3,
-      number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -92,7 +112,7 @@ _MESSAGE = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
-    _MESSAGE_TYPE,
+    _BANDANAREQUEST_TYPE,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -101,7 +121,53 @@ _MESSAGE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=31,
-  serialized_end=265,
+  serialized_end=235,
+)
+
+
+_DIPLOMACYGYMRESPONSE = _descriptor.Descriptor(
+  name='DiplomacyGymResponse',
+  full_name='dip_q.DiplomacyGymResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='type', full_name='dip_q.DiplomacyGymResponse.type', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='deal', full_name='dip_q.DiplomacyGymResponse.deal', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='acceptance', full_name='dip_q.DiplomacyGymResponse.acceptance', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _DIPLOMACYGYMRESPONSE_TYPE,
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=238,
+  serialized_end=452,
 )
 
 
@@ -145,8 +211,8 @@ _PROVINCEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=267,
-  serialized_end=320,
+  serialized_start=454,
+  serialized_end=507,
 )
 
 
@@ -197,8 +263,8 @@ _OBSERVATIONDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=322,
-  serialized_end=437,
+  serialized_start=509,
+  serialized_end=624,
 )
 
 
@@ -221,8 +287,8 @@ _ACCEPTANCEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=439,
-  serialized_end=455,
+  serialized_start=626,
+  serialized_end=642,
 )
 
 
@@ -266,29 +332,39 @@ _DEALDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=457,
-  serialized_end=543,
+  serialized_start=644,
+  serialized_end=730,
 )
 
-_MESSAGE.fields_by_name['type'].enum_type = _MESSAGE_TYPE
-_MESSAGE.fields_by_name['observation'].message_type = _OBSERVATIONDATA
-_MESSAGE.fields_by_name['deal'].message_type = _DEALDATA
-_MESSAGE.fields_by_name['acceptance'].message_type = _ACCEPTANCEDATA
-_MESSAGE_TYPE.containing_type = _MESSAGE
+_BANDANAREQUEST.fields_by_name['type'].enum_type = _BANDANAREQUEST_TYPE
+_BANDANAREQUEST.fields_by_name['observation'].message_type = _OBSERVATIONDATA
+_BANDANAREQUEST_TYPE.containing_type = _BANDANAREQUEST
+_DIPLOMACYGYMRESPONSE.fields_by_name['type'].enum_type = _DIPLOMACYGYMRESPONSE_TYPE
+_DIPLOMACYGYMRESPONSE.fields_by_name['deal'].message_type = _DEALDATA
+_DIPLOMACYGYMRESPONSE.fields_by_name['acceptance'].message_type = _ACCEPTANCEDATA
+_DIPLOMACYGYMRESPONSE_TYPE.containing_type = _DIPLOMACYGYMRESPONSE
 _OBSERVATIONDATA.fields_by_name['provinces'].message_type = _PROVINCEDATA
-DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
+DESCRIPTOR.message_types_by_name['BandanaRequest'] = _BANDANAREQUEST
+DESCRIPTOR.message_types_by_name['DiplomacyGymResponse'] = _DIPLOMACYGYMRESPONSE
 DESCRIPTOR.message_types_by_name['ProvinceData'] = _PROVINCEDATA
 DESCRIPTOR.message_types_by_name['ObservationData'] = _OBSERVATIONDATA
 DESCRIPTOR.message_types_by_name['AcceptanceData'] = _ACCEPTANCEDATA
 DESCRIPTOR.message_types_by_name['DealData'] = _DEALDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Message = _reflection.GeneratedProtocolMessageType('Message', (_message.Message,), dict(
-  DESCRIPTOR = _MESSAGE,
+BandanaRequest = _reflection.GeneratedProtocolMessageType('BandanaRequest', (_message.Message,), dict(
+  DESCRIPTOR = _BANDANAREQUEST,
   __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.Message)
+  # @@protoc_insertion_point(class_scope:dip_q.BandanaRequest)
   ))
-_sym_db.RegisterMessage(Message)
+_sym_db.RegisterMessage(BandanaRequest)
+
+DiplomacyGymResponse = _reflection.GeneratedProtocolMessageType('DiplomacyGymResponse', (_message.Message,), dict(
+  DESCRIPTOR = _DIPLOMACYGYMRESPONSE,
+  __module__ = 'proto_message_pb2'
+  # @@protoc_insertion_point(class_scope:dip_q.DiplomacyGymResponse)
+  ))
+_sym_db.RegisterMessage(DiplomacyGymResponse)
 
 ProvinceData = _reflection.GeneratedProtocolMessageType('ProvinceData', (_message.Message,), dict(
   DESCRIPTOR = _PROVINCEDATA,

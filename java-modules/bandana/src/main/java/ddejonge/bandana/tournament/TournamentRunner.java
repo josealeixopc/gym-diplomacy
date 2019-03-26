@@ -14,7 +14,7 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
-	final static int REMOTE_DEBUG = 0;	// determine whether I want to remote debug the OpenAI jar or not
+	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
 
 	// JC: CUSTOM SETTINGS END
 
@@ -39,7 +39,7 @@ public class TournamentRunner {
 	
 	public static void main(String[] args) throws IOException {
 		
-		int numberOfGames = 3;				//The number of games this tournament consists of.
+		int numberOfGames = 1;				//The number of games this tournament consists of.
 		
 		int deadlineForMovePhases = 60; 	//60 seconds for each SPR and FAL phases
 		int deadlineForRetreatPhases = 30;  //30 seconds for each SUM and AUT phases

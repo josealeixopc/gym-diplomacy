@@ -2,6 +2,7 @@
 import socket
 import sys
 import typing
+from threading import Thread
 
 import logging
 
@@ -14,6 +15,9 @@ logger = logging.getLogger(__name__)
 class LocalSocketServer:
     sock = None
     handle: typing.Callable = None
+    threads: typing.List[Thread] = []
+
+    terminate: bool = False
 
     def __init__(self, port, handle):
         self.handle = handle
@@ -42,8 +46,13 @@ class LocalSocketServer:
         # listen for incoming connections (server mode) with one connection at a time
         self.sock.listen(1)
 
-    def listen(self):
-        while True:
+    def threaded_listen(self):
+        thread = Thread(target=self._listen)
+        self.threads.append(thread)
+        thread.start()
+
+    def _listen(self):
+        while not self.terminate:
             # wait for a connection
             logger.debug('waiting for a connection')
             connection, client_address = self.sock.accept()
@@ -60,6 +69,11 @@ class LocalSocketServer:
             finally:
                 # Clean up the connection
                 connection.close()
+
+    def close(self) -> None:
+        self.terminate = True
+        for thread in self.threads:
+            thread.join()
 
 
 def handle_f(request: bytearray):

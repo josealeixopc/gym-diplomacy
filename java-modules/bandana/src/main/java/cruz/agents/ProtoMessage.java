@@ -14,18 +14,18 @@ public final class ProtoMessage {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  public interface MessageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:dip_q.Message)
+  public interface BandanaRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:dip_q.BandanaRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.dip_q.Message.Type type = 1;</code>
+     * <code>.dip_q.BandanaRequest.Type type = 1;</code>
      */
     int getTypeValue();
     /**
-     * <code>.dip_q.Message.Type type = 1;</code>
+     * <code>.dip_q.BandanaRequest.Type type = 1;</code>
      */
-    cruz.agents.ProtoMessage.Message.Type getType();
+    cruz.agents.ProtoMessage.BandanaRequest.Type getType();
 
     /**
      * <code>.dip_q.ObservationData observation = 2;</code>
@@ -39,46 +39,20 @@ public final class ProtoMessage {
      * <code>.dip_q.ObservationData observation = 2;</code>
      */
     cruz.agents.ProtoMessage.ObservationDataOrBuilder getObservationOrBuilder();
-
-    /**
-     * <code>.dip_q.DealData deal = 3;</code>
-     */
-    boolean hasDeal();
-    /**
-     * <code>.dip_q.DealData deal = 3;</code>
-     */
-    cruz.agents.ProtoMessage.DealData getDeal();
-    /**
-     * <code>.dip_q.DealData deal = 3;</code>
-     */
-    cruz.agents.ProtoMessage.DealDataOrBuilder getDealOrBuilder();
-
-    /**
-     * <code>.dip_q.AcceptanceData acceptance = 4;</code>
-     */
-    boolean hasAcceptance();
-    /**
-     * <code>.dip_q.AcceptanceData acceptance = 4;</code>
-     */
-    cruz.agents.ProtoMessage.AcceptanceData getAcceptance();
-    /**
-     * <code>.dip_q.AcceptanceData acceptance = 4;</code>
-     */
-    cruz.agents.ProtoMessage.AcceptanceDataOrBuilder getAcceptanceOrBuilder();
   }
   /**
-   * Protobuf type {@code dip_q.Message}
+   * Protobuf type {@code dip_q.BandanaRequest}
    */
-  public  static final class Message extends
+  public  static final class BandanaRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:dip_q.Message)
-      MessageOrBuilder {
+      // @@protoc_insertion_point(message_implements:dip_q.BandanaRequest)
+      BandanaRequestOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use Message.newBuilder() to construct.
-    private Message(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use BandanaRequest.newBuilder() to construct.
+    private BandanaRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Message() {
+    private BandanaRequest() {
       type_ = 0;
     }
 
@@ -87,7 +61,7 @@ public final class ProtoMessage {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Message(
+    private BandanaRequest(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -125,32 +99,6 @@ public final class ProtoMessage {
 
               break;
             }
-            case 26: {
-              cruz.agents.ProtoMessage.DealData.Builder subBuilder = null;
-              if (deal_ != null) {
-                subBuilder = deal_.toBuilder();
-              }
-              deal_ = input.readMessage(cruz.agents.ProtoMessage.DealData.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(deal_);
-                deal_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 34: {
-              cruz.agents.ProtoMessage.AcceptanceData.Builder subBuilder = null;
-              if (acceptance_ != null) {
-                subBuilder = acceptance_.toBuilder();
-              }
-              acceptance_ = input.readMessage(cruz.agents.ProtoMessage.AcceptanceData.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(acceptance_);
-                acceptance_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -172,19 +120,19 @@ public final class ProtoMessage {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cruz.agents.ProtoMessage.internal_static_dip_q_Message_descriptor;
+      return cruz.agents.ProtoMessage.internal_static_dip_q_BandanaRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cruz.agents.ProtoMessage.internal_static_dip_q_Message_fieldAccessorTable
+      return cruz.agents.ProtoMessage.internal_static_dip_q_BandanaRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              cruz.agents.ProtoMessage.Message.class, cruz.agents.ProtoMessage.Message.Builder.class);
+              cruz.agents.ProtoMessage.BandanaRequest.class, cruz.agents.ProtoMessage.BandanaRequest.Builder.class);
     }
 
     /**
-     * Protobuf enum {@code dip_q.Message.Type}
+     * Protobuf enum {@code dip_q.BandanaRequest.Type}
      */
     public enum Type
         implements com.google.protobuf.ProtocolMessageEnum {
@@ -193,13 +141,17 @@ public final class ProtoMessage {
        */
       INVALID(0),
       /**
-       * <code>GET_DEAL_REQUEST = 1;</code>
+       * <code>SEND_INITIAL_OBSERVATION = 1;</code>
        */
-      GET_DEAL_REQUEST(1),
+      SEND_INITIAL_OBSERVATION(1),
       /**
-       * <code>GET_ACCEPTANCE_REQUEST = 2;</code>
+       * <code>GET_DEAL_REQUEST = 2;</code>
        */
-      GET_ACCEPTANCE_REQUEST(2),
+      GET_DEAL_REQUEST(2),
+      /**
+       * <code>GET_ACCEPTANCE_REQUEST = 3;</code>
+       */
+      GET_ACCEPTANCE_REQUEST(3),
       UNRECOGNIZED(-1),
       ;
 
@@ -208,13 +160,17 @@ public final class ProtoMessage {
        */
       public static final int INVALID_VALUE = 0;
       /**
-       * <code>GET_DEAL_REQUEST = 1;</code>
+       * <code>SEND_INITIAL_OBSERVATION = 1;</code>
        */
-      public static final int GET_DEAL_REQUEST_VALUE = 1;
+      public static final int SEND_INITIAL_OBSERVATION_VALUE = 1;
       /**
-       * <code>GET_ACCEPTANCE_REQUEST = 2;</code>
+       * <code>GET_DEAL_REQUEST = 2;</code>
        */
-      public static final int GET_ACCEPTANCE_REQUEST_VALUE = 2;
+      public static final int GET_DEAL_REQUEST_VALUE = 2;
+      /**
+       * <code>GET_ACCEPTANCE_REQUEST = 3;</code>
+       */
+      public static final int GET_ACCEPTANCE_REQUEST_VALUE = 3;
 
 
       public final int getNumber() {
@@ -236,8 +192,9 @@ public final class ProtoMessage {
       public static Type forNumber(int value) {
         switch (value) {
           case 0: return INVALID;
-          case 1: return GET_DEAL_REQUEST;
-          case 2: return GET_ACCEPTANCE_REQUEST;
+          case 1: return SEND_INITIAL_OBSERVATION;
+          case 2: return GET_DEAL_REQUEST;
+          case 3: return GET_ACCEPTANCE_REQUEST;
           default: return null;
         }
       }
@@ -264,7 +221,7 @@ public final class ProtoMessage {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return cruz.agents.ProtoMessage.Message.getDescriptor().getEnumTypes().get(0);
+        return cruz.agents.ProtoMessage.BandanaRequest.getDescriptor().getEnumTypes().get(0);
       }
 
       private static final Type[] VALUES = values();
@@ -287,24 +244,24 @@ public final class ProtoMessage {
         this.value = value;
       }
 
-      // @@protoc_insertion_point(enum_scope:dip_q.Message.Type)
+      // @@protoc_insertion_point(enum_scope:dip_q.BandanaRequest.Type)
     }
 
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
-     * <code>.dip_q.Message.Type type = 1;</code>
+     * <code>.dip_q.BandanaRequest.Type type = 1;</code>
      */
     public int getTypeValue() {
       return type_;
     }
     /**
-     * <code>.dip_q.Message.Type type = 1;</code>
+     * <code>.dip_q.BandanaRequest.Type type = 1;</code>
      */
-    public cruz.agents.ProtoMessage.Message.Type getType() {
+    public cruz.agents.ProtoMessage.BandanaRequest.Type getType() {
       @SuppressWarnings("deprecation")
-      cruz.agents.ProtoMessage.Message.Type result = cruz.agents.ProtoMessage.Message.Type.valueOf(type_);
-      return result == null ? cruz.agents.ProtoMessage.Message.Type.UNRECOGNIZED : result;
+      cruz.agents.ProtoMessage.BandanaRequest.Type result = cruz.agents.ProtoMessage.BandanaRequest.Type.valueOf(type_);
+      return result == null ? cruz.agents.ProtoMessage.BandanaRequest.Type.UNRECOGNIZED : result;
     }
 
     public static final int OBSERVATION_FIELD_NUMBER = 2;
@@ -328,48 +285,6 @@ public final class ProtoMessage {
       return getObservation();
     }
 
-    public static final int DEAL_FIELD_NUMBER = 3;
-    private cruz.agents.ProtoMessage.DealData deal_;
-    /**
-     * <code>.dip_q.DealData deal = 3;</code>
-     */
-    public boolean hasDeal() {
-      return deal_ != null;
-    }
-    /**
-     * <code>.dip_q.DealData deal = 3;</code>
-     */
-    public cruz.agents.ProtoMessage.DealData getDeal() {
-      return deal_ == null ? cruz.agents.ProtoMessage.DealData.getDefaultInstance() : deal_;
-    }
-    /**
-     * <code>.dip_q.DealData deal = 3;</code>
-     */
-    public cruz.agents.ProtoMessage.DealDataOrBuilder getDealOrBuilder() {
-      return getDeal();
-    }
-
-    public static final int ACCEPTANCE_FIELD_NUMBER = 4;
-    private cruz.agents.ProtoMessage.AcceptanceData acceptance_;
-    /**
-     * <code>.dip_q.AcceptanceData acceptance = 4;</code>
-     */
-    public boolean hasAcceptance() {
-      return acceptance_ != null;
-    }
-    /**
-     * <code>.dip_q.AcceptanceData acceptance = 4;</code>
-     */
-    public cruz.agents.ProtoMessage.AcceptanceData getAcceptance() {
-      return acceptance_ == null ? cruz.agents.ProtoMessage.AcceptanceData.getDefaultInstance() : acceptance_;
-    }
-    /**
-     * <code>.dip_q.AcceptanceData acceptance = 4;</code>
-     */
-    public cruz.agents.ProtoMessage.AcceptanceDataOrBuilder getAcceptanceOrBuilder() {
-      return getAcceptance();
-    }
-
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -384,17 +299,11 @@ public final class ProtoMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (type_ != cruz.agents.ProtoMessage.Message.Type.INVALID.getNumber()) {
+      if (type_ != cruz.agents.ProtoMessage.BandanaRequest.Type.INVALID.getNumber()) {
         output.writeEnum(1, type_);
       }
       if (observation_ != null) {
         output.writeMessage(2, getObservation());
-      }
-      if (deal_ != null) {
-        output.writeMessage(3, getDeal());
-      }
-      if (acceptance_ != null) {
-        output.writeMessage(4, getAcceptance());
       }
       unknownFields.writeTo(output);
     }
@@ -405,21 +314,13 @@ public final class ProtoMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (type_ != cruz.agents.ProtoMessage.Message.Type.INVALID.getNumber()) {
+      if (type_ != cruz.agents.ProtoMessage.BandanaRequest.Type.INVALID.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, type_);
       }
       if (observation_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getObservation());
-      }
-      if (deal_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getDeal());
-      }
-      if (acceptance_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getAcceptance());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -431,26 +332,16 @@ public final class ProtoMessage {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof cruz.agents.ProtoMessage.Message)) {
+      if (!(obj instanceof cruz.agents.ProtoMessage.BandanaRequest)) {
         return super.equals(obj);
       }
-      cruz.agents.ProtoMessage.Message other = (cruz.agents.ProtoMessage.Message) obj;
+      cruz.agents.ProtoMessage.BandanaRequest other = (cruz.agents.ProtoMessage.BandanaRequest) obj;
 
       if (type_ != other.type_) return false;
       if (hasObservation() != other.hasObservation()) return false;
       if (hasObservation()) {
         if (!getObservation()
             .equals(other.getObservation())) return false;
-      }
-      if (hasDeal() != other.hasDeal()) return false;
-      if (hasDeal()) {
-        if (!getDeal()
-            .equals(other.getDeal())) return false;
-      }
-      if (hasAcceptance() != other.hasAcceptance()) return false;
-      if (hasAcceptance()) {
-        if (!getAcceptance()
-            .equals(other.getAcceptance())) return false;
       }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -469,82 +360,74 @@ public final class ProtoMessage {
         hash = (37 * hash) + OBSERVATION_FIELD_NUMBER;
         hash = (53 * hash) + getObservation().hashCode();
       }
-      if (hasDeal()) {
-        hash = (37 * hash) + DEAL_FIELD_NUMBER;
-        hash = (53 * hash) + getDeal().hashCode();
-      }
-      if (hasAcceptance()) {
-        hash = (37 * hash) + ACCEPTANCE_FIELD_NUMBER;
-        hash = (53 * hash) + getAcceptance().hashCode();
-      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static cruz.agents.ProtoMessage.Message parseFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(byte[] data)
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(java.io.InputStream input)
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static cruz.agents.ProtoMessage.Message parseDelimitedFrom(java.io.InputStream input)
+    public static cruz.agents.ProtoMessage.BandanaRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static cruz.agents.ProtoMessage.Message parseDelimitedFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static cruz.agents.ProtoMessage.Message parseFrom(
+    public static cruz.agents.ProtoMessage.BandanaRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -557,7 +440,7 @@ public final class ProtoMessage {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(cruz.agents.ProtoMessage.Message prototype) {
+    public static Builder newBuilder(cruz.agents.ProtoMessage.BandanaRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -573,26 +456,26 @@ public final class ProtoMessage {
       return builder;
     }
     /**
-     * Protobuf type {@code dip_q.Message}
+     * Protobuf type {@code dip_q.BandanaRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:dip_q.Message)
-        cruz.agents.ProtoMessage.MessageOrBuilder {
+        // @@protoc_insertion_point(builder_implements:dip_q.BandanaRequest)
+        cruz.agents.ProtoMessage.BandanaRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cruz.agents.ProtoMessage.internal_static_dip_q_Message_descriptor;
+        return cruz.agents.ProtoMessage.internal_static_dip_q_BandanaRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cruz.agents.ProtoMessage.internal_static_dip_q_Message_fieldAccessorTable
+        return cruz.agents.ProtoMessage.internal_static_dip_q_BandanaRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                cruz.agents.ProtoMessage.Message.class, cruz.agents.ProtoMessage.Message.Builder.class);
+                cruz.agents.ProtoMessage.BandanaRequest.class, cruz.agents.ProtoMessage.BandanaRequest.Builder.class);
       }
 
-      // Construct using cruz.agents.ProtoMessage.Message.newBuilder()
+      // Construct using cruz.agents.ProtoMessage.BandanaRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -618,35 +501,23 @@ public final class ProtoMessage {
           observation_ = null;
           observationBuilder_ = null;
         }
-        if (dealBuilder_ == null) {
-          deal_ = null;
-        } else {
-          deal_ = null;
-          dealBuilder_ = null;
-        }
-        if (acceptanceBuilder_ == null) {
-          acceptance_ = null;
-        } else {
-          acceptance_ = null;
-          acceptanceBuilder_ = null;
-        }
         return this;
       }
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cruz.agents.ProtoMessage.internal_static_dip_q_Message_descriptor;
+        return cruz.agents.ProtoMessage.internal_static_dip_q_BandanaRequest_descriptor;
       }
 
       @java.lang.Override
-      public cruz.agents.ProtoMessage.Message getDefaultInstanceForType() {
-        return cruz.agents.ProtoMessage.Message.getDefaultInstance();
+      public cruz.agents.ProtoMessage.BandanaRequest getDefaultInstanceForType() {
+        return cruz.agents.ProtoMessage.BandanaRequest.getDefaultInstance();
       }
 
       @java.lang.Override
-      public cruz.agents.ProtoMessage.Message build() {
-        cruz.agents.ProtoMessage.Message result = buildPartial();
+      public cruz.agents.ProtoMessage.BandanaRequest build() {
+        cruz.agents.ProtoMessage.BandanaRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -654,23 +525,13 @@ public final class ProtoMessage {
       }
 
       @java.lang.Override
-      public cruz.agents.ProtoMessage.Message buildPartial() {
-        cruz.agents.ProtoMessage.Message result = new cruz.agents.ProtoMessage.Message(this);
+      public cruz.agents.ProtoMessage.BandanaRequest buildPartial() {
+        cruz.agents.ProtoMessage.BandanaRequest result = new cruz.agents.ProtoMessage.BandanaRequest(this);
         result.type_ = type_;
         if (observationBuilder_ == null) {
           result.observation_ = observation_;
         } else {
           result.observation_ = observationBuilder_.build();
-        }
-        if (dealBuilder_ == null) {
-          result.deal_ = deal_;
-        } else {
-          result.deal_ = dealBuilder_.build();
-        }
-        if (acceptanceBuilder_ == null) {
-          result.acceptance_ = acceptance_;
-        } else {
-          result.acceptance_ = acceptanceBuilder_.build();
         }
         onBuilt();
         return result;
@@ -710,27 +571,21 @@ public final class ProtoMessage {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof cruz.agents.ProtoMessage.Message) {
-          return mergeFrom((cruz.agents.ProtoMessage.Message)other);
+        if (other instanceof cruz.agents.ProtoMessage.BandanaRequest) {
+          return mergeFrom((cruz.agents.ProtoMessage.BandanaRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(cruz.agents.ProtoMessage.Message other) {
-        if (other == cruz.agents.ProtoMessage.Message.getDefaultInstance()) return this;
+      public Builder mergeFrom(cruz.agents.ProtoMessage.BandanaRequest other) {
+        if (other == cruz.agents.ProtoMessage.BandanaRequest.getDefaultInstance()) return this;
         if (other.type_ != 0) {
           setTypeValue(other.getTypeValue());
         }
         if (other.hasObservation()) {
           mergeObservation(other.getObservation());
-        }
-        if (other.hasDeal()) {
-          mergeDeal(other.getDeal());
-        }
-        if (other.hasAcceptance()) {
-          mergeAcceptance(other.getAcceptance());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -747,11 +602,11 @@ public final class ProtoMessage {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        cruz.agents.ProtoMessage.Message parsedMessage = null;
+        cruz.agents.ProtoMessage.BandanaRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (cruz.agents.ProtoMessage.Message) e.getUnfinishedMessage();
+          parsedMessage = (cruz.agents.ProtoMessage.BandanaRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -763,13 +618,13 @@ public final class ProtoMessage {
 
       private int type_ = 0;
       /**
-       * <code>.dip_q.Message.Type type = 1;</code>
+       * <code>.dip_q.BandanaRequest.Type type = 1;</code>
        */
       public int getTypeValue() {
         return type_;
       }
       /**
-       * <code>.dip_q.Message.Type type = 1;</code>
+       * <code>.dip_q.BandanaRequest.Type type = 1;</code>
        */
       public Builder setTypeValue(int value) {
         type_ = value;
@@ -777,17 +632,17 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.Message.Type type = 1;</code>
+       * <code>.dip_q.BandanaRequest.Type type = 1;</code>
        */
-      public cruz.agents.ProtoMessage.Message.Type getType() {
+      public cruz.agents.ProtoMessage.BandanaRequest.Type getType() {
         @SuppressWarnings("deprecation")
-        cruz.agents.ProtoMessage.Message.Type result = cruz.agents.ProtoMessage.Message.Type.valueOf(type_);
-        return result == null ? cruz.agents.ProtoMessage.Message.Type.UNRECOGNIZED : result;
+        cruz.agents.ProtoMessage.BandanaRequest.Type result = cruz.agents.ProtoMessage.BandanaRequest.Type.valueOf(type_);
+        return result == null ? cruz.agents.ProtoMessage.BandanaRequest.Type.UNRECOGNIZED : result;
       }
       /**
-       * <code>.dip_q.Message.Type type = 1;</code>
+       * <code>.dip_q.BandanaRequest.Type type = 1;</code>
        */
-      public Builder setType(cruz.agents.ProtoMessage.Message.Type value) {
+      public Builder setType(cruz.agents.ProtoMessage.BandanaRequest.Type value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -797,7 +652,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.Message.Type type = 1;</code>
+       * <code>.dip_q.BandanaRequest.Type type = 1;</code>
        */
       public Builder clearType() {
         
@@ -922,18 +777,794 @@ public final class ProtoMessage {
         }
         return observationBuilder_;
       }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:dip_q.BandanaRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:dip_q.BandanaRequest)
+    private static final cruz.agents.ProtoMessage.BandanaRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cruz.agents.ProtoMessage.BandanaRequest();
+    }
+
+    public static cruz.agents.ProtoMessage.BandanaRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<BandanaRequest>
+        PARSER = new com.google.protobuf.AbstractParser<BandanaRequest>() {
+      @java.lang.Override
+      public BandanaRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BandanaRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<BandanaRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BandanaRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cruz.agents.ProtoMessage.BandanaRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface DiplomacyGymResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:dip_q.DiplomacyGymResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+     */
+    int getTypeValue();
+    /**
+     * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+     */
+    cruz.agents.ProtoMessage.DiplomacyGymResponse.Type getType();
+
+    /**
+     * <code>.dip_q.DealData deal = 2;</code>
+     */
+    boolean hasDeal();
+    /**
+     * <code>.dip_q.DealData deal = 2;</code>
+     */
+    cruz.agents.ProtoMessage.DealData getDeal();
+    /**
+     * <code>.dip_q.DealData deal = 2;</code>
+     */
+    cruz.agents.ProtoMessage.DealDataOrBuilder getDealOrBuilder();
+
+    /**
+     * <code>.dip_q.AcceptanceData acceptance = 3;</code>
+     */
+    boolean hasAcceptance();
+    /**
+     * <code>.dip_q.AcceptanceData acceptance = 3;</code>
+     */
+    cruz.agents.ProtoMessage.AcceptanceData getAcceptance();
+    /**
+     * <code>.dip_q.AcceptanceData acceptance = 3;</code>
+     */
+    cruz.agents.ProtoMessage.AcceptanceDataOrBuilder getAcceptanceOrBuilder();
+  }
+  /**
+   * Protobuf type {@code dip_q.DiplomacyGymResponse}
+   */
+  public  static final class DiplomacyGymResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:dip_q.DiplomacyGymResponse)
+      DiplomacyGymResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use DiplomacyGymResponse.newBuilder() to construct.
+    private DiplomacyGymResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private DiplomacyGymResponse() {
+      type_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private DiplomacyGymResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+
+              type_ = rawValue;
+              break;
+            }
+            case 18: {
+              cruz.agents.ProtoMessage.DealData.Builder subBuilder = null;
+              if (deal_ != null) {
+                subBuilder = deal_.toBuilder();
+              }
+              deal_ = input.readMessage(cruz.agents.ProtoMessage.DealData.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(deal_);
+                deal_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 26: {
+              cruz.agents.ProtoMessage.AcceptanceData.Builder subBuilder = null;
+              if (acceptance_ != null) {
+                subBuilder = acceptance_.toBuilder();
+              }
+              acceptance_ = input.readMessage(cruz.agents.ProtoMessage.AcceptanceData.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(acceptance_);
+                acceptance_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cruz.agents.ProtoMessage.DiplomacyGymResponse.class, cruz.agents.ProtoMessage.DiplomacyGymResponse.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code dip_q.DiplomacyGymResponse.Type}
+     */
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>INVALID = 0;</code>
+       */
+      INVALID(0),
+      /**
+       * <code>CONFIRM = 1;</code>
+       */
+      CONFIRM(1),
+      /**
+       * <code>SEND_DEAL = 2;</code>
+       */
+      SEND_DEAL(2),
+      /**
+       * <code>SEND_ACCEPTANCE = 3;</code>
+       */
+      SEND_ACCEPTANCE(3),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>INVALID = 0;</code>
+       */
+      public static final int INVALID_VALUE = 0;
+      /**
+       * <code>CONFIRM = 1;</code>
+       */
+      public static final int CONFIRM_VALUE = 1;
+      /**
+       * <code>SEND_DEAL = 2;</code>
+       */
+      public static final int SEND_DEAL_VALUE = 2;
+      /**
+       * <code>SEND_ACCEPTANCE = 3;</code>
+       */
+      public static final int SEND_ACCEPTANCE_VALUE = 3;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Type valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static Type forNumber(int value) {
+        switch (value) {
+          case 0: return INVALID;
+          case 1: return CONFIRM;
+          case 2: return SEND_DEAL;
+          case 3: return SEND_ACCEPTANCE;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Type> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return cruz.agents.ProtoMessage.DiplomacyGymResponse.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Type(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:dip_q.DiplomacyGymResponse.Type)
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private int type_;
+    /**
+     * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+     */
+    public int getTypeValue() {
+      return type_;
+    }
+    /**
+     * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+     */
+    public cruz.agents.ProtoMessage.DiplomacyGymResponse.Type getType() {
+      @SuppressWarnings("deprecation")
+      cruz.agents.ProtoMessage.DiplomacyGymResponse.Type result = cruz.agents.ProtoMessage.DiplomacyGymResponse.Type.valueOf(type_);
+      return result == null ? cruz.agents.ProtoMessage.DiplomacyGymResponse.Type.UNRECOGNIZED : result;
+    }
+
+    public static final int DEAL_FIELD_NUMBER = 2;
+    private cruz.agents.ProtoMessage.DealData deal_;
+    /**
+     * <code>.dip_q.DealData deal = 2;</code>
+     */
+    public boolean hasDeal() {
+      return deal_ != null;
+    }
+    /**
+     * <code>.dip_q.DealData deal = 2;</code>
+     */
+    public cruz.agents.ProtoMessage.DealData getDeal() {
+      return deal_ == null ? cruz.agents.ProtoMessage.DealData.getDefaultInstance() : deal_;
+    }
+    /**
+     * <code>.dip_q.DealData deal = 2;</code>
+     */
+    public cruz.agents.ProtoMessage.DealDataOrBuilder getDealOrBuilder() {
+      return getDeal();
+    }
+
+    public static final int ACCEPTANCE_FIELD_NUMBER = 3;
+    private cruz.agents.ProtoMessage.AcceptanceData acceptance_;
+    /**
+     * <code>.dip_q.AcceptanceData acceptance = 3;</code>
+     */
+    public boolean hasAcceptance() {
+      return acceptance_ != null;
+    }
+    /**
+     * <code>.dip_q.AcceptanceData acceptance = 3;</code>
+     */
+    public cruz.agents.ProtoMessage.AcceptanceData getAcceptance() {
+      return acceptance_ == null ? cruz.agents.ProtoMessage.AcceptanceData.getDefaultInstance() : acceptance_;
+    }
+    /**
+     * <code>.dip_q.AcceptanceData acceptance = 3;</code>
+     */
+    public cruz.agents.ProtoMessage.AcceptanceDataOrBuilder getAcceptanceOrBuilder() {
+      return getAcceptance();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (type_ != cruz.agents.ProtoMessage.DiplomacyGymResponse.Type.INVALID.getNumber()) {
+        output.writeEnum(1, type_);
+      }
+      if (deal_ != null) {
+        output.writeMessage(2, getDeal());
+      }
+      if (acceptance_ != null) {
+        output.writeMessage(3, getAcceptance());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (type_ != cruz.agents.ProtoMessage.DiplomacyGymResponse.Type.INVALID.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_);
+      }
+      if (deal_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getDeal());
+      }
+      if (acceptance_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getAcceptance());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cruz.agents.ProtoMessage.DiplomacyGymResponse)) {
+        return super.equals(obj);
+      }
+      cruz.agents.ProtoMessage.DiplomacyGymResponse other = (cruz.agents.ProtoMessage.DiplomacyGymResponse) obj;
+
+      if (type_ != other.type_) return false;
+      if (hasDeal() != other.hasDeal()) return false;
+      if (hasDeal()) {
+        if (!getDeal()
+            .equals(other.getDeal())) return false;
+      }
+      if (hasAcceptance() != other.hasAcceptance()) return false;
+      if (hasAcceptance()) {
+        if (!getAcceptance()
+            .equals(other.getAcceptance())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + type_;
+      if (hasDeal()) {
+        hash = (37 * hash) + DEAL_FIELD_NUMBER;
+        hash = (53 * hash) + getDeal().hashCode();
+      }
+      if (hasAcceptance()) {
+        hash = (37 * hash) + ACCEPTANCE_FIELD_NUMBER;
+        hash = (53 * hash) + getAcceptance().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cruz.agents.ProtoMessage.DiplomacyGymResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code dip_q.DiplomacyGymResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:dip_q.DiplomacyGymResponse)
+        cruz.agents.ProtoMessage.DiplomacyGymResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cruz.agents.ProtoMessage.DiplomacyGymResponse.class, cruz.agents.ProtoMessage.DiplomacyGymResponse.Builder.class);
+      }
+
+      // Construct using cruz.agents.ProtoMessage.DiplomacyGymResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        type_ = 0;
+
+        if (dealBuilder_ == null) {
+          deal_ = null;
+        } else {
+          deal_ = null;
+          dealBuilder_ = null;
+        }
+        if (acceptanceBuilder_ == null) {
+          acceptance_ = null;
+        } else {
+          acceptance_ = null;
+          acceptanceBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.DiplomacyGymResponse getDefaultInstanceForType() {
+        return cruz.agents.ProtoMessage.DiplomacyGymResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.DiplomacyGymResponse build() {
+        cruz.agents.ProtoMessage.DiplomacyGymResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.DiplomacyGymResponse buildPartial() {
+        cruz.agents.ProtoMessage.DiplomacyGymResponse result = new cruz.agents.ProtoMessage.DiplomacyGymResponse(this);
+        result.type_ = type_;
+        if (dealBuilder_ == null) {
+          result.deal_ = deal_;
+        } else {
+          result.deal_ = dealBuilder_.build();
+        }
+        if (acceptanceBuilder_ == null) {
+          result.acceptance_ = acceptance_;
+        } else {
+          result.acceptance_ = acceptanceBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cruz.agents.ProtoMessage.DiplomacyGymResponse) {
+          return mergeFrom((cruz.agents.ProtoMessage.DiplomacyGymResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cruz.agents.ProtoMessage.DiplomacyGymResponse other) {
+        if (other == cruz.agents.ProtoMessage.DiplomacyGymResponse.getDefaultInstance()) return this;
+        if (other.type_ != 0) {
+          setTypeValue(other.getTypeValue());
+        }
+        if (other.hasDeal()) {
+          mergeDeal(other.getDeal());
+        }
+        if (other.hasAcceptance()) {
+          mergeAcceptance(other.getAcceptance());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cruz.agents.ProtoMessage.DiplomacyGymResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cruz.agents.ProtoMessage.DiplomacyGymResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int type_ = 0;
+      /**
+       * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+       */
+      public int getTypeValue() {
+        return type_;
+      }
+      /**
+       * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+       */
+      public Builder setTypeValue(int value) {
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+       */
+      public cruz.agents.ProtoMessage.DiplomacyGymResponse.Type getType() {
+        @SuppressWarnings("deprecation")
+        cruz.agents.ProtoMessage.DiplomacyGymResponse.Type result = cruz.agents.ProtoMessage.DiplomacyGymResponse.Type.valueOf(type_);
+        return result == null ? cruz.agents.ProtoMessage.DiplomacyGymResponse.Type.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+       */
+      public Builder setType(cruz.agents.ProtoMessage.DiplomacyGymResponse.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.dip_q.DiplomacyGymResponse.Type type = 1;</code>
+       */
+      public Builder clearType() {
+        
+        type_ = 0;
+        onChanged();
+        return this;
+      }
 
       private cruz.agents.ProtoMessage.DealData deal_;
       private com.google.protobuf.SingleFieldBuilderV3<
           cruz.agents.ProtoMessage.DealData, cruz.agents.ProtoMessage.DealData.Builder, cruz.agents.ProtoMessage.DealDataOrBuilder> dealBuilder_;
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       public boolean hasDeal() {
         return dealBuilder_ != null || deal_ != null;
       }
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       public cruz.agents.ProtoMessage.DealData getDeal() {
         if (dealBuilder_ == null) {
@@ -943,7 +1574,7 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       public Builder setDeal(cruz.agents.ProtoMessage.DealData value) {
         if (dealBuilder_ == null) {
@@ -959,7 +1590,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       public Builder setDeal(
           cruz.agents.ProtoMessage.DealData.Builder builderForValue) {
@@ -973,7 +1604,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       public Builder mergeDeal(cruz.agents.ProtoMessage.DealData value) {
         if (dealBuilder_ == null) {
@@ -991,7 +1622,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       public Builder clearDeal() {
         if (dealBuilder_ == null) {
@@ -1005,7 +1636,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       public cruz.agents.ProtoMessage.DealData.Builder getDealBuilder() {
         
@@ -1013,7 +1644,7 @@ public final class ProtoMessage {
         return getDealFieldBuilder().getBuilder();
       }
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       public cruz.agents.ProtoMessage.DealDataOrBuilder getDealOrBuilder() {
         if (dealBuilder_ != null) {
@@ -1024,7 +1655,7 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <code>.dip_q.DealData deal = 3;</code>
+       * <code>.dip_q.DealData deal = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           cruz.agents.ProtoMessage.DealData, cruz.agents.ProtoMessage.DealData.Builder, cruz.agents.ProtoMessage.DealDataOrBuilder> 
@@ -1044,13 +1675,13 @@ public final class ProtoMessage {
       private com.google.protobuf.SingleFieldBuilderV3<
           cruz.agents.ProtoMessage.AcceptanceData, cruz.agents.ProtoMessage.AcceptanceData.Builder, cruz.agents.ProtoMessage.AcceptanceDataOrBuilder> acceptanceBuilder_;
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public boolean hasAcceptance() {
         return acceptanceBuilder_ != null || acceptance_ != null;
       }
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public cruz.agents.ProtoMessage.AcceptanceData getAcceptance() {
         if (acceptanceBuilder_ == null) {
@@ -1060,7 +1691,7 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public Builder setAcceptance(cruz.agents.ProtoMessage.AcceptanceData value) {
         if (acceptanceBuilder_ == null) {
@@ -1076,7 +1707,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public Builder setAcceptance(
           cruz.agents.ProtoMessage.AcceptanceData.Builder builderForValue) {
@@ -1090,7 +1721,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public Builder mergeAcceptance(cruz.agents.ProtoMessage.AcceptanceData value) {
         if (acceptanceBuilder_ == null) {
@@ -1108,7 +1739,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public Builder clearAcceptance() {
         if (acceptanceBuilder_ == null) {
@@ -1122,7 +1753,7 @@ public final class ProtoMessage {
         return this;
       }
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public cruz.agents.ProtoMessage.AcceptanceData.Builder getAcceptanceBuilder() {
         
@@ -1130,7 +1761,7 @@ public final class ProtoMessage {
         return getAcceptanceFieldBuilder().getBuilder();
       }
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public cruz.agents.ProtoMessage.AcceptanceDataOrBuilder getAcceptanceOrBuilder() {
         if (acceptanceBuilder_ != null) {
@@ -1141,7 +1772,7 @@ public final class ProtoMessage {
         }
       }
       /**
-       * <code>.dip_q.AcceptanceData acceptance = 4;</code>
+       * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           cruz.agents.ProtoMessage.AcceptanceData, cruz.agents.ProtoMessage.AcceptanceData.Builder, cruz.agents.ProtoMessage.AcceptanceDataOrBuilder> 
@@ -1169,41 +1800,41 @@ public final class ProtoMessage {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:dip_q.Message)
+      // @@protoc_insertion_point(builder_scope:dip_q.DiplomacyGymResponse)
     }
 
-    // @@protoc_insertion_point(class_scope:dip_q.Message)
-    private static final cruz.agents.ProtoMessage.Message DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:dip_q.DiplomacyGymResponse)
+    private static final cruz.agents.ProtoMessage.DiplomacyGymResponse DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new cruz.agents.ProtoMessage.Message();
+      DEFAULT_INSTANCE = new cruz.agents.ProtoMessage.DiplomacyGymResponse();
     }
 
-    public static cruz.agents.ProtoMessage.Message getDefaultInstance() {
+    public static cruz.agents.ProtoMessage.DiplomacyGymResponse getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<Message>
-        PARSER = new com.google.protobuf.AbstractParser<Message>() {
+    private static final com.google.protobuf.Parser<DiplomacyGymResponse>
+        PARSER = new com.google.protobuf.AbstractParser<DiplomacyGymResponse>() {
       @java.lang.Override
-      public Message parsePartialFrom(
+      public DiplomacyGymResponse parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Message(input, extensionRegistry);
+        return new DiplomacyGymResponse(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Message> parser() {
+    public static com.google.protobuf.Parser<DiplomacyGymResponse> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Message> getParserForType() {
+    public com.google.protobuf.Parser<DiplomacyGymResponse> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public cruz.agents.ProtoMessage.Message getDefaultInstanceForType() {
+    public cruz.agents.ProtoMessage.DiplomacyGymResponse getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3865,10 +4496,15 @@ public final class ProtoMessage {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dip_q_Message_descriptor;
+    internal_static_dip_q_BandanaRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dip_q_Message_fieldAccessorTable;
+      internal_static_dip_q_BandanaRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dip_q_DiplomacyGymResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dip_q_DiplomacyGymResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_ProvinceData_descriptor;
   private static final 
@@ -3898,21 +4534,25 @@ public final class ProtoMessage {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\023proto_message.proto\022\005dip_q\"\352\001\n\007Message" +
-      "\022!\n\004type\030\001 \001(\0162\023.dip_q.Message.Type\022+\n\013o" +
-      "bservation\030\002 \001(\0132\026.dip_q.ObservationData" +
-      "\022\035\n\004deal\030\003 \001(\0132\017.dip_q.DealData\022)\n\naccep" +
-      "tance\030\004 \001(\0132\025.dip_q.AcceptanceData\"E\n\004Ty" +
-      "pe\022\013\n\007INVALID\020\000\022\024\n\020GET_DEAL_REQUEST\020\001\022\032\n" +
-      "\026GET_ACCEPTANCE_REQUEST\020\002\"5\n\014ProvinceDat" +
-      "a\022\n\n\002id\030\001 \001(\005\022\r\n\005owner\030\002 \001(\005\022\n\n\002sc\030\003 \001(\005" +
-      "\"s\n\017ObservationData\022&\n\tprovinces\030\001 \003(\0132\023" +
-      ".dip_q.ProvinceData\022\034\n\024previousActionRew" +
-      "ard\030\002 \001(\002\022\014\n\004done\030\003 \001(\010\022\014\n\004info\030\004 \001(\t\"\020\n" +
-      "\016AcceptanceData\"V\n\010DealData\022\026\n\016powerToPr" +
-      "opose\030\001 \001(\005\022\025\n\rstartProvince\030\002 \001(\005\022\033\n\023de" +
-      "stinationProvince\030\003 \001(\005B\r\n\013cruz.agentsb\006" +
-      "proto3"
+      "\n\023proto_message.proto\022\005dip_q\"\314\001\n\016Bandana" +
+      "Request\022(\n\004type\030\001 \001(\0162\032.dip_q.BandanaReq" +
+      "uest.Type\022+\n\013observation\030\002 \001(\0132\026.dip_q.O" +
+      "bservationData\"c\n\004Type\022\013\n\007INVALID\020\000\022\034\n\030S" +
+      "END_INITIAL_OBSERVATION\020\001\022\024\n\020GET_DEAL_RE" +
+      "QUEST\020\002\022\032\n\026GET_ACCEPTANCE_REQUEST\020\003\"\326\001\n\024" +
+      "DiplomacyGymResponse\022.\n\004type\030\001 \001(\0162 .dip" +
+      "_q.DiplomacyGymResponse.Type\022\035\n\004deal\030\002 \001" +
+      "(\0132\017.dip_q.DealData\022)\n\nacceptance\030\003 \001(\0132" +
+      "\025.dip_q.AcceptanceData\"D\n\004Type\022\013\n\007INVALI" +
+      "D\020\000\022\013\n\007CONFIRM\020\001\022\r\n\tSEND_DEAL\020\002\022\023\n\017SEND_" +
+      "ACCEPTANCE\020\003\"5\n\014ProvinceData\022\n\n\002id\030\001 \001(\005" +
+      "\022\r\n\005owner\030\002 \001(\005\022\n\n\002sc\030\003 \001(\005\"s\n\017Observati" +
+      "onData\022&\n\tprovinces\030\001 \003(\0132\023.dip_q.Provin" +
+      "ceData\022\034\n\024previousActionReward\030\002 \001(\002\022\014\n\004" +
+      "done\030\003 \001(\010\022\014\n\004info\030\004 \001(\t\"\020\n\016AcceptanceDa" +
+      "ta\"V\n\010DealData\022\026\n\016powerToPropose\030\001 \001(\005\022\025" +
+      "\n\rstartProvince\030\002 \001(\005\022\033\n\023destinationProv" +
+      "ince\030\003 \001(\005B\r\n\013cruz.agentsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3926,32 +4566,38 @@ public final class ProtoMessage {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_dip_q_Message_descriptor =
+    internal_static_dip_q_BandanaRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_dip_q_Message_fieldAccessorTable = new
+    internal_static_dip_q_BandanaRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dip_q_Message_descriptor,
-        new java.lang.String[] { "Type", "Observation", "Deal", "Acceptance", });
-    internal_static_dip_q_ProvinceData_descriptor =
+        internal_static_dip_q_BandanaRequest_descriptor,
+        new java.lang.String[] { "Type", "Observation", });
+    internal_static_dip_q_DiplomacyGymResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_dip_q_DiplomacyGymResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dip_q_DiplomacyGymResponse_descriptor,
+        new java.lang.String[] { "Type", "Deal", "Acceptance", });
+    internal_static_dip_q_ProvinceData_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_dip_q_ProvinceData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_ProvinceData_descriptor,
         new java.lang.String[] { "Id", "Owner", "Sc", });
     internal_static_dip_q_ObservationData_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_dip_q_ObservationData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_ObservationData_descriptor,
         new java.lang.String[] { "Provinces", "PreviousActionReward", "Done", "Info", });
     internal_static_dip_q_AcceptanceData_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_dip_q_AcceptanceData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_AcceptanceData_descriptor,
         new java.lang.String[] { });
     internal_static_dip_q_DealData_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_dip_q_DealData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_DealData_descriptor,

@@ -9,12 +9,13 @@ It's important that the communication between modules remains as simple as possi
 Therefore, in this message, we are ONLY sending and receiving arrays of integers.
 **/
 
-message Message {
+message BandanaRequest {
 
   enum Type {
     INVALID = 0;
-    GET_DEAL_REQUEST = 1;
-    GET_ACCEPTANCE_REQUEST = 2;
+    SEND_INITIAL_OBSERVATION = 1;
+    GET_DEAL_REQUEST = 2;
+    GET_ACCEPTANCE_REQUEST = 3;
   }
 
   // Using "required" is often bad practice. Generally, the validation
@@ -23,8 +24,19 @@ message Message {
 
   Type type = 1;
   ObservationData observation = 2;
-  DealData deal = 3;
-  AcceptanceData acceptance = 4;
+}
+
+message DiplomacyGymResponse {
+  enum Type {
+    INVALID = 0;
+    CONFIRM = 1;
+    SEND_DEAL = 2;
+    SEND_ACCEPTANCE = 3;
+  }
+
+  Type type = 1;
+  DealData deal = 2;
+  AcceptanceData acceptance = 3;
 }
 
 message ProvinceData {

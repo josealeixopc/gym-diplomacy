@@ -48,20 +48,34 @@ public class OpenAIAdapter {
         try {
             this.generatePowerNameToIntMap();
 
+            ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
+
             ProtoMessage.ObservationData observationData = this.generateObservationData();
-            byte[] observationByteArray = observationData.toByteArray();
 
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent.getLogger());
-            byte[] message = socketClient.sendMessageAndReceiveResponse(observationByteArray);
+            bandanaRequestBuilder.setObservation(observationData);
 
-            // If something went wrong with getting the message from Python module
-            if(message == null) {
+            if(firstTurn) {
+                bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.SEND_INITIAL_OBSERVATION);
+
+                byte[] message = bandanaRequestBuilder.build().toByteArray();
+
+                SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent.getLogger());
+                byte[] response = socketClient.sendMessageAndReceiveResponse(message);
+
+                // If something went wrong with getting the response from Python module
+                if (response == null) {
+                    return null;
+                }
+
+                ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymResponse.parseFrom(response);
+
+                this.firstTurn = false;
+
+                return this.generateDeal(diplomacyGymResponse.getDeal());
+            }
+            else {
                 return null;
             }
-
-            ProtoMessage.DealData dealData = ProtoMessage.DealData.parseFrom(message);
-
-            return this.generateDeal(dealData);
 
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -138,8 +152,9 @@ public class OpenAIAdapter {
 
 
         Order o = new MTOOrder(
-                this.agent.me, this.agent.game.getRegion(startProvince.getName() + "AMY"),
-                this.agent.game.getRegion(destinationProvince.getName() + "AMY"));
+                this.agent.me,
+                startProvince.getRegions().get(0),
+                destinationProvince.getRegions().get(0));
 
         OrderCommitment oc = new OrderCommitment(this.agent.game.getYear(), this.agent.game.getPhase(), o);
 

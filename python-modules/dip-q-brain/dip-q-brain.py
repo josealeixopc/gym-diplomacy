@@ -3,7 +3,6 @@ import gym
 import gym_diplomacy
 from gym import wrappers, logger
 
-
 class RandomAgent(object):
     """The world's simplest agent!"""
 
@@ -21,7 +20,7 @@ if __name__ == '__main__':
 
     # You can set the level to logger.DEBUG or logger.WARN if you
     # want to change the amount of output.
-    logger.set_level(logger.INFO)
+    logger.set_level(logger.DEBUG)
 
     env = gym.make("Diplomacy-v0")
 
@@ -34,7 +33,7 @@ if __name__ == '__main__':
     env.seed(0)
     agent = RandomAgent(env.action_space)
 
-    episode_count = 100
+    episode_count = 10
     reward = 0
     done = False
 
@@ -43,16 +42,17 @@ if __name__ == '__main__':
     for i in range(episode_count):
         act = False
         ob = env.reset()
-        while True:
-            act = env.unwrapped.waiting_for_action
+        print(ob)
+        # while True:
+        #     act = env.unwrapped.waiting_for_action
 
-            if not act:
-                continue
-            else:
-                action = agent.act(ob, reward, done)
-                ob, reward, done, _ = env.step(action)
-                if done:
-                    break
+        #     if not act:
+        #         continue
+        #     else:
+        #         action = agent.act(ob, reward, done)
+        #         ob, reward, done, _ = env.step(action)
+        #         if done:
+        #             break
                 # Note there's no env.render() here. But the environment still can open window and
                 # render if asked by env.monitor: it calls env.render('rgb_array') to record video.
                 # Video is not recorded every episode, see capped_cubic_video_schedule for details.
