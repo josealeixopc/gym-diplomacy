@@ -97,10 +97,38 @@ public class OpenAIAdapter {
         return null;
     }
 
+    public void sendEndOfGameNotification() {
+        try {
+            ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
+            bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.SEND_GAME_END);
+
+            ProtoMessage.ObservationData observationData = this.generateObservationData();
+            bandanaRequestBuilder.setObservation(observationData);
+
+            byte[] message = bandanaRequestBuilder.build().toByteArray();
+
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent.getLogger());
+            byte[] response = socketClient.sendMessageAndReceiveResponse(message);
+
+            if (response == null) {
+                return;
+            }
+
+            ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymResponse.parseFrom(response);
+
+            if(diplomacyGymResponse.getType() != ProtoMessage.DiplomacyGymResponse.Type.CONFIRM) {
+                throw new Exception("The response from DiplomacyGym to the end of game notification is not 'CONFIRM'.");
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void endOfGame() {
         this.done = true;
+        this.sendEndOfGameNotification();
         this.openAIObserver.exit();
-        // this.getDealFromDipQ();
     }
 
     private void generatePowerNameToIntMap() {

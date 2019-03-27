@@ -193,6 +193,7 @@ class DiplomacyEnv(gym.Env):
         """
         # Set or reset current observation to None
         self.observation = None
+        self.socket_server.terminate = False
 
         # In this case we simply restart Bandana
         if self.bandana_subprocess is not None:
@@ -348,6 +349,8 @@ class DiplomacyEnv(gym.Env):
             if self.done:
                 # Return empty deal just to finalize program
                 logger.debug("Sending empty deal to finalize program.")
+                # TODO: Terminate should not be here. Refactor all of this!
+                self.socket_server.terminate = True
                 return response_data.SerializeToString()
 
         # Once we have the action, send it as a deal

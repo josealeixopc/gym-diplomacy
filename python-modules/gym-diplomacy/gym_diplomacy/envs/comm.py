@@ -73,6 +73,7 @@ class LocalSocketServer:
 
     def close(self) -> None:
         self.terminate = True
+        self.sock.close()
         for thread in self.threads:
             thread.join()
 
