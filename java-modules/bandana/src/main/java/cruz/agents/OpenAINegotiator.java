@@ -105,6 +105,7 @@ public class OpenAINegotiator extends ANACNegotiator {
         this.openAIAdapter.done = false;
         this.openAIAdapter.firstTurn = true;
         this.openAIAdapter.numberOfGamesStarted++;
+        this.openAIAdapter.createObserver();
     }
 
     @Override

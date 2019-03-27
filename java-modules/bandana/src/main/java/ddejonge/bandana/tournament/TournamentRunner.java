@@ -180,10 +180,15 @@ public class TournamentRunner {
             // However, you may want to do your own processing of the results, for which
             // you can use this list.
             ArrayList<GameResult> results = tournamentObserver.getGameResults();
-        }
-	    finally {
+
             //Kill the player processes.
             // (if everything is implemented okay this isn't necessary because the players should kill themselves. But just to be sure..)
+            for (Process playerProcess : players) {
+                playerProcess.destroy();
+            }
+        }
+	    finally {
+            // JC: Added in case exception are thrown during development
             for (Process playerProcess : players) {
                 playerProcess.destroy();
             }

@@ -1,15 +1,8 @@
 package cruz.agents;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
 
-import ddejonge.bandana.tools.DiplomacyMonitor;
-import ddejonge.bandana.tools.FileIO;
-import ddejonge.bandana.tools.Logger;
 import es.csic.iiia.fabregues.dip.Observer;
-import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.comm.CommException;
 import es.csic.iiia.fabregues.dip.comm.IComm;
 import es.csic.iiia.fabregues.dip.comm.daide.DaideComm;
@@ -48,7 +41,6 @@ public class OpenAIObserver extends Observer {
         this.gameStatus = CONNECTED_WAITING_TO_START;
         this.game = null;
         this.ccd = false;
-
 
         //Create the connection with the game server
         InetAddress dipServerIp;
@@ -129,8 +121,8 @@ public class OpenAIObserver extends Observer {
 
         // super.handleSMR(message);
 
-        // System.out.println("INSIDE HANDLE SMR");
-        this.openAIAdapter.sendGameEndNotification();
+        System.out.println("END OF GAME");
+        this.openAIAdapter.endOfGame();
         // super.handleSMR(message);
     }
 

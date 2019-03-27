@@ -42,7 +42,6 @@ public class OpenAIAdapter {
         this.info = null;
 
         this.numberOfGamesStarted = 0;
-        this.createObserver();
     }
 
     public void createObserver() {
@@ -61,7 +60,7 @@ public class OpenAIAdapter {
      */
     public BasicDeal getDealFromDipQ() {
         try {
-            // this.agent.getLogger().logln("GAME STATUS: " + this.openAIObserver.getGameStatus(), true);
+            this.agent.getLogger().logln("GAME STATUS: " + this.openAIObserver.getGameStatus(), true);
             this.generatePowerNameToIntMap();
 
             ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
@@ -98,8 +97,9 @@ public class OpenAIAdapter {
         return null;
     }
 
-    public void sendGameEndNotification() {
+    public void endOfGame() {
         this.done = true;
+        this.openAIObserver.exit();
         // this.getDealFromDipQ();
     }
 
