@@ -14,7 +14,7 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
-	final static int REMOTE_DEBUG = 1;	// JC: determine whether I want to remote debug the OpenAI jar or not
+	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
 
 	// JC: CUSTOM SETTINGS END
 

@@ -152,6 +152,10 @@ public final class ProtoMessage {
        * <code>GET_ACCEPTANCE_REQUEST = 3;</code>
        */
       GET_ACCEPTANCE_REQUEST(3),
+      /**
+       * <code>SEND_GAME_END = 4;</code>
+       */
+      SEND_GAME_END(4),
       UNRECOGNIZED(-1),
       ;
 
@@ -171,6 +175,10 @@ public final class ProtoMessage {
        * <code>GET_ACCEPTANCE_REQUEST = 3;</code>
        */
       public static final int GET_ACCEPTANCE_REQUEST_VALUE = 3;
+      /**
+       * <code>SEND_GAME_END = 4;</code>
+       */
+      public static final int SEND_GAME_END_VALUE = 4;
 
 
       public final int getNumber() {
@@ -195,6 +203,7 @@ public final class ProtoMessage {
           case 1: return SEND_INITIAL_OBSERVATION;
           case 2: return GET_DEAL_REQUEST;
           case 3: return GET_ACCEPTANCE_REQUEST;
+          case 4: return SEND_GAME_END;
           default: return null;
         }
       }
@@ -4534,25 +4543,26 @@ public final class ProtoMessage {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\023proto_message.proto\022\005dip_q\"\314\001\n\016Bandana" +
+      "\n\023proto_message.proto\022\005dip_q\"\337\001\n\016Bandana" +
       "Request\022(\n\004type\030\001 \001(\0162\032.dip_q.BandanaReq" +
       "uest.Type\022+\n\013observation\030\002 \001(\0132\026.dip_q.O" +
-      "bservationData\"c\n\004Type\022\013\n\007INVALID\020\000\022\034\n\030S" +
+      "bservationData\"v\n\004Type\022\013\n\007INVALID\020\000\022\034\n\030S" +
       "END_INITIAL_OBSERVATION\020\001\022\024\n\020GET_DEAL_RE" +
-      "QUEST\020\002\022\032\n\026GET_ACCEPTANCE_REQUEST\020\003\"\326\001\n\024" +
-      "DiplomacyGymResponse\022.\n\004type\030\001 \001(\0162 .dip" +
-      "_q.DiplomacyGymResponse.Type\022\035\n\004deal\030\002 \001" +
-      "(\0132\017.dip_q.DealData\022)\n\nacceptance\030\003 \001(\0132" +
-      "\025.dip_q.AcceptanceData\"D\n\004Type\022\013\n\007INVALI" +
-      "D\020\000\022\013\n\007CONFIRM\020\001\022\r\n\tSEND_DEAL\020\002\022\023\n\017SEND_" +
-      "ACCEPTANCE\020\003\"5\n\014ProvinceData\022\n\n\002id\030\001 \001(\005" +
-      "\022\r\n\005owner\030\002 \001(\005\022\n\n\002sc\030\003 \001(\005\"s\n\017Observati" +
-      "onData\022&\n\tprovinces\030\001 \003(\0132\023.dip_q.Provin" +
-      "ceData\022\034\n\024previousActionReward\030\002 \001(\002\022\014\n\004" +
-      "done\030\003 \001(\010\022\014\n\004info\030\004 \001(\t\"\020\n\016AcceptanceDa" +
-      "ta\"V\n\010DealData\022\026\n\016powerToPropose\030\001 \001(\005\022\025" +
-      "\n\rstartProvince\030\002 \001(\005\022\033\n\023destinationProv" +
-      "ince\030\003 \001(\005B\r\n\013cruz.agentsb\006proto3"
+      "QUEST\020\002\022\032\n\026GET_ACCEPTANCE_REQUEST\020\003\022\021\n\rS" +
+      "END_GAME_END\020\004\"\326\001\n\024DiplomacyGymResponse\022" +
+      ".\n\004type\030\001 \001(\0162 .dip_q.DiplomacyGymRespon" +
+      "se.Type\022\035\n\004deal\030\002 \001(\0132\017.dip_q.DealData\022)" +
+      "\n\nacceptance\030\003 \001(\0132\025.dip_q.AcceptanceDat" +
+      "a\"D\n\004Type\022\013\n\007INVALID\020\000\022\013\n\007CONFIRM\020\001\022\r\n\tS" +
+      "END_DEAL\020\002\022\023\n\017SEND_ACCEPTANCE\020\003\"5\n\014Provi" +
+      "nceData\022\n\n\002id\030\001 \001(\005\022\r\n\005owner\030\002 \001(\005\022\n\n\002sc" +
+      "\030\003 \001(\005\"s\n\017ObservationData\022&\n\tprovinces\030\001" +
+      " \003(\0132\023.dip_q.ProvinceData\022\034\n\024previousAct" +
+      "ionReward\030\002 \001(\002\022\014\n\004done\030\003 \001(\010\022\014\n\004info\030\004 " +
+      "\001(\t\"\020\n\016AcceptanceData\"V\n\010DealData\022\026\n\016pow" +
+      "erToPropose\030\001 \001(\005\022\025\n\rstartProvince\030\002 \001(\005" +
+      "\022\033\n\023destinationProvince\030\003 \001(\005B\r\n\013cruz.ag" +
+      "entsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

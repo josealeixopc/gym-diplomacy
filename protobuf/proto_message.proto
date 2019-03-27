@@ -16,6 +16,7 @@ message BandanaRequest {
     SEND_INITIAL_OBSERVATION = 1;
     GET_DEAL_REQUEST = 2;
     GET_ACCEPTANCE_REQUEST = 3;
+    SEND_GAME_END = 4;
   }
 
   // Using "required" is often bad practice. Generally, the validation
