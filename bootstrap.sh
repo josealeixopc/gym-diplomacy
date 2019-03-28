@@ -7,15 +7,19 @@ sudo apt-get install -y python3.7
 sudo apt-get install -y python-minimal # Needed for Parlance (only supports 2.x)
 
 # Permanently add alias to set default Python version to 3
-echo "alias python=python3.7" >> ~/.bash_aliases
 sudo apt-get install -y python3-pip
-python -m pip install --upgrade pip
+python3.7 -m pip install --upgrade pip
 sudo apt-get install -y python-pip
 python2 -m pip install --upgrade pip
 
 # Install gym, gym-diplomacy package and necessary Python package dependencies
-python -m pip install gym
-python -m pip install -e /vagrant/python-modules/gym-diplomacy --user
+# DO NOT USE SUDO OUT OF A VM. I only use it here because I cannot use the '--user' flag as root, otherwise it just installs for the root user.
+sudo python3.7 -m pip install gym
+sudo python3.7 -m pip install -e /vagrant/python-modules/gym-diplomacy
+
+## If you're on your PC use these commands instead
+# python3.7 -m pip install gym --user
+# python3.7 -m pip install -e /vagrant/python-modules/gym-diplomacy --user
 
 # Install Java
 
@@ -33,10 +37,17 @@ sudo tar -xf $MAVEN_PACKAGE-bin.tar.gz
 sudo mv $MAVEN_PACKAGE/ apache-maven/
 sudo rm $MAVEN_PACKAGE-bin.tar.gz
 
-echo "export PATH=/opt/apache-maven/bin:\$PATH" >> ~/.bashrc
+echo "export PATH=/opt/apache-maven/bin:\$PATH" >> /home/vagrant/.bashrc
 
 # Install Parlance
-pip2 install parlance --user
+# DO NOT USE SUDO OUT OF A VM. I only use it here because I cannot use the '--user' flag as root, otherwise it just installs for the root user.
+sudo python2 -m pip install parlance
+
+## If you're on your PC use this command instead
+# python2 -m pip install parlance --user
+
+# 'parlance-server' executable needs to be added to path
+echo "export PATH=~/.local/bin:\$PATH" >> /home/vagrant/.bashrc
 
 # Run bashrc to update Path and Aliases
-source ~/.bashrc
+source /home/vagrant/.bashrc
