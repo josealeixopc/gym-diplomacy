@@ -45,18 +45,19 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
         raise ValueError("Number of provinces is not consistent. Constant variable is '{}' while received number of "
                          "provinces is '{}'.".format(NUMBER_OF_PROVINCES, number_of_provinces))
 
-    observation = np.zeros((number_of_provinces, 2))
+    observation = np.zeros(number_of_provinces * 2)
 
     for province in observation_data.provinces:
         # simply for type hint and auto-completion
         province: proto_message_pb2.ProvinceData = province
 
         # id - 1 because the ids begin at 1
-        observation[province.id - 1] = [province.owner, province.sc]
+        observation[(province.id - 1) * 2] = province.owner
+        observation[(province.id - 1) * 2 + 1] = province.sc
 
     reward = observation_data.previousActionReward
     done = observation_data.done
-    info = observation_data.info
+    info = {}
 
     return observation, reward, done, info
 
@@ -146,6 +147,8 @@ class DiplomacyEnv(gym.Env):
     terminate = False
     termination_complete = False
 
+    cheat = 0
+
     def __init__(self):
         atexit.register(self.clean_up)
 
@@ -180,6 +183,8 @@ class DiplomacyEnv(gym.Env):
 
         while self.waiting_for_response:
             pass
+
+        self.cheat += 1
 
         return self.observation, self.reward, self.done, self.info
 
@@ -314,7 +319,7 @@ class DiplomacyEnv(gym.Env):
         observation_space_description = []
 
         for i in range(NUMBER_OF_PROVINCES):
-            observation_space_description.append([NUMBER_OF_OPPONENTS, 2])
+            observation_space_description.extend([NUMBER_OF_OPPONENTS, 2])
 
         self.observation_space = spaces.MultiDiscrete(observation_space_description)
 
@@ -348,7 +353,7 @@ class DiplomacyEnv(gym.Env):
 
         # Wait for action to be taken. If env should terminate, then stop waiting.
         while self.waiting_for_action:
-            if self.done:
+            if self.done or self.terminate or self.cheat == 20:
                 # Return empty deal just to finalize program
                 logger.debug("Sending empty deal to finalize program.")
                 # TODO: Terminate should not be here. Refactor all of this!

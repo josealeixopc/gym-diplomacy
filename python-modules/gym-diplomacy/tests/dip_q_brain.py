@@ -44,6 +44,8 @@ if __name__ == '__main__':
         logger.debug("First observation: {}".format(ob))
         while True:
             action = agent.act(ob, reward, done)
+            # TODO: Instead of having a loop with episode count, try to get num_of_steps working
+            # TODO: Probably the step function needs to be in a separate thread. It would
             ob, reward, done, info = env.step(action)
             if done:
                 logger.info("Game/episode {} has ended.".format(i))
