@@ -152,9 +152,6 @@ class DiplomacyEnv(gym.Env):
         self._init_observation_space()
         self._init_action_space()
 
-        self._init_bandana()
-        self._init_socket_server()
-        self.socket_server.threaded_listen()
 
     def step(self, action):
         """Run one timestep of the environment's dynamics. When end of
@@ -193,7 +190,6 @@ class DiplomacyEnv(gym.Env):
         """
         # Set or reset current observation to None
         self.observation = None
-        self.socket_server.terminate = False
 
         # In this case we simply restart Bandana
         if self.bandana_subprocess is not None:
@@ -201,6 +197,12 @@ class DiplomacyEnv(gym.Env):
             self._init_bandana()
         else:
             self._init_bandana()
+
+        if self.socket_server is None:
+            self._init_socket_server()
+
+        self.socket_server.terminate = False
+        self.socket_server.threaded_listen()
 
         # Wait until the observation field has been set, by receiving the observation from Bandana
         while self.observation is None:
