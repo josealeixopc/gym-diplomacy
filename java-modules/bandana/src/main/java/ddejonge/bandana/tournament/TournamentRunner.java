@@ -91,7 +91,8 @@ public class TournamentRunner {
             scoreCalculators.add(new RankCalculator());
 
             //2. Create a TournamentObserver to monitor the games and accumulate the results.
-            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, 7);
+            // JC: Use "windowless = true" to run without any Diplomacy Monitor and, hence, being able to run on a server
+            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, 7, true);
 
             //3. Run the Negotiation Server.
             NegoServerRunner.run(tournamentObserver, tournamentLogFolderPath, numberOfGames);

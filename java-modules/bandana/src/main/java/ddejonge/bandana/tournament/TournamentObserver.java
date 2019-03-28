@@ -54,9 +54,14 @@ public class TournamentObserver extends Observer implements Runnable{
 	int gameStatus;
 	int gameNumber = 0;
 	
+	// JC: Added Windowless variable to be able to run in headless server
+	boolean windowless = false;
 
-	
 	public TournamentObserver(String tournamentLogFolderPath, ArrayList<ScoreCalculator> scoreCalculators, int numGames, int numParticipants) throws IOException {
+		this(tournamentLogFolderPath, scoreCalculators, numGames, numParticipants, false);
+	}
+
+	public TournamentObserver(String tournamentLogFolderPath, ArrayList<ScoreCalculator> scoreCalculators, int numGames, int numParticipants, boolean windowless) throws IOException {
 		super(tournamentLogFolderPath);
 		
 		if(numGames <=0){
@@ -79,9 +84,14 @@ public class TournamentObserver extends Observer implements Runnable{
 		this.numGames = numGames;
 		
 		this.tournamentResult = new TournamentResult(numParticipants, scoreCalculators);
-		
-		this.diplomacyMonitor = new DiplomacyMonitor("TournamentObserver", numParticipants, scoreCalculators);
-		
+
+		this.windowless = windowless;
+		if(!this.windowless) {
+			this.diplomacyMonitor = new DiplomacyMonitor("TournamentObserver", numParticipants, scoreCalculators);
+		}
+		else {
+			this.diplomacyMonitor = null;
+		}
 	}
 	
 	
@@ -97,9 +107,11 @@ public class TournamentObserver extends Observer implements Runnable{
 		this.gameStatus = CONNECTED_WAITING_TO_START;
 		this.game = null;
 		this.ccd = false;
-		
-		diplomacyMonitor.setStatus("making connection.");
-		
+
+		if(this.diplomacyMonitor != null) {
+			diplomacyMonitor.setStatus("making connection.");
+		}
+
 		//Create the connection with the game server
 		InetAddress dipServerIp;
 		try {
@@ -115,17 +127,25 @@ public class TournamentObserver extends Observer implements Runnable{
 			
 		} catch (Exception e) {
 			this.gameStatus = NO_GAME_ACTIVE;
-			diplomacyMonitor.setStatus("connection failed " + e);
+			if(this.diplomacyMonitor != null){
+				diplomacyMonitor.setStatus("connection failed " + e);
+			}
 			e.printStackTrace();
 		}	
-		
-		diplomacyMonitor.setStatus("waiting to start.");
+
+		if(this.diplomacyMonitor != null){
+			diplomacyMonitor.setStatus("waiting to start.");
+		}
 	}
 	
 	/**
 	 * Is called from beforeNewPhase(), afterOldPhase(), handleSlo() and handleSMR().
 	 */
 	void displayInfo(){
+
+		if(this.diplomacyMonitor == null) {
+			return;
+		}
 		
 		diplomacyMonitor.setCurrentGameNumber(gameNumber);
 		diplomacyMonitor.setNumGames(numGames);
@@ -159,8 +179,10 @@ public class TournamentObserver extends Observer implements Runnable{
 	public void init() {
 		gameNumber++;
 		this.gameStatus = GAME_ACTIVE;
-		
-		diplomacyMonitor.notifyNewGame();
+
+		if(this.diplomacyMonitor != null) {
+			diplomacyMonitor.notifyNewGame();
+		}
 	}
 	
 	
@@ -210,7 +232,10 @@ public class TournamentObserver extends Observer implements Runnable{
 	public void exit(){
 		this.comm.stop();
 		super.exit();
-		this.diplomacyMonitor.dispose();
+
+		if(this.diplomacyMonitor != null) {
+			this.diplomacyMonitor.dispose();
+		}
 	}
 	
 	/**
@@ -230,8 +255,10 @@ public class TournamentObserver extends Observer implements Runnable{
 		FileIO.appendToFile(this.gameResultsFile, "game " + this.gameNumber + ": " + System.lineSeparator() + gameResult.toString());
 		
 		FileIO.overwriteFile(this.tournamentResultsFile, this.tournamentResult.toString());
-		
-		diplomacyMonitor.setTournamentResult(this.tournamentResult);
+
+		if(this.diplomacyMonitor != null){
+			diplomacyMonitor.setTournamentResult(this.tournamentResult);
+		}
 
 		displayInfo();
 		
@@ -257,7 +284,8 @@ public class TournamentObserver extends Observer implements Runnable{
 	}
 	
 	public void setAgentName(String powerName, String agentName){
-		this.diplomacyMonitor.setAgentName(powerName, agentName);
+		if(this.diplomacyMonitor != null) {
+			this.diplomacyMonitor.setAgentName(powerName, agentName);
+		}
 	}
-	
 }

@@ -7,4 +7,5 @@ else
 fi
 
 cd "$(dirname "$0")"
-pipenv run parlance-server $@
+#pipenv run parlance-server $@
+parlance-server $@
