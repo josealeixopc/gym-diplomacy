@@ -1,1 +1,2 @@
 from gym_diplomacy.envs.diplomacy_env import DiplomacyEnv
+from gym_diplomacy.envs.diplomacy_strategy_env import DiplomacyStrategyEnv

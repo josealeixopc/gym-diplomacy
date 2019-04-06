@@ -40,6 +40,16 @@ message DiplomacyGymResponse {
   AcceptanceData acceptance = 3;
 }
 
+message DiplomacyGymOrdersResponse {
+  enum Type {
+    VALID = 0;
+    INVALID = 1;
+  }
+
+  Type type = 1;
+  OrdersData orders = 2;
+}
+
 message ProvinceData {
   int32 id = 1;
   int32 owner = 2;
@@ -61,4 +71,14 @@ message DealData {
   int32 powerToPropose = 1;
   int32 startProvince = 2;
   int32 destinationProvince = 3;
+}
+
+message OrderData {
+  int32 actionToPropose = 1;
+  int32 startProvince = 2;
+  int32 destinationProvince = 3;
+}
+
+message OrdersData {
+  repeated OrdersData orders = 1;
 }

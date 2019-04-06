@@ -67,19 +67,19 @@ def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     :param action: The NumPy array corresponding to the agent's action.
     :return: A DealData object with the translation of the NumPy array to a deal.
     """
-    deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
+    order_data: proto_message_pb2.OrderData = proto_message_pb2.OrderData()
 
     if action.size != 3:
         raise ValueError("The array given does not have the correct number of elements.", action)
 
-    deal_data.powerToPropose = action[0]
-    deal_data.startProvince = action[1]
-    deal_data.destinationProvince = action[2]
+    order_data.powerToPropose = action[0]
+    order_data.startProvince = action[1]
+    order_data.destinationProvince = action[2]
 
-    return deal_data
+    return order_data
 
 
-class DiplomacyEnv(gym.Env):
+class DiplomacyStrategyEnv(gym.Env):
     """
     The main OpenAI Gym class. It encapsulates an environment with
     arbitrary behind-the-scenes dynamics. An environment can be

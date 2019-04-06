@@ -25,6 +25,7 @@ public class TournamentRunner {
 	// final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", "1905"};
 	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", "1905"};
+	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", "1905"};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
 
 	// JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
@@ -111,17 +112,27 @@ public class TournamentRunner {
                     String[] command;
 
                     //make sure that each player has a different name.
-                    if (i < 3) {
+                    /*if (i < 3) {
 
                         name = "RandomNegotiator " + i;
                         command = randomNegotiatorCommand;
 
-                    } else if (i < 6) {
+                    } else if (i < 5) {
                         name = "D-Brane " + i;
-                        command = dbraneExampleBotCommand;
+                        command = randomNegotiatorCommand;
+                    } else if (i < 6) {
+                        name = "DeepDip " + i;
+                        command = deepDipCommand;
                     } else {
                         name = "OpenAINegotiator " + i;
                         command = openAIBotNegotiatorCommand;
+                    }*/
+                    if (i < 6) {
+                        name = "D-Brane " + i;
+                        command = randomNegotiatorCommand;
+                    } else {
+                        name = "DeepDip " + i;
+                        command = deepDipCommand;
                     }
 
                     //set the log folder for this agent to be a subfolder of the tournament log folder.

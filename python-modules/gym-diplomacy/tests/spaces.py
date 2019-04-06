@@ -1,4 +1,4 @@
-import gym
+import gym.spaces
 import numpy as np
 
 NUMBER_OF_OPPONENTS = 7

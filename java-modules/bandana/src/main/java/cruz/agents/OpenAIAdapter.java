@@ -23,6 +23,7 @@ public class OpenAIAdapter {
     public static final int ACCEPTED_DEAL_REWARD = +5;
 
     public OpenAINegotiator agent;
+    public DeepDip agent2;
     private Map<String, Integer> powerNameToInt;
 
     private float previousActionReward;
@@ -36,7 +37,15 @@ public class OpenAIAdapter {
 
     OpenAIAdapter(OpenAINegotiator agent) {
         this.agent = agent;
-
+        this.init();
+    }
+    
+    OpenAIAdapter(DeepDip agent) {
+        this.agent2 = agent;
+        this.init();
+    }
+    
+    private void init(){
         this.resetReward();
         this.done = false;
         this.info = null;
@@ -96,7 +105,51 @@ public class OpenAIAdapter {
 
         return null;
     }
+    
+    /**
+     * This function retrieves a list of Orders from the OpenAI module that is connected to the localhost on port 5000.
+     *
+     * @return List of Orders created with data from the OpenAI module.
+     */
+    public List<Order> getOrdersFromDeepDip() {
+        try {
+            this.agent2.getLogger().logln("GAME STATUS: " + this.openAIObserver.getGameStatus(), true);
+            this.generatePowerNameToIntMap();
 
+            ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
+
+            ProtoMessage.ObservationData observationData = this.generateObservationData();
+
+            bandanaRequestBuilder.setObservation(observationData);
+
+            if(firstTurn) {
+                bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.SEND_INITIAL_OBSERVATION);
+
+                byte[] message = bandanaRequestBuilder.build().toByteArray();
+
+                SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2.getLogger());
+                byte[] response = socketClient.sendMessageAndReceiveResponse(message);
+
+                // If something went wrong with getting the response from Python module
+                if (response == null) {
+                    return null;
+                }
+
+                ProtoMessage.DiplomacyGymOrdersResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymOrdersResponse.parseFrom(response);
+                List<Order> generatedOrders = this.generateOrders(diplomacyGymResponse.getOrders());
+                return generatedOrders;
+            }
+            else {
+                return null;
+            }
+
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
     public void sendEndOfGameNotification() {
         try {
             ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
@@ -107,7 +160,9 @@ public class OpenAIAdapter {
 
             byte[] message = bandanaRequestBuilder.build().toByteArray();
 
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent.getLogger());
+            
+
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, agent2 == null? this.agent.getLogger():this.agent2.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
 
             if (response == null) {
@@ -137,7 +192,9 @@ public class OpenAIAdapter {
 
         int id = 1;
 
-        for(Power pow : this.agent.game.getPowers()) {
+        List<Power> powers = (agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
+
+        for(Power pow : powers) {
             powerNameToInt.put(pow.getName(), id);
             id++;
         }
@@ -152,7 +209,8 @@ public class OpenAIAdapter {
         int id = 1;
 
         // FIRST PROCESS ALL PROVINCES
-        for (Province p : this.agent.game.getProvinces()) {
+        List<Province> provinces = (agent2 == null)? this.agent.game.getProvinces():this.agent2.getGame().getProvinces();
+        for (Province p : provinces) {
             ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder();
             int isSc = p.isSC() ? 1 : 0;
 
@@ -165,7 +223,8 @@ public class OpenAIAdapter {
         }
 
         // THEN ADD THE OWNERS OF EACH PROVINCE
-        for (Power pow : this.agent.game.getPowers()) {
+        List<Power> powers = (agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
+        for (Power pow : powers) {
             for (Region r : pow.getControlledRegions()) {
                 Province p = r.getProvince();
 
@@ -208,6 +267,12 @@ public class OpenAIAdapter {
         ocs.add(oc);
 
         return new BasicDeal(ocs, dmzs);
+    }
+    
+    private List<Order> generateOrders(ProtoMessage.OrdersData ordersData) {
+        List<Order> orders = new ArrayList<>();
+        System.out.println(ordersData);
+        return orders;
     }
 
     void addReward(int reward) {
