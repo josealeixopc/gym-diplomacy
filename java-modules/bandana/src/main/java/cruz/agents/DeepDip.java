@@ -90,7 +90,6 @@ public class DeepDip extends DumbBot {
             case 3:
                 System.out.println("DeepDip generating orders");
                 System.out.println(game.getPhase());
-                System.out.println(game.getPhase().ordinal());
                 List<Order> orders = this.openAIAdapter.getOrdersFromDeepDip();
                 if (orders == null){
                     return this.generateMovementOrders();

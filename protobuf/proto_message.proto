@@ -42,8 +42,8 @@ message DiplomacyGymResponse {
 
 message DiplomacyGymOrdersResponse {
   enum Type {
-    VALID = 0;
-    INVALID = 1;
+    INVALID = 0;
+    VALID = 1;
   }
 
   Type type = 1;
@@ -80,5 +80,6 @@ message OrderData {
 }
 
 message OrdersData {
-  repeated OrdersData orders = 1;
+  repeated OrderData orders = 1;
 }
+
