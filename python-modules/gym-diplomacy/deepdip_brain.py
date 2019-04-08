@@ -1,3 +1,5 @@
+#!/bin/env python
+
 import argparse
 
 import gym
@@ -17,7 +19,7 @@ class RandomAgent(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument('env_id', nargs='?', default='Diplomacy-v0', help='Select the environment to run')
+    parser.add_argument('env_id', nargs='?', default='Diplomacy_Strategy-v0', help='Select the environment to run')
     args = parser.parse_args()
 
     # You can set the level to logger.DEBUG or logger.WARN if you
@@ -60,4 +62,3 @@ if __name__ == '__main__':
     # Explicitly close env, because Monitor does not call env close.
     # Issues has been fixed (https://github.com/openai/gym/pull/1023) but I still don't have the new version.
     env.env.close()
-
