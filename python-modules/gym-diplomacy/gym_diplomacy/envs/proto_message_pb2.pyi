@@ -40,10 +40,9 @@ class BandanaRequest(google___protobuf___message___Message):
         @classmethod
         def items(cls) -> typing___List[typing___Tuple[str, BandanaRequest.Type]]: ...
     INVALID = typing___cast(Type, 0)
-    SEND_INITIAL_OBSERVATION = typing___cast(Type, 1)
-    GET_DEAL_REQUEST = typing___cast(Type, 2)
-    GET_ACCEPTANCE_REQUEST = typing___cast(Type, 3)
-    SEND_GAME_END = typing___cast(Type, 4)
+    GET_DEAL_REQUEST = typing___cast(Type, 1)
+    GET_ACCEPTANCE_REQUEST = typing___cast(Type, 2)
+    SEND_GAME_END = typing___cast(Type, 3)
 
     type = ... # type: BandanaRequest.Type
 
