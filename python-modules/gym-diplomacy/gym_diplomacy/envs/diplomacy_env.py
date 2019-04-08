@@ -1,8 +1,11 @@
+import threading
+
 import gym
 from gym import spaces
 
 import subprocess
 import os
+import time
 import signal
 import atexit
 import numpy as np
@@ -11,6 +14,9 @@ from gym_diplomacy.envs import proto_message_pb2
 from gym_diplomacy.envs import comm
 
 import logging
+
+FORMAT = "%(levelname)-8s -- [%(filename)s:%(lineno)s - %(funcName)20s()] %(message)s"
+logging.basicConfig(format=FORMAT)
 
 logging_level = 'DEBUG'
 level = getattr(logging, logging_level)
@@ -35,9 +41,9 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
     """
     This function takes a Protobuf ObservationData and generates the necessary information for the agent to act.
 
-    :param observation_data: A Protobug ObservationData object.
+    :param observation_data: A Protobuf ObservationData object.
     :return: A list with the structure [observation, reward, done, info]. Observation is an np array, reward is a float,
-    done is a boolean and info is a string.
+    done is a boolean and info is a dictionary.
     """
     number_of_provinces = len(observation_data.provinces)
 
@@ -57,7 +63,7 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
 
     reward = observation_data.previousActionReward
     done = observation_data.done
-    info = {}
+    info = {"info_string": observation_data.info}
 
     return observation, reward, done, info
 
@@ -131,7 +137,7 @@ class DiplomacyEnv(gym.Env):
     received_first_observation: bool = False
 
     waiting_for_action: bool = False
-    waiting_for_response: bool = True
+    waiting_for_observation_to_be_processed: bool = True
 
     limit_action_time: int = 0
 
@@ -149,12 +155,14 @@ class DiplomacyEnv(gym.Env):
 
     cheat = 0
 
+    enable_bandana_output = True
+
     def __init__(self):
+        # Make sure the program calls clean up, even if it exits abruptly
         atexit.register(self.clean_up)
 
         self._init_observation_space()
         self._init_action_space()
-
 
     def step(self, action):
         """Run one timestep of the environment's dynamics. When end of
@@ -170,22 +178,36 @@ class DiplomacyEnv(gym.Env):
             info (dict): contains auxiliary diagnostic information (helpful for debugging, and sometimes learning)
         """
 
+        logger.info("Executing 'step' function...")
+
+        logger.debug("Waiting for 'waiting_for_action' to be set to true...")
+
         # When the agent calls step, make sure it does nothing until the agent can act
         while not self.waiting_for_action:
             pass
+
+        logger.debug("'waiting_for_action' has been set to true. Setting global action to generated action...")
 
         self.action = action
 
         self.waiting_for_action = False
         # After setting 'waiting_for_action' to false, the 'handle' function should send the chosen action
 
-        self.waiting_for_response = True
+        logger.debug("'waiting_for_action': {}".format(self.waiting_for_action))
 
-        while self.waiting_for_response:
+        self.waiting_for_observation_to_be_processed = True
+
+        logger.debug(
+            "'waiting_for_observation_to_be_processed': {}".format(self.waiting_for_observation_to_be_processed))
+
+        logger.debug("Waiting for new observation to be processed...")
+
+        while self.waiting_for_observation_to_be_processed:
             pass
 
-        self.cheat += 1
+        logger.debug("New observation has been processed.")
 
+        logger.info("Finished executing 'step'. Returning new observation, reward, done and info.")
         return self.observation, self.reward, self.done, self.info
 
     def reset(self):
@@ -193,27 +215,32 @@ class DiplomacyEnv(gym.Env):
         Returns: observation (object): the initial observation of the
             space.
         """
-        # Set or reset current observation to None
-        self.observation = None
+        try:
+            # Set or reset current observation to None
+            self.observation = None
 
-        # In this case we simply restart Bandana
-        if self.bandana_subprocess is not None:
-            self._kill_bandana()
-            self._init_bandana()
-        else:
-            self._init_bandana()
+            # In this case we simply restart Bandana
+            if self.bandana_subprocess is not None:
+                self._kill_bandana()
+                self._init_bandana(self.enable_bandana_output)
+            else:
+                self._init_bandana(self.enable_bandana_output)
 
-        if self.socket_server is None:
-            self._init_socket_server()
+            if self.socket_server is None:
+                self._init_socket_server()
 
-        self.socket_server.terminate = False
-        self.socket_server.threaded_listen()
+            self.socket_server.terminate = False
+            self.socket_server.threaded_listen()
 
-        # Wait until the observation field has been set, by receiving the observation from Bandana
-        while self.observation is None:
-            pass
+            # Wait until the observation field has been set, by receiving the observation from Bandana
+            while self.observation is None:
+                pass
 
-        return self.observation
+            return self.observation
+
+        except Exception as e:
+            logger.error(e)
+            self.clean_up()
 
     def render(self, mode='human'):
         """Renders the environment.
@@ -253,7 +280,7 @@ class DiplomacyEnv(gym.Env):
         garbage collected or when the program exits.
         """
 
-        logger.debug("CLOSING ENV")
+        logger.info("Closing environment.")
 
         self.terminate = True
 
@@ -266,7 +293,7 @@ class DiplomacyEnv(gym.Env):
         self.termination_complete = True
 
     def clean_up(self):
-        logger.debug("CLEANING UP ENV")
+        logger.info("Cleaning up environment.")
 
         if not self.termination_complete:
             self.close()
@@ -287,13 +314,27 @@ class DiplomacyEnv(gym.Env):
         logger.warning("Could not seed environment %s", self)
         return
 
-    def _init_bandana(self):
+    def _init_bandana(self, enable_output: bool = False):
+
         logger.info("Starting BANDANA tournament...")
         logger.debug("Running '{}' command on directory '{}'."
                      .format(self.bandana_init_command, self.bandana_root_path))
 
-        self.bandana_subprocess = subprocess.Popen(self.bandana_init_command, cwd=self.bandana_root_path,
-                                                   shell=True, preexec_fn=os.setsid)
+        if not enable_output:
+            logger.info("Suppressing BANDANA output to STDOUT and STDERR.")
+            # use DEVNULL to ignore the output from the subprocess
+            self.bandana_subprocess = subprocess.Popen(self.bandana_init_command,
+                                                       cwd=self.bandana_root_path,
+                                                       shell=True,
+                                                       preexec_fn=os.setsid,
+                                                       stdout=subprocess.DEVNULL,
+                                                       stderr=subprocess.DEVNULL)
+        else:
+            self.bandana_subprocess = subprocess.Popen(self.bandana_init_command,
+                                                       cwd=self.bandana_root_path,
+                                                       shell=True,
+                                                       preexec_fn=os.setsid)
+
         logger.info("Started BANDANA tournament.")
 
     def _kill_bandana(self):
@@ -332,39 +373,107 @@ class DiplomacyEnv(gym.Env):
     def _init_socket_server(self):
         self.socket_server = comm.LocalSocketServer(5000, self._handle)
 
-    def _handle(self, request: bytearray) -> None:
+    def _handle(self, request: bytearray) -> bytes:
         request_data: proto_message_pb2.BandanaRequest = proto_message_pb2.BandanaRequest()
         request_data.ParseFromString(request)
 
-        if request_data.type is proto_message_pb2.BandanaRequest.INVALID:
-            raise ValueError("Type of BandanaRequest is INVALID.", request_data)
+        logger.info("Executing _handle of request...")
 
+        if request_data.type is proto_message_pb2.BandanaRequest.INVALID:
+            raise ValueError("Type of BandanaRequest is 'INVALID'. Something bad happened on BANDANA side.",
+                             request_data)
+
+        elif request_data.type is proto_message_pb2.BandanaRequest.GET_DEAL_REQUEST:
+            response_data = self._handle_get_deal_request(request_data)
+
+        elif request_data.type is proto_message_pb2.BandanaRequest.SEND_GAME_END:
+            response_data = self._handle_send_game_end_request(request_data)
+
+        else:
+            raise NotImplementedError("There is no handle for request of type '{}'.".format(request_data.type))
+
+        logger.info("Returning handler response.")
+
+        # Using this just for IDE autocompletion
+        response_data: proto_message_pb2.DiplomacyGymResponse = response_data
+
+        return response_data.SerializeToString()
+
+    def _handle_get_deal_request(self, request_data: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
         observation_data: proto_message_pb2.ObservationData = request_data.observation
         self.observation, self.reward, self.done, self.info = observation_data_to_observation(observation_data)
 
         response_data: proto_message_pb2.DiplomacyGymResponse = proto_message_pb2.DiplomacyGymResponse()
         response_data.type = proto_message_pb2.DiplomacyGymResponse.CONFIRM
 
-        self.waiting_for_action = True
-        self.received_first_observation = True
-        self.waiting_for_response = False
+        # No longer waiting for request from BANDANA to be processed
+        self.waiting_for_observation_to_be_processed = False
 
-        logger.debug("WAITING FOR ACTION: {}".format(self.waiting_for_action))
+        # Waiting for action from the agent
+        self.waiting_for_action = True
+
+        # This timeout is used when env.close() is not called.
+        # For example, in the baselines agents, close() is not called.
+        # Therefore, there must be a way for telling the cycle to stop.
+        # This may disappear once we refactor.
+        time_to_timeout = 10
+        timeout = time.time() + time_to_timeout  # timeout after ten seconds
 
         # Wait for action to be taken. If env should terminate, then stop waiting.
         while self.waiting_for_action:
-            if self.done or self.terminate or self.cheat == 20:
-                # Return empty deal just to finalize program
+            if self.done:
+                # Return empty deal because game is over and BANDANA needs a response
                 logger.debug("Sending empty deal to finalize program.")
                 # TODO: Terminate should not be here. Refactor all of this!
                 self.socket_server.terminate = True
-                return response_data.SerializeToString()
+                return response_data
+            if time.time() > timeout:
+                logger.info("Timed out waiting for step function. Either step is taking too long or it hasn't been "
+                            "called in '{}' seconds.".format(time_to_timeout))
+
+                # The socket needs to be terminated, otherwise it'll hang
+                self.socket_server.terminate = True
+
+                # Bandana needs to be killed, otherwise it'll ask for one more action when it shouldn't
+                self._kill_bandana()
+
+                return response_data
+
+            if self.terminate:
+                logger.debug("Close has been called, so we are terminating the waiting for action loop.")
+                self.socket_server.terminate = True
+                # self.clean_up()
+                return response_data
 
         # Once we have the action, send it as a deal
         deal_data: proto_message_pb2.DealData = action_to_deal_data(self.action)
         response_data.deal.CopyFrom(deal_data)
 
-        return response_data.SerializeToString()
+        return response_data
+
+    def _handle_send_game_end_request(self, request_data: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
+        logger.debug("Handling 'SEND_GAME_END'.")
+
+        observation_data: proto_message_pb2.ObservationData = request_data.observation
+        self.observation, self.reward, self.done, self.info = observation_data_to_observation(observation_data)
+
+        if not self.done:
+            raise ValueError("Received game end notification, but value of 'done' is not 'True'.")
+
+        response_data: proto_message_pb2.DiplomacyGymResponse = proto_message_pb2.DiplomacyGymResponse()
+        response_data.type = proto_message_pb2.DiplomacyGymResponse.CONFIRM
+
+        # TODO: put these lines in a function
+        self.socket_server.terminate = True
+
+        # self.terminate = True
+
+        self.waiting_for_action = False
+        logger.debug("'waiting_for_action': {}".format(self.waiting_for_action))
+
+        self.waiting_for_observation_to_be_processed = False
+
+        return response_data
 
 
 def main():

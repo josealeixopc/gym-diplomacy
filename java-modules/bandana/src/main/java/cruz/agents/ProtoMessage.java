@@ -141,21 +141,25 @@ public final class ProtoMessage {
        */
       INVALID(0),
       /**
-       * <code>SEND_INITIAL_OBSERVATION = 1;</code>
+       * <pre>
+       * specific to negotiation scenario
+       * </pre>
+       *
+       * <code>GET_DEAL_REQUEST = 1;</code>
        */
-      SEND_INITIAL_OBSERVATION(1),
+      GET_DEAL_REQUEST(1),
       /**
-       * <code>GET_DEAL_REQUEST = 2;</code>
+       * <pre>
+       * specific to negotiation scenario
+       * </pre>
+       *
+       * <code>GET_ACCEPTANCE_REQUEST = 2;</code>
        */
-      GET_DEAL_REQUEST(2),
+      GET_ACCEPTANCE_REQUEST(2),
       /**
-       * <code>GET_ACCEPTANCE_REQUEST = 3;</code>
+       * <code>SEND_GAME_END = 3;</code>
        */
-      GET_ACCEPTANCE_REQUEST(3),
-      /**
-       * <code>SEND_GAME_END = 4;</code>
-       */
-      SEND_GAME_END(4),
+      SEND_GAME_END(3),
       UNRECOGNIZED(-1),
       ;
 
@@ -164,21 +168,25 @@ public final class ProtoMessage {
        */
       public static final int INVALID_VALUE = 0;
       /**
-       * <code>SEND_INITIAL_OBSERVATION = 1;</code>
+       * <pre>
+       * specific to negotiation scenario
+       * </pre>
+       *
+       * <code>GET_DEAL_REQUEST = 1;</code>
        */
-      public static final int SEND_INITIAL_OBSERVATION_VALUE = 1;
+      public static final int GET_DEAL_REQUEST_VALUE = 1;
       /**
-       * <code>GET_DEAL_REQUEST = 2;</code>
+       * <pre>
+       * specific to negotiation scenario
+       * </pre>
+       *
+       * <code>GET_ACCEPTANCE_REQUEST = 2;</code>
        */
-      public static final int GET_DEAL_REQUEST_VALUE = 2;
+      public static final int GET_ACCEPTANCE_REQUEST_VALUE = 2;
       /**
-       * <code>GET_ACCEPTANCE_REQUEST = 3;</code>
+       * <code>SEND_GAME_END = 3;</code>
        */
-      public static final int GET_ACCEPTANCE_REQUEST_VALUE = 3;
-      /**
-       * <code>SEND_GAME_END = 4;</code>
-       */
-      public static final int SEND_GAME_END_VALUE = 4;
+      public static final int SEND_GAME_END_VALUE = 3;
 
 
       public final int getNumber() {
@@ -200,10 +208,9 @@ public final class ProtoMessage {
       public static Type forNumber(int value) {
         switch (value) {
           case 0: return INVALID;
-          case 1: return SEND_INITIAL_OBSERVATION;
-          case 2: return GET_DEAL_REQUEST;
-          case 3: return GET_ACCEPTANCE_REQUEST;
-          case 4: return SEND_GAME_END;
+          case 1: return GET_DEAL_REQUEST;
+          case 2: return GET_ACCEPTANCE_REQUEST;
+          case 3: return SEND_GAME_END;
           default: return null;
         }
       }
@@ -853,27 +860,51 @@ public final class ProtoMessage {
     cruz.agents.ProtoMessage.DiplomacyGymResponse.Type getType();
 
     /**
+     * <pre>
+     * deal will be null if we're sending an acceptance
+     * </pre>
+     *
      * <code>.dip_q.DealData deal = 2;</code>
      */
     boolean hasDeal();
     /**
+     * <pre>
+     * deal will be null if we're sending an acceptance
+     * </pre>
+     *
      * <code>.dip_q.DealData deal = 2;</code>
      */
     cruz.agents.ProtoMessage.DealData getDeal();
     /**
+     * <pre>
+     * deal will be null if we're sending an acceptance
+     * </pre>
+     *
      * <code>.dip_q.DealData deal = 2;</code>
      */
     cruz.agents.ProtoMessage.DealDataOrBuilder getDealOrBuilder();
 
     /**
+     * <pre>
+     * acceptance will be null if we're sending a deal 
+     * </pre>
+     *
      * <code>.dip_q.AcceptanceData acceptance = 3;</code>
      */
     boolean hasAcceptance();
     /**
+     * <pre>
+     * acceptance will be null if we're sending a deal 
+     * </pre>
+     *
      * <code>.dip_q.AcceptanceData acceptance = 3;</code>
      */
     cruz.agents.ProtoMessage.AcceptanceData getAcceptance();
     /**
+     * <pre>
+     * acceptance will be null if we're sending a deal 
+     * </pre>
+     *
      * <code>.dip_q.AcceptanceData acceptance = 3;</code>
      */
     cruz.agents.ProtoMessage.AcceptanceDataOrBuilder getAcceptanceOrBuilder();
@@ -1118,18 +1149,30 @@ public final class ProtoMessage {
     public static final int DEAL_FIELD_NUMBER = 2;
     private cruz.agents.ProtoMessage.DealData deal_;
     /**
+     * <pre>
+     * deal will be null if we're sending an acceptance
+     * </pre>
+     *
      * <code>.dip_q.DealData deal = 2;</code>
      */
     public boolean hasDeal() {
       return deal_ != null;
     }
     /**
+     * <pre>
+     * deal will be null if we're sending an acceptance
+     * </pre>
+     *
      * <code>.dip_q.DealData deal = 2;</code>
      */
     public cruz.agents.ProtoMessage.DealData getDeal() {
       return deal_ == null ? cruz.agents.ProtoMessage.DealData.getDefaultInstance() : deal_;
     }
     /**
+     * <pre>
+     * deal will be null if we're sending an acceptance
+     * </pre>
+     *
      * <code>.dip_q.DealData deal = 2;</code>
      */
     public cruz.agents.ProtoMessage.DealDataOrBuilder getDealOrBuilder() {
@@ -1139,18 +1182,30 @@ public final class ProtoMessage {
     public static final int ACCEPTANCE_FIELD_NUMBER = 3;
     private cruz.agents.ProtoMessage.AcceptanceData acceptance_;
     /**
+     * <pre>
+     * acceptance will be null if we're sending a deal 
+     * </pre>
+     *
      * <code>.dip_q.AcceptanceData acceptance = 3;</code>
      */
     public boolean hasAcceptance() {
       return acceptance_ != null;
     }
     /**
+     * <pre>
+     * acceptance will be null if we're sending a deal 
+     * </pre>
+     *
      * <code>.dip_q.AcceptanceData acceptance = 3;</code>
      */
     public cruz.agents.ProtoMessage.AcceptanceData getAcceptance() {
       return acceptance_ == null ? cruz.agents.ProtoMessage.AcceptanceData.getDefaultInstance() : acceptance_;
     }
     /**
+     * <pre>
+     * acceptance will be null if we're sending a deal 
+     * </pre>
+     *
      * <code>.dip_q.AcceptanceData acceptance = 3;</code>
      */
     public cruz.agents.ProtoMessage.AcceptanceDataOrBuilder getAcceptanceOrBuilder() {
@@ -1567,12 +1622,20 @@ public final class ProtoMessage {
       private com.google.protobuf.SingleFieldBuilderV3<
           cruz.agents.ProtoMessage.DealData, cruz.agents.ProtoMessage.DealData.Builder, cruz.agents.ProtoMessage.DealDataOrBuilder> dealBuilder_;
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       public boolean hasDeal() {
         return dealBuilder_ != null || deal_ != null;
       }
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       public cruz.agents.ProtoMessage.DealData getDeal() {
@@ -1583,6 +1646,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       public Builder setDeal(cruz.agents.ProtoMessage.DealData value) {
@@ -1599,6 +1666,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       public Builder setDeal(
@@ -1613,6 +1684,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       public Builder mergeDeal(cruz.agents.ProtoMessage.DealData value) {
@@ -1631,6 +1706,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       public Builder clearDeal() {
@@ -1645,6 +1724,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       public cruz.agents.ProtoMessage.DealData.Builder getDealBuilder() {
@@ -1653,6 +1736,10 @@ public final class ProtoMessage {
         return getDealFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       public cruz.agents.ProtoMessage.DealDataOrBuilder getDealOrBuilder() {
@@ -1664,6 +1751,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * deal will be null if we're sending an acceptance
+       * </pre>
+       *
        * <code>.dip_q.DealData deal = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1684,12 +1775,20 @@ public final class ProtoMessage {
       private com.google.protobuf.SingleFieldBuilderV3<
           cruz.agents.ProtoMessage.AcceptanceData, cruz.agents.ProtoMessage.AcceptanceData.Builder, cruz.agents.ProtoMessage.AcceptanceDataOrBuilder> acceptanceBuilder_;
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public boolean hasAcceptance() {
         return acceptanceBuilder_ != null || acceptance_ != null;
       }
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public cruz.agents.ProtoMessage.AcceptanceData getAcceptance() {
@@ -1700,6 +1799,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public Builder setAcceptance(cruz.agents.ProtoMessage.AcceptanceData value) {
@@ -1716,6 +1819,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public Builder setAcceptance(
@@ -1730,6 +1837,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public Builder mergeAcceptance(cruz.agents.ProtoMessage.AcceptanceData value) {
@@ -1748,6 +1859,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public Builder clearAcceptance() {
@@ -1762,6 +1877,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public cruz.agents.ProtoMessage.AcceptanceData.Builder getAcceptanceBuilder() {
@@ -1770,6 +1889,10 @@ public final class ProtoMessage {
         return getAcceptanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       public cruz.agents.ProtoMessage.AcceptanceDataOrBuilder getAcceptanceOrBuilder() {
@@ -1781,6 +1904,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * acceptance will be null if we're sending a deal 
+       * </pre>
+       *
        * <code>.dip_q.AcceptanceData acceptance = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1854,16 +1981,28 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The id of the province, which allows us to map a certain action to a province.
+     * </pre>
+     *
      * <code>int32 id = 1;</code>
      */
     int getId();
 
     /**
+     * <pre>
+     * An integer which is the ID of the player owning the province.
+     * </pre>
+     *
      * <code>int32 owner = 2;</code>
      */
     int getOwner();
 
     /**
+     * <pre>
+     * Works like a boolean. 0 if province does not have a supply center (sc). 1 if it does.
+     * </pre>
+     *
      * <code>int32 sc = 3;</code>
      */
     int getSc();
@@ -1957,6 +2096,10 @@ public final class ProtoMessage {
     public static final int ID_FIELD_NUMBER = 1;
     private int id_;
     /**
+     * <pre>
+     * The id of the province, which allows us to map a certain action to a province.
+     * </pre>
+     *
      * <code>int32 id = 1;</code>
      */
     public int getId() {
@@ -1966,6 +2109,10 @@ public final class ProtoMessage {
     public static final int OWNER_FIELD_NUMBER = 2;
     private int owner_;
     /**
+     * <pre>
+     * An integer which is the ID of the player owning the province.
+     * </pre>
+     *
      * <code>int32 owner = 2;</code>
      */
     public int getOwner() {
@@ -1975,6 +2122,10 @@ public final class ProtoMessage {
     public static final int SC_FIELD_NUMBER = 3;
     private int sc_;
     /**
+     * <pre>
+     * Works like a boolean. 0 if province does not have a supply center (sc). 1 if it does.
+     * </pre>
+     *
      * <code>int32 sc = 3;</code>
      */
     public int getSc() {
@@ -2319,12 +2470,20 @@ public final class ProtoMessage {
 
       private int id_ ;
       /**
+       * <pre>
+       * The id of the province, which allows us to map a certain action to a province.
+       * </pre>
+       *
        * <code>int32 id = 1;</code>
        */
       public int getId() {
         return id_;
       }
       /**
+       * <pre>
+       * The id of the province, which allows us to map a certain action to a province.
+       * </pre>
+       *
        * <code>int32 id = 1;</code>
        */
       public Builder setId(int value) {
@@ -2334,6 +2493,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * The id of the province, which allows us to map a certain action to a province.
+       * </pre>
+       *
        * <code>int32 id = 1;</code>
        */
       public Builder clearId() {
@@ -2345,12 +2508,20 @@ public final class ProtoMessage {
 
       private int owner_ ;
       /**
+       * <pre>
+       * An integer which is the ID of the player owning the province.
+       * </pre>
+       *
        * <code>int32 owner = 2;</code>
        */
       public int getOwner() {
         return owner_;
       }
       /**
+       * <pre>
+       * An integer which is the ID of the player owning the province.
+       * </pre>
+       *
        * <code>int32 owner = 2;</code>
        */
       public Builder setOwner(int value) {
@@ -2360,6 +2531,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * An integer which is the ID of the player owning the province.
+       * </pre>
+       *
        * <code>int32 owner = 2;</code>
        */
       public Builder clearOwner() {
@@ -2371,12 +2546,20 @@ public final class ProtoMessage {
 
       private int sc_ ;
       /**
+       * <pre>
+       * Works like a boolean. 0 if province does not have a supply center (sc). 1 if it does.
+       * </pre>
+       *
        * <code>int32 sc = 3;</code>
        */
       public int getSc() {
         return sc_;
       }
       /**
+       * <pre>
+       * Works like a boolean. 0 if province does not have a supply center (sc). 1 if it does.
+       * </pre>
+       *
        * <code>int32 sc = 3;</code>
        */
       public Builder setSc(int value) {
@@ -2386,6 +2569,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * Works like a boolean. 0 if province does not have a supply center (sc). 1 if it does.
+       * </pre>
+       *
        * <code>int32 sc = 3;</code>
        */
       public Builder clearSc() {
@@ -2452,44 +2639,80 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     java.util.List<cruz.agents.ProtoMessage.ProvinceData> 
         getProvincesList();
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     cruz.agents.ProtoMessage.ProvinceData getProvinces(int index);
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     int getProvincesCount();
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     java.util.List<? extends cruz.agents.ProtoMessage.ProvinceDataOrBuilder> 
         getProvincesOrBuilderList();
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     cruz.agents.ProtoMessage.ProvinceDataOrBuilder getProvincesOrBuilder(
         int index);
 
     /**
+     * <pre>
+     * The value of the reward gained by the previous action.
+     * </pre>
+     *
      * <code>float previousActionReward = 2;</code>
      */
     float getPreviousActionReward();
 
     /**
+     * <pre>
+     * A boolean representing whether a game has finished or not.
+     * </pre>
+     *
      * <code>bool done = 3;</code>
      */
     boolean getDone();
 
     /**
+     * <pre>
+     * Arbritary information (mostly for debug purposes).
+     * </pre>
+     *
      * <code>string info = 4;</code>
      */
     java.lang.String getInfo();
     /**
+     * <pre>
+     * Arbritary information (mostly for debug purposes).
+     * </pre>
+     *
      * <code>string info = 4;</code>
      */
     com.google.protobuf.ByteString
@@ -2600,12 +2823,20 @@ public final class ProtoMessage {
     public static final int PROVINCES_FIELD_NUMBER = 1;
     private java.util.List<cruz.agents.ProtoMessage.ProvinceData> provinces_;
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     public java.util.List<cruz.agents.ProtoMessage.ProvinceData> getProvincesList() {
       return provinces_;
     }
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     public java.util.List<? extends cruz.agents.ProtoMessage.ProvinceDataOrBuilder> 
@@ -2613,18 +2844,30 @@ public final class ProtoMessage {
       return provinces_;
     }
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     public int getProvincesCount() {
       return provinces_.size();
     }
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     public cruz.agents.ProtoMessage.ProvinceData getProvinces(int index) {
       return provinces_.get(index);
     }
     /**
+     * <pre>
+     * A list of 0 or more provinces.
+     * </pre>
+     *
      * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
      */
     public cruz.agents.ProtoMessage.ProvinceDataOrBuilder getProvincesOrBuilder(
@@ -2635,6 +2878,10 @@ public final class ProtoMessage {
     public static final int PREVIOUSACTIONREWARD_FIELD_NUMBER = 2;
     private float previousActionReward_;
     /**
+     * <pre>
+     * The value of the reward gained by the previous action.
+     * </pre>
+     *
      * <code>float previousActionReward = 2;</code>
      */
     public float getPreviousActionReward() {
@@ -2644,6 +2891,10 @@ public final class ProtoMessage {
     public static final int DONE_FIELD_NUMBER = 3;
     private boolean done_;
     /**
+     * <pre>
+     * A boolean representing whether a game has finished or not.
+     * </pre>
+     *
      * <code>bool done = 3;</code>
      */
     public boolean getDone() {
@@ -2653,6 +2904,10 @@ public final class ProtoMessage {
     public static final int INFO_FIELD_NUMBER = 4;
     private volatile java.lang.Object info_;
     /**
+     * <pre>
+     * Arbritary information (mostly for debug purposes).
+     * </pre>
+     *
      * <code>string info = 4;</code>
      */
     public java.lang.String getInfo() {
@@ -2668,6 +2923,10 @@ public final class ProtoMessage {
       }
     }
     /**
+     * <pre>
+     * Arbritary information (mostly for debug purposes).
+     * </pre>
+     *
      * <code>string info = 4;</code>
      */
     public com.google.protobuf.ByteString
@@ -3095,6 +3354,10 @@ public final class ProtoMessage {
           cruz.agents.ProtoMessage.ProvinceData, cruz.agents.ProtoMessage.ProvinceData.Builder, cruz.agents.ProtoMessage.ProvinceDataOrBuilder> provincesBuilder_;
 
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public java.util.List<cruz.agents.ProtoMessage.ProvinceData> getProvincesList() {
@@ -3105,6 +3368,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public int getProvincesCount() {
@@ -3115,6 +3382,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public cruz.agents.ProtoMessage.ProvinceData getProvinces(int index) {
@@ -3125,6 +3396,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder setProvinces(
@@ -3142,6 +3417,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder setProvinces(
@@ -3156,6 +3435,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder addProvinces(cruz.agents.ProtoMessage.ProvinceData value) {
@@ -3172,6 +3455,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder addProvinces(
@@ -3189,6 +3476,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder addProvinces(
@@ -3203,6 +3494,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder addProvinces(
@@ -3217,6 +3512,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder addAllProvinces(
@@ -3232,6 +3531,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder clearProvinces() {
@@ -3245,6 +3548,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public Builder removeProvinces(int index) {
@@ -3258,6 +3565,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public cruz.agents.ProtoMessage.ProvinceData.Builder getProvincesBuilder(
@@ -3265,6 +3576,10 @@ public final class ProtoMessage {
         return getProvincesFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public cruz.agents.ProtoMessage.ProvinceDataOrBuilder getProvincesOrBuilder(
@@ -3275,6 +3590,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public java.util.List<? extends cruz.agents.ProtoMessage.ProvinceDataOrBuilder> 
@@ -3286,6 +3605,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public cruz.agents.ProtoMessage.ProvinceData.Builder addProvincesBuilder() {
@@ -3293,6 +3616,10 @@ public final class ProtoMessage {
             cruz.agents.ProtoMessage.ProvinceData.getDefaultInstance());
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public cruz.agents.ProtoMessage.ProvinceData.Builder addProvincesBuilder(
@@ -3301,6 +3628,10 @@ public final class ProtoMessage {
             index, cruz.agents.ProtoMessage.ProvinceData.getDefaultInstance());
       }
       /**
+       * <pre>
+       * A list of 0 or more provinces.
+       * </pre>
+       *
        * <code>repeated .dip_q.ProvinceData provinces = 1;</code>
        */
       public java.util.List<cruz.agents.ProtoMessage.ProvinceData.Builder> 
@@ -3324,12 +3655,20 @@ public final class ProtoMessage {
 
       private float previousActionReward_ ;
       /**
+       * <pre>
+       * The value of the reward gained by the previous action.
+       * </pre>
+       *
        * <code>float previousActionReward = 2;</code>
        */
       public float getPreviousActionReward() {
         return previousActionReward_;
       }
       /**
+       * <pre>
+       * The value of the reward gained by the previous action.
+       * </pre>
+       *
        * <code>float previousActionReward = 2;</code>
        */
       public Builder setPreviousActionReward(float value) {
@@ -3339,6 +3678,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * The value of the reward gained by the previous action.
+       * </pre>
+       *
        * <code>float previousActionReward = 2;</code>
        */
       public Builder clearPreviousActionReward() {
@@ -3350,12 +3693,20 @@ public final class ProtoMessage {
 
       private boolean done_ ;
       /**
+       * <pre>
+       * A boolean representing whether a game has finished or not.
+       * </pre>
+       *
        * <code>bool done = 3;</code>
        */
       public boolean getDone() {
         return done_;
       }
       /**
+       * <pre>
+       * A boolean representing whether a game has finished or not.
+       * </pre>
+       *
        * <code>bool done = 3;</code>
        */
       public Builder setDone(boolean value) {
@@ -3365,6 +3716,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * A boolean representing whether a game has finished or not.
+       * </pre>
+       *
        * <code>bool done = 3;</code>
        */
       public Builder clearDone() {
@@ -3376,6 +3731,10 @@ public final class ProtoMessage {
 
       private java.lang.Object info_ = "";
       /**
+       * <pre>
+       * Arbritary information (mostly for debug purposes).
+       * </pre>
+       *
        * <code>string info = 4;</code>
        */
       public java.lang.String getInfo() {
@@ -3391,6 +3750,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * Arbritary information (mostly for debug purposes).
+       * </pre>
+       *
        * <code>string info = 4;</code>
        */
       public com.google.protobuf.ByteString
@@ -3407,6 +3770,10 @@ public final class ProtoMessage {
         }
       }
       /**
+       * <pre>
+       * Arbritary information (mostly for debug purposes).
+       * </pre>
+       *
        * <code>string info = 4;</code>
        */
       public Builder setInfo(
@@ -3420,6 +3787,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * Arbritary information (mostly for debug purposes).
+       * </pre>
+       *
        * <code>string info = 4;</code>
        */
       public Builder clearInfo() {
@@ -3429,6 +3800,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * Arbritary information (mostly for debug purposes).
+       * </pre>
+       *
        * <code>string info = 4;</code>
        */
       public Builder setInfoBytes(
@@ -3500,6 +3875,10 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
   }
   /**
+   * <pre>
+   * TODO
+   * </pre>
+   *
    * Protobuf type {@code dip_q.AcceptanceData}
    */
   public  static final class AcceptanceData extends
@@ -3714,6 +4093,10 @@ public final class ProtoMessage {
       return builder;
     }
     /**
+     * <pre>
+     * TODO
+     * </pre>
+     *
      * Protobuf type {@code dip_q.AcceptanceData}
      */
     public static final class Builder extends
@@ -3911,16 +4294,28 @@ public final class ProtoMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Power we will propose our deal to
+     * </pre>
+     *
      * <code>int32 powerToPropose = 1;</code>
      */
     int getPowerToPropose();
 
     /**
+     * <pre>
+     * Province we will move our units from
+     * </pre>
+     *
      * <code>int32 startProvince = 2;</code>
      */
     int getStartProvince();
 
     /**
+     * <pre>
+     * Province we will move our units to
+     * </pre>
+     *
      * <code>int32 destinationProvince = 3;</code>
      */
     int getDestinationProvince();
@@ -4014,6 +4409,10 @@ public final class ProtoMessage {
     public static final int POWERTOPROPOSE_FIELD_NUMBER = 1;
     private int powerToPropose_;
     /**
+     * <pre>
+     * Power we will propose our deal to
+     * </pre>
+     *
      * <code>int32 powerToPropose = 1;</code>
      */
     public int getPowerToPropose() {
@@ -4023,6 +4422,10 @@ public final class ProtoMessage {
     public static final int STARTPROVINCE_FIELD_NUMBER = 2;
     private int startProvince_;
     /**
+     * <pre>
+     * Province we will move our units from
+     * </pre>
+     *
      * <code>int32 startProvince = 2;</code>
      */
     public int getStartProvince() {
@@ -4032,6 +4435,10 @@ public final class ProtoMessage {
     public static final int DESTINATIONPROVINCE_FIELD_NUMBER = 3;
     private int destinationProvince_;
     /**
+     * <pre>
+     * Province we will move our units to
+     * </pre>
+     *
      * <code>int32 destinationProvince = 3;</code>
      */
     public int getDestinationProvince() {
@@ -4376,12 +4783,20 @@ public final class ProtoMessage {
 
       private int powerToPropose_ ;
       /**
+       * <pre>
+       * Power we will propose our deal to
+       * </pre>
+       *
        * <code>int32 powerToPropose = 1;</code>
        */
       public int getPowerToPropose() {
         return powerToPropose_;
       }
       /**
+       * <pre>
+       * Power we will propose our deal to
+       * </pre>
+       *
        * <code>int32 powerToPropose = 1;</code>
        */
       public Builder setPowerToPropose(int value) {
@@ -4391,6 +4806,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * Power we will propose our deal to
+       * </pre>
+       *
        * <code>int32 powerToPropose = 1;</code>
        */
       public Builder clearPowerToPropose() {
@@ -4402,12 +4821,20 @@ public final class ProtoMessage {
 
       private int startProvince_ ;
       /**
+       * <pre>
+       * Province we will move our units from
+       * </pre>
+       *
        * <code>int32 startProvince = 2;</code>
        */
       public int getStartProvince() {
         return startProvince_;
       }
       /**
+       * <pre>
+       * Province we will move our units from
+       * </pre>
+       *
        * <code>int32 startProvince = 2;</code>
        */
       public Builder setStartProvince(int value) {
@@ -4417,6 +4844,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * Province we will move our units from
+       * </pre>
+       *
        * <code>int32 startProvince = 2;</code>
        */
       public Builder clearStartProvince() {
@@ -4428,12 +4859,20 @@ public final class ProtoMessage {
 
       private int destinationProvince_ ;
       /**
+       * <pre>
+       * Province we will move our units to
+       * </pre>
+       *
        * <code>int32 destinationProvince = 3;</code>
        */
       public int getDestinationProvince() {
         return destinationProvince_;
       }
       /**
+       * <pre>
+       * Province we will move our units to
+       * </pre>
+       *
        * <code>int32 destinationProvince = 3;</code>
        */
       public Builder setDestinationProvince(int value) {
@@ -4443,6 +4882,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * Province we will move our units to
+       * </pre>
+       *
        * <code>int32 destinationProvince = 3;</code>
        */
       public Builder clearDestinationProvince() {
@@ -4543,26 +4986,25 @@ public final class ProtoMessage {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\023proto_message.proto\022\005dip_q\"\337\001\n\016Bandana" +
+      "\n\023proto_message.proto\022\005dip_q\"\301\001\n\016Bandana" +
       "Request\022(\n\004type\030\001 \001(\0162\032.dip_q.BandanaReq" +
       "uest.Type\022+\n\013observation\030\002 \001(\0132\026.dip_q.O" +
-      "bservationData\"v\n\004Type\022\013\n\007INVALID\020\000\022\034\n\030S" +
-      "END_INITIAL_OBSERVATION\020\001\022\024\n\020GET_DEAL_RE" +
-      "QUEST\020\002\022\032\n\026GET_ACCEPTANCE_REQUEST\020\003\022\021\n\rS" +
-      "END_GAME_END\020\004\"\326\001\n\024DiplomacyGymResponse\022" +
-      ".\n\004type\030\001 \001(\0162 .dip_q.DiplomacyGymRespon" +
-      "se.Type\022\035\n\004deal\030\002 \001(\0132\017.dip_q.DealData\022)" +
-      "\n\nacceptance\030\003 \001(\0132\025.dip_q.AcceptanceDat" +
-      "a\"D\n\004Type\022\013\n\007INVALID\020\000\022\013\n\007CONFIRM\020\001\022\r\n\tS" +
-      "END_DEAL\020\002\022\023\n\017SEND_ACCEPTANCE\020\003\"5\n\014Provi" +
-      "nceData\022\n\n\002id\030\001 \001(\005\022\r\n\005owner\030\002 \001(\005\022\n\n\002sc" +
-      "\030\003 \001(\005\"s\n\017ObservationData\022&\n\tprovinces\030\001" +
-      " \003(\0132\023.dip_q.ProvinceData\022\034\n\024previousAct" +
-      "ionReward\030\002 \001(\002\022\014\n\004done\030\003 \001(\010\022\014\n\004info\030\004 " +
-      "\001(\t\"\020\n\016AcceptanceData\"V\n\010DealData\022\026\n\016pow" +
-      "erToPropose\030\001 \001(\005\022\025\n\rstartProvince\030\002 \001(\005" +
-      "\022\033\n\023destinationProvince\030\003 \001(\005B\r\n\013cruz.ag" +
-      "entsb\006proto3"
+      "bservationData\"X\n\004Type\022\013\n\007INVALID\020\000\022\024\n\020G" +
+      "ET_DEAL_REQUEST\020\001\022\032\n\026GET_ACCEPTANCE_REQU" +
+      "EST\020\002\022\021\n\rSEND_GAME_END\020\003\"\326\001\n\024DiplomacyGy" +
+      "mResponse\022.\n\004type\030\001 \001(\0162 .dip_q.Diplomac" +
+      "yGymResponse.Type\022\035\n\004deal\030\002 \001(\0132\017.dip_q." +
+      "DealData\022)\n\nacceptance\030\003 \001(\0132\025.dip_q.Acc" +
+      "eptanceData\"D\n\004Type\022\013\n\007INVALID\020\000\022\013\n\007CONF" +
+      "IRM\020\001\022\r\n\tSEND_DEAL\020\002\022\023\n\017SEND_ACCEPTANCE\020" +
+      "\003\"5\n\014ProvinceData\022\n\n\002id\030\001 \001(\005\022\r\n\005owner\030\002" +
+      " \001(\005\022\n\n\002sc\030\003 \001(\005\"s\n\017ObservationData\022&\n\tp" +
+      "rovinces\030\001 \003(\0132\023.dip_q.ProvinceData\022\034\n\024p" +
+      "reviousActionReward\030\002 \001(\002\022\014\n\004done\030\003 \001(\010\022" +
+      "\014\n\004info\030\004 \001(\t\"\020\n\016AcceptanceData\"V\n\010DealD" +
+      "ata\022\026\n\016powerToPropose\030\001 \001(\005\022\025\n\rstartProv" +
+      "ince\030\002 \001(\005\022\033\n\023destinationProvince\030\003 \001(\005B" +
+      "\r\n\013cruz.agentsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

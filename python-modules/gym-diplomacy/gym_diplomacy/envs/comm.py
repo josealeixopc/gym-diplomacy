@@ -6,11 +6,13 @@ from threading import Thread
 
 import logging
 
+FORMAT = "%(levelname)-8s -- [%(filename)s:%(lineno)s - %(funcName)20s()] %(message)s"
+logging.basicConfig(format=FORMAT)
+
 logging_level = 'DEBUG'
 level = getattr(logging, logging_level)
 logging.basicConfig(stream=sys.stdout, level=level)
 logger = logging.getLogger(__name__)
-
 
 class LocalSocketServer:
     sock = None
@@ -54,16 +56,16 @@ class LocalSocketServer:
     def _listen(self):
         while not self.terminate:
             # wait for a connection
-            logger.debug('waiting for a connection')
+            logger.debug('Waiting for a connection...')
             connection, client_address = self.sock.accept()
 
             try:
                 # show who connected to us
-                logger.debug('connection from {}'.format(client_address))
+                logger.debug('Connection from {}'.format(client_address))
 
                 data = connection.recv(1024 * 20)
 
-                logger.info("Calling handler...")
+                logger.debug("Calling handler...")
                 connection.send(self.handle(data))
 
             finally:
@@ -72,10 +74,17 @@ class LocalSocketServer:
                 connection.close()
 
     def close(self) -> None:
+        logger.info("Closing LocalSocketServer...")
+
         self.terminate = True
         self.sock.close()
+
         for thread in self.threads:
             thread.join()
+
+        # self.sock.shutdown(socket.SHUT_RDWR)  # further sends and receives are disallowed
+
+        logger.info("LocalSocketServer terminated.")
 
 
 def handle_f(request: bytearray):

@@ -6,17 +6,18 @@ option java_package = "cruz.agents";
 
 /**
 It's important that the communication between modules remains as simple as possible.
-Therefore, in this message, we are ONLY sending and receiving arrays of integers.
+
+In this particular case, all logic regarding converting observation and action into
+arrays is done on the side of BANDANA. Therefore most messages have fields which correspond to numbers.
 **/
 
 message BandanaRequest {
 
   enum Type {
     INVALID = 0;
-    SEND_INITIAL_OBSERVATION = 1;
-    GET_DEAL_REQUEST = 2;
-    GET_ACCEPTANCE_REQUEST = 3;
-    SEND_GAME_END = 4;
+    GET_DEAL_REQUEST = 1; // specific to negotiation scenario
+    GET_ACCEPTANCE_REQUEST = 2; // specific to negotiation scenario
+    SEND_GAME_END = 3;
   }
 
   // Using "required" is often bad practice. Generally, the validation
@@ -36,29 +37,50 @@ message DiplomacyGymResponse {
   }
 
   Type type = 1;
+
+  // deal will be null if we're sending an acceptance
   DealData deal = 2;
+  
+  // acceptance will be null if we're sending a deal 
   AcceptanceData acceptance = 3;
 }
 
 message ProvinceData {
+  // The id of the province, which allows us to map a certain action to a province.
   int32 id = 1;
+
+  // An integer which is the ID of the player owning the province.
   int32 owner = 2;
+
+  // Works like a boolean. 0 if province does not have a supply center (sc). 1 if it does.
   int32 sc = 3;
 }
 
 message ObservationData {
+  // A list of 0 or more provinces.
   repeated ProvinceData provinces = 1;
+
+  // The value of the reward gained by the previous action.
   float previousActionReward = 2;
+
+  // A boolean representing whether a game has finished or not.
   bool done = 3;
+
+  // Arbritary information (mostly for debug purposes).
   string info = 4;
 }
 
 message AcceptanceData {
-
+  // TODO
 }
 
 message DealData {
+  // Power we will propose our deal to
   int32 powerToPropose = 1;
+
+  // Province we will move our units from
   int32 startProvince = 2;
+
+  // Province we will move our units to
   int32 destinationProvince = 3;
 }
