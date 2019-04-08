@@ -20,6 +20,7 @@ public class TournamentRunner {
 
 	//Command lines to start the various agents provided with the Bandana framework.
 	// Add your own line here to run your own bot.
+	final static String[] randomBotCommand = {"java", "-jar", "agents/RandomBot.jar", "-log", "log", "-name", "RandomBot", "-fy", "1905"};
 	final static String[] randomNegotiatorCommand = {"java", "-jar", "agents/RandomNegotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", "1905"};
 	// final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
 	// final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
@@ -128,8 +129,8 @@ public class TournamentRunner {
                         command = openAIBotNegotiatorCommand;
                     }*/
                     if (i < 6) {
-                        name = "D-Brane " + i;
-                        command = randomNegotiatorCommand;
+                        name = "RandomBot " + i;
+                        command = randomBotCommand;
                     } else {
                         name = "DeepDip " + i;
                         command = deepDipCommand;
