@@ -8,8 +8,7 @@ import ddejonge.bandana.tools.Logger;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
-import es.csic.iiia.fabregues.dip.orders.MTOOrder;
-import es.csic.iiia.fabregues.dip.orders.Order;
+import es.csic.iiia.fabregues.dip.orders.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -245,7 +244,7 @@ public class OpenAIAdapter {
             observationDataBuilder.setInfo(this.info);
         }
         
-        String agent_name = (this.agent2 == null)?this.agent.getName():this.agent2.getName();
+        String agent_name = (this.agent2 == null)? this.agent.me.getName() : this.agent2.getMe().getName();
         observationDataBuilder.setPlayer(powerNameToInt.get(agent_name));
 
         return observationDataBuilder.build();
@@ -270,9 +269,35 @@ public class OpenAIAdapter {
 
         return new BasicDeal(ocs, dmzs);
     }
-    
+
     private List<Order> generateOrders(ProtoMessage.OrdersData ordersData) {
         List<Order> orders = new ArrayList<>();
+        List<ProtoMessage.OrderData> support_orders = new ArrayList<>();
+
+        for (ProtoMessage.OrderData order : ordersData.getOrdersList()) {
+            Region start = this.agent2.getGame().getRegions().get(order.getStart());
+            Region destination = this.agent2.getGame().getRegions().get(order.getDestination());
+
+            if (destination.getAdjacentRegions().contains(start) && order.getAction() != 0){
+                if (order.getAction() == 1) {
+                    orders.add(new MTOOrder(this.agent2.getMe(), start, destination));
+                } else if (order.getAction() == 2) {
+                    support_orders.add(order);
+                }
+            } else {
+                orders.add(new HLDOrder(this.agent2.getMe(), start));
+            }
+        }
+
+        for (ProtoMessage.OrderData support_order : support_orders) {
+            Region start = this.agent2.getGame().getRegions().get(support_order.getStart());
+            Region destination = this.agent2.getGame().getRegions().get(support_order.getDestination());
+            Order order_to_support = orders.stream()
+                .filter(order -> destination.equals(order.getLocation()))
+                .findAny()
+                .orElse(null);
+            orders.add(new SUPOrder(this.agent2.getMe(), start, order_to_support));
+        }
         System.out.println(ordersData);
         return orders;
     }

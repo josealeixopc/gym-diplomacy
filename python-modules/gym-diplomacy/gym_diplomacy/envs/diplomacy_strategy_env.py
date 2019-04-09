@@ -72,9 +72,9 @@ def action_to_orders_data(action) -> proto_message_pb2.OrdersData:
     orders_data: proto_message_pb2.OrdersData = proto_message_pb2.OrdersData()
     for order in action:
         new_order = orders_data.orders.add()
-        new_order.startProvince = order[0]
-        new_order.actionToPropose = order[1]
-        new_order.destinationProvince = order[2]
+        new_order.start = order[0]
+        new_order.action = order[1]
+        new_order.destination = order[2]
     return orders_data
 
 

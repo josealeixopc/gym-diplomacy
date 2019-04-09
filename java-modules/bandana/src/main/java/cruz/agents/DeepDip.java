@@ -122,5 +122,9 @@ public class DeepDip extends DumbBot {
     public Game getGame() {
         return this.game;
     }
+
+    public Power getMe() {
+        return this.me;
+    }
 }
 
