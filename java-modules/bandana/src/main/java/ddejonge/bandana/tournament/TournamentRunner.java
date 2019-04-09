@@ -12,8 +12,8 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
-	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
-    private final static String GAME_MAP = "small"; // Game map can be 'standard' or 'small'
+	final static int REMOTE_DEBUG = 1;	// JC: determine whether I want to remote debug the OpenAI jar or not
+    private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
 
     // JC: Using a custom map to define how many players are there on each custom map
     private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<>() {{
@@ -128,12 +128,10 @@ public class TournamentRunner {
 
                     //make sure that each player has a different name.
                     if (i < 3) {
-                        // name = "D-Brane " + i;
-                        // command = dbraneExampleBotCommand;
-                        name = "RandomBot " + i;
-                        command = randomBotCommand;
-
-                    } else if (i < 6) {
+                        name = "D-Brane " + i;
+                        command = dbraneExampleBotCommand;
+                    }
+                    else if (i < 6) {
                         name = "RandomNegotiator " + i;
                         command = randomNegotiatorCommand;
                     } else {

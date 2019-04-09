@@ -241,8 +241,9 @@ public class OpenAINegotiator extends ANACNegotiator {
                         deals.remove(1);
                     }
 
-                    // JC: If deal was accepted and confirmed
-                    this.openAIAdapter.acceptedDeal();
+                    // JC: If one of our deals was accepted and confirmed, trigger accepted deal
+                    // TODO: Make sure this only happens to our deals
+                    // this.openAIAdapter.acceptedDeal();
 
                 } else if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.REJECT)) {
 
@@ -257,7 +258,8 @@ public class OpenAINegotiator extends ANACNegotiator {
                     // message for that proposal. Once a proposal is confirmed it cannot be undone anymore.
 
                     // JC: If deal was rejected
-                    this.openAIAdapter.rejectedDeal();
+                    // TODO: Make sure this only happens to our deals
+                    // this.openAIAdapter.rejectedDeal();
                 } else {
 
                     //We have received any other kind of message.

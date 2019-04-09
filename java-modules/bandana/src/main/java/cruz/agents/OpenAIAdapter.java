@@ -5,17 +5,14 @@ import ddejonge.bandana.negoProtocol.BasicDeal;
 import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.OrderCommitment;
 import ddejonge.bandana.tools.Logger;
+import ddejonge.bandana.tournament.GameResult;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
-import es.csic.iiia.fabregues.dip.orders.MTOOrder;
-import es.csic.iiia.fabregues.dip.orders.Order;
+import es.csic.iiia.fabregues.dip.orders.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The class that makes the connection between the Open AI environment and the BANDANA player.
@@ -23,14 +20,32 @@ import java.util.Map;
 public class OpenAIAdapter {
 
     /**
-     * Reward given for each deal rejected by other players.
+     * Reward given for each deal rejected by other players
      */
     public static final int REJECTED_DEAL_REWARD = -5;
 
     /**
-     * Reward give for each deal accepted by other players.
+     * Reward given for each deal accepted by other players.
      */
     public static final int ACCEPTED_DEAL_REWARD = +5;
+
+    /**
+     * Reward given for winning the game
+     */
+
+    public static final int WON_GAME_REWARD = +100;
+
+    /**
+     * Reward given for losing the game
+     */
+
+    public static final int LOST_GAME_REWARD = -100;
+
+    /**
+     * Reward given for generating an invalid deal
+     */
+    public static final int INVALID_DEAL_REWARD = -10;
+
 
     /**
      * The OpenAINegotiator instance to which this adapter is connected.
@@ -63,7 +78,6 @@ public class OpenAIAdapter {
     public OpenAIObserver openAIObserver;
 
     /**
-     *
      * @param agent The OpenAINegotiator instance that will receive actions from the OpenAI environment.
      */
     OpenAIAdapter(OpenAINegotiator agent) {
@@ -76,9 +90,9 @@ public class OpenAIAdapter {
 
     /**
      * Creates the OpenAIObserver instance which will connect to the Parlance server.
-     *
+     * <p>
      * The path for the logging is given because the Observer class needs one, but it is not essential.
-     *
+     * <p>
      * TODO (low-prio): Figure out how to create an Observer without needing a logging path.
      */
     private void createObserver() {
@@ -120,6 +134,13 @@ public class OpenAIAdapter {
 
             ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymResponse.parseFrom(response);
             BasicDeal generatedDeal = this.generateDeal(diplomacyGymResponse.getDeal());
+
+            // If deal is invalid, give negative reward. If an invalid deal is returned, the game will deal with it, so
+            // we can still return it.
+            if(!(this.isDealValid(generatedDeal))) {
+                this.addReward(INVALID_DEAL_REWARD);
+            }
+
             return generatedDeal;
 
 
@@ -153,11 +174,10 @@ public class OpenAIAdapter {
 
             ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymResponse.parseFrom(response);
 
-            if(diplomacyGymResponse.getType() != ProtoMessage.DiplomacyGymResponse.Type.CONFIRM) {
+            if (diplomacyGymResponse.getType() != ProtoMessage.DiplomacyGymResponse.Type.CONFIRM) {
                 throw new Exception("The response from DiplomacyGym to the end of game notification is not 'CONFIRM'.");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -176,7 +196,20 @@ public class OpenAIAdapter {
     /**
      * Executes on the end of a game.
      */
-    void endOfGame() {
+    void endOfGame(GameResult gameResult) {
+
+        // Yes, weird work around, but for some reason it works
+        String nameOfPlayer = "'OpenAINegotiator'";
+
+        int rank = (int) gameResult.getRank(nameOfPlayer);
+
+        if (rank == 0) // winner
+        {
+            this.wonGame();
+        } else {
+            this.lostGame();
+        }
+
         this.done = true;
         this.sendEndOfGameNotification();
 
@@ -188,14 +221,22 @@ public class OpenAIAdapter {
      * Executes when a deal is accepted.
      */
     void acceptedDeal() {
-        // TODO
+        this.addReward(ACCEPTED_DEAL_REWARD);
     }
 
     /**
      * Executes when a deal is rejected.
      */
     void rejectedDeal() {
-        // TODO
+        this.addReward(REJECTED_DEAL_REWARD);
+    }
+
+    void wonGame() {
+        this.addReward(WON_GAME_REWARD);
+    }
+
+    void lostGame() {
+        this.addReward(LOST_GAME_REWARD);
     }
 
     private void generatePowerNameToIntMap() {
@@ -204,7 +245,7 @@ public class OpenAIAdapter {
 
         int id = 1;
 
-        for(Power pow : this.agent.game.getPowers()) {
+        for (Power pow : this.agent.game.getPowers()) {
             powerNameToInt.put(pow.getName(), id);
             id++;
         }
@@ -250,9 +291,12 @@ public class OpenAIAdapter {
         observationDataBuilder.setPreviousActionReward(this.previousActionReward);
         observationDataBuilder.setDone(this.done);
 
-        if(this.info != null){
+        if (this.info != null) {
             observationDataBuilder.setInfo(this.info);
         }
+
+        // Reset previous reward
+        this.resetReward();
 
         return observationDataBuilder.build();
     }
@@ -275,6 +319,75 @@ public class OpenAIAdapter {
         ocs.add(oc);
 
         return new BasicDeal(ocs, dmzs);
+    }
+
+    /**
+     * Checks if a deal is valid. It checks if it is consistent with the current deals in place and if it is well
+     * structured.
+     *
+     * @param deal The deal to analyze.
+     * @return True if the deal is valid. False otherwise.
+     */
+    private boolean isDealValid(BasicDeal deal) {
+        boolean isDealConsistent = true;
+        boolean isDealWellStructured = true;
+
+        if (ddejonge.bandana.tools.Utilities.testValidity(this.agent.game, deal) == null) {
+            isDealConsistent = false;
+        }
+
+        isDealWellStructured = isDealWellStructured(deal);
+
+        boolean valid = isDealConsistent && isDealWellStructured;
+
+        return valid;
+    }
+
+    /**
+     * This function checks whether a deal is well structured or not. This verification is made by the 'proposeDeal' method,
+     * however we cannot access it so we rewrite it and use it.
+     *
+     * @param deal The deal to analyze.
+     * @return True if the deal is well structured. False otherwise.
+     */
+    private boolean isDealWellStructured(BasicDeal deal) {
+
+        boolean wellStructured = true;
+
+        boolean containsOtherPower = false;
+        Iterator it = deal.getDemilitarizedZones().iterator();
+
+        while (it.hasNext()) {
+            DMZ commitment = (DMZ) it.next();
+            if (commitment.getPowers().size() > 1) {
+                containsOtherPower = true;
+                break;
+            }
+
+            if (!((Power) commitment.getPowers().get(0)).getName().equals(this.agent.me.getName())) {
+                containsOtherPower = true;
+                break;
+            }
+        }
+
+        it = deal.getOrderCommitments().iterator();
+
+        while (it.hasNext()) {
+            OrderCommitment commitment = (OrderCommitment) it.next();
+            if (!commitment.getOrder().getPower().getName().equals(this.agent.me.getName())) {
+                containsOtherPower = true;
+            }
+
+            if (!(commitment.getOrder() instanceof HLDOrder) && !(commitment.getOrder() instanceof MTOOrder) && !(commitment.getOrder() instanceof SUPOrder) && !(commitment.getOrder() instanceof SUPMTOOrder)) {
+                wellStructured = false;
+            }
+        }
+
+        if (!containsOtherPower) {
+            wellStructured = false;
+        }
+
+        return wellStructured;
     }
 
     private void addReward(int reward) {

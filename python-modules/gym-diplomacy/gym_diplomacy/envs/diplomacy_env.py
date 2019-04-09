@@ -207,7 +207,10 @@ class DiplomacyEnv(gym.Env):
 
         logger.debug("New observation has been processed.")
 
-        logger.info("Finished executing 'step'. Returning new observation, reward, done and info.")
+        logger.info("Finished executing 'step': ")
+        logger.info("\t-observation: {}".format(self.observation))
+        logger.info("\t-reward: {}".format(self.reward))
+        logger.info("\t-done: {}".format(self.done))
         return self.observation, self.reward, self.done, self.info
 
     def reset(self):

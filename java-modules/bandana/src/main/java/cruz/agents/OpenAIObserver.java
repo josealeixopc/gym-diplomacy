@@ -2,6 +2,7 @@ package cruz.agents;
 
 import java.net.InetAddress;
 
+import ddejonge.bandana.tournament.GameResult;
 import es.csic.iiia.fabregues.dip.Observer;
 import es.csic.iiia.fabregues.dip.comm.CommException;
 import es.csic.iiia.fabregues.dip.comm.IComm;
@@ -122,7 +123,10 @@ public class OpenAIObserver extends Observer {
     @Override
     public void handleSMR(String[] message) {
 
-        this.openAIAdapter.endOfGame();
+
+        GameResult gameResult = new GameResult(message, 7);
+
+        this.openAIAdapter.endOfGame(gameResult);
 
     }
 
