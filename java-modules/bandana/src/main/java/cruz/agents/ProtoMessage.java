@@ -4304,21 +4304,53 @@ public final class ProtoMessage {
 
     /**
      * <pre>
-     * Province we will move our units from
+     * The Move order we propose to execute
      * </pre>
      *
-     * <code>int32 startProvince = 2;</code>
+     * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
      */
-    int getStartProvince();
+    boolean hasOurMove();
+    /**
+     * <pre>
+     * The Move order we propose to execute
+     * </pre>
+     *
+     * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+     */
+    cruz.agents.ProtoMessage.DealData.MTOOrderData getOurMove();
+    /**
+     * <pre>
+     * The Move order we propose to execute
+     * </pre>
+     *
+     * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+     */
+    cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder getOurMoveOrBuilder();
 
     /**
      * <pre>
-     * Province we will move our units to
+     * The Move order we propose the other to execute
      * </pre>
      *
-     * <code>int32 destinationProvince = 3;</code>
+     * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
      */
-    int getDestinationProvince();
+    boolean hasTheirMove();
+    /**
+     * <pre>
+     * The Move order we propose the other to execute
+     * </pre>
+     *
+     * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+     */
+    cruz.agents.ProtoMessage.DealData.MTOOrderData getTheirMove();
+    /**
+     * <pre>
+     * The Move order we propose the other to execute
+     * </pre>
+     *
+     * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+     */
+    cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder getTheirMoveOrBuilder();
   }
   /**
    * Protobuf type {@code dip_q.DealData}
@@ -4364,14 +4396,30 @@ public final class ProtoMessage {
               powerToPropose_ = input.readInt32();
               break;
             }
-            case 16: {
+            case 18: {
+              cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder subBuilder = null;
+              if (ourMove_ != null) {
+                subBuilder = ourMove_.toBuilder();
+              }
+              ourMove_ = input.readMessage(cruz.agents.ProtoMessage.DealData.MTOOrderData.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(ourMove_);
+                ourMove_ = subBuilder.buildPartial();
+              }
 
-              startProvince_ = input.readInt32();
               break;
             }
-            case 24: {
+            case 26: {
+              cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder subBuilder = null;
+              if (theirMove_ != null) {
+                subBuilder = theirMove_.toBuilder();
+              }
+              theirMove_ = input.readMessage(cruz.agents.ProtoMessage.DealData.MTOOrderData.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(theirMove_);
+                theirMove_ = subBuilder.buildPartial();
+              }
 
-              destinationProvince_ = input.readInt32();
               break;
             }
             default: {
@@ -4406,6 +4454,582 @@ public final class ProtoMessage {
               cruz.agents.ProtoMessage.DealData.class, cruz.agents.ProtoMessage.DealData.Builder.class);
     }
 
+    public interface MTOOrderDataOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:dip_q.DealData.MTOOrderData)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <pre>
+       * Province to move units FROM
+       * </pre>
+       *
+       * <code>int32 startProvince = 1;</code>
+       */
+      int getStartProvince();
+
+      /**
+       * <pre>
+       * Province to move units TO
+       * </pre>
+       *
+       * <code>int32 destinationProvince = 2;</code>
+       */
+      int getDestinationProvince();
+    }
+    /**
+     * Protobuf type {@code dip_q.DealData.MTOOrderData}
+     */
+    public  static final class MTOOrderData extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:dip_q.DealData.MTOOrderData)
+        MTOOrderDataOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use MTOOrderData.newBuilder() to construct.
+      private MTOOrderData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private MTOOrderData() {
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private MTOOrderData(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+
+                startProvince_ = input.readInt32();
+                break;
+              }
+              case 16: {
+
+                destinationProvince_ = input.readInt32();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_DealData_MTOOrderData_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_DealData_MTOOrderData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cruz.agents.ProtoMessage.DealData.MTOOrderData.class, cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder.class);
+      }
+
+      public static final int STARTPROVINCE_FIELD_NUMBER = 1;
+      private int startProvince_;
+      /**
+       * <pre>
+       * Province to move units FROM
+       * </pre>
+       *
+       * <code>int32 startProvince = 1;</code>
+       */
+      public int getStartProvince() {
+        return startProvince_;
+      }
+
+      public static final int DESTINATIONPROVINCE_FIELD_NUMBER = 2;
+      private int destinationProvince_;
+      /**
+       * <pre>
+       * Province to move units TO
+       * </pre>
+       *
+       * <code>int32 destinationProvince = 2;</code>
+       */
+      public int getDestinationProvince() {
+        return destinationProvince_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (startProvince_ != 0) {
+          output.writeInt32(1, startProvince_);
+        }
+        if (destinationProvince_ != 0) {
+          output.writeInt32(2, destinationProvince_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (startProvince_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(1, startProvince_);
+        }
+        if (destinationProvince_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(2, destinationProvince_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof cruz.agents.ProtoMessage.DealData.MTOOrderData)) {
+          return super.equals(obj);
+        }
+        cruz.agents.ProtoMessage.DealData.MTOOrderData other = (cruz.agents.ProtoMessage.DealData.MTOOrderData) obj;
+
+        if (getStartProvince()
+            != other.getStartProvince()) return false;
+        if (getDestinationProvince()
+            != other.getDestinationProvince()) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + STARTPROVINCE_FIELD_NUMBER;
+        hash = (53 * hash) + getStartProvince();
+        hash = (37 * hash) + DESTINATIONPROVINCE_FIELD_NUMBER;
+        hash = (53 * hash) + getDestinationProvince();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(cruz.agents.ProtoMessage.DealData.MTOOrderData prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code dip_q.DealData.MTOOrderData}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:dip_q.DealData.MTOOrderData)
+          cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return cruz.agents.ProtoMessage.internal_static_dip_q_DealData_MTOOrderData_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return cruz.agents.ProtoMessage.internal_static_dip_q_DealData_MTOOrderData_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  cruz.agents.ProtoMessage.DealData.MTOOrderData.class, cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder.class);
+        }
+
+        // Construct using cruz.agents.ProtoMessage.DealData.MTOOrderData.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          startProvince_ = 0;
+
+          destinationProvince_ = 0;
+
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return cruz.agents.ProtoMessage.internal_static_dip_q_DealData_MTOOrderData_descriptor;
+        }
+
+        @java.lang.Override
+        public cruz.agents.ProtoMessage.DealData.MTOOrderData getDefaultInstanceForType() {
+          return cruz.agents.ProtoMessage.DealData.MTOOrderData.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public cruz.agents.ProtoMessage.DealData.MTOOrderData build() {
+          cruz.agents.ProtoMessage.DealData.MTOOrderData result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public cruz.agents.ProtoMessage.DealData.MTOOrderData buildPartial() {
+          cruz.agents.ProtoMessage.DealData.MTOOrderData result = new cruz.agents.ProtoMessage.DealData.MTOOrderData(this);
+          result.startProvince_ = startProvince_;
+          result.destinationProvince_ = destinationProvince_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof cruz.agents.ProtoMessage.DealData.MTOOrderData) {
+            return mergeFrom((cruz.agents.ProtoMessage.DealData.MTOOrderData)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(cruz.agents.ProtoMessage.DealData.MTOOrderData other) {
+          if (other == cruz.agents.ProtoMessage.DealData.MTOOrderData.getDefaultInstance()) return this;
+          if (other.getStartProvince() != 0) {
+            setStartProvince(other.getStartProvince());
+          }
+          if (other.getDestinationProvince() != 0) {
+            setDestinationProvince(other.getDestinationProvince());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          cruz.agents.ProtoMessage.DealData.MTOOrderData parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (cruz.agents.ProtoMessage.DealData.MTOOrderData) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private int startProvince_ ;
+        /**
+         * <pre>
+         * Province to move units FROM
+         * </pre>
+         *
+         * <code>int32 startProvince = 1;</code>
+         */
+        public int getStartProvince() {
+          return startProvince_;
+        }
+        /**
+         * <pre>
+         * Province to move units FROM
+         * </pre>
+         *
+         * <code>int32 startProvince = 1;</code>
+         */
+        public Builder setStartProvince(int value) {
+          
+          startProvince_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Province to move units FROM
+         * </pre>
+         *
+         * <code>int32 startProvince = 1;</code>
+         */
+        public Builder clearStartProvince() {
+          
+          startProvince_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int destinationProvince_ ;
+        /**
+         * <pre>
+         * Province to move units TO
+         * </pre>
+         *
+         * <code>int32 destinationProvince = 2;</code>
+         */
+        public int getDestinationProvince() {
+          return destinationProvince_;
+        }
+        /**
+         * <pre>
+         * Province to move units TO
+         * </pre>
+         *
+         * <code>int32 destinationProvince = 2;</code>
+         */
+        public Builder setDestinationProvince(int value) {
+          
+          destinationProvince_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * Province to move units TO
+         * </pre>
+         *
+         * <code>int32 destinationProvince = 2;</code>
+         */
+        public Builder clearDestinationProvince() {
+          
+          destinationProvince_ = 0;
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:dip_q.DealData.MTOOrderData)
+      }
+
+      // @@protoc_insertion_point(class_scope:dip_q.DealData.MTOOrderData)
+      private static final cruz.agents.ProtoMessage.DealData.MTOOrderData DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new cruz.agents.ProtoMessage.DealData.MTOOrderData();
+      }
+
+      public static cruz.agents.ProtoMessage.DealData.MTOOrderData getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<MTOOrderData>
+          PARSER = new com.google.protobuf.AbstractParser<MTOOrderData>() {
+        @java.lang.Override
+        public MTOOrderData parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new MTOOrderData(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<MTOOrderData> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<MTOOrderData> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.DealData.MTOOrderData getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
     public static final int POWERTOPROPOSE_FIELD_NUMBER = 1;
     private int powerToPropose_;
     /**
@@ -4419,30 +5043,70 @@ public final class ProtoMessage {
       return powerToPropose_;
     }
 
-    public static final int STARTPROVINCE_FIELD_NUMBER = 2;
-    private int startProvince_;
+    public static final int OURMOVE_FIELD_NUMBER = 2;
+    private cruz.agents.ProtoMessage.DealData.MTOOrderData ourMove_;
     /**
      * <pre>
-     * Province we will move our units from
+     * The Move order we propose to execute
      * </pre>
      *
-     * <code>int32 startProvince = 2;</code>
+     * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
      */
-    public int getStartProvince() {
-      return startProvince_;
+    public boolean hasOurMove() {
+      return ourMove_ != null;
+    }
+    /**
+     * <pre>
+     * The Move order we propose to execute
+     * </pre>
+     *
+     * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+     */
+    public cruz.agents.ProtoMessage.DealData.MTOOrderData getOurMove() {
+      return ourMove_ == null ? cruz.agents.ProtoMessage.DealData.MTOOrderData.getDefaultInstance() : ourMove_;
+    }
+    /**
+     * <pre>
+     * The Move order we propose to execute
+     * </pre>
+     *
+     * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+     */
+    public cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder getOurMoveOrBuilder() {
+      return getOurMove();
     }
 
-    public static final int DESTINATIONPROVINCE_FIELD_NUMBER = 3;
-    private int destinationProvince_;
+    public static final int THEIRMOVE_FIELD_NUMBER = 3;
+    private cruz.agents.ProtoMessage.DealData.MTOOrderData theirMove_;
     /**
      * <pre>
-     * Province we will move our units to
+     * The Move order we propose the other to execute
      * </pre>
      *
-     * <code>int32 destinationProvince = 3;</code>
+     * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
      */
-    public int getDestinationProvince() {
-      return destinationProvince_;
+    public boolean hasTheirMove() {
+      return theirMove_ != null;
+    }
+    /**
+     * <pre>
+     * The Move order we propose the other to execute
+     * </pre>
+     *
+     * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+     */
+    public cruz.agents.ProtoMessage.DealData.MTOOrderData getTheirMove() {
+      return theirMove_ == null ? cruz.agents.ProtoMessage.DealData.MTOOrderData.getDefaultInstance() : theirMove_;
+    }
+    /**
+     * <pre>
+     * The Move order we propose the other to execute
+     * </pre>
+     *
+     * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+     */
+    public cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder getTheirMoveOrBuilder() {
+      return getTheirMove();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4462,11 +5126,11 @@ public final class ProtoMessage {
       if (powerToPropose_ != 0) {
         output.writeInt32(1, powerToPropose_);
       }
-      if (startProvince_ != 0) {
-        output.writeInt32(2, startProvince_);
+      if (ourMove_ != null) {
+        output.writeMessage(2, getOurMove());
       }
-      if (destinationProvince_ != 0) {
-        output.writeInt32(3, destinationProvince_);
+      if (theirMove_ != null) {
+        output.writeMessage(3, getTheirMove());
       }
       unknownFields.writeTo(output);
     }
@@ -4481,13 +5145,13 @@ public final class ProtoMessage {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, powerToPropose_);
       }
-      if (startProvince_ != 0) {
+      if (ourMove_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, startProvince_);
+          .computeMessageSize(2, getOurMove());
       }
-      if (destinationProvince_ != 0) {
+      if (theirMove_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, destinationProvince_);
+          .computeMessageSize(3, getTheirMove());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4506,10 +5170,16 @@ public final class ProtoMessage {
 
       if (getPowerToPropose()
           != other.getPowerToPropose()) return false;
-      if (getStartProvince()
-          != other.getStartProvince()) return false;
-      if (getDestinationProvince()
-          != other.getDestinationProvince()) return false;
+      if (hasOurMove() != other.hasOurMove()) return false;
+      if (hasOurMove()) {
+        if (!getOurMove()
+            .equals(other.getOurMove())) return false;
+      }
+      if (hasTheirMove() != other.hasTheirMove()) return false;
+      if (hasTheirMove()) {
+        if (!getTheirMove()
+            .equals(other.getTheirMove())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -4523,10 +5193,14 @@ public final class ProtoMessage {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + POWERTOPROPOSE_FIELD_NUMBER;
       hash = (53 * hash) + getPowerToPropose();
-      hash = (37 * hash) + STARTPROVINCE_FIELD_NUMBER;
-      hash = (53 * hash) + getStartProvince();
-      hash = (37 * hash) + DESTINATIONPROVINCE_FIELD_NUMBER;
-      hash = (53 * hash) + getDestinationProvince();
+      if (hasOurMove()) {
+        hash = (37 * hash) + OURMOVE_FIELD_NUMBER;
+        hash = (53 * hash) + getOurMove().hashCode();
+      }
+      if (hasTheirMove()) {
+        hash = (37 * hash) + THEIRMOVE_FIELD_NUMBER;
+        hash = (53 * hash) + getTheirMove().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4662,10 +5336,18 @@ public final class ProtoMessage {
         super.clear();
         powerToPropose_ = 0;
 
-        startProvince_ = 0;
-
-        destinationProvince_ = 0;
-
+        if (ourMoveBuilder_ == null) {
+          ourMove_ = null;
+        } else {
+          ourMove_ = null;
+          ourMoveBuilder_ = null;
+        }
+        if (theirMoveBuilder_ == null) {
+          theirMove_ = null;
+        } else {
+          theirMove_ = null;
+          theirMoveBuilder_ = null;
+        }
         return this;
       }
 
@@ -4693,8 +5375,16 @@ public final class ProtoMessage {
       public cruz.agents.ProtoMessage.DealData buildPartial() {
         cruz.agents.ProtoMessage.DealData result = new cruz.agents.ProtoMessage.DealData(this);
         result.powerToPropose_ = powerToPropose_;
-        result.startProvince_ = startProvince_;
-        result.destinationProvince_ = destinationProvince_;
+        if (ourMoveBuilder_ == null) {
+          result.ourMove_ = ourMove_;
+        } else {
+          result.ourMove_ = ourMoveBuilder_.build();
+        }
+        if (theirMoveBuilder_ == null) {
+          result.theirMove_ = theirMove_;
+        } else {
+          result.theirMove_ = theirMoveBuilder_.build();
+        }
         onBuilt();
         return result;
       }
@@ -4746,11 +5436,11 @@ public final class ProtoMessage {
         if (other.getPowerToPropose() != 0) {
           setPowerToPropose(other.getPowerToPropose());
         }
-        if (other.getStartProvince() != 0) {
-          setStartProvince(other.getStartProvince());
+        if (other.hasOurMove()) {
+          mergeOurMove(other.getOurMove());
         }
-        if (other.getDestinationProvince() != 0) {
-          setDestinationProvince(other.getDestinationProvince());
+        if (other.hasTheirMove()) {
+          mergeTheirMove(other.getTheirMove());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4819,80 +5509,310 @@ public final class ProtoMessage {
         return this;
       }
 
-      private int startProvince_ ;
+      private cruz.agents.ProtoMessage.DealData.MTOOrderData ourMove_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cruz.agents.ProtoMessage.DealData.MTOOrderData, cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder, cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder> ourMoveBuilder_;
       /**
        * <pre>
-       * Province we will move our units from
+       * The Move order we propose to execute
        * </pre>
        *
-       * <code>int32 startProvince = 2;</code>
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
        */
-      public int getStartProvince() {
-        return startProvince_;
+      public boolean hasOurMove() {
+        return ourMoveBuilder_ != null || ourMove_ != null;
       }
       /**
        * <pre>
-       * Province we will move our units from
+       * The Move order we propose to execute
        * </pre>
        *
-       * <code>int32 startProvince = 2;</code>
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
        */
-      public Builder setStartProvince(int value) {
-        
-        startProvince_ = value;
-        onChanged();
+      public cruz.agents.ProtoMessage.DealData.MTOOrderData getOurMove() {
+        if (ourMoveBuilder_ == null) {
+          return ourMove_ == null ? cruz.agents.ProtoMessage.DealData.MTOOrderData.getDefaultInstance() : ourMove_;
+        } else {
+          return ourMoveBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * The Move order we propose to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+       */
+      public Builder setOurMove(cruz.agents.ProtoMessage.DealData.MTOOrderData value) {
+        if (ourMoveBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ourMove_ = value;
+          onChanged();
+        } else {
+          ourMoveBuilder_.setMessage(value);
+        }
+
         return this;
       }
       /**
        * <pre>
-       * Province we will move our units from
+       * The Move order we propose to execute
        * </pre>
        *
-       * <code>int32 startProvince = 2;</code>
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
        */
-      public Builder clearStartProvince() {
-        
-        startProvince_ = 0;
-        onChanged();
+      public Builder setOurMove(
+          cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder builderForValue) {
+        if (ourMoveBuilder_ == null) {
+          ourMove_ = builderForValue.build();
+          onChanged();
+        } else {
+          ourMoveBuilder_.setMessage(builderForValue.build());
+        }
+
         return this;
+      }
+      /**
+       * <pre>
+       * The Move order we propose to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+       */
+      public Builder mergeOurMove(cruz.agents.ProtoMessage.DealData.MTOOrderData value) {
+        if (ourMoveBuilder_ == null) {
+          if (ourMove_ != null) {
+            ourMove_ =
+              cruz.agents.ProtoMessage.DealData.MTOOrderData.newBuilder(ourMove_).mergeFrom(value).buildPartial();
+          } else {
+            ourMove_ = value;
+          }
+          onChanged();
+        } else {
+          ourMoveBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * The Move order we propose to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+       */
+      public Builder clearOurMove() {
+        if (ourMoveBuilder_ == null) {
+          ourMove_ = null;
+          onChanged();
+        } else {
+          ourMove_ = null;
+          ourMoveBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * The Move order we propose to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+       */
+      public cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder getOurMoveBuilder() {
+        
+        onChanged();
+        return getOurMoveFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * The Move order we propose to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+       */
+      public cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder getOurMoveOrBuilder() {
+        if (ourMoveBuilder_ != null) {
+          return ourMoveBuilder_.getMessageOrBuilder();
+        } else {
+          return ourMove_ == null ?
+              cruz.agents.ProtoMessage.DealData.MTOOrderData.getDefaultInstance() : ourMove_;
+        }
+      }
+      /**
+       * <pre>
+       * The Move order we propose to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData ourMove = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cruz.agents.ProtoMessage.DealData.MTOOrderData, cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder, cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder> 
+          getOurMoveFieldBuilder() {
+        if (ourMoveBuilder_ == null) {
+          ourMoveBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cruz.agents.ProtoMessage.DealData.MTOOrderData, cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder, cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder>(
+                  getOurMove(),
+                  getParentForChildren(),
+                  isClean());
+          ourMove_ = null;
+        }
+        return ourMoveBuilder_;
       }
 
-      private int destinationProvince_ ;
+      private cruz.agents.ProtoMessage.DealData.MTOOrderData theirMove_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cruz.agents.ProtoMessage.DealData.MTOOrderData, cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder, cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder> theirMoveBuilder_;
       /**
        * <pre>
-       * Province we will move our units to
+       * The Move order we propose the other to execute
        * </pre>
        *
-       * <code>int32 destinationProvince = 3;</code>
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
        */
-      public int getDestinationProvince() {
-        return destinationProvince_;
+      public boolean hasTheirMove() {
+        return theirMoveBuilder_ != null || theirMove_ != null;
       }
       /**
        * <pre>
-       * Province we will move our units to
+       * The Move order we propose the other to execute
        * </pre>
        *
-       * <code>int32 destinationProvince = 3;</code>
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
        */
-      public Builder setDestinationProvince(int value) {
-        
-        destinationProvince_ = value;
-        onChanged();
+      public cruz.agents.ProtoMessage.DealData.MTOOrderData getTheirMove() {
+        if (theirMoveBuilder_ == null) {
+          return theirMove_ == null ? cruz.agents.ProtoMessage.DealData.MTOOrderData.getDefaultInstance() : theirMove_;
+        } else {
+          return theirMoveBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * The Move order we propose the other to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+       */
+      public Builder setTheirMove(cruz.agents.ProtoMessage.DealData.MTOOrderData value) {
+        if (theirMoveBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          theirMove_ = value;
+          onChanged();
+        } else {
+          theirMoveBuilder_.setMessage(value);
+        }
+
         return this;
       }
       /**
        * <pre>
-       * Province we will move our units to
+       * The Move order we propose the other to execute
        * </pre>
        *
-       * <code>int32 destinationProvince = 3;</code>
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
        */
-      public Builder clearDestinationProvince() {
-        
-        destinationProvince_ = 0;
-        onChanged();
+      public Builder setTheirMove(
+          cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder builderForValue) {
+        if (theirMoveBuilder_ == null) {
+          theirMove_ = builderForValue.build();
+          onChanged();
+        } else {
+          theirMoveBuilder_.setMessage(builderForValue.build());
+        }
+
         return this;
+      }
+      /**
+       * <pre>
+       * The Move order we propose the other to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+       */
+      public Builder mergeTheirMove(cruz.agents.ProtoMessage.DealData.MTOOrderData value) {
+        if (theirMoveBuilder_ == null) {
+          if (theirMove_ != null) {
+            theirMove_ =
+              cruz.agents.ProtoMessage.DealData.MTOOrderData.newBuilder(theirMove_).mergeFrom(value).buildPartial();
+          } else {
+            theirMove_ = value;
+          }
+          onChanged();
+        } else {
+          theirMoveBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * The Move order we propose the other to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+       */
+      public Builder clearTheirMove() {
+        if (theirMoveBuilder_ == null) {
+          theirMove_ = null;
+          onChanged();
+        } else {
+          theirMove_ = null;
+          theirMoveBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * The Move order we propose the other to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+       */
+      public cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder getTheirMoveBuilder() {
+        
+        onChanged();
+        return getTheirMoveFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * The Move order we propose the other to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+       */
+      public cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder getTheirMoveOrBuilder() {
+        if (theirMoveBuilder_ != null) {
+          return theirMoveBuilder_.getMessageOrBuilder();
+        } else {
+          return theirMove_ == null ?
+              cruz.agents.ProtoMessage.DealData.MTOOrderData.getDefaultInstance() : theirMove_;
+        }
+      }
+      /**
+       * <pre>
+       * The Move order we propose the other to execute
+       * </pre>
+       *
+       * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cruz.agents.ProtoMessage.DealData.MTOOrderData, cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder, cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder> 
+          getTheirMoveFieldBuilder() {
+        if (theirMoveBuilder_ == null) {
+          theirMoveBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cruz.agents.ProtoMessage.DealData.MTOOrderData, cruz.agents.ProtoMessage.DealData.MTOOrderData.Builder, cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder>(
+                  getTheirMove(),
+                  getParentForChildren(),
+                  isClean());
+          theirMove_ = null;
+        }
+        return theirMoveBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -4977,6 +5897,11 @@ public final class ProtoMessage {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_DealData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dip_q_DealData_MTOOrderData_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dip_q_DealData_MTOOrderData_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -5001,10 +5926,13 @@ public final class ProtoMessage {
       " \001(\005\022\n\n\002sc\030\003 \001(\005\"s\n\017ObservationData\022&\n\tp" +
       "rovinces\030\001 \003(\0132\023.dip_q.ProvinceData\022\034\n\024p" +
       "reviousActionReward\030\002 \001(\002\022\014\n\004done\030\003 \001(\010\022" +
-      "\014\n\004info\030\004 \001(\t\"\020\n\016AcceptanceData\"V\n\010DealD" +
-      "ata\022\026\n\016powerToPropose\030\001 \001(\005\022\025\n\rstartProv" +
-      "ince\030\002 \001(\005\022\033\n\023destinationProvince\030\003 \001(\005B" +
-      "\r\n\013cruz.agentsb\006proto3"
+      "\014\n\004info\030\004 \001(\t\"\020\n\016AcceptanceData\"\306\001\n\010Deal" +
+      "Data\022\026\n\016powerToPropose\030\001 \001(\005\022-\n\007ourMove\030" +
+      "\002 \001(\0132\034.dip_q.DealData.MTOOrderData\022/\n\tt" +
+      "heirMove\030\003 \001(\0132\034.dip_q.DealData.MTOOrder" +
+      "Data\032B\n\014MTOOrderData\022\025\n\rstartProvince\030\001 " +
+      "\001(\005\022\033\n\023destinationProvince\030\002 \001(\005B\r\n\013cruz" +
+      ".agentsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5053,7 +5981,13 @@ public final class ProtoMessage {
     internal_static_dip_q_DealData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_DealData_descriptor,
-        new java.lang.String[] { "PowerToPropose", "StartProvince", "DestinationProvince", });
+        new java.lang.String[] { "PowerToPropose", "OurMove", "TheirMove", });
+    internal_static_dip_q_DealData_MTOOrderData_descriptor =
+      internal_static_dip_q_DealData_descriptor.getNestedTypes().get(0);
+    internal_static_dip_q_DealData_MTOOrderData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dip_q_DealData_MTOOrderData_descriptor,
+        new java.lang.String[] { "StartProvince", "DestinationProvince", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

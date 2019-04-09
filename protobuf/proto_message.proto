@@ -75,12 +75,21 @@ message AcceptanceData {
 }
 
 message DealData {
+
+  message MTOOrderData {
+    // Province to move units FROM
+    int32 startProvince = 1;
+
+    // Province to move units TO
+    int32 destinationProvince = 2;
+  }
+
   // Power we will propose our deal to
   int32 powerToPropose = 1;
 
-  // Province we will move our units from
-  int32 startProvince = 2;
+  // The Move order we propose to execute
+  MTOOrderData ourMove = 2;
 
-  // Province we will move our units to
-  int32 destinationProvince = 3;
+  // The Move order we propose the other to execute
+  MTOOrderData theirMove = 3;
 }

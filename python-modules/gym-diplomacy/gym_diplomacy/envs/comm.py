@@ -27,6 +27,9 @@ class LocalSocketServer:
         # create TCP (SOCK_STREAM) /IP socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+        # reuse the socket, meaning there should not be any errno98 address already in use
+        # self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
         # retrieve local hostname
         local_hostname = socket.gethostname()
 
@@ -77,12 +80,11 @@ class LocalSocketServer:
         logger.info("Closing LocalSocketServer...")
 
         self.terminate = True
+        self.sock.shutdown(socket.SHUT_RDWR)  # further sends and receives are disallowed
         self.sock.close()
 
         for thread in self.threads:
             thread.join()
-
-        # self.sock.shutdown(socket.SHUT_RDWR)  # further sends and receives are disallowed
 
         logger.info("LocalSocketServer terminated.")
 

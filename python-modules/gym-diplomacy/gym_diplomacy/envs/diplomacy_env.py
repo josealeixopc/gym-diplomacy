@@ -76,12 +76,21 @@ def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     """
     deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
 
-    if action.size != 3:
+    if action.size != 5:
         raise ValueError("The array given does not have the correct number of elements.", action)
 
-    deal_data.powerToPropose = action[0]
-    deal_data.startProvince = action[1]
-    deal_data.destinationProvince = action[2]
+    our_move: proto_message_pb2.DealData.MTOOrderData = proto_message_pb2.DealData.MTOOrderData()
+    their_move: proto_message_pb2.DealData.MTOOrderData = proto_message_pb2.DealData.MTOOrderData()
+
+    our_move.startProvince = action[0]
+    our_move.destinationProvince = action[1]
+
+    their_move.startProvince = action[3]
+    their_move.destinationProvince = action[4]
+
+    deal_data.powerToPropose = action[2]
+    deal_data.ourMove.CopyFrom(our_move)
+    deal_data.theirMove.CopyFrom(their_move)
 
     return deal_data
 
@@ -368,10 +377,21 @@ class DiplomacyEnv(gym.Env):
         self.observation_space = spaces.MultiDiscrete(observation_space_description)
 
     def _init_action_space(self):
-        # Action space: [opponent to propose OC to, province of unit to move, destination province]
-        # Eg: Action [2, 5, 6] proposes an order commitment to player 2 for moving a unit from province 5 to 6
+        # Action space:
+        # [
+        # province to move OUR from,
+        # province to move OUR to,
+        # opponent to propose OC to,
+        # province for THEIR unit to move,
+        # destination province of THEIR unit
+        # ]
+        #
+        # Eg: Action [1, 2, 2, 5, 6] proposes an order
+        # commitment for us to move from province 1 to 2 and an order commitment to player 2 for moving a unit from
+        # province 5 to 6
 
-        self.action_space = spaces.MultiDiscrete([NUMBER_OF_OPPONENTS, NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES])
+        self.action_space = spaces.MultiDiscrete([NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES,
+                                                  NUMBER_OF_OPPONENTS, NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES])
 
     def _init_socket_server(self):
         self.socket_server = comm.LocalSocketServer(5000, self._handle)
@@ -402,7 +422,8 @@ class DiplomacyEnv(gym.Env):
 
         return response_data.SerializeToString()
 
-    def _handle_get_deal_request(self, request_data: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
+    def _handle_get_deal_request(self,
+                                 request_data: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
         observation_data: proto_message_pb2.ObservationData = request_data.observation
         self.observation, self.reward, self.done, self.info = observation_data_to_observation(observation_data)
 
@@ -454,7 +475,8 @@ class DiplomacyEnv(gym.Env):
 
         return response_data
 
-    def _handle_send_game_end_request(self, request_data: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
+    def _handle_send_game_end_request(self,
+                                      request_data: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
         logger.debug("Handling 'SEND_GAME_END'.")
 
         observation_data: proto_message_pb2.ObservationData = request_data.observation

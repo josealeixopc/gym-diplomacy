@@ -201,9 +201,16 @@ public class OpenAIAdapter {
         // Yes, weird work around, but for some reason it works
         String nameOfPlayer = "'OpenAINegotiator'";
 
-        int rank = (int) gameResult.getRank(nameOfPlayer);
+        String nameOfWinner = gameResult.getSoloWinner();
 
-        if (rank == 0) // winner
+        if(nameOfWinner == null) {
+            System.out.println("GAME RESULT: No one won with a solo victory.");
+        }
+        else {
+            System.out.printf("GAME RESULT: Player " + nameOfWinner + " win with a solo victory.");
+        }
+
+        if (nameOfPlayer.equals(nameOfWinner)) // winner
         {
             this.wonGame();
         } else {
@@ -305,18 +312,43 @@ public class OpenAIAdapter {
         List<DMZ> dmzs = new ArrayList<>();
         List<OrderCommitment> ocs = new ArrayList<>();
 
-        Province startProvince = this.agent.game.getProvinces().get(dealData.getStartProvince());
-        Province destinationProvince = this.agent.game.getProvinces().get(dealData.getDestinationProvince());
 
+        // Add MY order commitment
+        Province ourStartProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getStartProvince());
+        Province ourDestinationProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getDestinationProvince());
 
-        Order o = new MTOOrder(
+        Order ourOrder = new MTOOrder(
                 this.agent.me,
-                startProvince.getRegions().get(0),
-                destinationProvince.getRegions().get(0));
+                ourStartProvince.getRegions().get(0),
+                ourDestinationProvince.getRegions().get(0));
 
-        OrderCommitment oc = new OrderCommitment(this.agent.game.getYear(), this.agent.game.getPhase(), o);
+        OrderCommitment ourOC = new OrderCommitment(this.agent.game.getYear(), this.agent.game.getPhase(), ourOrder);
 
-        ocs.add(oc);
+        ocs.add(ourOC);
+
+        // Add THEIR order commitment
+        Province theirStartProvince = this.agent.game.getProvinces().get(dealData.getTheirMove().getStartProvince());
+        Province theirDestionationProvince = this.agent.game.getProvinces().get(dealData.getTheirMove().getDestinationProvince());
+
+        String nameOfPowerToProposeTo = null;
+
+        for (Map.Entry<String, Integer> entry : powerNameToInt.entrySet()) {
+            if (entry.getValue() == dealData.getPowerToPropose()) {
+                nameOfPowerToProposeTo = entry.getKey();
+            }
+        }
+
+        assert nameOfPowerToProposeTo != null;
+
+        Order theirOrder = new MTOOrder(
+                this.agent.game.getPower(nameOfPowerToProposeTo),
+                theirStartProvince.getRegions().get(0),
+                theirDestionationProvince.getRegions().get(0)
+        );
+
+        OrderCommitment theirOC = new OrderCommitment(this.agent.game.getYear(), this.agent.game.getPhase(), theirOrder);
+
+        ocs.add(theirOC);
 
         return new BasicDeal(ocs, dmzs);
     }
@@ -330,7 +362,7 @@ public class OpenAIAdapter {
      */
     private boolean isDealValid(BasicDeal deal) {
         boolean isDealConsistent = true;
-        boolean isDealWellStructured = true;
+        boolean isDealWellStructured;
 
         if (ddejonge.bandana.tools.Utilities.testValidity(this.agent.game, deal) == null) {
             isDealConsistent = false;
