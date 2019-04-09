@@ -14,11 +14,12 @@ class RandomAgent(object):
 
     def act(self, observation, reward, done):
         act_orders = []
+        player, observation = observation[-1], observation[:-1]
         owner = observation[::2]
         supplycenter = observation[1::2]
         for province_owner, province_sc in zip(owner, supplycenter):
-            #TODO: Only create orders for player units
-            act_orders.append(self.action_space.sample())
+            if province_owner == player:
+                act_orders.append(self.action_space.sample())
         
         return act_orders
 

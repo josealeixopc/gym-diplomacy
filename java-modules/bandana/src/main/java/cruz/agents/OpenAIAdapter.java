@@ -12,7 +12,6 @@ import es.csic.iiia.fabregues.dip.orders.MTOOrder;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
 import java.io.File;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -202,7 +201,6 @@ public class OpenAIAdapter {
     }
 
     public ProtoMessage.ObservationData generateObservationData() {
-
         ProtoMessage.ObservationData.Builder observationDataBuilder = ProtoMessage.ObservationData.newBuilder();
 
         Map<String, ProtoMessage.ProvinceData.Builder> nameToProvinceDataBuilder = new HashMap<>();
@@ -210,7 +208,7 @@ public class OpenAIAdapter {
         int id = 1;
 
         // FIRST PROCESS ALL PROVINCES
-        List<Province> provinces = (agent2 == null)? this.agent.game.getProvinces():this.agent2.getGame().getProvinces();
+        List<Province> provinces = (this.agent2 == null)? this.agent.game.getProvinces():this.agent2.getGame().getProvinces();
         for (Province p : provinces) {
             ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder();
             int isSc = p.isSC() ? 1 : 0;
@@ -224,7 +222,7 @@ public class OpenAIAdapter {
         }
 
         // THEN ADD THE OWNERS OF EACH PROVINCE
-        List<Power> powers = (agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
+        List<Power> powers = (this.agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
         for (Power pow : powers) {
             for (Region r : pow.getControlledRegions()) {
                 Province p = r.getProvince();
@@ -246,6 +244,9 @@ public class OpenAIAdapter {
         if(this.info != null){
             observationDataBuilder.setInfo(this.info);
         }
+        
+        String agent_name = (this.agent2 == null)?this.agent.getName():this.agent2.getName();
+        observationDataBuilder.setPlayer(powerNameToInt.get(agent_name));
 
         return observationDataBuilder.build();
     }

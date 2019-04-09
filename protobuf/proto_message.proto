@@ -50,17 +50,18 @@ message DiplomacyGymOrdersResponse {
   OrdersData orders = 2;
 }
 
-message ProvinceData {
-  int32 id = 1;
-  int32 owner = 2;
-  int32 sc = 3;
-}
-
 message ObservationData {
   repeated ProvinceData provinces = 1;
   float previousActionReward = 2;
   bool done = 3;
   string info = 4;
+  int32 player = 5;
+}
+
+message ProvinceData {
+  int32 id = 1;
+  int32 owner = 2;
+  int32 sc = 3;
 }
 
 message AcceptanceData {

@@ -519,5 +519,4 @@ public class OpenAINegotiator extends ANACNegotiator {
         // TODO Auto-generated method stub
 
     }
-
 }

@@ -45,7 +45,7 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
         raise ValueError("Number of provinces is not consistent. Constant variable is '{}' while received number of "
                          "provinces is '{}'.".format(NUMBER_OF_PROVINCES, number_of_provinces))
 
-    observation = np.zeros(number_of_provinces * 2)
+    observation = np.zeros(number_of_provinces * 2 + 1)
 
     for province in observation_data.provinces:
         # simply for type hint and auto-completion
@@ -54,6 +54,7 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
         # id - 1 because the ids begin at 1
         observation[(province.id - 1) * 2] = province.owner
         observation[(province.id - 1) * 2 + 1] = province.sc
+    observation[len(observation) - 1] = observation_data.player
 
     reward = observation_data.previousActionReward
     done = observation_data.done
