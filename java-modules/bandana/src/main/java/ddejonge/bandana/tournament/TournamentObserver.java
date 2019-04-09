@@ -45,7 +45,9 @@ public class TournamentObserver extends Observer implements Runnable{
 	
 	/**The number of games in this tournament.*/
 	int numGames;
-	
+
+	/**The number of participants in the game*/
+	int numParticipants;
 	
 	
 	/**Is set to true if the current game gets interrupted because one of the players did not send in his/her orders in time.*/
@@ -82,6 +84,7 @@ public class TournamentObserver extends Observer implements Runnable{
 		this.tournamentResultsFile.createNewFile();
 		
 		this.numGames = numGames;
+		this.numParticipants = numParticipants;
 		
 		this.tournamentResult = new TournamentResult(numParticipants, scoreCalculators);
 
@@ -248,7 +251,7 @@ public class TournamentObserver extends Observer implements Runnable{
 			this.gameStatus = GAME_ENDED_IN_DRAW;
 		}
 		
-		GameResult gameResult = new GameResult(message);
+		GameResult gameResult = new GameResult(message, this.numParticipants);
 		
 		this.tournamentResult.addResult(gameResult);
 		

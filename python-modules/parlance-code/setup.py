@@ -47,6 +47,7 @@ setup(
             "standard = parlance.judge:Judge",
         ],
         "parlance.variants": [
+            "small = parlance.xtended:small",
             "standard = parlance.xtended:standard",
         ],
     },
