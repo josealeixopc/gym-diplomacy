@@ -41,7 +41,7 @@ echo "export PATH=/opt/apache-maven/bin:\$PATH" >> /home/vagrant/.bashrc
 
 # Install Parlance
 # DO NOT USE SUDO OUT OF A VM. I only use it here because I cannot use the '--user' flag as root, otherwise it just installs for the root user.
-sudo python2 -m pip install parlance
+sudo python2 -m pip install -e /vagrant/python-modules/parlance-code
 
 ## If you're on your PC use this command instead
 # python2 -m pip install parlance --user

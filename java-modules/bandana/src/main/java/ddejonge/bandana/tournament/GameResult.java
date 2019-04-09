@@ -23,16 +23,16 @@ public class GameResult implements Serializable{
 	}
 	
 	
-	
-	private String[] powers = new String[7];
-	private String[] names = new String[7];
-	private int[] numSCs = new int[7];				//number of SCs at the end of the game. 
-	private int[] yearOfElimination = new int[7];   //if a power is not eliminated, its year of elimination is 0.
+	private int numberOfPlayers;
+	private String[] powers;
+	private String[] names;
+	private int[] numSCs;				//number of SCs at the end of the game.
+	private int[] yearOfElimination ;   //if a power is not eliminated, its year of elimination is 0.
 	
 	private boolean endedInSolo = false;
 	private int numSurvivors = 0;
 	
-	private PlayerResult[] playerResults = new PlayerResult[7];	
+	private PlayerResult[] playerResults;
 	
 	int[] rank2playerNumber = null;
 	
@@ -40,18 +40,27 @@ public class GameResult implements Serializable{
 	 * maps each player index to its rank, taking into account that several players may end equally.
 	 * For example, if two players together share the first place, then they both have a precise rank of 1.5 
 	 */
-	double[] playerNumber2preciseRank = new double[7];
+	double[] playerNumber2preciseRank;
 	
 	/**
 	 * 
 	 * @param smrMessage
-	 * @param markedPlayers a list of names or powers of that are to be marked in the monitor and in the log files.
+	 * @param numberOfPlayers The number of participants.
 	 */
-	public GameResult(String[] smrMessage){
-		
+	public GameResult(String[] smrMessage, int numberOfPlayers){
+
+		// JC: Creating everything with the newly added number of players
+		this.numberOfPlayers = numberOfPlayers;
+
+		this.powers = new String[this.numberOfPlayers];
+		this.names = new String[this.numberOfPlayers];
+		this.numSCs = new int[this.numberOfPlayers];
+		this.yearOfElimination = new int[this.numberOfPlayers];
+		this.playerResults = new PlayerResult[this.numberOfPlayers];
+		this.playerNumber2preciseRank = new double[this.numberOfPlayers];
 		
 		int cursor = 5; //set the cursor to the opening parenthesis of the first power.
-		for(int pow=0; pow<7; pow++){
+		for(int pow=0; pow<this.numberOfPlayers; pow++){
 						
 			powers[pow] = smrMessage[cursor + 1];
 			names[pow] = smrMessage[cursor + 3];
@@ -78,7 +87,7 @@ public class GameResult implements Serializable{
 		}
 		
 		//to determine the player results we need to use another for loop, because we have to know if there is a solo victory beforehand.
-		for(int pow=0; pow<7; pow++){
+		for(int pow=0; pow<this.numberOfPlayers; pow++){
 			
 			
 			if(numSCs[pow] == 0){
@@ -108,18 +117,18 @@ public class GameResult implements Serializable{
 	 */
 	private void rankPlayers(){
 		
-		rank2playerNumber = new int[7]; //note: the player who ends first will have index 0 in this array.
+		rank2playerNumber = new int[this.numberOfPlayers]; //note: the player who ends first will have index 0 in this array.
 		
-		boolean[] hasRank = new boolean[7];
+		boolean[] hasRank = new boolean[this.numberOfPlayers];
 		int numRankedPlayers = 0;
 		int i = -1;
 		int bestPlayer = -1;
 		
 		//we complete a number of cycles. In every cycle we loop over each player that hasn't been ranked yet,
 		//the best one of those will receive the new rank.
-		while(numRankedPlayers < 7){
+		while(numRankedPlayers < this.numberOfPlayers){
 			
-			i = (i+1) % 7; //go to next player.
+			i = (i+1) % this.numberOfPlayers; //go to next player.
 			
 			//after completing a full cycle we can add the best player of the previous cycle.
 			if(i==0 && bestPlayer != -1){
@@ -146,7 +155,7 @@ public class GameResult implements Serializable{
 		
 		
 		
-		for(int j=0; j<7; j++){
+		for(int j=0; j<this.numberOfPlayers; j++){
 			
 			//for the player ranked j, determine how many players have finished equally.
 			
@@ -154,7 +163,7 @@ public class GameResult implements Serializable{
 			
 			int lowestRank = j;
 			int highestRank = j;
-			for(int k=j+1; k<7; k++){
+			for(int k=j+1; k<this.numberOfPlayers; k++){
 				
 				int player2 = rank2playerNumber[k];
 				
@@ -239,7 +248,7 @@ public class GameResult implements Serializable{
 	 * 
 	 * If DumbBot_1 and another player together finished in a shared 5 place, then calling getRank("DumbBot_1") will return 5.5.
 	 * 
-	 * @param playerName
+	 * @param name
 	 * @return
 	 */
 	public double getRank(String name){
@@ -332,7 +341,7 @@ public class GameResult implements Serializable{
 			return null;
 		}
 		
-		for(int i=0; i<7; i++){
+		for(int i=0; i<this.numberOfPlayers; i++){
 			
 			if(numSCs[i] >= 18){
 				return names[i];
@@ -352,7 +361,7 @@ public class GameResult implements Serializable{
 		
 		String string = "";
 		
-		for(int j=0; j<7; j++){
+		for(int j=0; j<this.numberOfPlayers; j++){
 			int playerIndex = rank2playerNumber[j];
 			
 			string += "" + (j+1)+ ". " + names[playerIndex] + " " + powers[playerIndex]; 
