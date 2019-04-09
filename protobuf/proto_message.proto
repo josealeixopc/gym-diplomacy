@@ -75,8 +75,8 @@ message DealData {
 }
 
 message OrderData {
-  int32 actionToPropose = 1;
-  int32 startProvince = 2;
+  int32 startProvince = 1;
+  int32 actionToPropose = 2;
   int32 destinationProvince = 3;
 }
 
