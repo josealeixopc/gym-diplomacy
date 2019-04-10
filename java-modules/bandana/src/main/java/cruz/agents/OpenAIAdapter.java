@@ -46,6 +46,9 @@ public class OpenAIAdapter {
      */
     public static final int INVALID_DEAL_REWARD = -10;
 
+    /** Reward given for capturing a Supply Center (SC). Losing a SC gives a negative reward with the same value. */
+    public static final int CAPTURED_SC_REWARD = +50;
+
 
     /**
      * The OpenAINegotiator instance to which this adapter is connected.
@@ -56,6 +59,9 @@ public class OpenAIAdapter {
      * A map containing an integer ID of each power, in order to be able to map a power to an integer and vice-versa.
      */
     private Map<String, Integer> powerNameToInt;
+
+    /** Number of supply centers controlled in the previous negotiation stage */
+    private int previousNumSc;
 
     /**
      * The value of the reward achieved because of the previous actions.
@@ -84,6 +90,8 @@ public class OpenAIAdapter {
         this.agent = agent;
 
         this.resetReward();
+        this.previousNumSc = agent.me.getOwnedSCs().size();
+
         this.done = false;
         this.info = null;
     }
@@ -210,12 +218,12 @@ public class OpenAIAdapter {
             System.out.printf("GAME RESULT: Player " + nameOfWinner + " win with a solo victory.");
         }
 
-        if (nameOfPlayer.equals(nameOfWinner)) // winner
-        {
-            this.wonGame();
-        } else {
-            this.lostGame();
-        }
+        // if (nameOfPlayer.equals(nameOfWinner)) // winner
+        // {
+        //     this.wonGame();
+        // } else {
+        //     this.lostGame();
+        // }
 
         this.done = true;
         this.sendEndOfGameNotification();
@@ -294,6 +302,9 @@ public class OpenAIAdapter {
         for (Map.Entry<String, ProtoMessage.ProvinceData.Builder> entry : nameToProvinceDataBuilder.entrySet()) {
             observationDataBuilder.addProvinces(entry.getValue().build());
         }
+
+        // ADD REWARD RELATED TO CONQUERED SUPPLY CENTERS
+        this.addReward(this.balanceOfScs() * CAPTURED_SC_REWARD);
 
         observationDataBuilder.setPreviousActionReward(this.previousActionReward);
         observationDataBuilder.setDone(this.done);
@@ -420,6 +431,21 @@ public class OpenAIAdapter {
         }
 
         return wellStructured;
+    }
+
+    /**
+     * This function takes the number of supply centers (SCs) controlled in the previous observation (negotiation phase)
+     * and returns the balance of SCs. A negative number means SCs were lost. A positive number means SCs were captured.
+     * @return
+     */
+    private int balanceOfScs() {
+        int currentNumSc = this.agent.me.getOwnedSCs().size();
+        int balance = currentNumSc - this.previousNumSc;
+
+        // Don't consider already considered SCs
+        this.previousNumSc = currentNumSc;
+
+        return balance;
     }
 
     private void addReward(int reward) {
