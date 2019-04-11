@@ -99,7 +99,7 @@ public class OpenAIAdapter {
     
     private void init(){
         this.resetReward();
-        this.previousNumSc = agent.me.getOwnedSCs().size();
+        this.previousNumSc = (this.agent2 == null)? this.agent.me.getOwnedSCs().size() : 0;
 
         this.done = false;
         this.info = null;
@@ -136,7 +136,6 @@ public class OpenAIAdapter {
             ProtoMessage.ObservationData observationData = this.generateObservationData();
 
             bandanaRequestBuilder.setObservation(observationData);
-
             bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
 
             byte[] message = bandanaRequestBuilder.build().toByteArray();
@@ -183,27 +182,21 @@ public class OpenAIAdapter {
             ProtoMessage.ObservationData observationData = this.generateObservationData();
 
             bandanaRequestBuilder.setObservation(observationData);
+            bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
 
-            if(firstTurn) {
-                bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.SEND_INITIAL_OBSERVATION);
+            byte[] message = bandanaRequestBuilder.build().toByteArray();
 
-                byte[] message = bandanaRequestBuilder.build().toByteArray();
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2.getLogger());
+            byte[] response = socketClient.sendMessageAndReceiveResponse(message);
 
-                SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2.getLogger());
-                byte[] response = socketClient.sendMessageAndReceiveResponse(message);
-
-                // If something went wrong with getting the response from Python module
-                if (response == null) {
-                    return null;
-                }
-
-                ProtoMessage.DiplomacyGymOrdersResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymOrdersResponse.parseFrom(response);
-                List<Order> generatedOrders = this.generateOrders(diplomacyGymResponse.getOrders());
-                return generatedOrders;
-            }
-            else {
+            // If something went wrong with getting the response from Python module
+            if (response == null) {
                 return null;
             }
+
+            ProtoMessage.DiplomacyGymOrdersResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymOrdersResponse.parseFrom(response);
+            List<Order> generatedOrders = this.generateOrders(diplomacyGymResponse.getOrders());
+            return generatedOrders;
 
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -228,7 +221,7 @@ public class OpenAIAdapter {
 
             
 
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, agent2 == null? this.agent.getLogger():this.agent2.getLogger());
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2 == null? this.agent.getLogger():this.agent2.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
 
             if (response == null) {
@@ -315,7 +308,7 @@ public class OpenAIAdapter {
 
         int id = 1;
 
-        List<Power> powers = (agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
+        List<Power> powers = (this.agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
         for(Power pow : powers) {
             powerNameToInt.put(pow.getName(), id);
             id++;
@@ -534,7 +527,7 @@ public class OpenAIAdapter {
      * @return
      */
     private int balanceOfScs() {
-        int currentNumSc = this.agent.me.getOwnedSCs().size();
+        int currentNumSc = (this.agent2 == null)? this.agent.me.getOwnedSCs().size() : this.agent2.getMe().getOwnedSCs().size();
         int balance = currentNumSc - this.previousNumSc;
 
         // Don't consider already considered SCs

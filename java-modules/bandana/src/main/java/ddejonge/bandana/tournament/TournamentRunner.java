@@ -16,7 +16,7 @@ public class TournamentRunner {
     private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
 
     // JC: Using a custom map to define how many players are there on each custom map
-    private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<>() {{
+    private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<String, Integer>() {{
         put("standard", 7);
         put("small", 2);
     }};
@@ -33,7 +33,6 @@ public class TournamentRunner {
 	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", "1905"};
 	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", "1905"};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
-    final static String[] randomBotCommand = {"java", "-jar", "target/random-bot.jar", "-log", "log", "-name", "RandomBot", "-fy", "1905"};
 
 
     // JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime

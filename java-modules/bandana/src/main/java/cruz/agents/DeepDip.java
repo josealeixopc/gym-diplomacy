@@ -78,10 +78,7 @@ public class DeepDip extends DumbBot {
 
     @Override
     public void start() {
-        this.openAIAdapter.done = false;
-        this.openAIAdapter.firstTurn = true;
-        this.openAIAdapter.numberOfGamesStarted++;
-        this.openAIAdapter.createObserver();
+        this.openAIAdapter.beginningOfGame();
     }
     
     List<Order> generateOrders() {
