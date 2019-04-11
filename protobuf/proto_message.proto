@@ -62,6 +62,7 @@ message ProvinceData {
   int32 id = 1;
   int32 owner = 2;
   int32 sc = 3;
+  int32 unit = 4;
 }
 
 message AcceptanceData {

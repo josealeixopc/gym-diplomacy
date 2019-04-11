@@ -220,15 +220,19 @@ public class OpenAIAdapter {
             id++;
         }
 
-        // THEN ADD THE OWNERS OF EACH PROVINCE
+        // THEN ADD THE OWNERS & UNITS OF EACH PROVINCE
         List<Power> powers = (this.agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
         for (Power pow : powers) {
-            for (Region r : pow.getControlledRegions()) {
-                Province p = r.getProvince();
-
+            for (Province p : pow.getOwnedSCs()) {
                 // Get the correspondent province builder and add the current owner of the province
                 ProtoMessage.ProvinceData.Builder provinceDataBuilder = nameToProvinceDataBuilder.get(p.getName());
                 provinceDataBuilder.setOwner(powerNameToInt.get(pow.getName()));
+            }
+
+            for (Region r : pow.getControlledRegions()) {
+                Province p = r.getProvince();
+                ProtoMessage.ProvinceData.Builder provinceDataBuilder = nameToProvinceDataBuilder.get(p.getName());
+                provinceDataBuilder.setUnit(powerNameToInt.get(pow.getName()));
             }
         }
 
@@ -298,7 +302,6 @@ public class OpenAIAdapter {
                 .orElse(null);
             orders.add(new SUPOrder(this.agent2.getMe(), start, order_to_support));
         }
-        System.out.println(ordersData);
         return orders;
     }
 

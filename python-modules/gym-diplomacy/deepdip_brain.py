@@ -15,10 +15,11 @@ class RandomAgent(object):
     def act(self, observation, reward, done):
         act_orders = []
         player, observation = observation[-1], observation[:-1]
-        owner = observation[::2]
-        supplycenter = observation[1::2]
-        for i, (province_owner, province_sc) in enumerate(zip(owner, supplycenter)):
-            if province_owner == player:
+        owner = observation[::3]
+        supplycenter = observation[1::3]
+        unit = observation[2::3]
+        for i, (province_owner, province_sc, province_unit) in enumerate(zip(owner, supplycenter, unit)):
+            if province_unit == player:
                 unit_order = [i] + self.action_space.sample().tolist()
                 act_orders.append(unit_order)
         return act_orders
