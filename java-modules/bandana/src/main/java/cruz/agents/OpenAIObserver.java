@@ -2,12 +2,20 @@ package cruz.agents;
 
 import java.net.InetAddress;
 
+import ddejonge.bandana.tournament.GameResult;
 import es.csic.iiia.fabregues.dip.Observer;
 import es.csic.iiia.fabregues.dip.comm.CommException;
 import es.csic.iiia.fabregues.dip.comm.IComm;
 import es.csic.iiia.fabregues.dip.comm.daide.DaideComm;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
+/**
+ * The function of the OpenAIObserver is to serve as a Diplomacy game Observer, in order to know when a certain game ends.
+ *
+ * Parlance sends messages with the status of the game. These messages trigger methods on the observers connected to
+ * the Parlance server. In this case, the most important function is the "handleSMR" which is called when the game
+ * is over and notifies the OpenAIAdapter that the game/episode has finished.
+ */
 public class OpenAIObserver extends Observer {
 
     public static final int NO_GAME_ACTIVE = 0;
@@ -35,7 +43,9 @@ public class OpenAIObserver extends Observer {
     }
 
 
-
+    /**
+     * Connects to the Parlance server as a Daide Observer.
+     */
     public void connectToServer(){
 
         this.gameStatus = CONNECTED_WAITING_TO_START;
@@ -85,11 +95,9 @@ public class OpenAIObserver extends Observer {
 
 
     @Override
-    public void handleSlo(String winner) {  //SOLO
+    public void handleSlo(String winner) {
 
         this.gameStatus = GAME_ENDED_WITH_SOLO;
-
-        // super.handleSlo(winner);
 
     }
 
@@ -115,15 +123,11 @@ public class OpenAIObserver extends Observer {
     @Override
     public void handleSMR(String[] message) {
 
-        // if(this.gameStatus != GAME_ENDED_WITH_SOLO){
-        //     this.gameStatus = GAME_ENDED_IN_DRAW;
-        // }
 
-        // super.handleSMR(message);
+        GameResult gameResult = new GameResult(message, 7);
 
-        System.out.println("END OF GAME");
-        this.openAIAdapter.endOfGame();
-        // super.handleSMR(message);
+        this.openAIAdapter.endOfGame(gameResult);
+
     }
 
     public int getGameStatus(){

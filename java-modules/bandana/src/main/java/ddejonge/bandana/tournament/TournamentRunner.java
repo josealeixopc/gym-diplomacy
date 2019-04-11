@@ -2,9 +2,7 @@ package ddejonge.bandana.tournament;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import ddejonge.bandana.tools.ProcessRunner;
 import ddejonge.bandana.tools.Logger;
@@ -15,6 +13,13 @@ public class TournamentRunner {
 	// JC: CUSTOM SETTINGS BEGIN
 
 	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
+    private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
+
+    // JC: Using a custom map to define how many players are there on each custom map
+    private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<>() {{
+        put("standard", 7);
+        put("small", 2);
+    }};
 
 	// JC: CUSTOM SETTINGS END
 
@@ -22,14 +27,16 @@ public class TournamentRunner {
 	// Add your own line here to run your own bot.
 	final static String[] randomBotCommand = {"java", "-jar", "agents/RandomBot.jar", "-log", "log", "-name", "RandomBot", "-fy", "1905"};
 	final static String[] randomNegotiatorCommand = {"java", "-jar", "agents/RandomNegotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", "1905"};
-	// final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
-	// final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
+	final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
+	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", "1905"};
 	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", "1905"};
 	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", "1905"};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
+    final static String[] randomBotCommand = {"java", "-jar", "target/random-bot.jar", "-log", "log", "-name", "RandomBot", "-fy", "1905"};
 
-	// JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
+
+    // JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
     final static String[] openAIBotNegotiatorCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", "1905"};
 
 
@@ -74,6 +81,9 @@ public class TournamentRunner {
         TournamentObserver tournamentObserver = null;
 
         try {
+            // JC: get number of participants from GAME_MAP
+            int numberOfParticipants = mapToNumberOfPlayers.get(GAME_MAP);
+
             //Create a folder to store all the results of the tournament.
             // This folder will be placed inside the LOG_FOLDER and will have the current date and time as its name.
             // You can change this line if you prefer it differently.
@@ -83,18 +93,24 @@ public class TournamentRunner {
 
 
             //1. Run the Parlance game server.
-            ParlanceRunner.runParlanceServer(numberOfGames, moveTimeLimit, retreatTimeLimit, buildTimeLimit);
+            ParlanceRunner.runParlanceServer(GAME_MAP, numberOfGames, moveTimeLimit, retreatTimeLimit, buildTimeLimit);
 
             //Create a list of ScoreCalculators to determine how the players should be ranked in the tournament.
             ArrayList<ScoreCalculator> scoreCalculators = new ArrayList<ScoreCalculator>();
-            scoreCalculators.add(new SoloVictoryCalculator());
-            scoreCalculators.add(new SupplyCenterCalculator());
-            scoreCalculators.add(new PointsCalculator());
-            scoreCalculators.add(new RankCalculator());
+
+            if(GAME_MAP.toLowerCase().equals("standard")) {
+                scoreCalculators.add(new SoloVictoryCalculator());
+                scoreCalculators.add(new SupplyCenterCalculator());
+                scoreCalculators.add(new PointsCalculator());
+                scoreCalculators.add(new RankCalculator());
+            }
+            else {
+                scoreCalculators.add(new RankCalculator());
+            }
 
             //2. Create a TournamentObserver to monitor the games and accumulate the results.
             // JC: Use "windowless = true" to run without any Diplomacy Monitor and, hence, being able to run on a server
-            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, 7, true);
+            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, true);
 
             //3. Run the Negotiation Server.
             NegoServerRunner.run(tournamentObserver, tournamentLogFolderPath, numberOfGames);
@@ -107,28 +123,13 @@ public class TournamentRunner {
                 NegoServerRunner.notifyNewGame(gameNumber);
 
                 //4. Start the players:
-                for (int i = 0; i < 7; i++) {
+                for (int i = 0; i < numberOfParticipants; i++) {
 
                     String name;
                     String[] command;
 
                     //make sure that each player has a different name.
-                    /*if (i < 3) {
-
-                        name = "RandomNegotiator " + i;
-                        command = randomNegotiatorCommand;
-
-                    } else if (i < 5) {
-                        name = "D-Brane " + i;
-                        command = randomNegotiatorCommand;
-                    } else if (i < 6) {
-                        name = "DeepDip " + i;
-                        command = deepDipCommand;
-                    } else {
-                        name = "OpenAINegotiator " + i;
-                        command = openAIBotNegotiatorCommand;
-                    }*/
-                    if (i < 6) {
+                    if (i < numberOfParticipants - 1) {
                         name = "RandomBot " + i;
                         command = randomBotCommand;
                     } else {

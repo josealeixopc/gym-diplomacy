@@ -38,7 +38,7 @@ public class ParlanceRunner {
 	 * @param buildTimeLimit Deadline in seconds for build phases.
 	 * @throws IOException
 	 */
-	public static void runParlanceServer(int numGames, int moveTimeLimit, int retreatTimeLimit, int buildTimeLimit) throws IOException{
+	public static void runParlanceServer(String map, int numGames, int moveTimeLimit, int retreatTimeLimit, int buildTimeLimit) throws IOException{
 		
 		//Create the configuration file in order to set the deadlines.
 		createConfigFile(moveTimeLimit, retreatTimeLimit, buildTimeLimit);
@@ -52,7 +52,7 @@ public class ParlanceRunner {
 //		}
 		
 		//Run parlance-server
-		String[] cmd = { PARLANCE_PATH, "-g"+ numGames , "standard"};
+		String[] cmd = {PARLANCE_PATH, "-g" + numGames, map};
 		parlanceProcess = ProcessRunner.exec(cmd, "parlance init-server.sh");
 
 		System.out.println("Working Directory = " +

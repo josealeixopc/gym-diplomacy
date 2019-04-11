@@ -1,5 +1,6 @@
 package ddejonge.bandana.exampleAgents;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class RandomBot extends Player{
 		
 		
 		String name = "Random Negotiatior";
+		String logPath = "log";
 		int finalYear = 1905;
 		
 		for(int i=0; i<args.length; i++){
@@ -59,10 +61,14 @@ public class RandomBot extends Player{
 					return;
 				}
 			}
+
+			if (args[i].equals("-log") && args.length > i + 1) {
+				logPath = args[i + 1];
+			}
 		}
 		
 		
-		RandomBot randomBot = new RandomBot(name, finalYear, DEFAULT_GAME_SERVER_PORT);
+		RandomBot randomBot = new RandomBot(name, finalYear, DEFAULT_GAME_SERVER_PORT, logPath);
 		
 		try{
 					
@@ -86,9 +92,13 @@ public class RandomBot extends Player{
 	int finalYear;
 	
 	//CONSTRUCTOR.
-	RandomBot(String name, int finalYear, int gameServerPort){
+	RandomBot(String name, int finalYear, int gameServerPort, String logPath){
+		super(logPath);
 		this.name = "RandomBot";
 		this.finalYear = finalYear;
+
+		File logFolder = new File(this.logPath);
+		logFolder.mkdirs();
 		
 		//Initialize the client
 		try {
@@ -462,6 +472,8 @@ public class RandomBot extends Player{
 		
 		//disconnect from the game server.
 		this.comm.stop();
+
+		super.exit();
 		
 		//Call exit to stop the player.
 		exit();
