@@ -18,10 +18,23 @@ RUN apt-get update && apt-get -y install sudo
 # Create app directory
 RUN mkdir -p ${DIP_Q_WORK_DIR}
 WORKDIR ${DIP_Q_WORK_DIR}
+ 
+COPY bootstrap.sh .
 
-# Copy source code to workdir
-COPY . .
-
-# Install everything needed to run/build
+# Install Python (and Maven)
 RUN chmod +x ./bootstrap.sh
 RUN ./bootstrap.sh
+
+# Install heavy Python packages
+RUN mkdir -p ${DIP_Q_WORK_DIR}/dip-q-brain
+COPY dip-q-brain/install-essential.sh ${DIP_Q_WORK_DIR}/dip-q-brain
+
+WORKDIR ${DIP_Q_WORK_DIR}/dip-q-brain
+RUN chmod +x ./install-essential.sh
+RUN ./install-essential.sh
+
+# Install Python packages afterwards
+WORKDIR ${DIP_Q_WORK_DIR}
+COPY . .
+RUN chmod +x ./utils/install-dependencies.sh
+RUN ./utils/install-dependencies.sh
