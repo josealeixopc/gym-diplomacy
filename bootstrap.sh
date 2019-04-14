@@ -9,20 +9,20 @@ if [[ -z "${DIP_Q_WORK_DIR}" ]]; then
 fi
 
 # Change to root dir
-cd ${DIP_Q_WORK_DIR}
+cd "${DIP_Q_WORK_DIR}" || exit 2
 
 sudo apt-get update
 
 
 # Install Maven only if Env is development or build (handy when we want to dev on a VM or use Docker to build the artifacts)
-if [[ "${ENV}" = "development" ] || [ "${ENV}" = "build" ]]; then
+if [[ "${ENV}" = "development" ]] || [[ "${ENV}" = "build" ]]; then
   # JDK is needed to compile Java (it also installs JRE) 
   sudo apt-get install -y default-jdk 
 
   MAVEN_VERSION=3.6.0
   MAVEN_PACKAGE=apache-maven-$MAVEN_VERSION
 
-  cd /opt/
+  cd /opt/ || exit 3
   sudo apt-get install -y wget
   sudo wget http://www-eu.apache.org/dist/maven/maven-3/3.6.0/binaries/$MAVEN_PACKAGE-bin.tar.gz
   sudo tar -xf $MAVEN_PACKAGE-bin.tar.gz
@@ -50,7 +50,7 @@ python${PYTHON_3_VERSION} -m pip install -U pip
 sudo -H pip3 install pipenv -U
 
 # Install Parlance
-cd ${DIP_Q_WORK_DIR}/python-modules/parlance-server
+cd "${DIP_Q_WORK_DIR}"/python-modules/parlance-server || exit 4
 
 # Make run-server script executable to run Parlance Server
 sudo chmod +x init-server.sh
@@ -59,7 +59,7 @@ sudo chmod +x init-server.sh
 pipenv install --skip-lock
 
 # Install what we need for our agent
-cd ${DIP_Q_WORK_DIR}/dip-q-brain
+cd "${DIP_Q_WORK_DIR}"/dip-q-brain || exit 5
 
 # Here you actually NEED to skip lock, because one of the 'setup.py' has an outdated
 # dependencies tree and will crash the normal install
