@@ -89,9 +89,6 @@ public class OpenAIAdapter {
     OpenAIAdapter(OpenAINegotiator agent) {
         this.agent = agent;
 
-        this.resetReward();
-        this.previousNumSc = agent.me.getOwnedSCs().size();
-
         this.done = false;
         this.info = null;
     }
@@ -199,6 +196,9 @@ public class OpenAIAdapter {
         // The observer needs to be created and destroyed every game, because it does not know when the tournament ends
         // and will be left hanging.
         this.createObserver();
+
+        this.resetReward();
+        this.previousNumSc = agent.me.getOwnedSCs().size();
     }
 
     /**
