@@ -13,11 +13,12 @@ cd ${DIP_Q_WORK_DIR}
 
 sudo apt-get update
 
-# Install Java JRE
-sudo apt-get install -y default-jre
 
-# # Install Maven only if Env is development or build (handy when we want to dev on a VM or use Docker to build the artifacts)
+# Install Maven only if Env is development or build (handy when we want to dev on a VM or use Docker to build the artifacts)
 if [[ "${ENV}" = "development" ] || [ "${ENV}" = "build" ]]; then
+  # JDK is needed to compile Java (it also installs JRE) 
+  sudo apt-get install -y default-jdk 
+
   MAVEN_VERSION=3.6.0
   MAVEN_PACKAGE=apache-maven-$MAVEN_VERSION
 
@@ -32,6 +33,9 @@ if [[ "${ENV}" = "development" ] || [ "${ENV}" = "build" ]]; then
 
   # Run bashrc to update Path
   source ~/.bashrc
+else
+  # JRE is sufficient to execute .jar files
+  sudo apt-get install -y default-jre 
 fi
 
 # Install necessary Python versions and Pipenv
