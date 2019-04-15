@@ -51,6 +51,7 @@ class SocketClient
         }
         catch (ConnectException exception) {
             System.out.println("ATTENTION! Could not connect to socket. No deal was retrieved from the Python module.");
+            exception.printStackTrace();
             return null;
         }
         catch (Exception exception)
