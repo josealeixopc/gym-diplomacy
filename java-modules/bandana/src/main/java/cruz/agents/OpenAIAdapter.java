@@ -437,13 +437,16 @@ public class OpenAIAdapter {
                 .findAny()
                 .orElse(null);
 
-            if (destination.getAdjacentRegions().contains(start) && order.getAction() != 0){
+            if (order.getAction() == 0) {
+                orders.add(new HLDOrder(this.agent2.getMe(), start));
+            } else if (destination.getAdjacentRegions().contains(start)){
                 if (order.getAction() == 1) {
                     orders.add(new MTOOrder(this.agent2.getMe(), start, destination));
                 } else if (order.getAction() >= 2) {
                     support_orders.add(order);
                 }
             } else {
+                System.err.println("WRONG BORDER: Support destination is not a border with current province: " + destination + "-" + start);
                 orders.add(new HLDOrder(this.agent2.getMe(), start));
             }
         }
@@ -456,6 +459,7 @@ public class OpenAIAdapter {
                 .findAny()
                 .orElse(null);
             if (order_to_support == null) {
+                System.err.println("ORDER TO SUPPORT NOT FOUND");
                 orders.add(new HLDOrder(this.agent2.getMe(), start));
             } else if (order_to_support instanceof MTOOrder) {
                 orders.add(new SUPMTOOrder(this.agent2.getMe(), start, (MTOOrder) order_to_support));
