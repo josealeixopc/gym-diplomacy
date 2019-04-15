@@ -15,12 +15,13 @@ class RandomAgent(object):
     def act(self, observation, reward, done):
         act_orders = []
         player, observation = observation[-1], observation[:-1]
-        owner = observation[::3]
-        supplycenter = observation[1::3]
-        unit = observation[2::3]
-        for i, (province_owner, province_sc, province_unit) in enumerate(zip(owner, supplycenter, unit)):
+        index = observation[::4]
+        owner = observation[1::4]
+        supplycenter = observation[2::4]
+        unit = observation[3::4]
+        for province_index, province_owner, province_sc, province_unit in zip(index, owner, supplycenter, unit):
             if province_unit == player:
-                unit_order = [i] + self.action_space.sample().tolist()
+                unit_order = [province_index - 1] + self.action_space.sample().tolist()
                 act_orders.append(unit_order)
         return act_orders
 
@@ -69,4 +70,4 @@ if __name__ == '__main__':
 
     # Explicitly close env, because Monitor does not call env close.
     # Issues has been fixed (https://github.com/openai/gym/pull/1023) but I still don't have the new version.
-    env.env.close()
+    #env.env.close()

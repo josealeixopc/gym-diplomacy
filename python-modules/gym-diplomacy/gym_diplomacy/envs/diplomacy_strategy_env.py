@@ -45,16 +45,17 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
         raise ValueError("Number of provinces is not consistent. Constant variable is '{}' while received number of "
                          "provinces is '{}'.".format(NUMBER_OF_PROVINCES, number_of_provinces))
 
-    observation = np.zeros(number_of_provinces * 3 + 1)
+    observation = np.zeros(number_of_provinces * 4 + 1)
 
     for province in observation_data.provinces:
         # simply for type hint and auto-completion
         province: proto_message_pb2.ProvinceData = province
 
         # id - 1 because the ids begin at 1
-        observation[(province.id - 1) * 3] = province.owner
-        observation[(province.id - 1) * 3 + 1] = province.sc
-        observation[(province.id - 1) * 3 + 2] = province.unit
+        observation[(province.id - 1) * 4] = province.id
+        observation[(province.id - 1) * 4 + 1] = province.owner
+        observation[(province.id - 1) * 4 + 2] = province.sc
+        observation[(province.id - 1) * 4 + 3] = province.unit
     observation[len(observation) - 1] = observation_data.player
 
     reward = observation_data.previousActionReward
@@ -73,9 +74,9 @@ def action_to_orders_data(action) -> proto_message_pb2.OrdersData:
     orders_data: proto_message_pb2.OrdersData = proto_message_pb2.OrdersData()
     for order in action:
         new_order = orders_data.orders.add()
-        new_order.start = order[0]
-        new_order.action = order[1]
-        new_order.destination = order[2]
+        new_order.start = int(order[0])
+        new_order.action = int(order[1])
+        new_order.destination = int(order[2])
     return orders_data
 
 
@@ -146,7 +147,6 @@ class DiplomacyStrategyEnv(gym.Env):
     terminate = False
     termination_complete = False
 
-    cheat = 0
 
     def __init__(self):
         atexit.register(self.clean_up)
@@ -183,9 +183,8 @@ class DiplomacyStrategyEnv(gym.Env):
         while self.waiting_for_response:
             pass
 
-        self.cheat += 1
-
         return self.observation, self.reward, self.done, self.info
+
 
     def reset(self):
         """Resets the state of the environment and returns an initial observation.
@@ -213,6 +212,7 @@ class DiplomacyStrategyEnv(gym.Env):
             pass
 
         return self.observation
+
 
     def render(self, mode='human'):
         """Renders the environment.
@@ -246,6 +246,7 @@ class DiplomacyStrategyEnv(gym.Env):
         """
         raise NotImplementedError
 
+
     def close(self):
         """Override _close in your subclass to perform any necessary cleanup.
         Environments will automatically close() themselves when
@@ -264,11 +265,13 @@ class DiplomacyStrategyEnv(gym.Env):
 
         self.termination_complete = True
 
+
     def clean_up(self):
         logger.debug("CLEANING UP ENV")
 
         if not self.termination_complete:
             self.close()
+
 
     def seed(self, seed=None):
         """Sets the seed for this env's random number generator(s).
@@ -286,6 +289,7 @@ class DiplomacyStrategyEnv(gym.Env):
         logger.warning("Could not seed environment %s", self)
         return
 
+
     def _init_bandana(self):
         logger.info("Starting BANDANA tournament...")
         logger.debug("Running '{}' command on directory '{}'."
@@ -294,6 +298,7 @@ class DiplomacyStrategyEnv(gym.Env):
         self.bandana_subprocess = subprocess.Popen(self.bandana_init_command, cwd=self.bandana_root_path,
                                                    shell=True, preexec_fn=os.setsid)
         logger.info("Started BANDANA tournament.")
+
 
     def _kill_bandana(self):
         if self.bandana_subprocess is None:
@@ -311,6 +316,7 @@ class DiplomacyStrategyEnv(gym.Env):
             # Set current process to None
             self.bandana_subprocess = None
 
+
     def _init_observation_space(self):
         # Observation space: [[province owner, province has supply center] * number of provinces]
         # Eg: If observation_space[2] is [5, 0], then the second province belongs to player 5 and does NOT have a SC
@@ -322,6 +328,7 @@ class DiplomacyStrategyEnv(gym.Env):
 
         self.observation_space = spaces.MultiDiscrete(observation_space_description)
 
+
     def _init_action_space(self):
         '''
         An action represents an order for a unit.
@@ -330,8 +337,10 @@ class DiplomacyStrategyEnv(gym.Env):
         '''
         self.action_space = spaces.MultiDiscrete([NUMBER_OF_ACTIONS, NUMBER_OF_PROVINCES])
 
+
     def _init_socket_server(self):
         self.socket_server = comm.LocalSocketServer(5000, self._handle)
+
 
     def _handle(self, request: bytearray) -> None:
         request_data: proto_message_pb2.BandanaRequest = proto_message_pb2.BandanaRequest()
@@ -350,10 +359,10 @@ class DiplomacyStrategyEnv(gym.Env):
         self.received_first_observation = True
         self.waiting_for_response = False
 
-        logger.debug("WAITING FOR ACTION: {}".format(self.waiting_for_action))
+        #logger.debug("WAITING FOR ACTION: {}".format(self.waiting_for_action))
 
         while self.waiting_for_action:
-            if self.done or self.terminate or self.cheat == 20:
+            if self.done or self.terminate:
                 # Return empty deal just to finalize program
                 logger.debug("Sending empty deal to finalize program.")
                 # TODO: Terminate should not be here. Refactor all of this!

@@ -32,13 +32,11 @@ public class OpenAIAdapter {
     /**
      * Reward given for winning the game
      */
-
     public static final int WON_GAME_REWARD = +100;
 
     /**
      * Reward given for losing the game
      */
-
     public static final int LOST_GAME_REWARD = -100;
 
     /**
@@ -317,13 +315,11 @@ public class OpenAIAdapter {
 
     private ProtoMessage.ObservationData generateObservationData() {
         ProtoMessage.ObservationData.Builder observationDataBuilder = ProtoMessage.ObservationData.newBuilder();
-
         Map<String, ProtoMessage.ProvinceData.Builder> nameToProvinceDataBuilder = new HashMap<>();
 
-        int id = 1;
-
         // FIRST PROCESS ALL PROVINCES
-        List<Province> provinces = (this.agent2 == null)? this.agent.game.getProvinces():this.agent2.getGame().getProvinces();
+        Vector<Province> provinces = (this.agent2 == null) ? this.agent.game.getProvinces() : this.agent2.getGame().getProvinces();
+        int id = 1;
         for (Province p : provinces) {
             ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder();
             int isSc = p.isSC() ? 1 : 0;
@@ -348,6 +344,7 @@ public class OpenAIAdapter {
             for (Region r : pow.getControlledRegions()) {
                 Province p = r.getProvince();
                 ProtoMessage.ProvinceData.Builder provinceDataBuilder = nameToProvinceDataBuilder.get(p.getName());
+                provinceDataBuilder.setOwner(powerNameToInt.get(pow.getName()));
                 provinceDataBuilder.setUnit(powerNameToInt.get(pow.getName()));
             }
         }
@@ -424,10 +421,21 @@ public class OpenAIAdapter {
     private List<Order> generateOrders(ProtoMessage.OrdersData ordersData) {
         List<Order> orders = new ArrayList<>();
         List<ProtoMessage.OrderData> support_orders = new ArrayList<>();
+        List<Province> game_provinces = this.agent2.getGame().getProvinces();
+        List<Region> game_regions = this.agent2.getGame().getRegions();
 
         for (ProtoMessage.OrderData order : ordersData.getOrdersList()) {
-            Region start = this.agent2.getGame().getRegions().get(order.getStart());
-            Region destination = this.agent2.getGame().getRegions().get(order.getDestination());
+            Province start_province = game_provinces.get(order.getStart());
+            Province destination_province = game_provinces.get(order.getDestination());
+
+            Region start = game_regions.stream()
+                .filter(r -> r.getProvince().getName().equals(start_province.getName()))
+                .findAny()
+                .orElse(null);
+            Region destination = game_regions.stream()
+                .filter(r -> r.getProvince().getName().equals(destination_province.getName()))
+                .findAny()
+                .orElse(null);
 
             if (destination.getAdjacentRegions().contains(start) && order.getAction() != 0){
                 if (order.getAction() == 1) {
@@ -441,13 +449,15 @@ public class OpenAIAdapter {
         }
 
         for (ProtoMessage.OrderData support_order : support_orders) {
-            Region start = this.agent2.getGame().getRegions().get(support_order.getStart());
-            Region destination = this.agent2.getGame().getRegions().get(support_order.getDestination());
+            Region start = game_regions.get(support_order.getStart());
+            Region destination = game_regions.get(support_order.getDestination());
             Order order_to_support = orders.stream()
                 .filter(order -> destination.equals(order.getLocation()))
                 .findAny()
                 .orElse(null);
-            if (order_to_support instanceof MTOOrder) {
+            if (order_to_support == null) {
+                orders.add(new HLDOrder(this.agent2.getMe(), start));
+            } else if (order_to_support instanceof MTOOrder) {
                 orders.add(new SUPMTOOrder(this.agent2.getMe(), start, (MTOOrder) order_to_support));
             } else {
                 orders.add(new SUPOrder(this.agent2.getMe(), start, order_to_support));

@@ -87,9 +87,8 @@ public class DeepDip extends DumbBot {
         switch (game.getPhase().ordinal() + 1) {
             case 1:
             case 3:
-                System.out.println("DeepDip generating orders");
-                System.out.println(game.getPhase());
                 List<Order> orders = this.openAIAdapter.getOrdersFromDeepDip();
+
                 if (this.isValidOrders(orders)) {
                     return orders;
                 } else {
@@ -115,24 +114,35 @@ public class DeepDip extends DumbBot {
     }
 
     boolean isValidOrders(List<Order> orders) {
-        if (orders == null) {
-            return false;
-        }
-        for(Order unit_order : orders) {
-            Region r = unit_order.getLocation();
-            if (!this.me.getControlledRegions().contains(r)) {
-                return false;
+        try {
+            if (orders == null) {
+                throw new Exception("EMPTY ORDERS");
             }
 
-            List<Region> adjacent_regions = r.getAdjacentRegions();
-            if (unit_order instanceof MTOOrder && !adjacent_regions.contains(((MTOOrder) unit_order).getDestination())) {
-                return false;
-            } else if (unit_order instanceof SUPOrder && !adjacent_regions.contains(((SUPOrder) unit_order).getSupportedRegion())) {
-                return false;
-            } else if (unit_order instanceof SUPMTOOrder && !adjacent_regions.contains(((SUPMTOOrder) unit_order).getSupportedRegion())) {
-                return false;
+            for(Order unit_order : orders) {
+                Region r = unit_order.getLocation();
+                if (!this.me.getControlledRegions().contains(r)) {
+                    throw new Exception("Not controlled region. " + r + " not in " + this.me.getControlledRegions());
+                }
+
+                List<Region> adjacent_regions = r.getAdjacentRegions();
+                if (unit_order instanceof MTOOrder && !adjacent_regions.contains(((MTOOrder) unit_order).getDestination())) {
+                    throw new Exception("Bad destination in a MTOOrder.");
+                } else if (unit_order instanceof SUPOrder && !adjacent_regions.contains(((SUPOrder) unit_order).getSupportedRegion())) {
+                    throw new Exception("Bad supported region in a SUPOrder.");
+                } else if (unit_order instanceof SUPMTOOrder && !adjacent_regions.contains(((SUPMTOOrder) unit_order).getSupportedRegion())) {
+                    throw new Exception("Bad supported region in a SUPMTOOrder.");
+                }
+
             }
+        } catch (NullPointerException e) {
+            System.err.println("INVALID UNDEFINED ORDER");
+            return false;
+        } catch (Exception e) {
+            System.err.println("INVALID ORDER: " + e.getMessage());
+            return false;
         }
+
         return true;
     }
     
