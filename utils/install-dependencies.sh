@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # The DIP_Q_WORK_DIR environment variable should be the directory that contains the Dip-Q repository
 if [[ -z "${DIP_Q_WORK_DIR}" ]]; then

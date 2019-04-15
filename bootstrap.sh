@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # This is a bootstrap script for Ubuntu 18.04 based machines
 

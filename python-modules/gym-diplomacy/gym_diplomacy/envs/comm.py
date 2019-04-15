@@ -11,8 +11,8 @@ logging.basicConfig(format=FORMAT)
 
 logging_level = 'DEBUG'
 level = getattr(logging, logging_level)
-logging.basicConfig(stream=sys.stdout, level=level)
 logger = logging.getLogger(__name__)
+logger.setLevel(level)
 
 class LocalSocketServer:
     sock = None
