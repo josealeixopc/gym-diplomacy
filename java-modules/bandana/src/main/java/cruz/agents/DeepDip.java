@@ -8,6 +8,8 @@ import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
 import es.csic.iiia.fabregues.dip.orders.HLDOrder;
 import es.csic.iiia.fabregues.dip.orders.MTOOrder;
+import es.csic.iiia.fabregues.dip.orders.SUPMTOOrder;
+import es.csic.iiia.fabregues.dip.orders.SUPOrder;
 import es.csic.iiia.fabregues.dip.orders.Order;
 
 import java.io.File;
@@ -88,10 +90,10 @@ public class DeepDip extends DumbBot {
                 System.out.println("DeepDip generating orders");
                 System.out.println(game.getPhase());
                 List<Order> orders = this.openAIAdapter.getOrdersFromDeepDip();
-                if (orders == null){
-                    return this.generateMovementOrders();
-                } else {
+                if (this.isValidOrders(orders)) {
                     return orders;
+                } else {
+                    return this.generateMovementOrders();
                 }
             case 2:
             case 4:
@@ -111,6 +113,28 @@ public class DeepDip extends DumbBot {
                 return null;
         }
     }
+
+    boolean isValidOrders(List<Order> orders) {
+        if (orders == null) {
+            return false;
+        }
+        for(Order unit_order : orders) {
+            Region r = unit_order.getLocation();
+            if (!this.me.getControlledRegions().contains(r)) {
+                return false;
+            }
+
+            List<Region> adjacent_regions = r.getAdjacentRegions();
+            if (unit_order instanceof MTOOrder && !adjacent_regions.contains(((MTOOrder) unit_order).getDestination())) {
+                return false;
+            } else if (unit_order instanceof SUPOrder && !adjacent_regions.contains(((SUPOrder) unit_order).getSupportedRegion())) {
+                return false;
+            } else if (unit_order instanceof SUPMTOOrder && !adjacent_regions.contains(((SUPMTOOrder) unit_order).getSupportedRegion())) {
+                return false;
+            }
+        }
+        return true;
+    }
     
     public Logger getLogger() {
         return this.logger;
@@ -124,4 +148,3 @@ public class DeepDip extends DumbBot {
         return this.me;
     }
 }
-

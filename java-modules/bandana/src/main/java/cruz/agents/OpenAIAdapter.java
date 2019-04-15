@@ -432,7 +432,7 @@ public class OpenAIAdapter {
             if (destination.getAdjacentRegions().contains(start) && order.getAction() != 0){
                 if (order.getAction() == 1) {
                     orders.add(new MTOOrder(this.agent2.getMe(), start, destination));
-                } else if (order.getAction() == 2) {
+                } else if (order.getAction() >= 2) {
                     support_orders.add(order);
                 }
             } else {
@@ -447,7 +447,11 @@ public class OpenAIAdapter {
                 .filter(order -> destination.equals(order.getLocation()))
                 .findAny()
                 .orElse(null);
-            orders.add(new SUPOrder(this.agent2.getMe(), start, order_to_support));
+            if (order_to_support instanceof MTOOrder) {
+                orders.add(new SUPMTOOrder(this.agent2.getMe(), start, (MTOOrder) order_to_support));
+            } else {
+                orders.add(new SUPOrder(this.agent2.getMe(), start, order_to_support));
+            }
         }
         return orders;
     }
@@ -548,4 +552,3 @@ public class OpenAIAdapter {
         this.info = s;
     }
 }
-

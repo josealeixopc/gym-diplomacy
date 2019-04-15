@@ -27,8 +27,8 @@ logger.setLevel(level)
 
 ### CONSTANTS
 NUMBER_OF_ACTIONS = 3
-NUMBER_OF_OPPONENTS = 7
-NUMBER_OF_PROVINCES = 75
+NUMBER_OF_OPPONENTS = 2#7
+NUMBER_OF_PROVINCES = 8#75
 
 
 def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
@@ -372,4 +372,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

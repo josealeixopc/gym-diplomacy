@@ -13,7 +13,7 @@ public class TournamentRunner {
 	// JC: CUSTOM SETTINGS BEGIN
 
 	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
-    private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
+    private final static String GAME_MAP = "small"; // Game map can be 'standard' or 'small'
 
     // JC: Using a custom map to define how many players are there on each custom map
     private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<String, Integer>() {{
