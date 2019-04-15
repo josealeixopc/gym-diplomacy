@@ -27,6 +27,9 @@ class SocketClient
             InetAddress address = InetAddress.getByName(host);
             socket = new Socket(address, port);
 
+            System.out.println("Connecting to IP: " + address.getHostAddress());
+            System.out.println("Localhost: " + InetAddress.getLocalHost().getHostAddress());
+
             //Send the message to the server
             OutputStream os = socket.getOutputStream();
             os.write(messageToSend);
