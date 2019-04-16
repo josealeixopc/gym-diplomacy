@@ -318,15 +318,16 @@ class DiplomacyStrategyEnv(gym.Env):
 
 
     def _init_observation_space(self):
-        # Observation space: [[province owner, province has supply center] * number of provinces]
-        # Eg: If observation_space[2] is [5, 0], then the second province belongs to player 5 and does NOT have a SC
-
+        '''
+        Observation space: [[province_id, owner, is supply center, has unit] * number of provinces]
+        Eg: If observation_space[2] is [2, 5, 0, 0], then the second province belongs to player 5, is NOT a SC, and does NOT have a unit.
+        '''
         observation_space_description = []
 
         for i in range(NUMBER_OF_PROVINCES):
-            observation_space_description.extend([NUMBER_OF_OPPONENTS, 2])
+            observation_space_description.extend([NUMBER_OF_PROVINCES, NUMBER_OF_OPPONENTS, 2, 2])
 
-        self.observation_space = spaces.MultiDiscrete(observation_space_description)
+        self.observation_space = spaces.MultiDiscrete([observation_space_description])
 
 
     def _init_action_space(self):

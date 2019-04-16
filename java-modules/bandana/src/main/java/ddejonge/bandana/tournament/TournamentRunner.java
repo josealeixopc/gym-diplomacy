@@ -55,7 +55,7 @@ public class TournamentRunner {
 		int deadlineForRetreatPhases = 30;  //30 seconds for each SUM and AUT phases
 		int deadlineForBuildPhases = 30;  	//30 seconds for each WIN phase
 		
-		int finalYear = 1905; 	//The year after which the agents in each game are supposed to propose a draw to each other. 
+		int finalYear = FINAL_YEAR; 	//The year after which the agents in each game are supposed to propose a draw to each other. 
 		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.) 
 
         Runtime.getRuntime().addShutdownHook(new Thread() {

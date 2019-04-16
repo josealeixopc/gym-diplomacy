@@ -6,24 +6,37 @@ import gym
 import gym_diplomacy
 from gym import wrappers, logger
 
+import math
+import numpy as np
+import torch
 
-class RandomAgent(object):
-    """The world's simplest agent!"""
-    def __init__(self, action_space):
-        self.action_space = action_space
+from agent import Model
+from agent_config import Config
 
-    def act(self, observation, reward, done):
-        act_orders = []
-        player, observation = observation[-1], observation[:-1]
-        index = observation[::4]
-        owner = observation[1::4]
-        supplycenter = observation[2::4]
-        unit = observation[3::4]
-        for province_index, province_owner, province_sc, province_unit in zip(index, owner, supplycenter, unit):
-            if province_unit == player:
-                unit_order = [province_index - 1] + self.action_space.sample().tolist()
-                act_orders.append(unit_order)
-        return act_orders
+
+config = Config()
+
+config.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+#epsilon variables
+config.epsilon_start    = 0.01
+config.epsilon_final    = 0.01
+config.epsilon_decay    = 30000
+config.epsilon_by_frame = lambda frame_idx: config.epsilon_final + (config.epsilon_start - config.epsilon_final) * math.exp(-1. * frame_idx / config.epsilon_decay)
+
+#misc agent variables
+config.GAMMA = 0.99
+config.LR    = 1e-4
+
+#memory
+config.TARGET_NET_UPDATE_FREQ = 1000
+config.EXP_REPLAY_SIZE        = 10000
+config.BATCH_SIZE             = 32
+
+#Learning control variables
+config.LEARN_START = 10000
+config.MAX_FRAMES  = 1000000
+config.UPDATE_FREQ = 1
 
 
 if __name__ == '__main__':
@@ -31,43 +44,47 @@ if __name__ == '__main__':
     parser.add_argument('env_id', nargs='?', default='Diplomacy_Strategy-v0', help='Select the environment to run')
     args = parser.parse_args()
 
-    # You can set the level to logger.DEBUG or logger.WARN if you
-    # want to change the amount of output.
     logger.set_level(logger.INFO)
 
-    env = gym.make(args.env_id)
-
-    # You provide the directory to write to (can be an existing
-    # directory, including one with existing data -- all monitor files
-    # will be namespaced). You can also dump to a tempdir if you'd
-    # like: tempfile.mkdtemp().
     outdir = '/tmp/random-agent-results'
+    env = gym.make(args.env_id)
     env = wrappers.Monitor(env, directory=outdir, force=True)
-    env.seed(0)
-    agent = RandomAgent(env.action_space)
+    model  = Model(env=env, config=config)
+    model.load_w()
+    model.load_replay()
+    print(model.model)
 
-    episode_count = 10
+    frame_idx = 0
+    episode_count = 1
+    episode_reward = 0
     reward = 0
     done = False
 
+    observation = env.reset()
     for i in range(episode_count):
-        ob = env.reset()
-        logger.debug("First observation: {}".format(ob))
         while True:
-            action = agent.act(ob, reward, done)
-            # TODO: Instead of having a loop with episode count, try to get num_of_steps working
-            # TODO: Probably the step function needs to be in a separate thread. It would
-            ob, reward, done, info = env.step(action)
+            epsilon = config.epsilon_by_frame(frame_idx)
+            action = model.get_action(observation, epsilon)
+            
+            prev_observation = observation
+            observation, reward, done, _ = env.step(action)
+            observation = None if done else observation
+            frame_idx += 1
+            
+            model.update(prev_observation, action, reward, observation, frame_idx)
+            episode_reward += reward
+            
             if done:
+                frame_idx = 0
                 logger.info("Game/episode {} has ended.".format(i))
+                model.finish_nstep()
+                model.reset_hx()
+                observation = env.reset()
+                model.save_reward(episode_reward)
+                episode_reward = 0
                 break
-            # Note there's no env.render() here. But the environment still can open window and
-            # render if asked by env.monitor: it calls env.render('rgb_array') to record video.
-            # Video is not recorded every episode, see capped_cubic_video_schedule for details.
 
-    # Close the monitor and write monitor result info to disk
+    model.save_w()
+    model.save_replay()
     env.close()
 
-    # Explicitly close env, because Monitor does not call env close.
-    # Issues has been fixed (https://github.com/openai/gym/pull/1023) but I still don't have the new version.
-    #env.env.close()
