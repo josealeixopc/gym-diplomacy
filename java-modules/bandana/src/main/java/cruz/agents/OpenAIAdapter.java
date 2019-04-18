@@ -150,7 +150,8 @@ public class OpenAIAdapter {
 
 
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            // TODO use different stream to make output and avoid exception when printing stack trace
+            // e.printStackTrace();
         }
 
         return null;
@@ -207,17 +208,10 @@ public class OpenAIAdapter {
     void endOfGame(GameResult gameResult) {
 
         // Yes, weird work around, but for some reason it works
-        String nameOfPlayer = "'OpenAINegotiator'";
-
-        String nameOfWinner = gameResult.getSoloWinner();
-
-        if(nameOfWinner == null) {
-            System.out.println("GAME RESULT: No one won with a solo victory.");
-        }
-        else {
-            System.out.printf("GAME RESULT: Player " + nameOfWinner + " win with a solo victory.");
-        }
-
+        // String nameOfPlayer = "'OpenAINegotiator'";
+        //
+        // String nameOfWinner = gameResult.getSoloWinner();
+        //
         // if (nameOfPlayer.equals(nameOfWinner)) // winner
         // {
         //     this.wonGame();
@@ -225,11 +219,18 @@ public class OpenAIAdapter {
         //     this.lostGame();
         // }
 
-        this.done = true;
-        this.sendEndOfGameNotification();
+        try {
 
-        // Terminate observer so it does not hang and cause exceptions.
-        this.openAIObserver.exit();
+            this.done = true;
+            this.sendEndOfGameNotification();
+
+            // Terminate observer so it does not hang and cause exceptions.
+            this.openAIObserver.exit();
+        }
+        catch (Exception e) {
+            // If something happens there's no need to know about it, as the program should have ended already
+
+        }
     }
 
     /**
