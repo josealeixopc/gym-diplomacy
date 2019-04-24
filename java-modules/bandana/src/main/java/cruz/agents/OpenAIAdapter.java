@@ -32,13 +32,11 @@ public class OpenAIAdapter {
     /**
      * Reward given for winning the game
      */
-
     public static final int WON_GAME_REWARD = +100;
 
     /**
      * Reward given for losing the game
      */
-
     public static final int LOST_GAME_REWARD = -100;
 
     /**
@@ -54,6 +52,7 @@ public class OpenAIAdapter {
      * The OpenAINegotiator instance to which this adapter is connected.
      */
     public OpenAINegotiator agent;
+    public DeepDip agent2;
 
     /**
      * A map containing an integer ID of each power, in order to be able to map a power to an integer and vice-versa.
@@ -88,6 +87,17 @@ public class OpenAIAdapter {
      */
     OpenAIAdapter(OpenAINegotiator agent) {
         this.agent = agent;
+        this.init();
+    }
+
+    OpenAIAdapter(DeepDip agent) {
+        this.agent2 = agent;
+        this.init();
+    }
+
+    private void init(){
+        this.resetReward();
+        this.previousNumSc = (this.agent2 == null)? this.agent.me.getOwnedSCs().size() : 0;
 
         this.done = false;
         this.info = null;
@@ -124,7 +134,6 @@ public class OpenAIAdapter {
             ProtoMessage.ObservationData observationData = this.generateObservationData();
 
             bandanaRequestBuilder.setObservation(observationData);
-
             bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
 
             byte[] message = bandanaRequestBuilder.build().toByteArray();
@@ -157,6 +166,44 @@ public class OpenAIAdapter {
     }
 
     /**
+     * This function retrieves a list of Orders from the OpenAI module that is connected to the localhost on port 5000.
+     *
+     * @return List of Orders created with data from the OpenAI module.
+     */
+    public List<Order> getOrdersFromDeepDip() {
+        try {
+            this.agent2.getLogger().logln("GAME STATUS: " + this.openAIObserver.getGameStatus(), true);
+            this.generatePowerNameToIntMap();
+
+            ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
+
+            ProtoMessage.ObservationData observationData = this.generateObservationData();
+
+            bandanaRequestBuilder.setObservation(observationData);
+            bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
+
+            byte[] message = bandanaRequestBuilder.build().toByteArray();
+
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2.getLogger());
+            byte[] response = socketClient.sendMessageAndReceiveResponse(message);
+
+            // If something went wrong with getting the response from Python module
+            if (response == null) {
+                return null;
+            }
+
+            ProtoMessage.DiplomacyGymOrdersResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymOrdersResponse.parseFrom(response);
+            List<Order> generatedOrders = this.generateOrders(diplomacyGymResponse.getOrders());
+            return generatedOrders;
+
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
      * Sends a message to the Open AI environment notifying the end of the game. The "done" boolean will be set to true,
      * and a response with "CONFIRM" is expected.
      */
@@ -170,7 +217,7 @@ public class OpenAIAdapter {
 
             byte[] message = bandanaRequestBuilder.build().toByteArray();
 
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent.getLogger());
+            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2 == null? this.agent.getLogger():this.agent2.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
 
             if (response == null) {
@@ -260,22 +307,21 @@ public class OpenAIAdapter {
 
         int id = 1;
 
-        for (Power pow : this.agent.game.getPowers()) {
+        List<Power> powers = (this.agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
+        for(Power pow : powers) {
             powerNameToInt.put(pow.getName(), id);
             id++;
         }
     }
 
     private ProtoMessage.ObservationData generateObservationData() {
-
         ProtoMessage.ObservationData.Builder observationDataBuilder = ProtoMessage.ObservationData.newBuilder();
-
         Map<String, ProtoMessage.ProvinceData.Builder> nameToProvinceDataBuilder = new HashMap<>();
 
-        int id = 1;
-
         // FIRST PROCESS ALL PROVINCES
-        for (Province p : this.agent.game.getProvinces()) {
+        Vector<Province> provinces = (this.agent2 == null) ? this.agent.game.getProvinces() : this.agent2.getGame().getProvinces();
+        int id = 1;
+        for (Province p : provinces) {
             ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder();
             int isSc = p.isSC() ? 1 : 0;
 
@@ -287,14 +333,22 @@ public class OpenAIAdapter {
             id++;
         }
 
-        // THEN ADD THE OWNERS OF EACH PROVINCE
-        for (Power pow : this.agent.game.getPowers()) {
+        // THEN ADD THE OWNERS & UNITS OF EACH PROVINCE
+        List<Power> powers = (this.agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
+        for (Power pow : powers) {
+            for (Province p : pow.getOwnedSCs()) {
+                // Get the correspondent province builder and add the current owner of the province
+                ProtoMessage.ProvinceData.Builder provinceDataBuilder = nameToProvinceDataBuilder.get(p.getName());
+                provinceDataBuilder.setOwner(powerNameToInt.get(pow.getName()));
+            }
+
             for (Region r : pow.getControlledRegions()) {
                 Province p = r.getProvince();
 
                 // Get the correspondent province builder and add the current owner of the province
                 ProtoMessage.ProvinceData.Builder provinceDataBuilder = nameToProvinceDataBuilder.get(p.getName());
                 provinceDataBuilder.setOwner(powerNameToInt.get(pow.getName()));
+                provinceDataBuilder.setUnit(powerNameToInt.get(pow.getName()));
             }
         }
 
@@ -312,6 +366,9 @@ public class OpenAIAdapter {
         if (this.info != null) {
             observationDataBuilder.setInfo(this.info);
         }
+
+        String agent_name = (this.agent2 == null)? this.agent.me.getName() : this.agent2.getMe().getName();
+        observationDataBuilder.setPlayer(powerNameToInt.get(agent_name));
 
         // Reset previous reward
         this.resetReward();
@@ -362,6 +419,58 @@ public class OpenAIAdapter {
         ocs.add(theirOC);
 
         return new BasicDeal(ocs, dmzs);
+    }
+
+    private List<Order> generateOrders(ProtoMessage.OrdersData ordersData) {
+        List<Order> orders = new ArrayList<>();
+        List<ProtoMessage.OrderData> support_orders = new ArrayList<>();
+        List<Province> game_provinces = this.agent2.getGame().getProvinces();
+        List<Region> game_regions = this.agent2.getGame().getRegions();
+
+        for (ProtoMessage.OrderData order : ordersData.getOrdersList()) {
+            Province start_province = game_provinces.get(order.getStart());
+            Province destination_province = game_provinces.get(order.getDestination());
+
+            Region start = game_regions.stream()
+                .filter(r -> r.getProvince().getName().equals(start_province.getName()))
+                .findAny()
+                .orElse(null);
+            Region destination = game_regions.stream()
+                .filter(r -> r.getProvince().getName().equals(destination_province.getName()))
+                .findAny()
+                .orElse(null);
+
+            if (order.getAction() == 0) {
+                orders.add(new HLDOrder(this.agent2.getMe(), start));
+            } else if (destination.getAdjacentRegions().contains(start)){
+                if (order.getAction() == 1) {
+                    orders.add(new MTOOrder(this.agent2.getMe(), start, destination));
+                } else if (order.getAction() >= 2) {
+                    support_orders.add(order);
+                }
+            } else {
+                System.err.println("WRONG BORDER: Support destination is not a border with current province: " + destination + "-" + start);
+                orders.add(new HLDOrder(this.agent2.getMe(), start));
+            }
+        }
+
+        for (ProtoMessage.OrderData support_order : support_orders) {
+            Region start = game_regions.get(support_order.getStart());
+            Region destination = game_regions.get(support_order.getDestination());
+            Order order_to_support = orders.stream()
+                .filter(order -> destination.equals(order.getLocation()))
+                .findAny()
+                .orElse(null);
+            if (order_to_support == null) {
+                System.err.println("ORDER TO SUPPORT NOT FOUND");
+                orders.add(new HLDOrder(this.agent2.getMe(), start));
+            } else if (order_to_support instanceof MTOOrder) {
+                orders.add(new SUPMTOOrder(this.agent2.getMe(), start, (MTOOrder) order_to_support));
+            } else {
+                orders.add(new SUPOrder(this.agent2.getMe(), start, order_to_support));
+            }
+        }
+        return orders;
     }
 
     /**
@@ -439,7 +548,7 @@ public class OpenAIAdapter {
      * @return
      */
     private int balanceOfScs() {
-        int currentNumSc = this.agent.me.getOwnedSCs().size();
+        int currentNumSc = (this.agent2 == null)? this.agent.me.getOwnedSCs().size() : this.agent2.getMe().getOwnedSCs().size();
         int balance = currentNumSc - this.previousNumSc;
 
         // Don't consider already considered SCs

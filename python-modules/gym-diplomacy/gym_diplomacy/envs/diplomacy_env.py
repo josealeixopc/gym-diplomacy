@@ -32,7 +32,6 @@ logger.setLevel(level)
 # CRITICAL	A serious error, indicating that the program itself may be unable to continue running.
 
 ### CONSTANTS
-
 NUMBER_OF_OPPONENTS = 7
 NUMBER_OF_PROVINCES = 75
 

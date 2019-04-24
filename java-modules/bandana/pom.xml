@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cruz.open-ai</groupId>
-    <artifactId>open-ai-negotiator</artifactId>
+    <artifactId>DeepDip</artifactId>
     <packaging>jar</packaging>
     <version>0.1</version>
 
-    <name>open-ai-negotiator</name>
+    <name>DeepDip</name>
     <url>https://gitlab.com/jazzchipc/dip-q</url>
 
     <properties>
@@ -95,23 +95,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>cruz.agents.OpenAINegotiator</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>RandomBot-shade</id>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <outputFile>target/random-bot.jar</outputFile>
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ddejonge.bandana.exampleAgents.RandomBot</mainClass>
+                                    <mainClass>cruz.agents.DeepDip</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
