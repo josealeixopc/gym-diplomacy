@@ -194,8 +194,8 @@ public class OpenAIAdapter {
 
             ProtoMessage.DiplomacyGymOrdersResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymOrdersResponse.parseFrom(response);
             List<Order> generatedOrders = this.generateOrders(diplomacyGymResponse.getOrders());
-            return generatedOrders;
 
+            return generatedOrders;
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -425,6 +425,9 @@ public class OpenAIAdapter {
         List<Region> game_regions = this.agent2.getGame().getRegions();
 
         for (ProtoMessage.OrderData order : ordersData.getOrdersList()) {
+            if (order.getStart() == -1){
+                break;
+            }
             Province start_province = game_provinces.get(order.getStart());
             Province destination_province = game_provinces.get(order.getDestination());
 
@@ -447,6 +450,7 @@ public class OpenAIAdapter {
                 }
             } else {
                 System.err.println("WRONG BORDER: Support destination is not a border with current province: " + destination + "-" + start);
+                this.addReward(INVALID_DEAL_REWARD);
                 orders.add(new HLDOrder(this.agent2.getMe(), start));
             }
         }
@@ -460,6 +464,7 @@ public class OpenAIAdapter {
                 .orElse(null);
             if (order_to_support == null) {
                 System.err.println("ORDER TO SUPPORT NOT FOUND");
+                this.addReward(INVALID_DEAL_REWARD);
                 orders.add(new HLDOrder(this.agent2.getMe(), start));
             } else if (order_to_support instanceof MTOOrder) {
                 orders.add(new SUPMTOOrder(this.agent2.getMe(), start, (MTOOrder) order_to_support));

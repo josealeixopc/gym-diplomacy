@@ -1,3 +1,6 @@
+import random
+
+
 class ExperienceReplayMemory:
     def __init__(self, capacity):
         self.capacity = capacity

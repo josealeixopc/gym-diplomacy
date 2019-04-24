@@ -26,6 +26,7 @@ class LocalSocketServer:
 
         # create TCP (SOCK_STREAM) /IP socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         # reuse the socket, meaning there should not be any errno98 address already in use
         # self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -51,30 +52,36 @@ class LocalSocketServer:
         # listen for incoming connections (server mode) with one connection at a time
         self.sock.listen(1)
 
+
     def threaded_listen(self):
         thread = Thread(target=self._listen)
         self.threads.append(thread)
         thread.start()
 
+
     def _listen(self):
         while not self.terminate:
             # wait for a connection
             logger.debug('Waiting for a connection...')
-            connection, client_address = self.sock.accept()
 
             try:
-                # show who connected to us
-                logger.debug('Connection from {}'.format(client_address))
+                connection, client_address = self.sock.accept()
 
-                data = connection.recv(1024 * 20)
+                try:
+                    # show who connected to us
+                    logger.debug('Connection from {}'.format(client_address))
 
-                logger.debug("Calling handler...")
-                connection.send(self.handle(data))
+                    data = connection.recv(1024 * 20)
 
-            finally:
-                # Clean up the connection
-                logger.debug("Connection closed")
-                connection.close()
+                    logger.debug("Calling handler...")
+                    connection.send(self.handle(data))
+
+                finally:
+                    # Clean up the connection
+                    logger.debug("Connection closed")
+                    connection.close()
+            except socket.error:
+                break
 
     def close(self) -> None:
         logger.info("Closing LocalSocketServer...")

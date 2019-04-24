@@ -55,7 +55,7 @@ public class TournamentRunner {
 		int deadlineForRetreatPhases = 30;  //30 seconds for each SUM and AUT phases
 		int deadlineForBuildPhases = 30;  	//30 seconds for each WIN phase
 		
-		int finalYear = FINAL_YEAR; 	//The year after which the agents in each game are supposed to propose a draw to each other. 
+		String finalYear = FINAL_YEAR; 	//The year after which the agents in each game are supposed to propose a draw to each other. 
 		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.) 
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -79,7 +79,7 @@ public class TournamentRunner {
 	
 	static List<Process> players = new ArrayList<Process>();
 	
-	public static void run(int numberOfGames, int moveTimeLimit, int retreatTimeLimit, int buildTimeLimit, int finalYear) throws IOException{
+	public static void run(int numberOfGames, int moveTimeLimit, int retreatTimeLimit, int buildTimeLimit, String finalYear) throws IOException{
 
         TournamentObserver tournamentObserver = null;
 
@@ -151,7 +151,7 @@ public class TournamentRunner {
                     command[6] = name;
 
                     //set the year after which the agent will propose a draw to the other agents.
-                    command[8] = "" + finalYear;
+                    command[8] = finalYear;
 
                     // JC: If debug is on and the current command is a OpenAINegotiator, then change the command to allow debug
                     // This is here, because otherwise we would need to change how the cycle reads the arguments

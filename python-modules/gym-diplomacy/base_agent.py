@@ -97,4 +97,3 @@ class BaseAgent(object):
                 writer = csv.writer(f)
                 writer.writerow(list([tstep]+self.action_selections))
             self.action_selections = [0 for _ in range(len(self.action_selections))]
-

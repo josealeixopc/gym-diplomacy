@@ -5,6 +5,7 @@ import subprocess
 import os
 import signal
 import atexit
+import threading
 import numpy as np
 
 from gym_diplomacy.envs import proto_message_pb2
@@ -27,7 +28,7 @@ logger.setLevel(level)
 
 ### CONSTANTS
 NUMBER_OF_ACTIONS = 3
-NUMBER_OF_OPPONENTS = 2#7
+NUMBER_OF_PLAYERS = 2#7
 NUMBER_OF_PROVINCES = 8#75
 
 
@@ -131,7 +132,7 @@ class DiplomacyStrategyEnv(gym.Env):
     received_first_observation: bool = False
 
     waiting_for_action: bool = False
-    waiting_for_response: bool = True
+    response_available = threading.Event()
 
     limit_action_time: int = 0
 
@@ -168,20 +169,15 @@ class DiplomacyStrategyEnv(gym.Env):
             done (boolean): whether the episode has ended, in which case further step() calls will return undefined results
             info (dict): contains auxiliary diagnostic information (helpful for debugging, and sometimes learning)
         """
-
         # When the agent calls step, make sure it does nothing until the agent can act
         while not self.waiting_for_action:
             pass
 
         self.action = action
-
         self.waiting_for_action = False
+
         # After setting 'waiting_for_action' to false, the 'handle' function should send the chosen action
-
-        self.waiting_for_response = True
-
-        while self.waiting_for_response:
-            pass
+        self.response_available.wait()
 
         return self.observation, self.reward, self.done, self.info
 
@@ -252,7 +248,6 @@ class DiplomacyStrategyEnv(gym.Env):
         Environments will automatically close() themselves when
         garbage collected or when the program exits.
         """
-
         logger.debug("CLOSING ENV")
 
         self.terminate = True
@@ -320,12 +315,15 @@ class DiplomacyStrategyEnv(gym.Env):
     def _init_observation_space(self):
         '''
         Observation space: [[province_id, owner, is supply center, has unit] * number of provinces]
+        The last 2 values represent the player id and the province to pick the order.
         Eg: If observation_space[2] is [2, 5, 0, 0], then the second province belongs to player 5, is NOT a SC, and does NOT have a unit.
         '''
         observation_space_description = []
 
         for i in range(NUMBER_OF_PROVINCES):
-            observation_space_description.extend([NUMBER_OF_PROVINCES, NUMBER_OF_OPPONENTS, 2, 2])
+            observation_space_description.extend([NUMBER_OF_PROVINCES, NUMBER_OF_PLAYERS, 2, 2])
+        
+        observation_space_description.extend([NUMBER_OF_PLAYERS])
 
         self.observation_space = spaces.MultiDiscrete([observation_space_description])
 
@@ -357,11 +355,6 @@ class DiplomacyStrategyEnv(gym.Env):
         response_data.type = proto_message_pb2.DiplomacyGymOrdersResponse.VALID
 
         self.waiting_for_action = True
-        self.received_first_observation = True
-        self.waiting_for_response = False
-
-        #logger.debug("WAITING FOR ACTION: {}".format(self.waiting_for_action))
-
         while self.waiting_for_action:
             if self.done or self.terminate:
                 # Return empty deal just to finalize program
@@ -369,6 +362,9 @@ class DiplomacyStrategyEnv(gym.Env):
                 # TODO: Terminate should not be here. Refactor all of this!
                 self.socket_server.terminate = True
                 return response_data.SerializeToString()
+
+        self.received_first_observation = True
+        self.response_available.set()
 
         orders_data: proto_message_pb2.OrdersData = action_to_orders_data(self.action)
         response_data.orders.CopyFrom(orders_data)

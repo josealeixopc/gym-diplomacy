@@ -64,15 +64,15 @@ class Model(BaseAgent):
         
         batch_state, batch_action, batch_reward, batch_next_state = zip(*transitions)
 
-        shape = (-1,)+self.num_feats
+        shape = (-1,) + self.num_feats
 
-        batch_state = torch.tensor(batch_state, device=self.device, dtype=torch.float).view(shape)
-        batch_action = torch.tensor(batch_action, device=self.device, dtype=torch.long).squeeze().view(-1, 1)
+        batch_state = torch.tensor(batch_state, device=self.device, dtype=torch.float).view(shape).squeeze()
+        batch_action = torch.tensor(batch_action, device=self.device, dtype=torch.long).squeeze().view(32, -1)
         batch_reward = torch.tensor(batch_reward, device=self.device, dtype=torch.float).squeeze().view(-1, 1)
         
         non_final_mask = torch.tensor(tuple(map(lambda s: s is not None, batch_next_state)), device=self.device, dtype=torch.uint8)
         try: #sometimes all next states are false
-            non_final_next_states = torch.tensor([s for s in batch_next_state if s is not None], device=self.device, dtype=torch.float).view(shape)
+            non_final_next_states = torch.tensor([s for s in batch_next_state if s is not None], device=self.device, dtype=torch.float).view(shape).squeeze()
             empty_next_state_values = False
         except:
             non_final_next_states = None
@@ -85,7 +85,7 @@ class Model(BaseAgent):
         batch_state, batch_action, batch_reward, non_final_next_states, non_final_mask, empty_next_state_values, indices, weights = batch_vars
 
         #estimate
-        current_q_values = self.model(batch_state).gather(1, batch_action)
+        current_q_values = self.model(batch_state)#.gather(1, batch_action)
         
         #target
         with torch.no_grad():
@@ -128,12 +128,18 @@ class Model(BaseAgent):
 
 
     def get_action(self, state, eps=0.1):
-        state, player_units = self.prepare_observation(state)
+        state, player_units = self.prepare_state(state)
         action = []
         with torch.no_grad():
-            if np.random.random() >= eps or self.static_policy:
-                X = torch.tensor([state], device=self.device, dtype=torch.float)
-                action = [(u, self.model(X).max(1)[1].view(1, 1).item()) for u in player_units]
+            if np.random.random() <= eps or self.static_policy:
+                #X = torch.tensor([state], device=self.device, dtype=torch.float)
+
+                for u in player_units:
+                    state_with_unit = np.concatenate((state, np.array([u])))
+                    X = torch.tensor([state], device=self.device, dtype=torch.float)
+                    action.append((u, self.model(X).max(1)[1].view(1, 1).item()))
+
+                #action = [(u, self.model(X).max(1)[1].view(1, 1).item()) for u in player_units]
                 #a = self.model(X).max(1)[1].view(1, 1)
                 #return a.item()
             else:
@@ -142,12 +148,12 @@ class Model(BaseAgent):
         return self.prepare_action(action)
 
 
-    def prepare_observation(self, observation):
-        self.player, observation = observation[-1], observation[:-1]
-        index = observation[::4]
-        units = observation[3::4]
+    def prepare_state(self, state):
+        self.player = state[-1]
+        index = state[::4]
+        units = state[3::4]
         player_units = [i for i, unit in zip(index, units) if unit == self.player]
-        return observation, player_units
+        return state, player_units
 
 
     def prepare_action(self, action):
@@ -155,6 +161,11 @@ class Model(BaseAgent):
         for (province_index, province_action) in action:
             unit_order = [province_index - 1, province_action//3, province_action//8]
             action_orders.append(unit_order)
+        number_of_provinces = 8
+        number_of_actions = len(action)
+        need_to_pad = number_of_provinces - number_of_actions
+        for i in range(need_to_pad):
+            action_orders.append([-1, -1, -1])
         return action_orders
 
 
@@ -179,4 +190,3 @@ class Model(BaseAgent):
     
     def MSE(self, x):
         return 0.5 * x.pow(2)
-

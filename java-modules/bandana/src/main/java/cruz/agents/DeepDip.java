@@ -113,7 +113,7 @@ public class DeepDip extends DumbBot {
         }
     }
 
-    boolean isValidOrders(List<Order> orders) {
+    private boolean isValidOrders(List<Order> orders) {
         try {
             if (orders == null) {
                 throw new Exception("EMPTY ORDERS");
