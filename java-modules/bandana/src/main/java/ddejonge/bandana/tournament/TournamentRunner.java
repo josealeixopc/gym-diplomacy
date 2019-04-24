@@ -12,9 +12,9 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
-    final static boolean MODE = false;  //Strategy/false vs Negotiation/true
+    final static boolean MODE = true;  //Strategy/false vs Negotiation/true
 	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
-    private final static String GAME_MAP = "small"; // Game map can be 'standard' or 'small'
+    private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
     private final static String FINAL_YEAR = "2000";
 
     // JC: Using a custom map to define how many players are there on each custom map
@@ -55,7 +55,7 @@ public class TournamentRunner {
 		int deadlineForRetreatPhases = 30;  //30 seconds for each SUM and AUT phases
 		int deadlineForBuildPhases = 30;  	//30 seconds for each WIN phase
 		
-		int finalYear = 1905; 	//The year after which the agents in each game are supposed to propose a draw to each other. 
+		int finalYear = Integer.parseInt(FINAL_YEAR); 	//The year after which the agents in each game are supposed to propose a draw to each other.
 		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.) 
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -135,14 +135,28 @@ public class TournamentRunner {
                     String name;
                     String[] command;
 
-                    //make sure that each player has a different name.
-                    if (i < numberOfParticipants - 1) {
-                        name = "RandomBot " + i;
-                        command = randomBotCommand;
-                    } else {
-                        name = "DeepDip " + i;
-                        command = deepDipCommand;
+                    // Bots for negotiation testing
+                    if(MODE) {
+                        //make sure that each player has a different name.
+                        if (i < numberOfParticipants - 1) {
+                            name = "RandomNegotiatorBot " + i;
+                            command = randomNegotiatorCommand;
+                        } else {
+                            name = "OpenAIBot " + i;
+                            command = openAIBotNegotiatorCommand;
+                        }
                     }
+                    // Bots for tactics testing
+                    else {
+                        if (i < numberOfParticipants - 1) {
+                            name = "RandomBot " + i;
+                            command = randomBotCommand;
+                        } else {
+                            name = "DeepDip " + i;
+                            command = deepDipCommand;
+                        }
+                    }
+
 
                     //set the log folder for this agent to be a subfolder of the tournament log folder.
                     command[4] = tournamentLogFolderPath + File.separator + name + File.separator + "Game " + gameNumber + File.separator;
@@ -169,8 +183,6 @@ public class TournamentRunner {
 
                     //store the Process object in a list.
                     players.add(playerProcess);
-
-
                 }
 
                 //5. Let the tournament observer (re-)connect to the game server.
