@@ -124,7 +124,7 @@ public class OpenAIObserver extends Observer {
     public void handleSMR(String[] message) {
 
 
-        GameResult gameResult = new GameResult(message, 7);
+        GameResult gameResult = new GameResult(message, 2);
 
         this.openAIAdapter.endOfGame(gameResult);
 

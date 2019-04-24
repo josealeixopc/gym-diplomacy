@@ -12,11 +12,13 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
+    final static boolean MODE = false;  //Strategy/false vs Negotiation/true
 	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
-    private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
+    private final static String GAME_MAP = "small"; // Game map can be 'standard' or 'small'
+    private final static String FINAL_YEAR = "2000";
 
     // JC: Using a custom map to define how many players are there on each custom map
-    private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<>() {{
+    private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<String, Integer>() {{
         put("standard", 7);
         put("small", 2);
     }};
@@ -25,17 +27,18 @@ public class TournamentRunner {
 
 	//Command lines to start the various agents provided with the Bandana framework.
 	// Add your own line here to run your own bot.
-	final static String[] randomNegotiatorCommand = {"java", "-jar", "agents/RandomNegotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", "1905"};
-	final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", "1905"};
-	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", "1905"};
-	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", "1905"};
-	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", "1905"};
-	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", "1905"};
-    final static String[] randomBotCommand = {"java", "-jar", "target/random-bot.jar", "-log", "log", "-name", "RandomBot", "-fy", "1905"};
+	final static String[] randomBotCommand = {"java", "-jar", "agents/RandomBot.jar", "-log", "log", "-name", "RandomBot", "-fy", FINAL_YEAR};
+	final static String[] randomNegotiatorCommand = {"java", "-jar", "agents/RandomNegotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", FINAL_YEAR};
+	final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", FINAL_YEAR};
+	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", FINAL_YEAR};
+	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", };
+	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
+	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", FINAL_YEAR};
+	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
 
 
     // JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
-    final static String[] openAIBotNegotiatorCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", "1905"};
+    final static String[] openAIBotNegotiatorCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "target/open-ai-negotiator-0.1-shaded.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
 
 
 
@@ -62,7 +65,9 @@ public class TournamentRunner {
 
             @Override
             public void run() {
-                NegoServerRunner.stop();
+                if (MODE) {
+                    NegoServerRunner.stop();
+                }
                 ParlanceRunner.stop();
             }
         });
@@ -111,14 +116,18 @@ public class TournamentRunner {
             tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, true);
 
             //3. Run the Negotiation Server.
-            NegoServerRunner.run(tournamentObserver, tournamentLogFolderPath, numberOfGames);
+            if (MODE) {
+                NegoServerRunner.run(tournamentObserver, tournamentLogFolderPath, numberOfGames);
+            }
 
             for (int gameNumber = 1; gameNumber <= numberOfGames; gameNumber++) {
 
                 System.out.println();
                 System.out.println("GAME " + gameNumber);
 
-                NegoServerRunner.notifyNewGame(gameNumber);
+                if (MODE) {
+                    NegoServerRunner.notifyNewGame(gameNumber);
+                }
 
                 //4. Start the players:
                 for (int i = 0; i < numberOfParticipants; i++) {
@@ -127,16 +136,12 @@ public class TournamentRunner {
                     String[] command;
 
                     //make sure that each player has a different name.
-                    if (i < 3) {
-                        name = "D-Brane " + i;
-                        command = dbraneExampleBotCommand;
-                    }
-                    else if (i < 6) {
-                        name = "RandomNegotiator " + i;
-                        command = randomNegotiatorCommand;
+                    if (i < numberOfParticipants - 1) {
+                        name = "RandomBot " + i;
+                        command = randomBotCommand;
                     } else {
-                        name = "OpenAINegotiator " + i;
-                        command = openAIBotNegotiatorCommand;
+                        name = "DeepDip " + i;
+                        command = deepDipCommand;
                     }
 
                     //set the log folder for this agent to be a subfolder of the tournament log folder.
@@ -214,7 +219,9 @@ public class TournamentRunner {
             }
 
             ParlanceRunner.stop();
-            NegoServerRunner.stop();
+            if (MODE) {
+                NegoServerRunner.stop();
+            }
         }
 	}
 }

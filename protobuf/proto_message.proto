@@ -12,7 +12,6 @@ arrays is done on the side of BANDANA. Therefore most messages have fields which
 **/
 
 message BandanaRequest {
-
   enum Type {
     INVALID = 0;
     GET_DEAL_REQUEST = 1; // specific to negotiation scenario
@@ -45,6 +44,16 @@ message DiplomacyGymResponse {
   AcceptanceData acceptance = 3;
 }
 
+message DiplomacyGymOrdersResponse {
+  enum Type {
+    INVALID = 0;
+    VALID = 1;
+  }
+
+  Type type = 1;
+  OrdersData orders = 2;
+}
+
 message ProvinceData {
   // The id of the province, which allows us to map a certain action to a province.
   int32 id = 1;
@@ -54,6 +63,9 @@ message ProvinceData {
 
   // Works like a boolean. 0 if province does not have a supply center (sc). 1 if it does.
   int32 sc = 3;
+  
+  // An integer which is the ID of the player controlling the province, the owner of the unit in the province.
+  int32 unit = 4;
 }
 
 message ObservationData {
@@ -68,14 +80,14 @@ message ObservationData {
 
   // Arbritary information (mostly for debug purposes).
   string info = 4;
+  int32 player = 5;
 }
 
 message AcceptanceData {
-  // TODO
+  //TODO
 }
 
 message DealData {
-
   message MTOOrderData {
     // Province to move units FROM
     int32 startProvince = 1;
@@ -86,10 +98,19 @@ message DealData {
 
   // Power we will propose our deal to
   int32 powerToPropose = 1;
-
   // The Move order we propose to execute
   MTOOrderData ourMove = 2;
 
   // The Move order we propose the other to execute
   MTOOrderData theirMove = 3;
+}
+
+message OrderData {
+  int32 start = 1;
+  int32 action = 2;
+  int32 destination = 3;
+}
+
+message OrdersData {
+  repeated OrderData orders = 1;
 }
