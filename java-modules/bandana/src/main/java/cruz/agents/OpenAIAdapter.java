@@ -138,7 +138,7 @@ public class OpenAIAdapter {
 
             byte[] message = bandanaRequestBuilder.build().toByteArray();
 
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent.getLogger());
+            SocketClient socketClient = new SocketClient(5000, this.agent.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
 
             // If something went wrong with getting the response from Python module
@@ -184,7 +184,7 @@ public class OpenAIAdapter {
 
             byte[] message = bandanaRequestBuilder.build().toByteArray();
 
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2.getLogger());
+            SocketClient socketClient = new SocketClient( 5000, this.agent2.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
 
             // If something went wrong with getting the response from Python module
@@ -217,7 +217,7 @@ public class OpenAIAdapter {
 
             byte[] message = bandanaRequestBuilder.build().toByteArray();
 
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2 == null? this.agent.getLogger():this.agent2.getLogger());
+            SocketClient socketClient = new SocketClient(5000, this.agent2 == null? this.agent.getLogger():this.agent2.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
 
             if (response == null) {
