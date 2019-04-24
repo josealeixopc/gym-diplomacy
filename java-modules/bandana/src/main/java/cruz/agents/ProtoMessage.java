@@ -1976,6 +1976,804 @@ public final class ProtoMessage {
 
   }
 
+  public interface DiplomacyGymOrdersResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:dip_q.DiplomacyGymOrdersResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+     */
+    int getTypeValue();
+    /**
+     * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+     */
+    cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type getType();
+
+    /**
+     * <code>.dip_q.OrdersData orders = 2;</code>
+     */
+    boolean hasOrders();
+    /**
+     * <code>.dip_q.OrdersData orders = 2;</code>
+     */
+    cruz.agents.ProtoMessage.OrdersData getOrders();
+    /**
+     * <code>.dip_q.OrdersData orders = 2;</code>
+     */
+    cruz.agents.ProtoMessage.OrdersDataOrBuilder getOrdersOrBuilder();
+  }
+  /**
+   * Protobuf type {@code dip_q.DiplomacyGymOrdersResponse}
+   */
+  public  static final class DiplomacyGymOrdersResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:dip_q.DiplomacyGymOrdersResponse)
+      DiplomacyGymOrdersResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use DiplomacyGymOrdersResponse.newBuilder() to construct.
+    private DiplomacyGymOrdersResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private DiplomacyGymOrdersResponse() {
+      type_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private DiplomacyGymOrdersResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+
+              type_ = rawValue;
+              break;
+            }
+            case 18: {
+              cruz.agents.ProtoMessage.OrdersData.Builder subBuilder = null;
+              if (orders_ != null) {
+                subBuilder = orders_.toBuilder();
+              }
+              orders_ = input.readMessage(cruz.agents.ProtoMessage.OrdersData.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(orders_);
+                orders_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymOrdersResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymOrdersResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.class, cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code dip_q.DiplomacyGymOrdersResponse.Type}
+     */
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>INVALID = 0;</code>
+       */
+      INVALID(0),
+      /**
+       * <code>VALID = 1;</code>
+       */
+      VALID(1),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>INVALID = 0;</code>
+       */
+      public static final int INVALID_VALUE = 0;
+      /**
+       * <code>VALID = 1;</code>
+       */
+      public static final int VALID_VALUE = 1;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Type valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static Type forNumber(int value) {
+        switch (value) {
+          case 0: return INVALID;
+          case 1: return VALID;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Type> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Type(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:dip_q.DiplomacyGymOrdersResponse.Type)
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private int type_;
+    /**
+     * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+     */
+    public int getTypeValue() {
+      return type_;
+    }
+    /**
+     * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+     */
+    public cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type getType() {
+      @SuppressWarnings("deprecation")
+      cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type result = cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type.valueOf(type_);
+      return result == null ? cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type.UNRECOGNIZED : result;
+    }
+
+    public static final int ORDERS_FIELD_NUMBER = 2;
+    private cruz.agents.ProtoMessage.OrdersData orders_;
+    /**
+     * <code>.dip_q.OrdersData orders = 2;</code>
+     */
+    public boolean hasOrders() {
+      return orders_ != null;
+    }
+    /**
+     * <code>.dip_q.OrdersData orders = 2;</code>
+     */
+    public cruz.agents.ProtoMessage.OrdersData getOrders() {
+      return orders_ == null ? cruz.agents.ProtoMessage.OrdersData.getDefaultInstance() : orders_;
+    }
+    /**
+     * <code>.dip_q.OrdersData orders = 2;</code>
+     */
+    public cruz.agents.ProtoMessage.OrdersDataOrBuilder getOrdersOrBuilder() {
+      return getOrders();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (type_ != cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type.INVALID.getNumber()) {
+        output.writeEnum(1, type_);
+      }
+      if (orders_ != null) {
+        output.writeMessage(2, getOrders());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (type_ != cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type.INVALID.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_);
+      }
+      if (orders_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getOrders());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse)) {
+        return super.equals(obj);
+      }
+      cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse other = (cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse) obj;
+
+      if (type_ != other.type_) return false;
+      if (hasOrders() != other.hasOrders()) return false;
+      if (hasOrders()) {
+        if (!getOrders()
+            .equals(other.getOrders())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + type_;
+      if (hasOrders()) {
+        hash = (37 * hash) + ORDERS_FIELD_NUMBER;
+        hash = (53 * hash) + getOrders().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code dip_q.DiplomacyGymOrdersResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:dip_q.DiplomacyGymOrdersResponse)
+        cruz.agents.ProtoMessage.DiplomacyGymOrdersResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymOrdersResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymOrdersResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.class, cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Builder.class);
+      }
+
+      // Construct using cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        type_ = 0;
+
+        if (ordersBuilder_ == null) {
+          orders_ = null;
+        } else {
+          orders_ = null;
+          ordersBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_DiplomacyGymOrdersResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse getDefaultInstanceForType() {
+        return cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse build() {
+        cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse buildPartial() {
+        cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse result = new cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse(this);
+        result.type_ = type_;
+        if (ordersBuilder_ == null) {
+          result.orders_ = orders_;
+        } else {
+          result.orders_ = ordersBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse) {
+          return mergeFrom((cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse other) {
+        if (other == cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.getDefaultInstance()) return this;
+        if (other.type_ != 0) {
+          setTypeValue(other.getTypeValue());
+        }
+        if (other.hasOrders()) {
+          mergeOrders(other.getOrders());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int type_ = 0;
+      /**
+       * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+       */
+      public int getTypeValue() {
+        return type_;
+      }
+      /**
+       * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+       */
+      public Builder setTypeValue(int value) {
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+       */
+      public cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type getType() {
+        @SuppressWarnings("deprecation")
+        cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type result = cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type.valueOf(type_);
+        return result == null ? cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+       */
+      public Builder setType(cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
+       */
+      public Builder clearType() {
+        
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private cruz.agents.ProtoMessage.OrdersData orders_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cruz.agents.ProtoMessage.OrdersData, cruz.agents.ProtoMessage.OrdersData.Builder, cruz.agents.ProtoMessage.OrdersDataOrBuilder> ordersBuilder_;
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      public boolean hasOrders() {
+        return ordersBuilder_ != null || orders_ != null;
+      }
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      public cruz.agents.ProtoMessage.OrdersData getOrders() {
+        if (ordersBuilder_ == null) {
+          return orders_ == null ? cruz.agents.ProtoMessage.OrdersData.getDefaultInstance() : orders_;
+        } else {
+          return ordersBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      public Builder setOrders(cruz.agents.ProtoMessage.OrdersData value) {
+        if (ordersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          orders_ = value;
+          onChanged();
+        } else {
+          ordersBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      public Builder setOrders(
+          cruz.agents.ProtoMessage.OrdersData.Builder builderForValue) {
+        if (ordersBuilder_ == null) {
+          orders_ = builderForValue.build();
+          onChanged();
+        } else {
+          ordersBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      public Builder mergeOrders(cruz.agents.ProtoMessage.OrdersData value) {
+        if (ordersBuilder_ == null) {
+          if (orders_ != null) {
+            orders_ =
+              cruz.agents.ProtoMessage.OrdersData.newBuilder(orders_).mergeFrom(value).buildPartial();
+          } else {
+            orders_ = value;
+          }
+          onChanged();
+        } else {
+          ordersBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      public Builder clearOrders() {
+        if (ordersBuilder_ == null) {
+          orders_ = null;
+          onChanged();
+        } else {
+          orders_ = null;
+          ordersBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      public cruz.agents.ProtoMessage.OrdersData.Builder getOrdersBuilder() {
+        
+        onChanged();
+        return getOrdersFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      public cruz.agents.ProtoMessage.OrdersDataOrBuilder getOrdersOrBuilder() {
+        if (ordersBuilder_ != null) {
+          return ordersBuilder_.getMessageOrBuilder();
+        } else {
+          return orders_ == null ?
+              cruz.agents.ProtoMessage.OrdersData.getDefaultInstance() : orders_;
+        }
+      }
+      /**
+       * <code>.dip_q.OrdersData orders = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cruz.agents.ProtoMessage.OrdersData, cruz.agents.ProtoMessage.OrdersData.Builder, cruz.agents.ProtoMessage.OrdersDataOrBuilder> 
+          getOrdersFieldBuilder() {
+        if (ordersBuilder_ == null) {
+          ordersBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cruz.agents.ProtoMessage.OrdersData, cruz.agents.ProtoMessage.OrdersData.Builder, cruz.agents.ProtoMessage.OrdersDataOrBuilder>(
+                  getOrders(),
+                  getParentForChildren(),
+                  isClean());
+          orders_ = null;
+        }
+        return ordersBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:dip_q.DiplomacyGymOrdersResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:dip_q.DiplomacyGymOrdersResponse)
+    private static final cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse();
+    }
+
+    public static cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<DiplomacyGymOrdersResponse>
+        PARSER = new com.google.protobuf.AbstractParser<DiplomacyGymOrdersResponse>() {
+      @java.lang.Override
+      public DiplomacyGymOrdersResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new DiplomacyGymOrdersResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<DiplomacyGymOrdersResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<DiplomacyGymOrdersResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cruz.agents.ProtoMessage.DiplomacyGymOrdersResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface ProvinceDataOrBuilder extends
       // @@protoc_insertion_point(interface_extends:dip_q.ProvinceData)
       com.google.protobuf.MessageOrBuilder {
@@ -2006,6 +2804,15 @@ public final class ProtoMessage {
      * <code>int32 sc = 3;</code>
      */
     int getSc();
+
+    /**
+     * <pre>
+     * An integer which is the ID of the player controlling the province, the owner of the unit in the province.
+     * </pre>
+     *
+     * <code>int32 unit = 4;</code>
+     */
+    int getUnit();
   }
   /**
    * Protobuf type {@code dip_q.ProvinceData}
@@ -2059,6 +2866,11 @@ public final class ProtoMessage {
             case 24: {
 
               sc_ = input.readInt32();
+              break;
+            }
+            case 32: {
+
+              unit_ = input.readInt32();
               break;
             }
             default: {
@@ -2132,6 +2944,19 @@ public final class ProtoMessage {
       return sc_;
     }
 
+    public static final int UNIT_FIELD_NUMBER = 4;
+    private int unit_;
+    /**
+     * <pre>
+     * An integer which is the ID of the player controlling the province, the owner of the unit in the province.
+     * </pre>
+     *
+     * <code>int32 unit = 4;</code>
+     */
+    public int getUnit() {
+      return unit_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2155,6 +2980,9 @@ public final class ProtoMessage {
       if (sc_ != 0) {
         output.writeInt32(3, sc_);
       }
+      if (unit_ != 0) {
+        output.writeInt32(4, unit_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2175,6 +3003,10 @@ public final class ProtoMessage {
       if (sc_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, sc_);
+      }
+      if (unit_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, unit_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2197,6 +3029,8 @@ public final class ProtoMessage {
           != other.getOwner()) return false;
       if (getSc()
           != other.getSc()) return false;
+      if (getUnit()
+          != other.getUnit()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -2214,6 +3048,8 @@ public final class ProtoMessage {
       hash = (53 * hash) + getOwner();
       hash = (37 * hash) + SC_FIELD_NUMBER;
       hash = (53 * hash) + getSc();
+      hash = (37 * hash) + UNIT_FIELD_NUMBER;
+      hash = (53 * hash) + getUnit();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2353,6 +3189,8 @@ public final class ProtoMessage {
 
         sc_ = 0;
 
+        unit_ = 0;
+
         return this;
       }
 
@@ -2382,6 +3220,7 @@ public final class ProtoMessage {
         result.id_ = id_;
         result.owner_ = owner_;
         result.sc_ = sc_;
+        result.unit_ = unit_;
         onBuilt();
         return result;
       }
@@ -2438,6 +3277,9 @@ public final class ProtoMessage {
         }
         if (other.getSc() != 0) {
           setSc(other.getSc());
+        }
+        if (other.getUnit() != 0) {
+          setUnit(other.getUnit());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2581,6 +3423,44 @@ public final class ProtoMessage {
         onChanged();
         return this;
       }
+
+      private int unit_ ;
+      /**
+       * <pre>
+       * An integer which is the ID of the player controlling the province, the owner of the unit in the province.
+       * </pre>
+       *
+       * <code>int32 unit = 4;</code>
+       */
+      public int getUnit() {
+        return unit_;
+      }
+      /**
+       * <pre>
+       * An integer which is the ID of the player controlling the province, the owner of the unit in the province.
+       * </pre>
+       *
+       * <code>int32 unit = 4;</code>
+       */
+      public Builder setUnit(int value) {
+        
+        unit_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * An integer which is the ID of the player controlling the province, the owner of the unit in the province.
+       * </pre>
+       *
+       * <code>int32 unit = 4;</code>
+       */
+      public Builder clearUnit() {
+        
+        unit_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2717,6 +3597,11 @@ public final class ProtoMessage {
      */
     com.google.protobuf.ByteString
         getInfoBytes();
+
+    /**
+     * <code>int32 player = 5;</code>
+     */
+    int getPlayer();
   }
   /**
    * Protobuf type {@code dip_q.ObservationData}
@@ -2782,6 +3667,11 @@ public final class ProtoMessage {
               java.lang.String s = input.readStringRequireUtf8();
 
               info_ = s;
+              break;
+            }
+            case 40: {
+
+              player_ = input.readInt32();
               break;
             }
             default: {
@@ -2943,6 +3833,15 @@ public final class ProtoMessage {
       }
     }
 
+    public static final int PLAYER_FIELD_NUMBER = 5;
+    private int player_;
+    /**
+     * <code>int32 player = 5;</code>
+     */
+    public int getPlayer() {
+      return player_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2969,6 +3868,9 @@ public final class ProtoMessage {
       if (!getInfoBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, info_);
       }
+      if (player_ != 0) {
+        output.writeInt32(5, player_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2992,6 +3894,10 @@ public final class ProtoMessage {
       }
       if (!getInfoBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, info_);
+      }
+      if (player_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, player_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3017,6 +3923,8 @@ public final class ProtoMessage {
           != other.getDone()) return false;
       if (!getInfo()
           .equals(other.getInfo())) return false;
+      if (getPlayer()
+          != other.getPlayer()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3040,6 +3948,8 @@ public final class ProtoMessage {
           getDone());
       hash = (37 * hash) + INFO_FIELD_NUMBER;
       hash = (53 * hash) + getInfo().hashCode();
+      hash = (37 * hash) + PLAYER_FIELD_NUMBER;
+      hash = (53 * hash) + getPlayer();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3186,6 +4096,8 @@ public final class ProtoMessage {
 
         info_ = "";
 
+        player_ = 0;
+
         return this;
       }
 
@@ -3226,6 +4138,7 @@ public final class ProtoMessage {
         result.previousActionReward_ = previousActionReward_;
         result.done_ = done_;
         result.info_ = info_;
+        result.player_ = player_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3310,6 +4223,9 @@ public final class ProtoMessage {
         if (!other.getInfo().isEmpty()) {
           info_ = other.info_;
           onChanged();
+        }
+        if (other.getPlayer() != 0) {
+          setPlayer(other.getPlayer());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3817,6 +4733,32 @@ public final class ProtoMessage {
         onChanged();
         return this;
       }
+
+      private int player_ ;
+      /**
+       * <code>int32 player = 5;</code>
+       */
+      public int getPlayer() {
+        return player_;
+      }
+      /**
+       * <code>int32 player = 5;</code>
+       */
+      public Builder setPlayer(int value) {
+        
+        player_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 player = 5;</code>
+       */
+      public Builder clearPlayer() {
+        
+        player_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -3876,7 +4818,7 @@ public final class ProtoMessage {
   }
   /**
    * <pre>
-   * TODO
+   *TODO
    * </pre>
    *
    * Protobuf type {@code dip_q.AcceptanceData}
@@ -4094,7 +5036,7 @@ public final class ProtoMessage {
     }
     /**
      * <pre>
-     * TODO
+     *TODO
      * </pre>
      *
      * Protobuf type {@code dip_q.AcceptanceData}
@@ -5867,6 +6809,1385 @@ public final class ProtoMessage {
 
   }
 
+  public interface OrderDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:dip_q.OrderData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 start = 1;</code>
+     */
+    int getStart();
+
+    /**
+     * <code>int32 action = 2;</code>
+     */
+    int getAction();
+
+    /**
+     * <code>int32 destination = 3;</code>
+     */
+    int getDestination();
+  }
+  /**
+   * Protobuf type {@code dip_q.OrderData}
+   */
+  public  static final class OrderData extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:dip_q.OrderData)
+      OrderDataOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use OrderData.newBuilder() to construct.
+    private OrderData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private OrderData() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private OrderData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              start_ = input.readInt32();
+              break;
+            }
+            case 16: {
+
+              action_ = input.readInt32();
+              break;
+            }
+            case 24: {
+
+              destination_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cruz.agents.ProtoMessage.internal_static_dip_q_OrderData_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cruz.agents.ProtoMessage.internal_static_dip_q_OrderData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cruz.agents.ProtoMessage.OrderData.class, cruz.agents.ProtoMessage.OrderData.Builder.class);
+    }
+
+    public static final int START_FIELD_NUMBER = 1;
+    private int start_;
+    /**
+     * <code>int32 start = 1;</code>
+     */
+    public int getStart() {
+      return start_;
+    }
+
+    public static final int ACTION_FIELD_NUMBER = 2;
+    private int action_;
+    /**
+     * <code>int32 action = 2;</code>
+     */
+    public int getAction() {
+      return action_;
+    }
+
+    public static final int DESTINATION_FIELD_NUMBER = 3;
+    private int destination_;
+    /**
+     * <code>int32 destination = 3;</code>
+     */
+    public int getDestination() {
+      return destination_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (start_ != 0) {
+        output.writeInt32(1, start_);
+      }
+      if (action_ != 0) {
+        output.writeInt32(2, action_);
+      }
+      if (destination_ != 0) {
+        output.writeInt32(3, destination_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (start_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, start_);
+      }
+      if (action_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, action_);
+      }
+      if (destination_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, destination_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cruz.agents.ProtoMessage.OrderData)) {
+        return super.equals(obj);
+      }
+      cruz.agents.ProtoMessage.OrderData other = (cruz.agents.ProtoMessage.OrderData) obj;
+
+      if (getStart()
+          != other.getStart()) return false;
+      if (getAction()
+          != other.getAction()) return false;
+      if (getDestination()
+          != other.getDestination()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + START_FIELD_NUMBER;
+      hash = (53 * hash) + getStart();
+      hash = (37 * hash) + ACTION_FIELD_NUMBER;
+      hash = (53 * hash) + getAction();
+      hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
+      hash = (53 * hash) + getDestination();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.OrderData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cruz.agents.ProtoMessage.OrderData prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code dip_q.OrderData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:dip_q.OrderData)
+        cruz.agents.ProtoMessage.OrderDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_OrderData_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_OrderData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cruz.agents.ProtoMessage.OrderData.class, cruz.agents.ProtoMessage.OrderData.Builder.class);
+      }
+
+      // Construct using cruz.agents.ProtoMessage.OrderData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        start_ = 0;
+
+        action_ = 0;
+
+        destination_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_OrderData_descriptor;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.OrderData getDefaultInstanceForType() {
+        return cruz.agents.ProtoMessage.OrderData.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.OrderData build() {
+        cruz.agents.ProtoMessage.OrderData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.OrderData buildPartial() {
+        cruz.agents.ProtoMessage.OrderData result = new cruz.agents.ProtoMessage.OrderData(this);
+        result.start_ = start_;
+        result.action_ = action_;
+        result.destination_ = destination_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cruz.agents.ProtoMessage.OrderData) {
+          return mergeFrom((cruz.agents.ProtoMessage.OrderData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cruz.agents.ProtoMessage.OrderData other) {
+        if (other == cruz.agents.ProtoMessage.OrderData.getDefaultInstance()) return this;
+        if (other.getStart() != 0) {
+          setStart(other.getStart());
+        }
+        if (other.getAction() != 0) {
+          setAction(other.getAction());
+        }
+        if (other.getDestination() != 0) {
+          setDestination(other.getDestination());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cruz.agents.ProtoMessage.OrderData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cruz.agents.ProtoMessage.OrderData) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int start_ ;
+      /**
+       * <code>int32 start = 1;</code>
+       */
+      public int getStart() {
+        return start_;
+      }
+      /**
+       * <code>int32 start = 1;</code>
+       */
+      public Builder setStart(int value) {
+        
+        start_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 start = 1;</code>
+       */
+      public Builder clearStart() {
+        
+        start_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int action_ ;
+      /**
+       * <code>int32 action = 2;</code>
+       */
+      public int getAction() {
+        return action_;
+      }
+      /**
+       * <code>int32 action = 2;</code>
+       */
+      public Builder setAction(int value) {
+        
+        action_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 action = 2;</code>
+       */
+      public Builder clearAction() {
+        
+        action_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int destination_ ;
+      /**
+       * <code>int32 destination = 3;</code>
+       */
+      public int getDestination() {
+        return destination_;
+      }
+      /**
+       * <code>int32 destination = 3;</code>
+       */
+      public Builder setDestination(int value) {
+        
+        destination_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 destination = 3;</code>
+       */
+      public Builder clearDestination() {
+        
+        destination_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:dip_q.OrderData)
+    }
+
+    // @@protoc_insertion_point(class_scope:dip_q.OrderData)
+    private static final cruz.agents.ProtoMessage.OrderData DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cruz.agents.ProtoMessage.OrderData();
+    }
+
+    public static cruz.agents.ProtoMessage.OrderData getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<OrderData>
+        PARSER = new com.google.protobuf.AbstractParser<OrderData>() {
+      @java.lang.Override
+      public OrderData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new OrderData(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<OrderData> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OrderData> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cruz.agents.ProtoMessage.OrderData getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface OrdersDataOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:dip_q.OrdersData)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    java.util.List<cruz.agents.ProtoMessage.OrderData> 
+        getOrdersList();
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    cruz.agents.ProtoMessage.OrderData getOrders(int index);
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    int getOrdersCount();
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
+        getOrdersOrBuilderList();
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    cruz.agents.ProtoMessage.OrderDataOrBuilder getOrdersOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code dip_q.OrdersData}
+   */
+  public  static final class OrdersData extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:dip_q.OrdersData)
+      OrdersDataOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use OrdersData.newBuilder() to construct.
+    private OrdersData(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private OrdersData() {
+      orders_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private OrdersData(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                orders_ = new java.util.ArrayList<cruz.agents.ProtoMessage.OrderData>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              orders_.add(
+                  input.readMessage(cruz.agents.ProtoMessage.OrderData.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          orders_ = java.util.Collections.unmodifiableList(orders_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cruz.agents.ProtoMessage.internal_static_dip_q_OrdersData_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cruz.agents.ProtoMessage.internal_static_dip_q_OrdersData_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cruz.agents.ProtoMessage.OrdersData.class, cruz.agents.ProtoMessage.OrdersData.Builder.class);
+    }
+
+    public static final int ORDERS_FIELD_NUMBER = 1;
+    private java.util.List<cruz.agents.ProtoMessage.OrderData> orders_;
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    public java.util.List<cruz.agents.ProtoMessage.OrderData> getOrdersList() {
+      return orders_;
+    }
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
+        getOrdersOrBuilderList() {
+      return orders_;
+    }
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    public int getOrdersCount() {
+      return orders_.size();
+    }
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    public cruz.agents.ProtoMessage.OrderData getOrders(int index) {
+      return orders_.get(index);
+    }
+    /**
+     * <code>repeated .dip_q.OrderData orders = 1;</code>
+     */
+    public cruz.agents.ProtoMessage.OrderDataOrBuilder getOrdersOrBuilder(
+        int index) {
+      return orders_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < orders_.size(); i++) {
+        output.writeMessage(1, orders_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < orders_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, orders_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cruz.agents.ProtoMessage.OrdersData)) {
+        return super.equals(obj);
+      }
+      cruz.agents.ProtoMessage.OrdersData other = (cruz.agents.ProtoMessage.OrdersData) obj;
+
+      if (!getOrdersList()
+          .equals(other.getOrdersList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getOrdersCount() > 0) {
+        hash = (37 * hash) + ORDERS_FIELD_NUMBER;
+        hash = (53 * hash) + getOrdersList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cruz.agents.ProtoMessage.OrdersData parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cruz.agents.ProtoMessage.OrdersData prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code dip_q.OrdersData}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:dip_q.OrdersData)
+        cruz.agents.ProtoMessage.OrdersDataOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_OrdersData_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_OrdersData_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cruz.agents.ProtoMessage.OrdersData.class, cruz.agents.ProtoMessage.OrdersData.Builder.class);
+      }
+
+      // Construct using cruz.agents.ProtoMessage.OrdersData.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getOrdersFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (ordersBuilder_ == null) {
+          orders_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          ordersBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cruz.agents.ProtoMessage.internal_static_dip_q_OrdersData_descriptor;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.OrdersData getDefaultInstanceForType() {
+        return cruz.agents.ProtoMessage.OrdersData.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.OrdersData build() {
+        cruz.agents.ProtoMessage.OrdersData result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cruz.agents.ProtoMessage.OrdersData buildPartial() {
+        cruz.agents.ProtoMessage.OrdersData result = new cruz.agents.ProtoMessage.OrdersData(this);
+        int from_bitField0_ = bitField0_;
+        if (ordersBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            orders_ = java.util.Collections.unmodifiableList(orders_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.orders_ = orders_;
+        } else {
+          result.orders_ = ordersBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cruz.agents.ProtoMessage.OrdersData) {
+          return mergeFrom((cruz.agents.ProtoMessage.OrdersData)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cruz.agents.ProtoMessage.OrdersData other) {
+        if (other == cruz.agents.ProtoMessage.OrdersData.getDefaultInstance()) return this;
+        if (ordersBuilder_ == null) {
+          if (!other.orders_.isEmpty()) {
+            if (orders_.isEmpty()) {
+              orders_ = other.orders_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureOrdersIsMutable();
+              orders_.addAll(other.orders_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.orders_.isEmpty()) {
+            if (ordersBuilder_.isEmpty()) {
+              ordersBuilder_.dispose();
+              ordersBuilder_ = null;
+              orders_ = other.orders_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              ordersBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getOrdersFieldBuilder() : null;
+            } else {
+              ordersBuilder_.addAllMessages(other.orders_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cruz.agents.ProtoMessage.OrdersData parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cruz.agents.ProtoMessage.OrdersData) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<cruz.agents.ProtoMessage.OrderData> orders_ =
+        java.util.Collections.emptyList();
+      private void ensureOrdersIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          orders_ = new java.util.ArrayList<cruz.agents.ProtoMessage.OrderData>(orders_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cruz.agents.ProtoMessage.OrderData, cruz.agents.ProtoMessage.OrderData.Builder, cruz.agents.ProtoMessage.OrderDataOrBuilder> ordersBuilder_;
+
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public java.util.List<cruz.agents.ProtoMessage.OrderData> getOrdersList() {
+        if (ordersBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(orders_);
+        } else {
+          return ordersBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public int getOrdersCount() {
+        if (ordersBuilder_ == null) {
+          return orders_.size();
+        } else {
+          return ordersBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public cruz.agents.ProtoMessage.OrderData getOrders(int index) {
+        if (ordersBuilder_ == null) {
+          return orders_.get(index);
+        } else {
+          return ordersBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder setOrders(
+          int index, cruz.agents.ProtoMessage.OrderData value) {
+        if (ordersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOrdersIsMutable();
+          orders_.set(index, value);
+          onChanged();
+        } else {
+          ordersBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder setOrders(
+          int index, cruz.agents.ProtoMessage.OrderData.Builder builderForValue) {
+        if (ordersBuilder_ == null) {
+          ensureOrdersIsMutable();
+          orders_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          ordersBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder addOrders(cruz.agents.ProtoMessage.OrderData value) {
+        if (ordersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOrdersIsMutable();
+          orders_.add(value);
+          onChanged();
+        } else {
+          ordersBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder addOrders(
+          int index, cruz.agents.ProtoMessage.OrderData value) {
+        if (ordersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOrdersIsMutable();
+          orders_.add(index, value);
+          onChanged();
+        } else {
+          ordersBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder addOrders(
+          cruz.agents.ProtoMessage.OrderData.Builder builderForValue) {
+        if (ordersBuilder_ == null) {
+          ensureOrdersIsMutable();
+          orders_.add(builderForValue.build());
+          onChanged();
+        } else {
+          ordersBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder addOrders(
+          int index, cruz.agents.ProtoMessage.OrderData.Builder builderForValue) {
+        if (ordersBuilder_ == null) {
+          ensureOrdersIsMutable();
+          orders_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          ordersBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder addAllOrders(
+          java.lang.Iterable<? extends cruz.agents.ProtoMessage.OrderData> values) {
+        if (ordersBuilder_ == null) {
+          ensureOrdersIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, orders_);
+          onChanged();
+        } else {
+          ordersBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder clearOrders() {
+        if (ordersBuilder_ == null) {
+          orders_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          ordersBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public Builder removeOrders(int index) {
+        if (ordersBuilder_ == null) {
+          ensureOrdersIsMutable();
+          orders_.remove(index);
+          onChanged();
+        } else {
+          ordersBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public cruz.agents.ProtoMessage.OrderData.Builder getOrdersBuilder(
+          int index) {
+        return getOrdersFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public cruz.agents.ProtoMessage.OrderDataOrBuilder getOrdersOrBuilder(
+          int index) {
+        if (ordersBuilder_ == null) {
+          return orders_.get(index);  } else {
+          return ordersBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
+           getOrdersOrBuilderList() {
+        if (ordersBuilder_ != null) {
+          return ordersBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(orders_);
+        }
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public cruz.agents.ProtoMessage.OrderData.Builder addOrdersBuilder() {
+        return getOrdersFieldBuilder().addBuilder(
+            cruz.agents.ProtoMessage.OrderData.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public cruz.agents.ProtoMessage.OrderData.Builder addOrdersBuilder(
+          int index) {
+        return getOrdersFieldBuilder().addBuilder(
+            index, cruz.agents.ProtoMessage.OrderData.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .dip_q.OrderData orders = 1;</code>
+       */
+      public java.util.List<cruz.agents.ProtoMessage.OrderData.Builder> 
+           getOrdersBuilderList() {
+        return getOrdersFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cruz.agents.ProtoMessage.OrderData, cruz.agents.ProtoMessage.OrderData.Builder, cruz.agents.ProtoMessage.OrderDataOrBuilder> 
+          getOrdersFieldBuilder() {
+        if (ordersBuilder_ == null) {
+          ordersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              cruz.agents.ProtoMessage.OrderData, cruz.agents.ProtoMessage.OrderData.Builder, cruz.agents.ProtoMessage.OrderDataOrBuilder>(
+                  orders_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          orders_ = null;
+        }
+        return ordersBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:dip_q.OrdersData)
+    }
+
+    // @@protoc_insertion_point(class_scope:dip_q.OrdersData)
+    private static final cruz.agents.ProtoMessage.OrdersData DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cruz.agents.ProtoMessage.OrdersData();
+    }
+
+    public static cruz.agents.ProtoMessage.OrdersData getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<OrdersData>
+        PARSER = new com.google.protobuf.AbstractParser<OrdersData>() {
+      @java.lang.Override
+      public OrdersData parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new OrdersData(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<OrdersData> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OrdersData> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cruz.agents.ProtoMessage.OrdersData getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_BandanaRequest_descriptor;
   private static final 
@@ -5877,6 +8198,11 @@ public final class ProtoMessage {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_DiplomacyGymResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dip_q_DiplomacyGymOrdersResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dip_q_DiplomacyGymOrdersResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_ProvinceData_descriptor;
   private static final 
@@ -5902,6 +8228,16 @@ public final class ProtoMessage {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_DealData_MTOOrderData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dip_q_OrderData_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dip_q_OrderData_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dip_q_OrdersData_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dip_q_OrdersData_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -5922,17 +8258,24 @@ public final class ProtoMessage {
       "DealData\022)\n\nacceptance\030\003 \001(\0132\025.dip_q.Acc" +
       "eptanceData\"D\n\004Type\022\013\n\007INVALID\020\000\022\013\n\007CONF" +
       "IRM\020\001\022\r\n\tSEND_DEAL\020\002\022\023\n\017SEND_ACCEPTANCE\020" +
-      "\003\"5\n\014ProvinceData\022\n\n\002id\030\001 \001(\005\022\r\n\005owner\030\002" +
-      " \001(\005\022\n\n\002sc\030\003 \001(\005\"s\n\017ObservationData\022&\n\tp" +
-      "rovinces\030\001 \003(\0132\023.dip_q.ProvinceData\022\034\n\024p" +
-      "reviousActionReward\030\002 \001(\002\022\014\n\004done\030\003 \001(\010\022" +
-      "\014\n\004info\030\004 \001(\t\"\020\n\016AcceptanceData\"\306\001\n\010Deal" +
-      "Data\022\026\n\016powerToPropose\030\001 \001(\005\022-\n\007ourMove\030" +
-      "\002 \001(\0132\034.dip_q.DealData.MTOOrderData\022/\n\tt" +
-      "heirMove\030\003 \001(\0132\034.dip_q.DealData.MTOOrder" +
-      "Data\032B\n\014MTOOrderData\022\025\n\rstartProvince\030\001 " +
-      "\001(\005\022\033\n\023destinationProvince\030\002 \001(\005B\r\n\013cruz" +
-      ".agentsb\006proto3"
+      "\003\"\225\001\n\032DiplomacyGymOrdersResponse\0224\n\004type" +
+      "\030\001 \001(\0162&.dip_q.DiplomacyGymOrdersRespons" +
+      "e.Type\022!\n\006orders\030\002 \001(\0132\021.dip_q.OrdersDat" +
+      "a\"\036\n\004Type\022\013\n\007INVALID\020\000\022\t\n\005VALID\020\001\"C\n\014Pro" +
+      "vinceData\022\n\n\002id\030\001 \001(\005\022\r\n\005owner\030\002 \001(\005\022\n\n\002" +
+      "sc\030\003 \001(\005\022\014\n\004unit\030\004 \001(\005\"\203\001\n\017ObservationDa" +
+      "ta\022&\n\tprovinces\030\001 \003(\0132\023.dip_q.ProvinceDa" +
+      "ta\022\034\n\024previousActionReward\030\002 \001(\002\022\014\n\004done" +
+      "\030\003 \001(\010\022\014\n\004info\030\004 \001(\t\022\016\n\006player\030\005 \001(\005\"\020\n\016" +
+      "AcceptanceData\"\306\001\n\010DealData\022\026\n\016powerToPr" +
+      "opose\030\001 \001(\005\022-\n\007ourMove\030\002 \001(\0132\034.dip_q.Dea" +
+      "lData.MTOOrderData\022/\n\ttheirMove\030\003 \001(\0132\034." +
+      "dip_q.DealData.MTOOrderData\032B\n\014MTOOrderD" +
+      "ata\022\025\n\rstartProvince\030\001 \001(\005\022\033\n\023destinatio" +
+      "nProvince\030\002 \001(\005\"?\n\tOrderData\022\r\n\005start\030\001 " +
+      "\001(\005\022\016\n\006action\030\002 \001(\005\022\023\n\013destination\030\003 \001(\005" +
+      "\".\n\nOrdersData\022 \n\006orders\030\001 \003(\0132\020.dip_q.O" +
+      "rderDataB\r\n\013cruz.agentsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5958,26 +8301,32 @@ public final class ProtoMessage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_DiplomacyGymResponse_descriptor,
         new java.lang.String[] { "Type", "Deal", "Acceptance", });
-    internal_static_dip_q_ProvinceData_descriptor =
+    internal_static_dip_q_DiplomacyGymOrdersResponse_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_dip_q_DiplomacyGymOrdersResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dip_q_DiplomacyGymOrdersResponse_descriptor,
+        new java.lang.String[] { "Type", "Orders", });
+    internal_static_dip_q_ProvinceData_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_dip_q_ProvinceData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_ProvinceData_descriptor,
-        new java.lang.String[] { "Id", "Owner", "Sc", });
+        new java.lang.String[] { "Id", "Owner", "Sc", "Unit", });
     internal_static_dip_q_ObservationData_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_dip_q_ObservationData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_ObservationData_descriptor,
-        new java.lang.String[] { "Provinces", "PreviousActionReward", "Done", "Info", });
+        new java.lang.String[] { "Provinces", "PreviousActionReward", "Done", "Info", "Player", });
     internal_static_dip_q_AcceptanceData_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_dip_q_AcceptanceData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_AcceptanceData_descriptor,
         new java.lang.String[] { });
     internal_static_dip_q_DealData_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_dip_q_DealData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_DealData_descriptor,
@@ -5988,6 +8337,18 @@ public final class ProtoMessage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_DealData_MTOOrderData_descriptor,
         new java.lang.String[] { "StartProvince", "DestinationProvince", });
+    internal_static_dip_q_OrderData_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_dip_q_OrderData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dip_q_OrderData_descriptor,
+        new java.lang.String[] { "Start", "Action", "Destination", });
+    internal_static_dip_q_OrdersData_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_dip_q_OrdersData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dip_q_OrdersData_descriptor,
+        new java.lang.String[] { "Orders", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
