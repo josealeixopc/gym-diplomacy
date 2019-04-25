@@ -62,6 +62,9 @@ public class OpenAIAdapter {
     /** Number of supply centers controlled in the previous negotiation stage */
     private int previousNumSc;
 
+    /** Whether an action that the OpenAI env returned is valid or not.*/
+    boolean validAction;
+
     /**
      * The value of the reward achieved because of the previous actions.
      */
@@ -101,6 +104,7 @@ public class OpenAIAdapter {
 
         this.done = false;
         this.info = null;
+        this.validAction = true;
     }
 
     /**
@@ -126,17 +130,9 @@ public class OpenAIAdapter {
      */
     public BasicDeal getDealFromDipQ() {
         try {
-            // Make sure the power to int map is updated with the current Powers in the game
-            this.generatePowerNameToIntMap();
+            this.calculateNegotiationReward();
 
-            ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
-
-            ProtoMessage.ObservationData observationData = this.generateObservationData();
-
-            bandanaRequestBuilder.setObservation(observationData);
-            bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
-
-            byte[] message = bandanaRequestBuilder.build().toByteArray();
+            byte[] message = generateRequestMessage();
 
             SocketClient socketClient = new SocketClient(5000, this.agent.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
@@ -151,8 +147,11 @@ public class OpenAIAdapter {
 
             // If deal is invalid, give negative reward. If an invalid deal is returned, the game will deal with it, so
             // we can still return it.
-            if(!(this.isDealValid(generatedDeal))) {
-                this.addReward(INVALID_DEAL_REWARD);
+            if(this.isDealValid(generatedDeal)) {
+                this.validAction = true;
+            }
+            else {
+                this.validAction = false;
             }
 
             return generatedDeal;
@@ -173,16 +172,9 @@ public class OpenAIAdapter {
     public List<Order> getOrdersFromDeepDip() {
         try {
             this.agent2.getLogger().logln("GAME STATUS: " + this.openAIObserver.getGameStatus(), true);
-            this.generatePowerNameToIntMap();
+            this.calculateTacticReward();
 
-            ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
-
-            ProtoMessage.ObservationData observationData = this.generateObservationData();
-
-            bandanaRequestBuilder.setObservation(observationData);
-            bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
-
-            byte[] message = bandanaRequestBuilder.build().toByteArray();
+            byte[] message = generateRequestMessage();
 
             SocketClient socketClient = new SocketClient( 5000, this.agent2.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
@@ -201,6 +193,20 @@ public class OpenAIAdapter {
         }
 
         return null;
+    }
+
+    private byte[] generateRequestMessage() {
+        // Make sure the power to int map is updated with the current Powers in the game
+        this.generatePowerNameToIntMap();
+
+        ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
+
+        ProtoMessage.ObservationData observationData = this.generateObservationData();
+
+        bandanaRequestBuilder.setObservation(observationData);
+        bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
+
+        return bandanaRequestBuilder.build().toByteArray();
     }
 
     /**
@@ -279,28 +285,6 @@ public class OpenAIAdapter {
         this.openAIObserver.exit();
     }
 
-    /**
-     * Executes when a deal is accepted.
-     */
-    void acceptedDeal() {
-        this.addReward(ACCEPTED_DEAL_REWARD);
-    }
-
-    /**
-     * Executes when a deal is rejected.
-     */
-    void rejectedDeal() {
-        this.addReward(REJECTED_DEAL_REWARD);
-    }
-
-    void wonGame() {
-        this.addReward(WON_GAME_REWARD);
-    }
-
-    void lostGame() {
-        this.addReward(LOST_GAME_REWARD);
-    }
-
     private void generatePowerNameToIntMap() {
         this.powerNameToInt = new HashMap<>();
         this.powerNameToInt.put("NONE", 0);
@@ -356,9 +340,6 @@ public class OpenAIAdapter {
         for (Map.Entry<String, ProtoMessage.ProvinceData.Builder> entry : nameToProvinceDataBuilder.entrySet()) {
             observationDataBuilder.addProvinces(entry.getValue().build());
         }
-
-        // ADD REWARD RELATED TO CONQUERED SUPPLY CENTERS
-        this.addReward(this.balanceOfScs() * CAPTURED_SC_REWARD);
 
         observationDataBuilder.setPreviousActionReward(this.previousActionReward);
         observationDataBuilder.setDone(this.done);
@@ -563,6 +544,19 @@ public class OpenAIAdapter {
 
     private void resetReward() {
         this.previousActionReward = 0;
+    }
+
+    private void calculateNegotiationReward() {
+        // ADD REWARD RELATED TO CONQUERED SUPPLY CENTERS
+        this.addReward(this.balanceOfScs() * CAPTURED_SC_REWARD);
+
+        if(!this.validAction) {
+            this.addReward(INVALID_DEAL_REWARD);
+        }
+    }
+
+    private void calculateTacticReward() {
+        this.addReward(this.balanceOfScs() * CAPTURED_SC_REWARD);
     }
 
     public void setInfo(String s) {
