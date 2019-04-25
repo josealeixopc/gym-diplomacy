@@ -17,7 +17,7 @@ from datetime import timedelta
 
 from agent import Model
 from agent_config import Config
-from plot import plot_reward
+from plot import plot_all_data
 
 
 start = timer()
@@ -81,7 +81,7 @@ for frame_idx in range(1, config.MAX_FRAMES + 1):
     episode_reward += reward
     
     if done:
-        logger.info("Finished episode at frame {} with a reward of {}.".format(frame_idx, episode_reward))
+        logger.info('Finished episode at frame {} with a reward of {}.'.format(frame_idx, episode_reward))
         model.finish_nstep()
         model.reset_hx()
         observation = env.reset()
@@ -90,8 +90,12 @@ for frame_idx in range(1, config.MAX_FRAMES + 1):
 
     if frame_idx % 100 == 0:
         print('FRAME_IDX: {}'.format(frame_idx))
-        plot_reward(log_dir, env_id, 'DeepDip', config.MAX_FRAMES, bin_size=10, smooth=1, time=timedelta(seconds=int(timer()-start)), save_filename='./results.png', ipynb=False)
+        model.save_w()
+        plot_all_data(log_dir, env_id, 'DeepDip', config.MAX_FRAMES, bin_size=(10, 100, 100, 1), smooth=1, time=timedelta(seconds=int(timer()-start)), save_filename='./results.png', ipynb=False)
 
 model.save_w()
 model.save_replay()
 env.close()
+env.env.close()
+plot_all_data(log_dir, env_id, 'DeepDip', config.MAX_FRAMES, bin_size=(10, 100, 100, 1), smooth=1, time=timedelta(seconds=int(timer()-start)), save_filename='./results.png', ipynb=False)
+logger.info('Training completed.')
