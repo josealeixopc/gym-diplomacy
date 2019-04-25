@@ -5,9 +5,11 @@ import argparse
 import gym
 import gym_diplomacy
 from gym import wrappers, logger
+from baselines.bench import monitor
 
 import math
 import numpy as np
+import os
 import torch
 from time import time
 from timeit import default_timer as timer
@@ -41,7 +43,7 @@ config.BATCH_SIZE             = 32
 
 #Learning control variables
 config.LEARN_START = 100
-config.MAX_FRAMES  = 1000
+config.MAX_FRAMES  = 200
 config.UPDATE_FREQ = 1
 
 
@@ -51,11 +53,12 @@ args = parser.parse_args()
 
 logger.set_level(logger.INFO)
 
-log_dir = '/tmp/random-agent-results/'
+log_dir = os.path.join(os.getcwd(), 'deepdip-results')
+
 env_id = args.env_id
 env = gym.make(env_id)
-env = wrappers.Monitor(env, log_dir + str(time()) + '/')
-model = Model(env=env, config=config)
+env = monitor.Monitor(env, os.path.join(log_dir, env_id))
+model = Model(env=env, config=config, log_dir=log_dir)
 model.load_w()
 model.load_replay()
 print(model.model)
@@ -78,7 +81,7 @@ for frame_idx in range(1, config.MAX_FRAMES + 1):
     episode_reward += reward
     
     if done:
-        #logger.info("Finished episode at frame {} with a reward of {}.".format(frame_idx, episode_reward))
+        logger.info("Finished episode at frame {} with a reward of {}.".format(frame_idx, episode_reward))
         model.finish_nstep()
         model.reset_hx()
         observation = env.reset()
@@ -86,11 +89,7 @@ for frame_idx in range(1, config.MAX_FRAMES + 1):
         episode_reward = 0
 
     if frame_idx % 100 == 0:
-        print('')
-        print('')
         print('FRAME_IDX: {}'.format(frame_idx))
-        print('')
-        print('')
         plot_reward(log_dir, env_id, 'DeepDip', config.MAX_FRAMES, bin_size=10, smooth=1, time=timedelta(seconds=int(timer()-start)), save_filename='./results.png', ipynb=False)
 
 model.save_w()

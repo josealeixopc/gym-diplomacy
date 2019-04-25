@@ -87,8 +87,11 @@ class LocalSocketServer:
         logger.info("Closing LocalSocketServer...")
 
         self.terminate = True
-        self.sock.shutdown(socket.SHUT_RDWR)  # further sends and receives are disallowed
-        self.sock.close()
+        try:
+            self.sock.shutdown(socket.SHUT_RDWR)  # further sends and receives are disallowed
+            self.sock.close()
+        except OSError:
+            pass
 
         for thread in self.threads:
             thread.join()
