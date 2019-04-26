@@ -1,6 +1,8 @@
 # load additional Python module
 import socket
+import errno
 import sys
+import os
 import typing
 from threading import Thread
 
@@ -13,6 +15,7 @@ logging_level = 'DEBUG'
 level = getattr(logging, logging_level)
 logger = logging.getLogger(__name__)
 logger.setLevel(level)
+
 
 class LocalSocketServer:
     sock = None
@@ -46,7 +49,23 @@ class LocalSocketServer:
         server_address = (ip_address, port)
 
         logger.debug('Socket starting up on %s port %s' % server_address)
-        self.sock.bind(server_address)
+
+        bound: bool = False
+
+        while not bound:
+            try:
+                logger.debug('Trying to bind to port...')
+                self.sock.bind(server_address)
+                bound = True
+                logger.debug('Binding successful.')
+            except socket.error as e:
+                if e.errno == errno.EADDRINUSE:
+                    logger.debug('Could not bind to port. Address already in use. Killing processes listening to port.')
+                    # Kill processes listening to port
+                    kill_command = 'kill -9 $(lsof -t -i:{})'.format(port)
+                    os.system(kill_command)
+                else:
+                    raise e
 
         # listen for incoming connections (server mode) with one connection at a time
         self.sock.listen(1)
