@@ -258,30 +258,36 @@ public class OpenAIAdapter {
      */
     void endOfGame(GameResult gameResult) {
 
-        // Yes, weird work around, but for some reason it works
-        String nameOfPlayer = "'OpenAINegotiator'";
+        try {
 
-        String nameOfWinner = gameResult.getSoloWinner();
+            // Yes, weird work around, but for some reason it works
+            String nameOfPlayer = "'OpenAINegotiator'";
 
-        // if(nameOfWinner == null) {
-        //     System.out.println("GAME RESULT: No one won with a solo victory.");
-        // }
-        // else {
-        //     System.out.printf("GAME RESULT: Player " + nameOfWinner + " win with a solo victory.");
-        // }
+            String nameOfWinner = gameResult.getSoloWinner();
 
-        // if (nameOfPlayer.equals(nameOfWinner)) // winner
-        // {
-        //     this.wonGame();
-        // } else {
-        //     this.lostGame();
-        // }
+            // if(nameOfWinner == null) {
+            //     System.out.println("GAME RESULT: No one won with a solo victory.");
+            // }
+            // else {
+            //     System.out.printf("GAME RESULT: Player " + nameOfWinner + " win with a solo victory.");
+            // }
 
-        this.done = true;
-        this.sendEndOfGameNotification();
+            // if (nameOfPlayer.equals(nameOfWinner)) // winner
+            // {
+            //     this.wonGame();
+            // } else {
+            //     this.lostGame();
+            // }
 
-        // Terminate observer so it does not hang and cause exceptions.
-        this.openAIObserver.exit();
+            this.done = true;
+            this.sendEndOfGameNotification();
+
+            // Terminate observer so it does not hang and cause exceptions.
+            this.openAIObserver.exit();
+        }
+        catch (Exception e) {
+            // do nothing
+        }
     }
 
     private void generatePowerNameToIntMap() {
