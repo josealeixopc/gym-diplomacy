@@ -100,7 +100,6 @@ public class OpenAIAdapter {
 
     private void init(){
         this.resetReward();
-        this.previousNumSc = (this.agent2 == null)? this.agent.me.getOwnedSCs().size() : 0;
 
         this.done = false;
         this.info = null;
@@ -251,7 +250,7 @@ public class OpenAIAdapter {
         this.createObserver();
 
         this.resetReward();
-        this.previousNumSc = agent.me.getOwnedSCs().size();
+        this.previousNumSc = (this.agent2 == null)? this.agent.me.getOwnedSCs().size() : 0;
     }
 
     /**
