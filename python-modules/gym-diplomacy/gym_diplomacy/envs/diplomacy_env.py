@@ -15,13 +15,14 @@ from gym_diplomacy.envs import comm
 
 import logging
 
-FORMAT = "%(levelname)-8s -- [%(filename)s:%(lineno)s - %(funcName)20s()] %(message)s"
+FORMAT = "%(levelname)s -- [%(filename)s:%(lineno)s - %(funcName)s()] %(message)s"
 logging.basicConfig(format=FORMAT)
 
 logging_level = 'DEBUG'
 level = getattr(logging, logging_level)
 logger = logging.getLogger(__name__)
 logger.setLevel(level)
+logger.disabled = False
 
 ### LEVELS OF LOGGING (in increasing order of severity)
 # DEBUG	    Detailed information, typically of interest only when diagnosing problems.
@@ -32,7 +33,8 @@ logger.setLevel(level)
 # CRITICAL	A serious error, indicating that the program itself may be unable to continue running.
 
 ### CONSTANTS
-NUMBER_OF_OPPONENTS = 7
+NUMBER_OF_PLAYERS = 7
+NUMBER_OF_OPPONENTS = NUMBER_OF_PLAYERS - 1
 NUMBER_OF_PROVINCES = 75
 
 
@@ -371,7 +373,7 @@ class DiplomacyEnv(gym.Env):
         observation_space_description = []
 
         for i in range(NUMBER_OF_PROVINCES):
-            observation_space_description.extend([NUMBER_OF_OPPONENTS, 2])
+            observation_space_description.extend([NUMBER_OF_PLAYERS, 2])
 
         self.observation_space = spaces.MultiDiscrete(observation_space_description)
 

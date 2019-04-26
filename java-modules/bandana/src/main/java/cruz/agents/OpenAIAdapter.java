@@ -293,13 +293,16 @@ public class OpenAIAdapter {
     private void generatePowerNameToIntMap() {
         this.powerNameToInt = new HashMap<>();
         this.powerNameToInt.put("NONE", 0);
+        this.powerNameToInt.put(this.agent.me.getName(), 1); // make sure WE are always power number 1
 
-        int id = 1;
+        int id = 2;
 
         List<Power> powers = (this.agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
         for(Power pow : powers) {
-            powerNameToInt.put(pow.getName(), id);
-            id++;
+            if(!pow.getName().equals(this.agent.me.getName())) {
+                powerNameToInt.put(pow.getName(), id);
+                id++;
+            }
         }
     }
 
@@ -386,8 +389,12 @@ public class OpenAIAdapter {
 
         String nameOfPowerToProposeTo = null;
 
+        /* Because we do not want to choose ourselves and we are index number 1 and NONE is 0, just add 2 to the index that comes
+        * from Gym. This is why we use NUMBER_OF_OPPONENTS instead of NUMBER_OF_PLAYERS in the environment. */
+        int trueOpponentPowerIndex = dealData.getPowerToPropose() + 2;
+
         for (Map.Entry<String, Integer> entry : powerNameToInt.entrySet()) {
-            if (entry.getValue() == dealData.getPowerToPropose()) {
+            if (entry.getValue() == trueOpponentPowerIndex) {
                 nameOfPowerToProposeTo = entry.getKey();
             }
         }

@@ -149,7 +149,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     DiplomacyProposal receivedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    this.getLogger().logln(me.getName() + ".negotiate() Received proposal: " + receivedProposal, true);
+                    // this.getLogger().logln(me.getName() + ".negotiate() Received proposal: " + receivedProposal, true);
 
                     BasicDeal deal = (BasicDeal) receivedProposal.getProposedDeal();
 
@@ -202,7 +202,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                         // JC: In order to study simpler scenarios first, reject all incoming negotiations
                         this.rejectProposal(receivedProposal.getId());
-                        this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, true);
+                        // this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, true);
 
                         // This agent simply flips a coin to determine whether to accept the proposal or not.
                         // if (random.nextInt(2) == 0) { // accept with 50% probability.
@@ -218,7 +218,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     DiplomacyProposal confirmedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, true);
+                    // this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, true);
 
                     BasicDeal confirmedDeal = (BasicDeal) confirmedProposal.getProposedDeal();
 
@@ -264,7 +264,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     //We have received any other kind of message.
 
-                    this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), true);
+                    // this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), true);
 
                 }
 

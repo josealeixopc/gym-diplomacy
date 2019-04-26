@@ -15,7 +15,7 @@ public class TournamentRunner {
     final static boolean MODE = true;  //Strategy/false vs Negotiation/true
 	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
     private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
-    private final static String FINAL_YEAR = "2000";
+    private final static String FINAL_YEAR = "1910";
 
     // JC: Using a custom map to define how many players are there on each custom map
     private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<String, Integer>() {{

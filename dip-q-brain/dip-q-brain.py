@@ -36,39 +36,46 @@ if __name__ == '__main__':
     env.seed(0)
     agent = RandomAgent(env.action_space)
 
-    # episode_count = 10
-    num_of_steps = 30
+    episode_count = 1
+    num_of_steps = 0
     reward = 0
     done = False
-
-    ob = env.reset()
 
     steps_executed = 0
     episode = 0
 
-    # TODO: Instead of having a loop with episode count, try to get num_of_steps working.
-    # TODO: Probably the step function needs to be in a separate thread. It would make it easier to shutdown/stop.
-
-    for i in range(num_of_steps):
-        action = agent.act(ob, reward, done)
-
-        ob, reward, done, info = env.step(action)
-        steps_executed += 1
-
-        logger.debug("Step number: {}".format(steps_executed))
-        if done:
-            logger.info("Game/episode {} has ended.".format(episode))
-            episode += 1
+    if episode_count != 0:
+        for i in range(episode_count):
             ob = env.reset()
-            logger.info("Reset environment.")
+            while True:
+                action = agent.act(ob, reward, done)
+                ob, reward, done, _ = env.step(action)
+                if done:
+                    break
+    else:
+        if num_of_steps != 0:
 
-        # Note there's no env.render() here. But the environment still can open window and
-        # render if asked by env.monitor: it calls env.render('rgb_array') to record video.
-        # Video is not recorded every episode, see capped_cubic_video_schedule for details.
+            # TODO: Probably the step function needs to be in a separate thread. It would make it easier to shutdown/stop.
+            for i in range(num_of_steps):
+                action = agent.act(ob, reward, done)
+
+                ob, reward, done, info = env.step(action)
+                steps_executed += 1
+
+                logger.debug("Step number: {}".format(steps_executed))
+                if done:
+                    logger.info("Game/episode {} has ended.".format(episode))
+                    episode += 1
+                    ob = env.reset()
+                    logger.info("Reset environment.")
+
+    # Note there's no env.render() here. But the environment still can open window and
+    # render if asked by env.monitor: it calls env.render('rgb_array') to record video.
+    # Video is not recorded every episode, see capped_cubic_video_schedule for details.
 
     # Close the monitor and write monitor result info to disk
     env.close()
 
     # Explicitly close env, because Monitor does not call env close.
     # Issues has been fixed (https://github.com/openai/gym/pull/1023) but I still don't have the new version.
-    # env.env.close()
+    env.env.close()
