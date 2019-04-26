@@ -42,7 +42,7 @@ public class OpenAIAdapter {
     /**
      * Reward given for generating an invalid deal
      */
-    public static final int INVALID_DEAL_REWARD = -10;
+    public static final int INVALID_DEAL_REWARD = -5;
 
     /** Reward given for capturing a Supply Center (SC). Losing a SC gives a negative reward with the same value. */
     public static final int CAPTURED_SC_REWARD = +50;
