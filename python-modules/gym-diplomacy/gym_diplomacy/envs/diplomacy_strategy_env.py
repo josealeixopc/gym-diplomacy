@@ -319,11 +319,10 @@ class DiplomacyStrategyEnv(gym.Env):
         Eg: If observation_space[2] is [2, 5, 0, 0], then the second province belongs to player 5, is NOT a SC, and does NOT have a unit.
         '''
         observation_space_description = []
-
         for i in range(NUMBER_OF_PROVINCES):
             observation_space_description.extend([NUMBER_OF_PROVINCES, NUMBER_OF_PLAYERS, 2, 2])
         
-        observation_space_description.extend([NUMBER_OF_PLAYERS])
+        observation_space_description.extend([NUMBER_OF_PLAYERS, NUMBER_OF_PROVINCES])
 
         self.observation_space = spaces.MultiDiscrete([observation_space_description])
 

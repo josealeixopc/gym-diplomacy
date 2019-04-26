@@ -42,8 +42,8 @@ config.EXP_REPLAY_SIZE        = 10000
 config.BATCH_SIZE             = 32
 
 #Learning control variables
-config.LEARN_START = 100
-config.MAX_FRAMES  = 200
+config.LEARN_START = 1000
+config.MAX_FRAMES  = 10000
 config.UPDATE_FREQ = 1
 
 
@@ -54,6 +54,8 @@ args = parser.parse_args()
 logger.set_level(logger.INFO)
 
 log_dir = os.path.join(os.getcwd(), 'deepdip-results')
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
 
 env_id = args.env_id
 env = gym.make(env_id)
@@ -68,17 +70,36 @@ episode_reward = 0
 reward = 0
 done = False
 
+
+def get_player_units(state):
+    player = state[-1]
+    index = state[::4]
+    units = state[3::4]
+    player_units = [i for i, unit in zip(index, units) if unit == player]
+    return player_units
+
+
 observation = env.reset()
 for frame_idx in range(1, config.MAX_FRAMES + 1):
     epsilon = config.epsilon_by_frame(frame_idx)
-    action = model.get_action(observation, epsilon)
-    
-    prev_observation = observation
-    observation, reward, done, _ = env.step(action)
-    observation = None if done else observation
-    
-    model.update(prev_observation, action, reward, observation, frame_idx)
+
+    action_set = []
+    observation_set = []
+    player_units = get_player_units(observation)
+    for u in player_units:
+        observation_whit_unit = np.concatenate((observation, np.array([u])))
+        observation_set.append(observation_whit_unit)
+        action = model.get_action(observation_whit_unit, epsilon)
+        action_set.append(action)
+
+    prev_observation_set = observation_set
+    observation, reward, done, _ = env.step(action_set)
+    #observation = None if done else observation
     episode_reward += reward
+    
+    for i, u in enumerate(player_units):
+        observation_whit_unit = np.concatenate((observation, np.array([u])))
+        model.update(prev_observation_set[i], action_set[i], reward, observation_whit_unit, frame_idx)
     
     if done:
         logger.info('Finished episode at frame {} with a reward of {}.'.format(frame_idx, episode_reward))
@@ -88,7 +109,7 @@ for frame_idx in range(1, config.MAX_FRAMES + 1):
         model.save_reward(episode_reward)
         episode_reward = 0
 
-    if frame_idx % 100 == 0:
+    if frame_idx % 1000 == 0:
         print('FRAME_IDX: {}'.format(frame_idx))
         model.save_w()
         plot_all_data(log_dir, env_id, 'DeepDip', config.MAX_FRAMES, bin_size=(10, 100, 100, 1), smooth=1, time=timedelta(seconds=int(timer()-start)), save_filename='./results.png', ipynb=False)

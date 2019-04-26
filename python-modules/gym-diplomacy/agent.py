@@ -66,7 +66,7 @@ class Model(BaseAgent):
 
         shape = (-1,) + self.num_feats
 
-        batch_state = torch.tensor(batch_state, device=self.device, dtype=torch.float).view(shape).squeeze()
+        batch_state = torch.tensor(batch_state, device=self.device, dtype=torch.float).view(shape)
         batch_action = torch.tensor(batch_action, device=self.device, dtype=torch.long).squeeze().view(32, -1)
         batch_reward = torch.tensor(batch_reward, device=self.device, dtype=torch.float).squeeze().view(-1, 1)
         
@@ -128,45 +128,18 @@ class Model(BaseAgent):
 
 
     def get_action(self, state, eps=0.1):
-        state, player_units = self.prepare_state(state)
-        action = []
+        action = None
         with torch.no_grad():
             if np.random.random() <= eps or self.static_policy:
-                #X = torch.tensor([state], device=self.device, dtype=torch.float)
-
-                for u in player_units:
-                    state_with_unit = np.concatenate((state, np.array([u])))
-                    X = torch.tensor([state], device=self.device, dtype=torch.float)
-                    action.append((u, self.model(X).max(1)[1].view(1, 1).item()))
-
-                #action = [(u, self.model(X).max(1)[1].view(1, 1).item()) for u in player_units]
-                #a = self.model(X).max(1)[1].view(1, 1)
-                #return a.item()
+                X = torch.tensor([state], device=self.device, dtype=torch.float)
+                action = self.model(X).max(1)[1].view(1, 1).item()
             else:
-                action = [(u, np.random.randint(0, self.num_actions)) for u in player_units]
-                #return np.random.randint(0, self.num_actions)
-        return self.prepare_action(action)
+                action = np.random.randint(0, self.num_actions)
+        return self.prepare_action(state[-1], action)
 
 
-    def prepare_state(self, state):
-        self.player = state[-1]
-        index = state[::4]
-        units = state[3::4]
-        player_units = [i for i, unit in zip(index, units) if unit == self.player]
-        return state, player_units
-
-
-    def prepare_action(self, action):
-        action_orders = []
-        for (province_index, province_action) in action:
-            unit_order = [province_index - 1, province_action//3, province_action//8]
-            action_orders.append(unit_order)
-        number_of_provinces = 8
-        number_of_actions = len(action)
-        need_to_pad = number_of_provinces - number_of_actions
-        for i in range(need_to_pad):
-            action_orders.append([-1, -1, -1])
-        return action_orders
+    def prepare_action(self, unit, action):
+        return [unit - 1, action//3, action//8]
 
 
     def update_target_model(self):
