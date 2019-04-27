@@ -333,7 +333,7 @@ class DiplomacyStrategyEnv(gym.Env):
         Action space: [Order type for the unit, Destination province]
         Eg: Action [2, 5] proposes an order of type 2 related to the province with id 5.
         '''
-        self.action_space = spaces.MultiDiscrete([NUMBER_OF_ACTIONS, NUMBER_OF_PROVINCES])
+        self.action_space = spaces.Discrete(1 + (NUMBER_OF_ACTIONS - 1) * NUMBER_OF_PROVINCES)
 
 
     def _init_socket_server(self):

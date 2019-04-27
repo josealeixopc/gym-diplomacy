@@ -22,7 +22,7 @@ class Model(BaseAgent):
 
         self.static_policy = static_policy
         self.num_feats = env.observation_space.shape
-        self.num_actions = np.prod(env.action_space.nvec)
+        self.num_actions = env.action_space.n
         self.env = env
 
         self.declare_networks()
@@ -139,7 +139,12 @@ class Model(BaseAgent):
 
 
     def prepare_action(self, unit, action):
-        return [unit - 1, action//3, action//8]
+        if action == 0:
+            return [unit - 1, 0, -1]
+        else:
+            action = action - 1
+            order_type, destination = divmod(action, 8)
+            return [unit - 1, order_type + 1, destination]
 
 
     def update_target_model(self):

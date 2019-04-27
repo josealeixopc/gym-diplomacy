@@ -18,7 +18,7 @@ class BaseAgent(object):
         self.rewards = []
 
         self.action_log_frequency = config.ACTION_SELECTION_COUNT_FREQUENCY
-        self.action_selections = [0 for _ in range(prod(env.action_space.nvec))]
+        self.action_selections = [0 for _ in range(env.action_space.n)]
 
 
     def huber(self, x):

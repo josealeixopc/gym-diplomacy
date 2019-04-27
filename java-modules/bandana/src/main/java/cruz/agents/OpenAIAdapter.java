@@ -449,7 +449,7 @@ public class OpenAIAdapter {
                     support_orders.add(order);
                 }
             } else {
-                System.err.println("WRONG BORDER: Support destination is not a border with current province: " + destination + "-" + start);
+                System.err.println("WRONG BORDER: For order of type " + order.getAction() + ", the destination " + destination + " is not a border with current province " + start);
                 this.addReward(INVALID_DEAL_REWARD);
                 orders.add(new HLDOrder(this.agent2.getMe(), start));
             }
