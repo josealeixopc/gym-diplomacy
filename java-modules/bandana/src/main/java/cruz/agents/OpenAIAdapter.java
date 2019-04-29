@@ -189,7 +189,7 @@ public class OpenAIAdapter {
 
             // If something went wrong with getting the response from Python module
             if (response == null) {
-                return null;
+                return new ArrayList<>();
             }
 
             ProtoMessage.DiplomacyGymOrdersResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymOrdersResponse.parseFrom(response);
@@ -200,7 +200,7 @@ public class OpenAIAdapter {
             e.printStackTrace();
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -304,12 +304,17 @@ public class OpenAIAdapter {
         this.powerNameToInt = new HashMap<>();
         this.powerNameToInt.put("NONE", 0);
 
-        int id = 1;
+        String agent_name = (this.agent2 == null)? this.agent.me.getName() : this.agent2.getMe().getName();
+        this.powerNameToInt.put(agent_name, 1);
+
+        int id = 2;
 
         List<Power> powers = (this.agent2 == null)? this.agent.game.getPowers():this.agent2.getGame().getPowers();
         for(Power pow : powers) {
-            powerNameToInt.put(pow.getName(), id);
-            id++;
+            if (!pow.getName().equals(agent_name)) {
+                powerNameToInt.put(pow.getName(), id);
+                id++;
+            }
         }
     }
 

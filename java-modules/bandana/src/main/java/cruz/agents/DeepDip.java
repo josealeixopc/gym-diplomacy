@@ -87,9 +87,11 @@ public class DeepDip extends DumbBot {
         switch (game.getPhase().ordinal() + 1) {
             case 1:
             case 3:
-                List<Order> orders = this.openAIAdapter.getOrdersFromDeepDip();
+                List<Order> received_orders = this.openAIAdapter.getOrdersFromDeepDip();
+                List<Order> orders = this.getOrdersOfControlledRegions(received_orders);
 
                 if (this.isValidOrders(orders)) {
+                    System.out.println(orders);
                     return orders;
                 } else {
                     return this.generateMovementOrders();
@@ -115,17 +117,12 @@ public class DeepDip extends DumbBot {
 
     private boolean isValidOrders(List<Order> orders) {
         try {
-            if (orders == null) {
+            if (orders.isEmpty()) {
                 throw new Exception("EMPTY ORDERS");
             }
 
             for(Order unit_order : orders) {
-                Region r = unit_order.getLocation();
-                if (!this.me.getControlledRegions().contains(r)) {
-                    throw new Exception("Not controlled region. " + r + " not in " + this.me.getControlledRegions());
-                }
-
-                List<Region> adjacent_regions = r.getAdjacentRegions();
+                List<Region> adjacent_regions = unit_order.getLocation().getAdjacentRegions();
                 if (unit_order instanceof MTOOrder && !adjacent_regions.contains(((MTOOrder) unit_order).getDestination())) {
                     throw new Exception("Bad destination in a MTOOrder.");
                 } else if (unit_order instanceof SUPOrder && !adjacent_regions.contains(((SUPOrder) unit_order).getSupportedRegion())) {
@@ -133,17 +130,30 @@ public class DeepDip extends DumbBot {
                 } else if (unit_order instanceof SUPMTOOrder && !adjacent_regions.contains(((SUPMTOOrder) unit_order).getSupportedRegion())) {
                     throw new Exception("Bad supported region in a SUPMTOOrder.");
                 }
-
             }
-        } catch (NullPointerException e) {
-            System.err.println("INVALID UNDEFINED ORDER");
-            return false;
         } catch (Exception e) {
             System.err.println("INVALID ORDER: " + e.getMessage());
             return false;
         }
 
         return true;
+    }
+
+    private List<Order> getOrdersOfControlledRegions(List<Order> orders) {
+        if (orders.isEmpty()) {
+            return orders;
+        }
+
+        List<Region> player_controlled_regions = this.me.getControlledRegions();
+        List<Order> orders_of_controlled_regions = new ArrayList<>();
+        for(Order unit_order : orders) {
+            Region r = unit_order.getLocation();
+            if (player_controlled_regions.contains(r)) {
+                orders_of_controlled_regions.add(unit_order);
+            }
+        }
+
+        return orders_of_controlled_regions;
     }
     
     public Logger getLogger() {
