@@ -22,7 +22,7 @@ class Model(BaseAgent):
 
         self.static_policy = static_policy
         self.num_feats = env.observation_space.shape
-        self.num_actions = env.action_space.n
+        self.num_actions = int(env.action_space.nvec[0])
         self.env = env
 
         self.declare_networks()

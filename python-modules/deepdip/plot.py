@@ -55,14 +55,17 @@ def load_reward_data(indir, smooth, bin_size):
                 t_time = float(tmp[2])
                 tmp = [t_time, int(tmp[1]), float(tmp[0])]
                 datas.append(tmp)
-
+                print(tmp)
+    print('preparou todos os f')
     datas = sorted(datas, key=lambda d_entry: d_entry[0])
+    print('ordernou', datas)
     result = []
     timesteps = 0
     for i in range(len(datas)):
         result.append([timesteps, datas[i][-1]])
         timesteps += datas[i][1]
-
+    print('calculou os timesteps')
+    print(len(result), bin_size)
     if len(result) < bin_size:
         return [None, None]
 
@@ -200,7 +203,7 @@ def make_patch_spines_invisible(ax):
     for sp in ax.spines.values():
         sp.set_visible(False)
 
-def plot_all_data(folder, game, name, num_steps, bin_size=(10, 100, 100, 1), smooth=1, time=None, save_filename='results.png', ipynb=False):
+def plot_all_data(folder, game, name, num_steps, bin_size=(10, 100, 100, 1), smooth=1, time=None, save_filename='results.png', ipynb=False):        
     matplotlib.rcParams.update({'font.size': 20})
     params = {
         'xtick.labelsize': 20,
@@ -222,7 +225,6 @@ def plot_all_data(folder, game, name, num_steps, bin_size=(10, 100, 100, 1), smo
     tick_fractions = np.array([0.1, 0.2, 0.4, 0.6, 0.8, 1.0])
     ticks = tick_fractions * num_steps
     tick_names = ["{:.0e}".format(tick) for tick in ticks]
-
     fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(20, 15), subplot_kw = dict(xticks=ticks, xlim=(0, num_steps*1.15), xlabel='Timestep', title=title))
     ax1.set_xticklabels(tick_names)
     ax2.set_xticklabels(tick_names)
@@ -238,7 +240,6 @@ def plot_all_data(folder, game, name, num_steps, bin_size=(10, 100, 100, 1), smo
 
     ax1.legend([p1], [p1.get_label()], loc=4)
 
-    
     #Load td data if it exists
     tx, ty = load_custom_data(folder, 'td.csv', smooth, bin_size[1])
 
@@ -340,3 +341,4 @@ def plot_reward(folder, game, name, num_steps, bin_size=10, smooth=1, time=None,
     plt.close()
     
     return np.round(np.mean(ty[-10]))
+

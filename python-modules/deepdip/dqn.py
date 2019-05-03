@@ -23,3 +23,4 @@ class DQN(nn.Module):
     def feature_size(self):
         conv = torch.zeros(1, *self.input_shape)
         return conv.view(conv.size(0), -1).size(1)
+

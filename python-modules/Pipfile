@@ -13,6 +13,8 @@ tensorflow = "*"
 matplotlib = "*"
 numpy = "*"
 pandas = "*"
+torch = {file = "https://download.pytorch.org/whl/cpu/torch-1.1.0-cp36-cp36m-linux_x86_64.whl"}
+torchvision = "*"
 
 [requires]
 python_version = "3.6"
