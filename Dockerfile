@@ -1,3 +1,6 @@
+# This Dockerfile creates a Docker container with every dependency needed to/debug run the project.
+# The Java artifacts should be generated BEFORE creating this image when using "deploy" mode, because JDK is not installed in this mode. 
+
 FROM ubuntu:18.04
 
 ENV DIP_Q_WORK_DIR="/usr/src/app"
@@ -8,7 +11,7 @@ ARG ENV_ARG="development"
 # ENV_ARG values:
 # "development": when we want to be able to build and debug inside the container
 # "build": when we want to be able to build inside the container
-# "devploy": when we JUST want to be able to run inside the container
+# "deploy": when we JUST want to be able to run inside the container
 
 ENV ENV=$ENV_ARG
 

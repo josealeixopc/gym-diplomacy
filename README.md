@@ -23,3 +23,9 @@ This directory contains all the Python modules. This include the Diplomacy Open 
 ### tutorials
 
 This directory is only for sand-boxing purposes, such as experimenting new tools and frameworks.
+
+## Running
+
+### With Docker
+
+TODO
