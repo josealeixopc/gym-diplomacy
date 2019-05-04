@@ -18,8 +18,15 @@ sudo chmod +x init-server.sh
 # Skip lock because we don't need it outside a development environment
 pipenv install --skip-lock
 
-# Install what we need for our agent
-cd "${DIP_Q_WORK_DIR}"/dip-q-brain || exit 4
+# Install what we need for our negotiation agent
+cd "${DIP_Q_WORK_DIR}"/python-modules/dip-q-brain || exit 4
+
+# Here you actually NEED to skip lock, because one of the 'setup.py' has an outdated
+# dependencies tree and will crash the normal install
+pipenv install --skip-lock
+
+# Install what we need for our strategic agent
+cd "${DIP_Q_WORK_DIR}"/python-modules/deepdip || exit 4
 
 # Here you actually NEED to skip lock, because one of the 'setup.py' has an outdated
 # dependencies tree and will crash the normal install

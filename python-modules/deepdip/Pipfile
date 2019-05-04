@@ -6,7 +6,8 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pytorch = "~=1.1"
+torch = "~=1.1"
+tensorflow = "~=1.13"
 gym = "~=0.12"
 gym-diplomacy = {editable = true,path = "./../gym-diplomacy"}
 baselines = {editable = true,path = "./../baselines-master"}
