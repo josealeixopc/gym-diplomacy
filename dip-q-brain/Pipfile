@@ -10,6 +10,8 @@ tensorflow = "~=1.13"
 gym = "~=0.12"
 gym-diplomacy = {editable = true,path = "./../python-modules/gym-diplomacy"}
 baselines = {editable = true,path = "./../python-modules/baselines-master"}
+matplotlib = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"

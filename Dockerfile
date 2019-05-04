@@ -33,6 +33,9 @@ WORKDIR ${DIP_Q_WORK_DIR}/dip-q-brain
 RUN chmod +x ./install-essential.sh
 RUN ./install-essential.sh
 
+# Note: these packages are installed beforehand because this way the.
+# image won't take much time to build when changes are made to the code.
+
 # Install Python packages afterwards
 WORKDIR ${DIP_Q_WORK_DIR}
 COPY . .
