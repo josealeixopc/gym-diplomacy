@@ -81,7 +81,7 @@ public class TournamentRunner {
 	
 	static List<Process> players = new ArrayList<Process>();
 	
-	public static void run(int numberOfGames, int moveTimeLimit, int retreatTimeLimit, int buildTimeLimit, String finalYear) throws IOException{
+	public static void run(int numberOfGames, int moveTimeLimit, int retreatTimeLimit, int buildTimeLimit, int finalYear) throws IOException{
 
         TournamentObserver tournamentObserver = null;
 

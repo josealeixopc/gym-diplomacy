@@ -182,7 +182,7 @@ public class OpenAIAdapter {
 
             byte[] message = bandanaRequestBuilder.build().toByteArray();
 
-            SocketClient socketClient = new SocketClient("127.0.1.1", 5000, this.agent2.getLogger());
+            SocketClient socketClient = new SocketClient(5000, this.agent2.getLogger());
             byte[] response = socketClient.sendMessageAndReceiveResponse(message);
 
             // If something went wrong with getting the response from Python module
@@ -200,6 +200,21 @@ public class OpenAIAdapter {
 
         return new ArrayList<>();
     }
+
+    private byte[] generateRequestMessage() {
+        // Make sure the power to int map is updated with the current Powers in the game
+        this.generatePowerNameToIntMap();
+
+        ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
+
+        ProtoMessage.ObservationData observationData = this.generateObservationData();
+
+        bandanaRequestBuilder.setObservation(observationData);
+        bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
+
+        return bandanaRequestBuilder.build().toByteArray();
+    }
+
 
     /**
      * Sends a message to the Open AI environment notifying the end of the game. The "done" boolean will be set to true,
@@ -307,11 +322,11 @@ public class OpenAIAdapter {
 
         Map<String, ProtoMessage.ProvinceData.Builder> nameToProvinceDataBuilder = new HashMap<>();
 
-        int id = 1;
-
         // FIRST PROCESS ALL PROVINCES
         Vector<Province> provinces = (this.agent2 == null) ? this.agent.game.getProvinces() : this.agent2.getGame().getProvinces();
+
         int id = 1;
+
         for (Province p : provinces) {
             ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder();
             int isSc = p.isSC() ? 1 : 0;
