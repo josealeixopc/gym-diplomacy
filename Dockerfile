@@ -28,11 +28,19 @@ COPY bootstrap.sh .
 RUN chmod +x ./bootstrap.sh
 RUN ./bootstrap.sh
 
-# Install heavy Python packages
+# Install heavy Python packages for dip-q-brain
 RUN mkdir -p ${DIP_Q_WORK_DIR}/dip-q-brain
-COPY dip-q-brain/install-essential.sh ${DIP_Q_WORK_DIR}/dip-q-brain
+COPY python-modules/dip-q-brain/install-essential.sh ${DIP_Q_WORK_DIR}/python-modules/dip-q-brain
 
-WORKDIR ${DIP_Q_WORK_DIR}/dip-q-brain
+WORKDIR ${DIP_Q_WORK_DIR}/python-modules/dip-q-brain
+RUN chmod +x ./install-essential.sh
+RUN ./install-essential.sh
+
+# Install heavy Python packages for deepdip
+RUN mkdir -p ${DIP_Q_WORK_DIR}/deepdip
+COPY python-modules/deepdip/install-essential.sh ${DIP_Q_WORK_DIR}/python-modules/deepdip
+
+WORKDIR ${DIP_Q_WORK_DIR}/python-modules/deepdip
 RUN chmod +x ./install-essential.sh
 RUN ./install-essential.sh
 
