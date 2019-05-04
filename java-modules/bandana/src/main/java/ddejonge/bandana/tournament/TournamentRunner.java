@@ -2,7 +2,9 @@ package ddejonge.bandana.tournament;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import ddejonge.bandana.tools.ProcessRunner;
 import ddejonge.bandana.tools.Logger;
@@ -12,10 +14,10 @@ public class TournamentRunner {
 
 	// JC: CUSTOM SETTINGS BEGIN
 
-    final static boolean MODE = false;  //Strategy/false vs Negotiation/true
+    final static boolean MODE = true;  //Strategy/false vs Negotiation/true
 	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
-    private final static String GAME_MAP = "small"; // Game map can be 'standard' or 'small'
-    private final static String FINAL_YEAR = "2000";
+    private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
+    private final static String FINAL_YEAR = "1910";
 
     // JC: Using a custom map to define how many players are there on each custom map
     private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<String, Integer>() {{
@@ -54,9 +56,9 @@ public class TournamentRunner {
 		int deadlineForMovePhases = 60; 	//60 seconds for each SPR and FAL phases
 		int deadlineForRetreatPhases = 30;  //30 seconds for each SUM and AUT phases
 		int deadlineForBuildPhases = 30;  	//30 seconds for each WIN phase
-		
-		String finalYear = FINAL_YEAR; 	//The year after which the agents in each game are supposed to propose a draw to each other. 
-		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.) 
+
+		int finalYear = Integer.parseInt(FINAL_YEAR); 	//The year after which the agents in each game are supposed to propose a draw to each other.
+		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.)
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
 
@@ -135,14 +137,28 @@ public class TournamentRunner {
                     String name;
                     String[] command;
 
-                    //make sure that each player has a different name.
-                    if (i < numberOfParticipants - 1) {
-                        name = "RandomBot " + i;
-                        command = randomBotCommand;
-                    } else {
-                        name = "DeepDip " + i;
-                        command = deepDipCommand;
+                    // Bots for negotiation testing
+                    if(MODE) {
+                        //make sure that each player has a different name.
+                        if (i < numberOfParticipants - 1) {
+                            name = "RandomNegotiatorBot " + i;
+                            command = randomNegotiatorCommand;
+                        } else {
+                            name = "OpenAIBot " + i;
+                            command = openAIBotNegotiatorCommand;
+                        }
                     }
+                    // Bots for tactics testing
+                    else {
+                        if (i < numberOfParticipants - 1) {
+                            name = "RandomBot " + i;
+                            command = randomBotCommand;
+                        } else {
+                            name = "DeepDip " + i;
+                            command = deepDipCommand;
+                        }
+                    }
+
 
                     //set the log folder for this agent to be a subfolder of the tournament log folder.
                     command[4] = tournamentLogFolderPath + File.separator + name + File.separator + "Game " + gameNumber + File.separator;
@@ -151,7 +167,7 @@ public class TournamentRunner {
                     command[6] = name;
 
                     //set the year after which the agent will propose a draw to the other agents.
-                    command[8] = finalYear;
+                    command[8] = "" + finalYear;
 
                     // JC: If debug is on and the current command is a OpenAINegotiator, then change the command to allow debug
                     // This is here, because otherwise we would need to change how the cycle reads the arguments
@@ -205,7 +221,11 @@ public class TournamentRunner {
             //Kill the player processes.
             // (if everything is implemented okay this isn't necessary because the players should kill themselves. But just to be sure..)
             for (Process playerProcess : players) {
-                playerProcess.destroy();
+                try {
+                    playerProcess.waitFor(5, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
 	    finally {

@@ -142,6 +142,8 @@ class DiplomacyEnv(gym.Env):
 
     # Env
 
+    current_step_number = 0
+
     received_first_observation: bool = False
 
     waiting_for_action: bool = False
@@ -186,6 +188,8 @@ class DiplomacyEnv(gym.Env):
             info (dict): contains auxiliary diagnostic information (helpful for debugging, and sometimes learning)
         """
 
+        self.current_step_number += 1
+
         logger.info("Executing 'step' function...")
 
         logger.debug("Waiting for 'waiting_for_action' to be set to true...")
@@ -215,7 +219,7 @@ class DiplomacyEnv(gym.Env):
 
         logger.debug("New observation has been processed.")
 
-        logger.info("Finished executing 'step': ")
+        logger.info("Finished executing 'step' number {}: ".format(self.current_step_number))
         logger.info("\t-observation: {}".format(self.observation))
         logger.info("\t-reward: {}".format(self.reward))
         logger.info("\t-done: {}".format(self.done))

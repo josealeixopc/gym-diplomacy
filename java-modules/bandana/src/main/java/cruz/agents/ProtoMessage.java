@@ -2590,7 +2590,7 @@ public final class ProtoMessage {
         if (value == null) {
           throw new NullPointerException();
         }
-        
+
         type_ = value.getNumber();
         onChanged();
         return this;
@@ -2599,7 +2599,7 @@ public final class ProtoMessage {
        * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
        */
       public Builder clearType() {
-        
+
         type_ = 0;
         onChanged();
         return this;
@@ -2690,7 +2690,7 @@ public final class ProtoMessage {
        * <code>.dip_q.OrdersData orders = 2;</code>
        */
       public cruz.agents.ProtoMessage.OrdersData.Builder getOrdersBuilder() {
-        
+
         onChanged();
         return getOrdersFieldBuilder().getBuilder();
       }
@@ -2709,7 +2709,7 @@ public final class ProtoMessage {
        * <code>.dip_q.OrdersData orders = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cruz.agents.ProtoMessage.OrdersData, cruz.agents.ProtoMessage.OrdersData.Builder, cruz.agents.ProtoMessage.OrdersDataOrBuilder> 
+          cruz.agents.ProtoMessage.OrdersData, cruz.agents.ProtoMessage.OrdersData.Builder, cruz.agents.ProtoMessage.OrdersDataOrBuilder>
           getOrdersFieldBuilder() {
         if (ordersBuilder_ == null) {
           ordersBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -3443,7 +3443,7 @@ public final class ProtoMessage {
        * <code>int32 unit = 4;</code>
        */
       public Builder setUnit(int value) {
-        
+
         unit_ = value;
         onChanged();
         return this;
@@ -3456,7 +3456,7 @@ public final class ProtoMessage {
        * <code>int32 unit = 4;</code>
        */
       public Builder clearUnit() {
-        
+
         unit_ = 0;
         onChanged();
         return this;
@@ -4745,7 +4745,7 @@ public final class ProtoMessage {
        * <code>int32 player = 5;</code>
        */
       public Builder setPlayer(int value) {
-        
+
         player_ = value;
         onChanged();
         return this;
@@ -4754,7 +4754,7 @@ public final class ProtoMessage {
        * <code>int32 player = 5;</code>
        */
       public Builder clearPlayer() {
-        
+
         player_ = 0;
         onChanged();
         return this;
@@ -7288,7 +7288,7 @@ public final class ProtoMessage {
        * <code>int32 start = 1;</code>
        */
       public Builder setStart(int value) {
-        
+
         start_ = value;
         onChanged();
         return this;
@@ -7297,7 +7297,7 @@ public final class ProtoMessage {
        * <code>int32 start = 1;</code>
        */
       public Builder clearStart() {
-        
+
         start_ = 0;
         onChanged();
         return this;
@@ -7314,7 +7314,7 @@ public final class ProtoMessage {
        * <code>int32 action = 2;</code>
        */
       public Builder setAction(int value) {
-        
+
         action_ = value;
         onChanged();
         return this;
@@ -7323,7 +7323,7 @@ public final class ProtoMessage {
        * <code>int32 action = 2;</code>
        */
       public Builder clearAction() {
-        
+
         action_ = 0;
         onChanged();
         return this;
@@ -7340,7 +7340,7 @@ public final class ProtoMessage {
        * <code>int32 destination = 3;</code>
        */
       public Builder setDestination(int value) {
-        
+
         destination_ = value;
         onChanged();
         return this;
@@ -7349,7 +7349,7 @@ public final class ProtoMessage {
        * <code>int32 destination = 3;</code>
        */
       public Builder clearDestination() {
-        
+
         destination_ = 0;
         onChanged();
         return this;
@@ -7414,7 +7414,7 @@ public final class ProtoMessage {
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
      */
-    java.util.List<cruz.agents.ProtoMessage.OrderData> 
+    java.util.List<cruz.agents.ProtoMessage.OrderData>
         getOrdersList();
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
@@ -7427,7 +7427,7 @@ public final class ProtoMessage {
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
      */
-    java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
+    java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder>
         getOrdersOrBuilderList();
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
@@ -7530,7 +7530,7 @@ public final class ProtoMessage {
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
      */
-    public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
+    public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder>
         getOrdersOrBuilderList() {
       return orders_;
     }
@@ -7858,7 +7858,7 @@ public final class ProtoMessage {
               ordersBuilder_ = null;
               orders_ = other.orders_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              ordersBuilder_ = 
+              ordersBuilder_ =
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getOrdersFieldBuilder() : null;
             } else {
@@ -8091,7 +8091,7 @@ public final class ProtoMessage {
       /**
        * <code>repeated .dip_q.OrderData orders = 1;</code>
        */
-      public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
+      public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder>
            getOrdersOrBuilderList() {
         if (ordersBuilder_ != null) {
           return ordersBuilder_.getMessageOrBuilderList();
@@ -8117,12 +8117,12 @@ public final class ProtoMessage {
       /**
        * <code>repeated .dip_q.OrderData orders = 1;</code>
        */
-      public java.util.List<cruz.agents.ProtoMessage.OrderData.Builder> 
+      public java.util.List<cruz.agents.ProtoMessage.OrderData.Builder>
            getOrdersBuilderList() {
         return getOrdersFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          cruz.agents.ProtoMessage.OrderData, cruz.agents.ProtoMessage.OrderData.Builder, cruz.agents.ProtoMessage.OrderDataOrBuilder> 
+          cruz.agents.ProtoMessage.OrderData, cruz.agents.ProtoMessage.OrderData.Builder, cruz.agents.ProtoMessage.OrderDataOrBuilder>
           getOrdersFieldBuilder() {
         if (ordersBuilder_ == null) {
           ordersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
@@ -8200,7 +8200,7 @@ public final class ProtoMessage {
       internal_static_dip_q_DiplomacyGymResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_DiplomacyGymOrdersResponse_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_DiplomacyGymOrdersResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
@@ -8230,12 +8230,12 @@ public final class ProtoMessage {
       internal_static_dip_q_DealData_MTOOrderData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_OrderData_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_OrderData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_OrdersData_descriptor;
-  private static final 
+  private static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_OrdersData_fieldAccessorTable;
 

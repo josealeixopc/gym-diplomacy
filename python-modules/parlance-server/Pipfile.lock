@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a52459ab4c23b70ef0b9fb86d645f1010437014d5abf9c19db811bd6d62847be"
+            "sha256": "5a92ae53da048e6a16d6a35f0fc5c294297c518fbba471eb5b6ca25b6e25620e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -17,11 +17,8 @@
     },
     "default": {
         "parlance": {
-            "hashes": [
-                "sha256:0c97d0ad68c63b04607d574e6f12bda8d3769e4fb4816f24ee38052b05a441c4"
-            ],
-            "index": "pypi",
-            "version": "==1.4.1"
+            "editable": true,
+            "path": "./../parlance-code"
         }
     },
     "develop": {}
