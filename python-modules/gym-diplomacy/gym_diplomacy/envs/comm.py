@@ -1,6 +1,8 @@
 # load additional Python module
 import socket
+import errno
 import sys
+import os
 import typing
 from threading import Thread
 
@@ -11,8 +13,9 @@ logging.basicConfig(format=FORMAT)
 
 logging_level = 'DEBUG'
 level = getattr(logging, logging_level)
-logging.basicConfig(stream=sys.stdout, level=level)
 logger = logging.getLogger(__name__)
+logger.setLevel(level)
+
 
 class LocalSocketServer:
     sock = None
@@ -28,7 +31,7 @@ class LocalSocketServer:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # reuse the socket, meaning there should not be any errno98 address already in use
-        # self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         # retrieve local hostname
         local_hostname = socket.gethostname()

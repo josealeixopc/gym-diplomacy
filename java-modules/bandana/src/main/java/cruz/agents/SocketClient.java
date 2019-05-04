@@ -11,22 +11,20 @@ import java.util.Arrays;
 class SocketClient
 {
     private static Socket socket;
-    private String host;
     private int port;
     private Logger logger;
 
-    SocketClient(String host, int port, Logger logger)
+    SocketClient(int port, Logger logger)
     {
-        this.host = host;
         this.port = port;
         this.logger = logger;
     }
 
     byte[] sendMessageAndReceiveResponse(byte[] messageToSend){
         try {
-            InetAddress address = InetAddress.getByName(host);
+            InetAddress address = InetAddress.getLocalHost();
             socket = new Socket(address, port);
-
+            
             //Send the message to the server
             OutputStream os = socket.getOutputStream();
             os.write(messageToSend);
@@ -51,6 +49,7 @@ class SocketClient
         }
         catch (ConnectException exception) {
             System.out.println("ATTENTION! Could not connect to socket. No deal was retrieved from the Python module.");
+            exception.printStackTrace();
             return null;
         }
         catch (Exception exception)
