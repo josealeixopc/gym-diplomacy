@@ -60,7 +60,7 @@ public class OpenAINegotiator extends ANACNegotiator {
     DBraneTactics dBraneTactics;
 
     // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
-    OpenAIAdapter openAIAdapter;
+    OpenAIAdapterNegotiation openAIAdapter;
 
     /**
      * You must implement a Constructor with exactly this signature.
@@ -75,7 +75,7 @@ public class OpenAINegotiator extends ANACNegotiator {
         dBraneTactics = this.getTacticalModule();
 
         // Create OpenAI Adapter
-        this.openAIAdapter = new OpenAIAdapter(this);
+        this.openAIAdapter = new OpenAIAdapterNegotiation(this);
     }
 
 

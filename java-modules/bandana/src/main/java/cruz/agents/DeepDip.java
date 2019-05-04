@@ -21,12 +21,12 @@ import java.util.Random;
 
 public class DeepDip extends DumbBot {
     // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
-    OpenAIAdapter openAIAdapter;
+    OpenAIAdapterStrategy openAIAdapter;
     Logger logger = new Logger();
 
     private DeepDip(String name, int finalYear, String logPath) {
         super(name, finalYear, logPath);
-        this.openAIAdapter = new OpenAIAdapter(this);
+        this.openAIAdapter = new OpenAIAdapterStrategy(this);
     }
 
     /**

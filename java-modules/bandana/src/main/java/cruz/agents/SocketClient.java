@@ -1,7 +1,5 @@
 package cruz.agents;
 
-import ddejonge.bandana.tools.Logger;
-
 import java.io.*;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -12,12 +10,10 @@ class SocketClient
 {
     private static Socket socket;
     private int port;
-    private Logger logger;
 
-    SocketClient(int port, Logger logger)
+    SocketClient(int port)
     {
         this.port = port;
-        this.logger = logger;
     }
 
     byte[] sendMessageAndReceiveResponse(byte[] messageToSend){
