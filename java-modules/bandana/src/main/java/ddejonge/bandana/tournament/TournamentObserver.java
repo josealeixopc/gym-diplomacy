@@ -48,14 +48,13 @@ public class TournamentObserver extends Observer implements Runnable{
 
 	/**The number of participants in the game*/
 	int numParticipants;
-	
-	
+
 	/**Is set to true if the current game gets interrupted because one of the players did not send in his/her orders in time.*/
 	private boolean ccd;
-	
+
 	int gameStatus;
 	int gameNumber = 0;
-	
+
 	// JC: Added Windowless variable to be able to run in headless server
 	boolean windowless = false;
 
@@ -91,22 +90,17 @@ public class TournamentObserver extends Observer implements Runnable{
 		this.windowless = windowless;
 		if(!this.windowless) {
 			this.diplomacyMonitor = new DiplomacyMonitor("TournamentObserver", numParticipants, scoreCalculators);
-		}
-		else {
+		} else {
 			this.diplomacyMonitor = null;
 		}
 	}
-	
-	
 	
 	@Override
 	public void run() {
 		connectToServer();
 	}
-	
-	
-	public void connectToServer(){
-		
+
+	public void connectToServer(){		
 		this.gameStatus = CONNECTED_WAITING_TO_START;
 		this.game = null;
 		this.ccd = false;
@@ -118,7 +112,6 @@ public class TournamentObserver extends Observer implements Runnable{
 		//Create the connection with the game server
 		InetAddress dipServerIp;
 		try {
-			
 			if(comm != null){
 				comm.stop(); //close the previous connection, if any.
 			}
@@ -126,8 +119,6 @@ public class TournamentObserver extends Observer implements Runnable{
 			dipServerIp = InetAddress.getByName("localhost");
 			comm = new DaideComm(dipServerIp, 16713, this.name);
 			this.start(comm);
-			
-			
 		} catch (Exception e) {
 			this.gameStatus = NO_GAME_ACTIVE;
 			if(this.diplomacyMonitor != null){
@@ -145,7 +136,6 @@ public class TournamentObserver extends Observer implements Runnable{
 	 * Is called from beforeNewPhase(), afterOldPhase(), handleSlo() and handleSMR().
 	 */
 	void displayInfo(){
-
 		if(this.diplomacyMonitor == null) {
 			return;
 		}
@@ -159,18 +149,17 @@ public class TournamentObserver extends Observer implements Runnable{
 			diplomacyMonitor.setNumSCs(power.getName(), power.getOwnedSCs().size());
 		}
 		
-		
-		if(this.gameStatus == GAME_ACTIVE){
+		if(this.gameStatus == GAME_ACTIVE) {
 			diplomacyMonitor.setStatus("Game playing");
-		}else if(this.gameStatus == CONNECTED_WAITING_TO_START){
+		} else if(this.gameStatus == CONNECTED_WAITING_TO_START) {
 			diplomacyMonitor.setStatus("connected, waiting to start game.");
-		}else if(this.gameStatus == GAME_ENDED_IN_DRAW){
+		} else if(this.gameStatus == GAME_ENDED_IN_DRAW) {
 			diplomacyMonitor.setStatus("GAME ENDED IN A DRAW");
-		}else if(this.gameStatus == GAME_ENDED_WITH_SOLO){
+		} else if(this.gameStatus == GAME_ENDED_WITH_SOLO) {
 			diplomacyMonitor.setStatus(winner + " WINS!");
-		}else if(this.gameStatus == NO_GAME_ACTIVE){
+		} else if(this.gameStatus == NO_GAME_ACTIVE) {
 			diplomacyMonitor.setStatus("no game active");
-		}else{
+		} else {
 			diplomacyMonitor.setStatus("unknown game status: " + this.gameStatus);
 		}
 		
@@ -191,46 +180,34 @@ public class TournamentObserver extends Observer implements Runnable{
 	
 	@Override
 	public void beforeNewPhase() throws CommException {
-		displayInfo();
-		
+		displayInfo();	
 	}
-	
-	
+
 	@Override
 	public void afterOldPhase() {
 		displayInfo();		
 	}
 
-
-
 	@Override
 	public void receivedOrder(Order arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
 	public void handleSlo(String winner) {  //SOLO
-		
 		this.gameStatus = GAME_ENDED_WITH_SOLO;
 		
 		super.handleSlo(winner);
 		displayInfo();
-		
 	}
-	
-	
-	/**
-	 * Is called when a player has lost connection or hasn't sent its orders.
-	 * 
-	 */
+
+	/** Is called when a player has lost connection or hasn't sent its orders. */
 	@Override
 	public void handleCCD(String powerName) {
-		
-		System.out.println("TournamentObserver.handleCCD() "  + powerName + " did not manage to submit its orders in time.");
+		System.err.println("TournamentObserver.handleCCD() "  + powerName + " did not manage to submit its orders in time.");
 		ccd = true;
 	}
-	
+
 	@Override
 	public void exit(){
 		this.comm.stop();
@@ -240,13 +217,12 @@ public class TournamentObserver extends Observer implements Runnable{
 			this.diplomacyMonitor.dispose();
 		}
 	}
-	
+
 	/**
 	 * Is called when the game is over.
 	 */
 	@Override
 	public void handleSMR(String[] message) {
-		
 		if(this.gameStatus != GAME_ENDED_WITH_SOLO){
 			this.gameStatus = GAME_ENDED_IN_DRAW;
 		}
@@ -265,19 +241,17 @@ public class TournamentObserver extends Observer implements Runnable{
 
 		displayInfo();
 		
-		
 		super.handleSMR(message);
 	}
 	
 	public int getGameStatus(){
 		return this.gameStatus;
 	}
-	
-	
+
 	public ArrayList<GameResult> getGameResults(){
 		return new ArrayList<GameResult>(this.tournamentResult.gameResults);
 	}
-	
+
 	/**
 	 * Returns true if some player did not manage to submit its orders in time.
 	 * @return
@@ -292,3 +266,4 @@ public class TournamentObserver extends Observer implements Runnable{
 		}
 	}
 }
+

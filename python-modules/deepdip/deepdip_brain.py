@@ -90,12 +90,11 @@ def get_player_units(state):
 observation = env.reset()
 for frame_idx in range(1, config.MAX_FRAMES + 1):
     epsilon = config.epsilon_by_frame(frame_idx)
-
     action = model.get_action(observation, epsilon)
 
     prev_observation = observation
     observation, reward, done, _ = env.step(action)
-    #observation = None if done else observation
+    observation = None if done else observation
     episode_reward += reward
     
     model.update(prev_observation, action, reward, observation, frame_idx)

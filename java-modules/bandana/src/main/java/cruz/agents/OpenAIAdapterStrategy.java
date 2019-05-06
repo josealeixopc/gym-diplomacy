@@ -38,6 +38,7 @@ public class OpenAIAdapterStrategy extends OpenAIAdapter{
     private DeepDip agent;
     int wrongBordersNum = 0;
     int orderNotFoundNum = 0;
+    int previousNumSc = 1;
 
     OpenAIAdapterStrategy(DeepDip agent) {
         this.agent = agent;
@@ -143,9 +144,27 @@ public class OpenAIAdapterStrategy extends OpenAIAdapter{
     }
 
 
+    /**
+     * This function takes the number of supply centers (SCs) controlled in the previous observation (negotiation phase)
+     * and returns the balance of SCs. A negative number means SCs were lost. A positive number means SCs were captured.
+     * @return
+     */
+    private int balanceOfScs() {
+        int currentNumSc = this.agent.getMe().getOwnedSCs().size();
+        int balance = currentNumSc - this.previousNumSc;
+
+        // Don't consider already considered SCs
+        this.previousNumSc = currentNumSc;
+
+        return balance;
+    }
+
+
     @Override
     protected float calculateReward() {
-        return INVALID_ORDER_REWARD * (this.orderNotFoundNum + this.wrongBordersNum);
+        float sc_reward = CAPTURED_SC_REWARD * this.balanceOfScs();
+        float invalid_orders_reward = INVALID_ORDER_REWARD * (this.orderNotFoundNum + this.wrongBordersNum);
+        return sc_reward + invalid_orders_reward;
     }
 
     @Override
