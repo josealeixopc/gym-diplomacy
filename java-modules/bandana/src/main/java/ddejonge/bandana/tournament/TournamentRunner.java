@@ -56,9 +56,9 @@ public class TournamentRunner {
 		int deadlineForMovePhases = 60; 	//60 seconds for each SPR and FAL phases
 		int deadlineForRetreatPhases = 30;  //30 seconds for each SUM and AUT phases
 		int deadlineForBuildPhases = 30;  	//30 seconds for each WIN phase
-		
+
 		int finalYear = Integer.parseInt(FINAL_YEAR); 	//The year after which the agents in each game are supposed to propose a draw to each other.
-		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.) 
+		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.)
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
 
@@ -185,6 +185,8 @@ public class TournamentRunner {
 
                     //store the Process object in a list.
                     players.add(playerProcess);
+
+
                 }
 
                 //5. Let the tournament observer (re-)connect to the game server.

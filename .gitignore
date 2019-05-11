@@ -6,8 +6,9 @@
 .vagrant/
 
 # Log files (if you are creating logs in debug mode, uncomment this)
-# *.logs
 *.log
+**/agent_logs
+
 
 ### Vagrant Patch ###
 *.box

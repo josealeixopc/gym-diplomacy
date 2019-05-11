@@ -6,10 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+torch = "~=1.1"
 tensorflow = "~=1.13"
 gym = "~=0.12"
-gym-diplomacy = {editable = true,path = "./../python-modules/gym-diplomacy"}
-baselines = {editable = true,path = "./../python-modules/baselines-master"}
+gym-diplomacy = {editable = true,path = "./../../python-modules/gym-diplomacy"}
+baselines = {editable = true,path = "./../baselines-master"}
 matplotlib = "*"
 pandas = "*"
 
