@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+tensorflow = "~=1.13"
+gym = "~=0.12"
+gym-diplomacy = {editable = true,path = "./../../python-modules/gym-diplomacy"}
+stable-baselines = "~=2.5.1"
+matplotlib = "*"
+pandas = "*"
+
+[requires]
+python_version = "3.7"

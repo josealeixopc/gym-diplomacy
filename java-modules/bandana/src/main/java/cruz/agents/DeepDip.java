@@ -21,12 +21,12 @@ import java.util.Random;
 
 public class DeepDip extends DumbBot {
     // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
-    OpenAIAdapter openAIAdapter;
+    OpenAIAdapterStrategy openAIAdapter;
     Logger logger = new Logger();
 
     private DeepDip(String name, int finalYear, String logPath) {
         super(name, finalYear, logPath);
-        this.openAIAdapter = new OpenAIAdapter(this);
+        this.openAIAdapter = new OpenAIAdapterStrategy(this);
     }
 
     /**
@@ -87,9 +87,11 @@ public class DeepDip extends DumbBot {
         switch (game.getPhase().ordinal() + 1) {
             case 1:
             case 3:
-                List<Order> orders = this.openAIAdapter.getOrdersFromDeepDip();
+                List<Order> received_orders = this.openAIAdapter.getOrdersFromDeepDip();
+                List<Order> orders = this.getOrdersOfControlledRegions(received_orders);
 
                 if (this.isValidOrders(orders)) {
+                    System.out.println(orders);
                     return orders;
                 } else {
                     return this.generateMovementOrders();
@@ -113,37 +115,85 @@ public class DeepDip extends DumbBot {
         }
     }
 
-    boolean isValidOrders(List<Order> orders) {
+    private List<Order> getOrdersOfControlledRegions(List<Order> orders) {
+        if (orders.isEmpty()) {
+            return orders;
+        }
+
+        List<Region> player_controlled_regions = this.me.getControlledRegions();
+        List<Order> orders_of_controlled_regions = new ArrayList<>();
+        for(Order unit_order : orders) {
+            Region r = unit_order.getLocation();
+            if (player_controlled_regions.contains(r)) {
+                orders_of_controlled_regions.add(unit_order);
+            }
+        }
+
+        return orders_of_controlled_regions;
+    }
+
+    private boolean isValidOrders(List<Order> orders) {
         try {
-            if (orders == null) {
+            if (orders.isEmpty()) {
                 throw new Exception("EMPTY ORDERS");
             }
 
-            for(Order unit_order : orders) {
-                Region r = unit_order.getLocation();
-                if (!this.me.getControlledRegions().contains(r)) {
-                    throw new Exception("Not controlled region. " + r + " not in " + this.me.getControlledRegions());
-                }
+            if (this.isOnlySupportOrders(orders)) {
+                throw new Exception("ONLY SUPPORT ORDERS");
+            }
 
-                List<Region> adjacent_regions = r.getAdjacentRegions();
+            List<MTOOrder> mto_orders = this.getMTOOrders(orders);
+
+            for(Order unit_order : orders) {
+                List<Region> adjacent_regions = unit_order.getLocation().getAdjacentRegions();
                 if (unit_order instanceof MTOOrder && !adjacent_regions.contains(((MTOOrder) unit_order).getDestination())) {
                     throw new Exception("Bad destination in a MTOOrder.");
-                } else if (unit_order instanceof SUPOrder && !adjacent_regions.contains(((SUPOrder) unit_order).getSupportedRegion())) {
-                    throw new Exception("Bad supported region in a SUPOrder.");
-                } else if (unit_order instanceof SUPMTOOrder && !adjacent_regions.contains(((SUPMTOOrder) unit_order).getSupportedRegion())) {
-                    throw new Exception("Bad supported region in a SUPMTOOrder.");
+                } else if (unit_order instanceof SUPOrder) {
+                    Region supported_region = ((SUPOrder) unit_order).getSupportedRegion();
+                    List<Region> player_controlled_regions = this.me.getControlledRegions();
+                    boolean isAdjacentRegions = adjacent_regions.contains(supported_region);
+                    boolean isSupportedRegionControlled = player_controlled_regions.contains(supported_region);
+                    if (!isAdjacentRegions || !isSupportedRegionControlled) {
+                        throw new Exception("Bad supported region in a SUPOrder.");
+                    }
+                } else if (unit_order instanceof SUPMTOOrder) {
+                    Region supported_region = ((SUPMTOOrder) unit_order).getSupportedRegion();
+                    List<Region> player_controlled_regions = this.me.getControlledRegions();
+                    boolean isAdjacentRegions = adjacent_regions.contains(supported_region);
+                    boolean hasMTOOrder = mto_orders.contains(((SUPMTOOrder) unit_order).getSupportedOrder());
+                    if (!isAdjacentRegions || !hasMTOOrder) {
+                        throw new Exception("Bad supported region in a SUPMTOOrder.");
+                    }
                 }
-
             }
-        } catch (NullPointerException e) {
-            System.err.println("INVALID UNDEFINED ORDER");
-            return false;
         } catch (Exception e) {
             System.err.println("INVALID ORDER: " + e.getMessage());
             return false;
         }
 
         return true;
+    }
+
+    private boolean isOnlySupportOrders(List<Order> orders) {
+        boolean hasOnlySupport = true;
+        for(Order unit_order : orders) {
+            if (unit_order instanceof MTOOrder || unit_order instanceof HLDOrder) {
+                hasOnlySupport = false;
+                break;
+            }
+        }
+        return hasOnlySupport;
+    }
+
+    private List<MTOOrder> getMTOOrders(List<Order> orders) {
+        List<MTOOrder> mto_orders = new ArrayList<>();
+        for(Order unit_order : orders) {
+            List<Region> adjacent_regions = unit_order.getLocation().getAdjacentRegions();
+            if (unit_order instanceof MTOOrder && !adjacent_regions.contains(((MTOOrder) unit_order).getDestination())) {
+                mto_orders.add((MTOOrder) unit_order);
+            }
+        }
+        return mto_orders;
     }
     
     public Logger getLogger() {

@@ -60,7 +60,7 @@ public class OpenAINegotiator extends ANACNegotiator {
     DBraneTactics dBraneTactics;
 
     // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
-    OpenAIAdapter openAIAdapter;
+    OpenAIAdapterNegotiation openAIAdapter;
 
     /**
      * You must implement a Constructor with exactly this signature.
@@ -75,7 +75,7 @@ public class OpenAINegotiator extends ANACNegotiator {
         dBraneTactics = this.getTacticalModule();
 
         // Create OpenAI Adapter
-        this.openAIAdapter = new OpenAIAdapter(this);
+        this.openAIAdapter = new OpenAIAdapterNegotiation(this);
     }
 
 
@@ -133,7 +133,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     DiplomacyProposal acceptedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    this.getLogger().logln(me.getName() + ".negotiate() Received acceptance from " + receivedMessage.getSender() + ": " + acceptedProposal, true);
+                    // this.getLogger().logln(me.getName() + ".negotiate() Received acceptance from " + receivedMessage.getSender() + ": " + acceptedProposal, true);
 
                     // Here we can handle any incoming acceptances.
                     // This random negotiator doesn't do anything with such messages however.
@@ -149,7 +149,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     DiplomacyProposal receivedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    this.getLogger().logln(me.getName() + ".negotiate() Received proposal: " + receivedProposal, true);
+                    // this.getLogger().logln(me.getName() + ".negotiate() Received proposal: " + receivedProposal, true);
 
                     BasicDeal deal = (BasicDeal) receivedProposal.getProposedDeal();
 
@@ -200,9 +200,7 @@ public class OpenAINegotiator extends ANACNegotiator {
                     if (!outDated && consistencyReport == null) {
                         // DECIDE WHETHER OR NOT TO ACCEPT THE DEAL
 
-                        // JC: In order to study simpler scenarios first, reject all incoming negotiations
-                        this.rejectProposal(receivedProposal.getId());
-                        this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, true);
+                        // this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, true);
 
                         // This agent simply flips a coin to determine whether to accept the proposal or not.
                         // if (random.nextInt(2) == 0) { // accept with 50% probability.
@@ -218,7 +216,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     DiplomacyProposal confirmedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, true);
+                    // this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, true);
 
                     BasicDeal confirmedDeal = (BasicDeal) confirmedProposal.getProposedDeal();
 
@@ -233,9 +231,12 @@ public class OpenAINegotiator extends ANACNegotiator {
                         //add this proposal to the list of deals.
                         deals.add((BasicDeal) standingProposal.getProposedDeal());
 
-                        if (Utilities.testConsistency(game, deals) != null) {
-                            this.rejectProposal(standingProposal.getId());
-                        }
+                        // if (Utilities.testConsistency(game, deals) != null) {
+                        //     this.rejectProposal(standingProposal.getId());
+                        // }
+
+                        // JC: In order to study simpler scenarios first, reject all incoming negotiations
+                        this.rejectProposal(standingProposal.getId());
 
                         //remove the deal again from the list, so that we can add the next standing deal to the list in the next iteration.
                         deals.remove(1);
@@ -264,7 +265,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     //We have received any other kind of message.
 
-                    this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), true);
+                    // this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), true);
 
                 }
 
@@ -510,5 +511,4 @@ public class OpenAINegotiator extends ANACNegotiator {
         // TODO Auto-generated method stub
 
     }
-
 }
