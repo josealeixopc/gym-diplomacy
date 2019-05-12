@@ -224,9 +224,6 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         int currentNumSc = this.getPower().getOwnedSCs().size();
         int balance = currentNumSc - this.previousNumSc;
 
-        // Don't consider already considered SCs
-        this.previousNumSc = currentNumSc;
-
         return balance;
     }
 
@@ -237,6 +234,9 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         reward += this.balanceOfScs() * CAPTURED_SC_REWARD;
         reward += (this.dealWasAccepted ? 1 : -1) * ACCEPTED_DEAL_REWARD;
 
+        System.out.println("Balance of SCs: " + this.balanceOfScs());
+        System.out.println("Deal was accepted? " + this.dealWasAccepted);
+
         this.resetRewardValues();
 
         return reward;
@@ -245,6 +245,9 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
     protected void resetRewardValues() {
         // Reset deal was accepted back to false for the next observation
         this.dealWasAccepted = false;
+
+        // Set new number of SCs
+        this.previousNumSc = this.getPower().getOwnedSCs().size();
     }
 
     @Override
