@@ -25,6 +25,29 @@ import java.util.Random;
 
 public class OpenAINegotiator extends ANACNegotiator {
 
+    public Random random = new Random();
+    DBraneTactics dBraneTactics;
+    // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
+    OpenAIAdapterNegotiation openAIAdapter;
+    // If true, logger prints to console as well
+    boolean printToConsole = true;
+
+    /**
+     * You must implement a Constructor with exactly this signature.
+     * The body of the Constructor must start with the line <code>super(args)</code>
+     * but below that line you can put whatever you like.
+     *
+     * @param args
+     */
+    public OpenAINegotiator(String[] args) {
+        super(args);
+
+        dBraneTactics = this.getTacticalModule();
+
+        // Create OpenAI Adapter
+        this.openAIAdapter = new OpenAIAdapterNegotiation(this);
+    }
+
     /**
      * Main method to start the agent.
      * <p>
@@ -56,29 +79,6 @@ public class OpenAINegotiator extends ANACNegotiator {
 //        System.out.println("Hello again");
     }
 
-    public Random random = new Random();
-    DBraneTactics dBraneTactics;
-
-    // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
-    OpenAIAdapterNegotiation openAIAdapter;
-
-    /**
-     * You must implement a Constructor with exactly this signature.
-     * The body of the Constructor must start with the line <code>super(args)</code>
-     * but below that line you can put whatever you like.
-     *
-     * @param args
-     */
-    public OpenAINegotiator(String[] args) {
-        super(args);
-
-        dBraneTactics = this.getTacticalModule();
-
-        // Create OpenAI Adapter
-        this.openAIAdapter = new OpenAIAdapterNegotiation(this);
-    }
-
-
     /**
      * This method is automatically called at the start of the game, after the 'game' field is set.
      * <p>
@@ -94,8 +94,8 @@ public class OpenAINegotiator extends ANACNegotiator {
         //The location of the log file can be set through the command line option -log.
         // it is not necessary to call getLogger().enable() because this is already automatically done by the ANACNegotiator class.
 
-        boolean printToConsole = true; //if set to true the text will be written to file, as well as printed to the standard output stream. If set to false it will only be written to file.
-        this.getLogger().logln("game is starting!", printToConsole);
+        //if set to true the text will be written to file, as well as printed to the standard output stream. If set to false it will only be written to file.
+        this.getLogger().logln("Game is starting!", this.printToConsole);
 
         // Tell the adapter a new game is starting
         this.openAIAdapter.beginningOfGame();
@@ -104,15 +104,16 @@ public class OpenAINegotiator extends ANACNegotiator {
     @Override
     public void negotiate(long negotiationDeadline) {
 
-        this.getLogger().logln(me.getName() + ".negotiate() Negotiation deadline: " + negotiationDeadline, true);
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation deadline: " + negotiationDeadline, this.printToConsole);
 
         BasicDeal newDealToPropose = null;
 
-        //This loop repeats 2 steps. The first step is to handle any incoming messages,
+        // This loop repeats 2 steps. The first step is to handle any incoming messages,
         // while the second step tries to find deals to propose to the other negotiators.
+        // Generally negotiation lasts 3 seconds.
         while (System.currentTimeMillis() < negotiationDeadline) {
 
-            // I (the player) is responsible for sending/accepting new deals during this time period
+            // I (the player) am responsible for sending/accepting new deals during this time period
 
 
             //STEP 1: Handle incoming messages.
@@ -122,18 +123,23 @@ public class OpenAINegotiator extends ANACNegotiator {
             // e.g. a new proposal or an acceptance of a proposal made earlier.
             while (hasMessage()) {
 
-                //Warning: you may want to add some extra code to break out of this loop,
+                // Warning: you may want to add some extra code to break out of this loop,
                 // just in case the other agents send so many proposals that your agent can't get
                 // the chance to make any proposals itself.
 
-                //if yes, remove it from the message queue.
+                // If we haven't proposed a deal yet, ignore messages and propose deal
+                if (newDealToPropose == null) {
+                    break;
+                }
+
+                // If yes, remove it from the message queue.
                 Message receivedMessage = removeMessageFromQueue();
 
                 if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.ACCEPT)) {
 
                     DiplomacyProposal acceptedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    // this.getLogger().logln(me.getName() + ".negotiate() Received acceptance from " + receivedMessage.getSender() + ": " + acceptedProposal, true);
+                    // this.getLogger().logln(me.getName() + ".negotiate() Received acceptance from " + receivedMessage.getSender() + ": " + acceptedProposal, this.printToConsole);
 
                     // Here we can handle any incoming acceptances.
                     // This random negotiator doesn't do anything with such messages however.
@@ -149,7 +155,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     DiplomacyProposal receivedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    // this.getLogger().logln(me.getName() + ".negotiate() Received proposal: " + receivedProposal, true);
+                    // this.getLogger().logln(me.getName() + ".negotiate() Received proposal: " + receivedProposal, this.printToConsole);
 
                     BasicDeal deal = (BasicDeal) receivedProposal.getProposedDeal();
 
@@ -200,12 +206,14 @@ public class OpenAINegotiator extends ANACNegotiator {
                     if (!outDated && consistencyReport == null) {
                         // DECIDE WHETHER OR NOT TO ACCEPT THE DEAL
 
-                        // this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, true);
+                        // In this simple scenario, we always reject incoming deals
+                        this.rejectProposal(receivedProposal.getId());
+                        this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, this.printToConsole);
 
-                        // This agent simply flips a coin to determine whether to accept the proposal or not.
+                        // This code simply flips a coin to determine whether to accept the proposal or not.
                         // if (random.nextInt(2) == 0) { // accept with 50% probability.
                         //     this.acceptProposal(receivedProposal.getId());
-                        //     this.getLogger().logln(me.getName() + ".negotiate()  Accepting: " + receivedProposal, true);
+                        //     this.getLogger().logln(me.getName() + ".negotiate()  Accepting: " + receivedProposal, this.printToConsole);
                         // }
                     }
 
@@ -216,12 +224,12 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     DiplomacyProposal confirmedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    // this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, true);
+                    // this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, this.printToConsole);
 
                     BasicDeal confirmedDeal = (BasicDeal) confirmedProposal.getProposedDeal();
 
 
-                    //Reject any proposal that has not yet been confirmed and that is inconsistent with the confirmed deal.
+                    // Reject any proposal that has not yet been confirmed and that is inconsistent with the confirmed deal.
                     // NOTE that normally this is not really necessary because the Notary will already check that
                     // any deal is consistent with earlier confirmed deals before it becomes confirmed.
                     List<BasicDeal> deals = new ArrayList<BasicDeal>(2);
@@ -231,20 +239,26 @@ public class OpenAINegotiator extends ANACNegotiator {
                         //add this proposal to the list of deals.
                         deals.add((BasicDeal) standingProposal.getProposedDeal());
 
-                        // if (Utilities.testConsistency(game, deals) != null) {
-                        //     this.rejectProposal(standingProposal.getId());
-                        // }
-
-                        // JC: In order to study simpler scenarios first, reject all incoming negotiations
-                        this.rejectProposal(standingProposal.getId());
+                        if (Utilities.testConsistency(game, deals) != null) {
+                            this.rejectProposal(standingProposal.getId());
+                        }
 
                         //remove the deal again from the list, so that we can add the next standing deal to the list in the next iteration.
                         deals.remove(1);
                     }
 
-                    // JC: If one of our deals was accepted and confirmed, trigger accepted deal
-                    // TODO: Make sure this only happens to our deals
-                    // this.openAIAdapter.acceptedDeal();
+                    // JC: When deals are created, their ID is "<name of power><number of deals already proposed>"
+                    // If the ID contains our name, then it was proposed by us
+                    boolean proposedByMe = confirmedProposal.getId().toLowerCase().contains(this.me.getName().toLowerCase());
+
+                    // JC: If our only deal this round was accepted and confirmed, trigger accepted deal. If not, we will consider that
+                    // the deal was not accepted.
+                    if (proposedByMe) {
+                        this.getLogger().logln(me.getName() + ".negotiate() Our deal with ID: " + confirmedProposal.getId() + " has been confirmed", this.printToConsole);
+                        this.openAIAdapter.dealWasAccepted = true;
+                    } else {
+                        // do nothing, because we already assume the deal was not accepted
+                    }
 
                 } else if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.REJECT)) {
 
@@ -258,40 +272,35 @@ public class OpenAINegotiator extends ANACNegotiator {
                     // However, this is not true if the reject message is sent after the Notary has already sent a confirm
                     // message for that proposal. Once a proposal is confirmed it cannot be undone anymore.
 
-                    // JC: If deal was rejected
-                    // TODO: Make sure this only happens to our deals
-                    // this.openAIAdapter.rejectedDeal();
                 } else {
 
                     //We have received any other kind of message.
-
-                    // this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), true);
-
+                    // this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), this.printToConsole);
                 }
 
             }
 
-
             //STEP 2:  try to find a proposal to make, and if we do find one, propose it.
-
             if (newDealToPropose == null) { //we only make one proposal per round, so we skip this if we have already proposed something.
 
-                // JC: IMPORTANT LINE
-                // It is here that the DipQ is called to generate a new deal
+                // JC: It is here that the OpenAI module is called to generate a new deal
                 newDealToPropose = this.openAIAdapter.getDealFromDipQ();
 
                 // JC: If the Python module does not return anything or connection could not be made, use the default function to find deals
-                if(newDealToPropose == null) {
-                    this.getLogger().logln("No deal was received from DipQ. Proceeding with default deal proposal.", true);
+                if (newDealToPropose == null) {
+                    this.getLogger().logln("No deal was received from DipQ. Proceeding with default deal proposal.", this.printToConsole);
                     newDealToPropose = searchForNewDealToPropose();
-                }
-
-                if (newDealToPropose != null) {
-                    this.getLogger().logln(me.getName() + ".negotiate() Proposing: " + newDealToPropose, true);
-                    this.proposeDeal(newDealToPropose);
                 }
             }
 
+            if (newDealToPropose != null) {
+                this.getLogger().logln(me.getName() + ".negotiate() Proposing: " + newDealToPropose, this.printToConsole);
+                this.proposeDeal(newDealToPropose);
+            } else {
+                this.getLogger().logln(me.getName() + ".negotiate() Could not find any deal to propose.", this.printToConsole);
+            }
+
+            // Wait before next cycle
             try {
                 Thread.sleep(250);
             } catch (InterruptedException e) {

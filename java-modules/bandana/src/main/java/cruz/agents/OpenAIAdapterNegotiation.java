@@ -20,37 +20,22 @@ import java.util.Map;
  */
 public class OpenAIAdapterNegotiation extends OpenAIAdapter {
 
-    /**
-     * Reward given for each deal rejected by other players
-     */
-    public static final int REJECTED_DEAL_REWARD = -5;
+    // REWARD FIELDS BEGIN
 
-    /**
-     * Reward given for each deal accepted by other players.
-     */
-    public static final int ACCEPTED_DEAL_REWARD = +5;
+    /**  Reward given for each deal accepted by other players. Rejected deals receive negative reward. */
+    private static final int ACCEPTED_DEAL_REWARD = +10;
 
-    /**
-     * Reward given for winning the game
-     */
+    /**  Reward given for winning the game. Games lost received nehative reward. */
     public static final int WON_GAME_REWARD = +100;
 
-    /**
-     * Reward given for losing the game
-     */
-    public static final int LOST_GAME_REWARD = -100;
+    /** Reward given for capturing a Supply Center (SC). Losing a SC gives a negative reward with the same value. */
+    private static final int CAPTURED_SC_REWARD = +100;
 
-    /**
-     * Reward given for generating an invalid deal
-     */
-    public static final int INVALID_DEAL_REWARD = -5;
+    boolean dealWasAccepted = false;
 
-    /**
-     * Reward given for capturing a Supply Center (SC). Losing a SC gives a negative reward with the same value.
-     */
-    public static final int CAPTURED_SC_REWARD = +10;
+    // REWARD FIELDS END
 
-
+    /** The agent instance attached to this adapter. */
     private OpenAINegotiator agent;
 
     OpenAIAdapterNegotiation(OpenAINegotiator agent) {
@@ -138,7 +123,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
 
         /* Because we do not want to choose ourselves and we are index number 1 and NONE is 0, just add 2 to the index that comes
          * from Gym. This is why we use NUMBER_OF_OPPONENTS instead of NUMBER_OF_PLAYERS in the environment. */
-        int trueOpponentPowerIndex = dealData.getPowerToPropose() + 1;
+        int trueOpponentPowerIndex = dealData.getPowerToPropose() + 2;
 
         for (Map.Entry<String, Integer> entry : powerNameToInt.entrySet()) {
             if (entry.getValue() == trueOpponentPowerIndex) {
@@ -248,7 +233,18 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
 
     @Override
     protected float calculateReward() {
-        return this.balanceOfScs() * CAPTURED_SC_REWARD;
+        float reward = 0;
+        reward += this.balanceOfScs() * CAPTURED_SC_REWARD;
+        reward += (this.dealWasAccepted ? 1 : -1) * ACCEPTED_DEAL_REWARD;
+
+        this.resetRewardValues();
+
+        return reward;
+    }
+
+    protected void resetRewardValues() {
+        // Reset deal was accepted back to false for the next observation
+        this.dealWasAccepted = false;
     }
 
     @Override
