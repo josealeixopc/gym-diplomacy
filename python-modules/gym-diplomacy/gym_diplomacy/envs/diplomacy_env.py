@@ -86,7 +86,6 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
     done: bool = False
     reward: float = 0
 
-    terminate = False
     termination_complete = False
     terminate_socket = False
 
@@ -174,6 +173,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
             else:
                 self._init_bandana(self.enable_bandana_output)
 
+            # If server has not been initialized, create server
             if self.server is None:
                 self._init_socket_server()
 
@@ -227,10 +227,8 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
 
         logger.info("Closing environment.")
 
-        self.terminate = True
-
         if self.server is not None:
-            self.server.shutdown()
+            self._terminate_socket_server()
 
         if self.bandana_subprocess is not None:
             self._kill_bandana()

@@ -2590,7 +2590,7 @@ public final class ProtoMessage {
         if (value == null) {
           throw new NullPointerException();
         }
-
+        
         type_ = value.getNumber();
         onChanged();
         return this;
@@ -2599,7 +2599,7 @@ public final class ProtoMessage {
        * <code>.dip_q.DiplomacyGymOrdersResponse.Type type = 1;</code>
        */
       public Builder clearType() {
-
+        
         type_ = 0;
         onChanged();
         return this;
@@ -2690,7 +2690,7 @@ public final class ProtoMessage {
        * <code>.dip_q.OrdersData orders = 2;</code>
        */
       public cruz.agents.ProtoMessage.OrdersData.Builder getOrdersBuilder() {
-
+        
         onChanged();
         return getOrdersFieldBuilder().getBuilder();
       }
@@ -2709,7 +2709,7 @@ public final class ProtoMessage {
        * <code>.dip_q.OrdersData orders = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cruz.agents.ProtoMessage.OrdersData, cruz.agents.ProtoMessage.OrdersData.Builder, cruz.agents.ProtoMessage.OrdersDataOrBuilder>
+          cruz.agents.ProtoMessage.OrdersData, cruz.agents.ProtoMessage.OrdersData.Builder, cruz.agents.ProtoMessage.OrdersDataOrBuilder> 
           getOrdersFieldBuilder() {
         if (ordersBuilder_ == null) {
           ordersBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -3443,7 +3443,7 @@ public final class ProtoMessage {
        * <code>int32 unit = 4;</code>
        */
       public Builder setUnit(int value) {
-
+        
         unit_ = value;
         onChanged();
         return this;
@@ -3456,7 +3456,7 @@ public final class ProtoMessage {
        * <code>int32 unit = 4;</code>
        */
       public Builder clearUnit() {
-
+        
         unit_ = 0;
         onChanged();
         return this;
@@ -4745,7 +4745,7 @@ public final class ProtoMessage {
        * <code>int32 player = 5;</code>
        */
       public Builder setPlayer(int value) {
-
+        
         player_ = value;
         onChanged();
         return this;
@@ -4754,7 +4754,7 @@ public final class ProtoMessage {
        * <code>int32 player = 5;</code>
        */
       public Builder clearPlayer() {
-
+        
         player_ = 0;
         onChanged();
         return this;
@@ -5293,6 +5293,15 @@ public final class ProtoMessage {
      * <code>.dip_q.DealData.MTOOrderData theirMove = 3;</code>
      */
     cruz.agents.ProtoMessage.DealData.MTOOrderDataOrBuilder getTheirMoveOrBuilder();
+
+    /**
+     * <pre>
+     * How many phases from now should the order be executed
+     * </pre>
+     *
+     * <code>int32 phasesFromNow = 4;</code>
+     */
+    int getPhasesFromNow();
   }
   /**
    * Protobuf type {@code dip_q.DealData}
@@ -5362,6 +5371,11 @@ public final class ProtoMessage {
                 theirMove_ = subBuilder.buildPartial();
               }
 
+              break;
+            }
+            case 32: {
+
+              phasesFromNow_ = input.readInt32();
               break;
             }
             default: {
@@ -6051,6 +6065,19 @@ public final class ProtoMessage {
       return getTheirMove();
     }
 
+    public static final int PHASESFROMNOW_FIELD_NUMBER = 4;
+    private int phasesFromNow_;
+    /**
+     * <pre>
+     * How many phases from now should the order be executed
+     * </pre>
+     *
+     * <code>int32 phasesFromNow = 4;</code>
+     */
+    public int getPhasesFromNow() {
+      return phasesFromNow_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6074,6 +6101,9 @@ public final class ProtoMessage {
       if (theirMove_ != null) {
         output.writeMessage(3, getTheirMove());
       }
+      if (phasesFromNow_ != 0) {
+        output.writeInt32(4, phasesFromNow_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -6094,6 +6124,10 @@ public final class ProtoMessage {
       if (theirMove_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, getTheirMove());
+      }
+      if (phasesFromNow_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, phasesFromNow_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6122,6 +6156,8 @@ public final class ProtoMessage {
         if (!getTheirMove()
             .equals(other.getTheirMove())) return false;
       }
+      if (getPhasesFromNow()
+          != other.getPhasesFromNow()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -6143,6 +6179,8 @@ public final class ProtoMessage {
         hash = (37 * hash) + THEIRMOVE_FIELD_NUMBER;
         hash = (53 * hash) + getTheirMove().hashCode();
       }
+      hash = (37 * hash) + PHASESFROMNOW_FIELD_NUMBER;
+      hash = (53 * hash) + getPhasesFromNow();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -6290,6 +6328,8 @@ public final class ProtoMessage {
           theirMove_ = null;
           theirMoveBuilder_ = null;
         }
+        phasesFromNow_ = 0;
+
         return this;
       }
 
@@ -6327,6 +6367,7 @@ public final class ProtoMessage {
         } else {
           result.theirMove_ = theirMoveBuilder_.build();
         }
+        result.phasesFromNow_ = phasesFromNow_;
         onBuilt();
         return result;
       }
@@ -6383,6 +6424,9 @@ public final class ProtoMessage {
         }
         if (other.hasTheirMove()) {
           mergeTheirMove(other.getTheirMove());
+        }
+        if (other.getPhasesFromNow() != 0) {
+          setPhasesFromNow(other.getPhasesFromNow());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6755,6 +6799,44 @@ public final class ProtoMessage {
           theirMove_ = null;
         }
         return theirMoveBuilder_;
+      }
+
+      private int phasesFromNow_ ;
+      /**
+       * <pre>
+       * How many phases from now should the order be executed
+       * </pre>
+       *
+       * <code>int32 phasesFromNow = 4;</code>
+       */
+      public int getPhasesFromNow() {
+        return phasesFromNow_;
+      }
+      /**
+       * <pre>
+       * How many phases from now should the order be executed
+       * </pre>
+       *
+       * <code>int32 phasesFromNow = 4;</code>
+       */
+      public Builder setPhasesFromNow(int value) {
+        
+        phasesFromNow_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * How many phases from now should the order be executed
+       * </pre>
+       *
+       * <code>int32 phasesFromNow = 4;</code>
+       */
+      public Builder clearPhasesFromNow() {
+        
+        phasesFromNow_ = 0;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -7288,7 +7370,7 @@ public final class ProtoMessage {
        * <code>int32 start = 1;</code>
        */
       public Builder setStart(int value) {
-
+        
         start_ = value;
         onChanged();
         return this;
@@ -7297,7 +7379,7 @@ public final class ProtoMessage {
        * <code>int32 start = 1;</code>
        */
       public Builder clearStart() {
-
+        
         start_ = 0;
         onChanged();
         return this;
@@ -7314,7 +7396,7 @@ public final class ProtoMessage {
        * <code>int32 action = 2;</code>
        */
       public Builder setAction(int value) {
-
+        
         action_ = value;
         onChanged();
         return this;
@@ -7323,7 +7405,7 @@ public final class ProtoMessage {
        * <code>int32 action = 2;</code>
        */
       public Builder clearAction() {
-
+        
         action_ = 0;
         onChanged();
         return this;
@@ -7340,7 +7422,7 @@ public final class ProtoMessage {
        * <code>int32 destination = 3;</code>
        */
       public Builder setDestination(int value) {
-
+        
         destination_ = value;
         onChanged();
         return this;
@@ -7349,7 +7431,7 @@ public final class ProtoMessage {
        * <code>int32 destination = 3;</code>
        */
       public Builder clearDestination() {
-
+        
         destination_ = 0;
         onChanged();
         return this;
@@ -7414,7 +7496,7 @@ public final class ProtoMessage {
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
      */
-    java.util.List<cruz.agents.ProtoMessage.OrderData>
+    java.util.List<cruz.agents.ProtoMessage.OrderData> 
         getOrdersList();
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
@@ -7427,7 +7509,7 @@ public final class ProtoMessage {
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
      */
-    java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder>
+    java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
         getOrdersOrBuilderList();
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
@@ -7530,7 +7612,7 @@ public final class ProtoMessage {
     /**
      * <code>repeated .dip_q.OrderData orders = 1;</code>
      */
-    public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder>
+    public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
         getOrdersOrBuilderList() {
       return orders_;
     }
@@ -7858,7 +7940,7 @@ public final class ProtoMessage {
               ordersBuilder_ = null;
               orders_ = other.orders_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              ordersBuilder_ =
+              ordersBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getOrdersFieldBuilder() : null;
             } else {
@@ -8091,7 +8173,7 @@ public final class ProtoMessage {
       /**
        * <code>repeated .dip_q.OrderData orders = 1;</code>
        */
-      public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder>
+      public java.util.List<? extends cruz.agents.ProtoMessage.OrderDataOrBuilder> 
            getOrdersOrBuilderList() {
         if (ordersBuilder_ != null) {
           return ordersBuilder_.getMessageOrBuilderList();
@@ -8117,12 +8199,12 @@ public final class ProtoMessage {
       /**
        * <code>repeated .dip_q.OrderData orders = 1;</code>
        */
-      public java.util.List<cruz.agents.ProtoMessage.OrderData.Builder>
+      public java.util.List<cruz.agents.ProtoMessage.OrderData.Builder> 
            getOrdersBuilderList() {
         return getOrdersFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          cruz.agents.ProtoMessage.OrderData, cruz.agents.ProtoMessage.OrderData.Builder, cruz.agents.ProtoMessage.OrderDataOrBuilder>
+          cruz.agents.ProtoMessage.OrderData, cruz.agents.ProtoMessage.OrderData.Builder, cruz.agents.ProtoMessage.OrderDataOrBuilder> 
           getOrdersFieldBuilder() {
         if (ordersBuilder_ == null) {
           ordersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
@@ -8200,7 +8282,7 @@ public final class ProtoMessage {
       internal_static_dip_q_DiplomacyGymResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_DiplomacyGymOrdersResponse_descriptor;
-  private static final
+  private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_DiplomacyGymOrdersResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
@@ -8230,12 +8312,12 @@ public final class ProtoMessage {
       internal_static_dip_q_DealData_MTOOrderData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_OrderData_descriptor;
-  private static final
+  private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_OrderData_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dip_q_OrdersData_descriptor;
-  private static final
+  private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dip_q_OrdersData_fieldAccessorTable;
 
@@ -8267,15 +8349,16 @@ public final class ProtoMessage {
       "ta\022&\n\tprovinces\030\001 \003(\0132\023.dip_q.ProvinceDa" +
       "ta\022\034\n\024previousActionReward\030\002 \001(\002\022\014\n\004done" +
       "\030\003 \001(\010\022\014\n\004info\030\004 \001(\t\022\016\n\006player\030\005 \001(\005\"\020\n\016" +
-      "AcceptanceData\"\306\001\n\010DealData\022\026\n\016powerToPr" +
+      "AcceptanceData\"\335\001\n\010DealData\022\026\n\016powerToPr" +
       "opose\030\001 \001(\005\022-\n\007ourMove\030\002 \001(\0132\034.dip_q.Dea" +
       "lData.MTOOrderData\022/\n\ttheirMove\030\003 \001(\0132\034." +
-      "dip_q.DealData.MTOOrderData\032B\n\014MTOOrderD" +
-      "ata\022\025\n\rstartProvince\030\001 \001(\005\022\033\n\023destinatio" +
-      "nProvince\030\002 \001(\005\"?\n\tOrderData\022\r\n\005start\030\001 " +
-      "\001(\005\022\016\n\006action\030\002 \001(\005\022\023\n\013destination\030\003 \001(\005" +
-      "\".\n\nOrdersData\022 \n\006orders\030\001 \003(\0132\020.dip_q.O" +
-      "rderDataB\r\n\013cruz.agentsb\006proto3"
+      "dip_q.DealData.MTOOrderData\022\025\n\rphasesFro" +
+      "mNow\030\004 \001(\005\032B\n\014MTOOrderData\022\025\n\rstartProvi" +
+      "nce\030\001 \001(\005\022\033\n\023destinationProvince\030\002 \001(\005\"?" +
+      "\n\tOrderData\022\r\n\005start\030\001 \001(\005\022\016\n\006action\030\002 \001" +
+      "(\005\022\023\n\013destination\030\003 \001(\005\".\n\nOrdersData\022 \n" +
+      "\006orders\030\001 \003(\0132\020.dip_q.OrderDataB\r\n\013cruz." +
+      "agentsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8330,7 +8413,7 @@ public final class ProtoMessage {
     internal_static_dip_q_DealData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_DealData_descriptor,
-        new java.lang.String[] { "PowerToPropose", "OurMove", "TheirMove", });
+        new java.lang.String[] { "PowerToPropose", "OurMove", "TheirMove", "PhasesFromNow", });
     internal_static_dip_q_DealData_MTOOrderData_descriptor =
       internal_static_dip_q_DealData_descriptor.getNestedTypes().get(0);
     internal_static_dip_q_DealData_MTOOrderData_fieldAccessorTable = new
@@ -8353,4 +8436,3 @@ public final class ProtoMessage {
 
   // @@protoc_insertion_point(outer_class_scope)
 }
-

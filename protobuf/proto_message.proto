@@ -103,6 +103,9 @@ message DealData {
 
   // The Move order we propose the other to execute
   MTOOrderData theirMove = 3;
+
+  // How many phases from now should the order be executed
+  int32 phasesFromNow = 4;
 }
 
 message OrderData {

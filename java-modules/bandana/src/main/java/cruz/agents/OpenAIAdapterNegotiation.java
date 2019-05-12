@@ -6,9 +6,11 @@ import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.OrderCommitment;
 import ddejonge.bandana.tournament.GameResult;
 import es.csic.iiia.fabregues.dip.board.Game;
+import es.csic.iiia.fabregues.dip.board.Phase;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.orders.*;
+import jdk.internal.vm.compiler.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -105,13 +107,17 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         // Add MY order commitment
         Province ourStartProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getStartProvince());
         Province ourDestinationProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getDestinationProvince());
+        Pair<Integer, Phase> yearAndPhaseOfDeal = Utilities.calculatePhaseAndYear(this.agent.game.getYear(), this.agent.game.getPhase(), dealData.getPhasesFromNow());
+
+        Phase phaseOfDeal = yearAndPhaseOfDeal.getRight();
+        int yearOfDeal = yearAndPhaseOfDeal.getLeft();
 
         Order ourOrder = new MTOOrder(
                 this.agent.me,
                 ourStartProvince.getRegions().get(0),
                 ourDestinationProvince.getRegions().get(0));
 
-        OrderCommitment ourOC = new OrderCommitment(this.agent.game.getYear(), this.agent.game.getPhase(), ourOrder);
+        OrderCommitment ourOC = new OrderCommitment(yearOfDeal, phaseOfDeal, ourOrder);
 
         ocs.add(ourOC);
 
@@ -139,7 +145,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
                 theirDestinationProvince.getRegions().get(0)
         );
 
-        OrderCommitment theirOC = new OrderCommitment(this.agent.game.getYear(), this.agent.game.getPhase(), theirOrder);
+        OrderCommitment theirOC = new OrderCommitment(yearOfDeal, phaseOfDeal, theirOrder);
 
         ocs.add(theirOC);
 

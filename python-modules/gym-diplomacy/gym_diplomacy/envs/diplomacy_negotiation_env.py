@@ -28,6 +28,7 @@ logger.disabled = False
 NUMBER_OF_PLAYERS = 7
 NUMBER_OF_OPPONENTS = NUMBER_OF_PLAYERS - 1
 NUMBER_OF_PROVINCES = 75
+NUMBER_OF_PHASES_AHEAD = 20
 
 
 def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
@@ -84,6 +85,7 @@ def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     deal_data.powerToPropose = action[2]
     deal_data.ourMove.CopyFrom(our_move)
     deal_data.theirMove.CopyFrom(their_move)
+    deal_data.phasesFromNow = action[5]
 
     return deal_data
 
@@ -130,15 +132,17 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
         # province to move OUR to,
         # opponent to propose OC to,
         # province for THEIR unit to move,
-        # destination province of THEIR unit
+        # destination province of THEIR unit,
+        # how many phases from now should it be done (0 means the current one)
         # ]
         #
-        # Eg: Action [1, 2, 2, 5, 6] proposes an order
+        # Eg: Action [1, 2, 2, 5, 6, 2] proposes an order
         # commitment for us to move from province 1 to 2 and an order commitment to player 2 for moving a unit from
-        # province 5 to 6
+        # province 5 to 6, 2 phases from now
 
         self.action_space = spaces.MultiDiscrete([NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES,
-                                                  NUMBER_OF_OPPONENTS, NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES])
+                                                  NUMBER_OF_OPPONENTS, NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES,
+                                                  NUMBER_OF_PHASES_AHEAD])
 
     def handle_request(self, request: bytearray) -> bytes:
         request_data: proto_message_pb2.BandanaRequest = proto_message_pb2.BandanaRequest()
@@ -192,26 +196,15 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
             if self.done:
                 # Return empty deal because game is over and BANDANA needs a response
                 logger.debug("Sending empty deal to finalize program.")
-
-                self._terminate_socket_server()
                 return response_data
 
             if time.time() > timeout:
                 logger.info("Timed out waiting for step function. Either step is taking too long or it hasn't been "
                             "called in '{}' seconds.".format(time_to_timeout))
 
-                # The socket needs to be terminated, otherwise it'll hang
-                self._terminate_socket_server()
-
                 # Bandana needs to be killed, otherwise it'll ask for one more action when it shouldn't
                 self._kill_bandana()
 
-                return response_data
-
-            if self.terminate:
-                logger.debug("Close has been called, so we are terminating the waiting for action loop.")
-                self._terminate_socket_server()
-                # self.clean_up()
                 return response_data
 
         # Once we have the action, send it as a deal
