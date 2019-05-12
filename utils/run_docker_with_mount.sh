@@ -7,5 +7,5 @@ docker run -d \
   -it \
   --rm \
   --name dip-q \
-  --mount type=bind,source="/tmp/gym",target="/tmp/gym" \
+  --mount type=bind,source="/tmp/dip",target="/tmp/dip" \
   dip-q:latest

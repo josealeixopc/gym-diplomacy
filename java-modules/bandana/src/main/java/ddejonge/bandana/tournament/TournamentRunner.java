@@ -17,7 +17,7 @@ public class TournamentRunner {
     final static boolean MODE = true;  //Strategy/false vs Negotiation/true
 	final static int REMOTE_DEBUG = 0;	// JC: determine whether I want to remote debug the OpenAI jar or not
     private final static String GAME_MAP = "standard"; // Game map can be 'standard' or 'small'
-    private final static String FINAL_YEAR = "1910";
+    private final static String FINAL_YEAR = "1920";
 
     // JC: Using a custom map to define how many players are there on each custom map
     private final static Map<String, Integer> mapToNumberOfPlayers  = new HashMap<String, Integer>() {{
@@ -33,7 +33,7 @@ public class TournamentRunner {
 	final static String[] randomNegotiatorCommand = {"java", "-jar", "agents/RandomNegotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", FINAL_YEAR};
 	final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", FINAL_YEAR};
 	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", FINAL_YEAR};
-	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", };
+	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", FINAL_YEAR};
 	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
 	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", FINAL_YEAR};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
@@ -46,7 +46,8 @@ public class TournamentRunner {
 
 	//Main folder where all the logs are stored. For each tournament a new folder will be created inside this folder
 	// where the results of the tournament will be logged.
-	final static String LOG_FOLDER = "log";
+	// final static String LOG_FOLDER = "log";
+    final static String LOG_FOLDER = "/tmp/dip/bandana";
 	
 	
 	public static void main(String[] args) throws IOException {
@@ -85,6 +86,9 @@ public class TournamentRunner {
 
         TournamentObserver tournamentObserver = null;
 
+        long startTime = System.currentTimeMillis();
+        long elapsedTime;
+
         try {
             // JC: get number of participants from GAME_MAP
             int numberOfParticipants = mapToNumberOfPlayers.get(GAME_MAP);
@@ -115,7 +119,7 @@ public class TournamentRunner {
 
             //2. Create a TournamentObserver to monitor the games and accumulate the results.
             // JC: Use "windowless = true" to run without any Diplomacy Monitor and, hence, being able to run on a server
-            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, true);
+            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, false);
 
             //3. Run the Negotiation Server.
             if (MODE) {
@@ -141,10 +145,10 @@ public class TournamentRunner {
                     if(MODE) {
                         //make sure that each player has a different name.
                         if (i < numberOfParticipants - 1) {
-                            name = "RandomNegotiatorBot " + i;
+                            name = "RandomNegotiator " + i;
                             command = randomNegotiatorCommand;
                         } else {
-                            name = "OpenAIBot " + i;
+                            name = "OpenAIBotNegotiator " + i;
                             command = openAIBotNegotiatorCommand;
                         }
                     }
@@ -199,6 +203,7 @@ public class TournamentRunner {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
 
                     if (tournamentObserver.playerFailed()) {
@@ -209,6 +214,9 @@ public class TournamentRunner {
             }
 
             System.out.println("TOURNAMENT FINISHED");
+            elapsedTime = System.currentTimeMillis() - startTime;
+            System.out.println("Tournament took: " + elapsedTime + " milliseconds.");
+
 
             //Get the results of all the games played in this tournament.
             // Each GameResult object contains the results of one game.
@@ -227,6 +235,9 @@ public class TournamentRunner {
                     e.printStackTrace();
                 }
             }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 	    finally {
             // JC: Added in case exception are thrown during development

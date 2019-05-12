@@ -37,7 +37,7 @@ best_mean_reward, n_steps = -np.inf, 0
 
 # Create log dir
 current_time_string = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-log_dir = "/tmp/gym/"
+log_dir = "/tmp/dip/gym/"
 pickle_dir = log_dir + "pickles/"
 os.makedirs(log_dir, exist_ok=True)
 os.makedirs(pickle_dir, exist_ok=True)

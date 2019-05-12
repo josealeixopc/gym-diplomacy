@@ -132,7 +132,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
 
         // Add THEIR order commitment
         Province theirStartProvince = this.agent.game.getProvinces().get(dealData.getTheirMove().getStartProvince());
-        Province theirDestionationProvince = this.agent.game.getProvinces().get(dealData.getTheirMove().getDestinationProvince());
+        Province theirDestinationProvince = this.agent.game.getProvinces().get(dealData.getTheirMove().getDestinationProvince());
 
         String nameOfPowerToProposeTo = null;
 
@@ -151,7 +151,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         Order theirOrder = new MTOOrder(
                 this.agent.game.getPower(nameOfPowerToProposeTo),
                 theirStartProvince.getRegions().get(0),
-                theirDestionationProvince.getRegions().get(0)
+                theirDestinationProvince.getRegions().get(0)
         );
 
         OrderCommitment theirOC = new OrderCommitment(this.agent.game.getYear(), this.agent.game.getPhase(), theirOrder);
