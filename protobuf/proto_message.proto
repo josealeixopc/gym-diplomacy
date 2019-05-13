@@ -80,6 +80,8 @@ message ObservationData {
 
   // Arbritary information (mostly for debug purposes).
   string info = 4;
+
+  // ID of the power controlled by the OUR player
   int32 player = 5;
 }
 

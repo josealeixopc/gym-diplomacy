@@ -3599,6 +3599,10 @@ public final class ProtoMessage {
         getInfoBytes();
 
     /**
+     * <pre>
+     * ID of the power controlled by the OUR player
+     * </pre>
+     *
      * <code>int32 player = 5;</code>
      */
     int getPlayer();
@@ -3836,6 +3840,10 @@ public final class ProtoMessage {
     public static final int PLAYER_FIELD_NUMBER = 5;
     private int player_;
     /**
+     * <pre>
+     * ID of the power controlled by the OUR player
+     * </pre>
+     *
      * <code>int32 player = 5;</code>
      */
     public int getPlayer() {
@@ -4736,12 +4744,20 @@ public final class ProtoMessage {
 
       private int player_ ;
       /**
+       * <pre>
+       * ID of the power controlled by the OUR player
+       * </pre>
+       *
        * <code>int32 player = 5;</code>
        */
       public int getPlayer() {
         return player_;
       }
       /**
+       * <pre>
+       * ID of the power controlled by the OUR player
+       * </pre>
+       *
        * <code>int32 player = 5;</code>
        */
       public Builder setPlayer(int value) {
@@ -4751,6 +4767,10 @@ public final class ProtoMessage {
         return this;
       }
       /**
+       * <pre>
+       * ID of the power controlled by the OUR player
+       * </pre>
+       *
        * <code>int32 player = 5;</code>
        */
       public Builder clearPlayer() {

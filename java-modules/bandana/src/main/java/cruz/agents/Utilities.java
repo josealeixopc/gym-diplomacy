@@ -1,13 +1,13 @@
 package cruz.agents;
 
-import com.sun.tools.javac.util.Pair;
 import es.csic.iiia.fabregues.dip.board.Game;
 import es.csic.iiia.fabregues.dip.board.Phase;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
 
-
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Vector;
 
 public class Utilities {
@@ -46,7 +46,7 @@ public class Utilities {
         return orderedPhases;
     }
 
-    public static Pair<Integer, Phase> calculatePhaseAndYear(int currentYear, Phase currentPhase, int numberOfPhasesAhead) {
+    public static Map.Entry<Integer, Phase> calculatePhaseAndYear(int currentYear, Phase currentPhase, int numberOfPhasesAhead) {
         ArrayList<Phase> orderedPhases = getOrderedPhasesInYear();
 
         int currentPhaseIndex = orderedPhases.indexOf(currentPhase);
@@ -58,6 +58,6 @@ public class Utilities {
 
         Phase nextPhase = orderedPhases.get(nextPhaseIndex);
 
-        return new Pair<>(nextYear, nextPhase);
+        return new AbstractMap.SimpleEntry<>(nextYear, nextPhase);
     }
 }

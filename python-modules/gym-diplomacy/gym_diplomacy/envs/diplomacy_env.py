@@ -289,17 +289,29 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
         if self.bandana_subprocess is None:
             logger.info("No BANDANA process to terminate.")
         else:
-            logger.info("Terminating BANDANA process...")
+            poll = self.bandana_subprocess.poll()
+            if poll is not None:
+                logger.info("BANDANA subprocess has already terminated.")
+            else:
+                logger.info("Terminating BANDANA process...")
 
-            # Killing the process group (pg) also kills the children, whereas killing the process would leave the
-            # children as orphan processes
-            os.killpg(os.getpgid(self.bandana_subprocess.pid), signal.SIGTERM)
-            self.bandana_subprocess.wait()
+                # Wait 1 second to terminate gracefully
+                # For some reason, most of the time it won't terminated gracefully, so we just shut it down.
+                # TODO: Fix bandana_subprocess not terminating gracefully
+                # exitcode = self.bandana_subprocess.wait(timeout=1)
+                exitcode = -1
 
-            logger.info("BANDANA process terminated.")
+                # If not terminated gracefully, then force shutdown.
+                if exitcode != 0:
+                    # Killing the process group (pg) also kills the children, whereas killing the process would
+                    # leave the children as orphan processes
+                    os.killpg(os.getpgid(self.bandana_subprocess.pid), signal.SIGTERM)
+                    logger.info("BANDANA process terminated forcefully.")
+                else:
+                    logger.info("BANDANA process terminated gracefully.")
 
-            # Set current process to None
-            self.bandana_subprocess = None
+                # Set current process to None
+                self.bandana_subprocess = None
 
     def _init_socket_server(self):
         self.server = DiplomacyThreadedTCPServer(self, 5000, DiplomacyTCPHandler)

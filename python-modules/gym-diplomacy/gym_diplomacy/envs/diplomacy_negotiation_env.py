@@ -45,7 +45,9 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
         raise ValueError("Number of provinces is not consistent. Constant variable is '{}' while received number of "
                          "provinces is '{}'.".format(NUMBER_OF_PROVINCES, number_of_provinces))
 
-    observation = np.zeros(number_of_provinces * 2)
+    size_of_observation: int = (number_of_provinces * 2) + 1
+
+    observation = np.zeros(size_of_observation)
 
     for province in observation_data.provinces:
         # simply for type hint and auto-completion
@@ -54,6 +56,8 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
         # id - 1 because the ids begin at 1
         observation[(province.id - 1) * 2] = province.owner
         observation[(province.id - 1) * 2 + 1] = province.sc
+
+    observation[size_of_observation - 1] = observation_data.player
 
     reward = observation_data.previousActionReward
     done = observation_data.done
@@ -116,13 +120,19 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
         raise NotImplementedError
 
     def _init_observation_space(self):
-        # Observation space: [[province owner, province has supply center] * number of provinces]
-        # Eg: If observation_space[2] is [5, 0], then the second province belongs to player 5 and does NOT have a SC
+        # Observation space: [[province owner, province has supply center] * number of provinces, our_power_id]
+        # Eg: If observation_space[0] is 5 and observation_space[1] is 0,
+        # then the second province belongs to player 5 and does NOT have a SC.
+        # The last integer denotes the ID of the power the current player is controlling.
 
         observation_space_description = []
 
+        # Extend for each province
         for i in range(NUMBER_OF_PROVINCES):
-            observation_space_description.extend([NUMBER_OF_PLAYERS, 2])
+            observation_space_description.extend([NUMBER_OF_PLAYERS + 1, 2])    # +1 because of the NONE power
+
+        # Extend for the ID of the power we are controlling
+        observation_space_description.extend([NUMBER_OF_PLAYERS])
 
         self.observation_space = spaces.MultiDiscrete(observation_space_description)
 

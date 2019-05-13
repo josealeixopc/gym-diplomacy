@@ -76,7 +76,6 @@ public class TournamentRunner {
         });
 
 		run(numberOfGames, deadlineForMovePhases, deadlineForRetreatPhases, deadlineForBuildPhases, finalYear);
-		
 	}
 	
 	
@@ -230,7 +229,7 @@ public class TournamentRunner {
             // (if everything is implemented okay this isn't necessary because the players should kill themselves. But just to be sure..)
             for (Process playerProcess : players) {
                 try {
-                    playerProcess.waitFor(5, TimeUnit.SECONDS);
+                    playerProcess.waitFor(1, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -35,9 +35,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-class ANACPlayer extends Player {
+public class ANACPlayer extends Player {
     public static final int DEFAULT_FINAL_YEAR = 2000;
-    public final int NEGOTIATION_LENGTH = 300;
+    public static final int NEGOTIATION_LENGTH = 100; // in milliseconds
     DBraneTactics dbraneTactics = new DBraneTactics();
     ANACNegotiator anacNegotiator;
     private Random random = new Random();

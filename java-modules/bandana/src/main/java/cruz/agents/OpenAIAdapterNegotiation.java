@@ -1,7 +1,6 @@
 package cruz.agents;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.sun.tools.javac.util.Pair;
 import ddejonge.bandana.negoProtocol.BasicDeal;
 import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.OrderCommitment;
@@ -12,10 +11,7 @@ import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.orders.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The class that makes the connection between the Open AI environment and the BANDANA player.
@@ -45,14 +41,48 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
     }
 
     /**
+     * Creates the the mapping of a power's name to it's respective ID, which will be used in the OpenAI agent.
+     *
+     * In this override, the powers are organized alphabetically.
+     * This way, the ID of a power will be the SAME throughout every standard game.
+     * For instance, 1 will always correspond to "AUS" in a standard game.
+     *
+     * In this case in particular, OUR power does not correspond to 1. As it does in the parent method. This is because
+     * the ID of our power will be provided as part of the observation.
+     */
+    @Override
+    protected void generatePowerNameToIntMap() {
+        this.powerNameToInt = new HashMap<>();
+        this.powerNameToInt.put("NONE", 0);
+
+        // Order alphabetically in ordered to maintain consistent order in case they are not always ordered the same way
+        List<Power> powers = this.getGame().getPowers();
+        powers.sort(new Comparator<Power>() {
+            @Override
+            public int compare(Power p1, Power p2) {
+                return p1.getName().compareToIgnoreCase(p2.getName());
+            }
+        });
+
+        int id = 1;
+        for(Power pow : powers) {
+            powerNameToInt.put(pow.getName(), id);
+            id++;
+        }
+    }
+
+    @Override
+    protected ProtoMessage.ObservationData generateObservationData() {
+        return super.generateObservationData();
+    }
+
+    /**
      * Retrieves a deal from the Open AI environment that is connected to the localhost on port 5000.
      *
      * @return A BasicDeal created with data from the Open AI module.
      */
     public BasicDeal getDealFromDipQ() {
         try {
-            this.calculateReward();
-
             byte[] message = generateRequestMessage();
 
             byte[] response = this.socketClient.sendMessageAndReceiveResponse(message);
@@ -107,10 +137,10 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         // Add MY order commitment
         Province ourStartProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getStartProvince());
         Province ourDestinationProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getDestinationProvince());
-        Pair<Integer, Phase> yearAndPhaseOfDeal = Utilities.calculatePhaseAndYear(this.agent.game.getYear(), this.agent.game.getPhase(), dealData.getPhasesFromNow());
+        Map.Entry<Integer, Phase> yearAndPhaseOfDeal = Utilities.calculatePhaseAndYear(this.agent.game.getYear(), this.agent.game.getPhase(), dealData.getPhasesFromNow());
 
-        Phase phaseOfDeal = yearAndPhaseOfDeal.snd;
-        int yearOfDeal = yearAndPhaseOfDeal.fst;
+        Phase phaseOfDeal = yearAndPhaseOfDeal.getValue();
+        int yearOfDeal = yearAndPhaseOfDeal.getKey();
 
         Order ourOrder = new MTOOrder(
                 this.agent.me,
