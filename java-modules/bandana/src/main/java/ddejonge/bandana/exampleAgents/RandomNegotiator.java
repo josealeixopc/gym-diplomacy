@@ -345,7 +345,7 @@ public class RandomNegotiator extends Player{
 	
 	void negotiate(){
 		
-		long negotiationDeadline = System.currentTimeMillis() + 3*1000; //Let's say we negotiate for 3 seconds.
+		long negotiationDeadline = System.currentTimeMillis() + 3*100; //Let's say we negotiate for 0.3 seconds.
 		
 		//This loop repeats 2 steps. The first step is to handle any incoming messages, 
 		// while the second step tries to find deals to propose to the other negotiators.

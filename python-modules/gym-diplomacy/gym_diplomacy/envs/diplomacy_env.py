@@ -87,7 +87,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
     reward: float = 0
 
     termination_complete = False
-    terminate_socket = False
+    closing: bool = False
 
     enable_bandana_output = True
 
@@ -119,43 +119,47 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
             done (boolean): whether the episode has ended, in which case further step() calls will return undefined results
             info (dict): contains auxiliary diagnostic information (helpful for debugging, and sometimes learning)
         """
+        try:
+            self.current_step_number += 1
 
-        self.current_step_number += 1
+            logger.info("Executing 'step' function...")
 
-        logger.info("Executing 'step' function...")
+            logger.debug("Waiting for 'waiting_for_action' to be set to true...")
 
-        logger.debug("Waiting for 'waiting_for_action' to be set to true...")
+            # When the agent calls step, make sure it does nothing until the agent can act
+            while not self.waiting_for_action:
+                pass
 
-        # When the agent calls step, make sure it does nothing until the agent can act
-        while not self.waiting_for_action:
-            pass
+            logger.debug("'waiting_for_action' has been set to true. Setting global action to generated action...")
 
-        logger.debug("'waiting_for_action' has been set to true. Setting global action to generated action...")
+            self.action = action
 
-        self.action = action
+            self.waiting_for_action = False
+            # After setting 'waiting_for_action' to false, the 'handle' function should send the chosen action
 
-        self.waiting_for_action = False
-        # After setting 'waiting_for_action' to false, the 'handle' function should send the chosen action
+            logger.debug("'waiting_for_action': {}".format(self.waiting_for_action))
 
-        logger.debug("'waiting_for_action': {}".format(self.waiting_for_action))
+            self.waiting_for_observation_to_be_processed = True
 
-        self.waiting_for_observation_to_be_processed = True
+            logger.debug(
+                "'waiting_for_observation_to_be_processed': {}".format(self.waiting_for_observation_to_be_processed))
 
-        logger.debug(
-            "'waiting_for_observation_to_be_processed': {}".format(self.waiting_for_observation_to_be_processed))
+            logger.debug("Waiting for new observation to be processed...")
 
-        logger.debug("Waiting for new observation to be processed...")
+            while self.waiting_for_observation_to_be_processed:
+                pass
 
-        while self.waiting_for_observation_to_be_processed:
-            pass
+            logger.debug("New observation has been processed.")
 
-        logger.debug("New observation has been processed.")
+            logger.info("Finished executing 'step' number {}: ".format(self.current_step_number))
+            logger.info("\t-observation: {}".format(self.observation))
+            logger.info("\t-reward: {}".format(self.reward))
+            logger.info("\t-done: {}".format(self.done))
+            return self.observation, self.reward, self.done, self.info
 
-        logger.info("Finished executing 'step' number {}: ".format(self.current_step_number))
-        logger.info("\t-observation: {}".format(self.observation))
-        logger.info("\t-reward: {}".format(self.reward))
-        logger.info("\t-done: {}".format(self.done))
-        return self.observation, self.reward, self.done, self.info
+        except Exception as e:
+            self.clean_up()
+            raise e
 
     def reset(self):
         """Resets the state of the environment and returns an initial observation.
@@ -227,11 +231,12 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
 
         logger.info("Closing environment.")
 
+        self.closing = True
+
+        self._kill_bandana()
+
         if self.server is not None:
             self._terminate_socket_server()
-
-        if self.bandana_subprocess is not None:
-            self._kill_bandana()
 
         self.termination_complete = True
 
@@ -374,6 +379,9 @@ class DiplomacyTCPHandler(socketserver.BaseRequestHandler):
         return data
 
     def handle(self):
+
+        self.request.setblocking(10)
+
         while True:
             data_length_bytes: bytes = self.recv_all(4)
 

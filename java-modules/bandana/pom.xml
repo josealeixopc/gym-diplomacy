@@ -132,6 +132,22 @@
                             </transformers>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>RandomNegotiator-shade</id>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <outputFile>target/random-negotiator.jar</outputFile>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>ddejonge.bandana.exampleAgents.RandomNegotiator</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

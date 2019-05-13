@@ -45,7 +45,7 @@ os.makedirs(pickle_dir, exist_ok=True)
 ### CUSTOM GLOBAL CODE END
 
 def main(args):
-    # train('ppo2', args.env_id, 200)
+    train('ppo2', args.env_id, 400)
     plot_results(log_dir)
 
 def make_env(env_id, rank, seed=0):
@@ -127,6 +127,7 @@ def train(algorithm, gym_env_id, total_timesteps, saving_interval=200):
 
         # Save new pickle before removing old ones
         model.save(pickle_dir + "{}_{}_{}_tmp".format(algorithm, gym_env_id, model_steps))
+        # model.save_tf_session(pickle_dir + "{}_{}_{}_tf_model".format(algorithm, gym_env_id, model_steps))
 
         # Remove old pickle(s)
         utils.remove_files_with_pattern(pickle_dir, algorithm + r'.*steps.pkl')

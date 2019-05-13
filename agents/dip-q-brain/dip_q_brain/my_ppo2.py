@@ -382,6 +382,9 @@ class PPO2(ActorCriticRLModel):
 
         self._save_to_file(save_path, data=data, params=params)
 
+    def save_tf_session(self, save_path):
+        saver = tf.train.Saver()
+        saver.save(sess, save_path)
 
 class Runner(AbstractEnvRunner):
     def __init__(self, *, env, model, n_steps, gamma, lam):

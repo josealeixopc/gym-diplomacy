@@ -30,7 +30,7 @@ public class TournamentRunner {
 	//Command lines to start the various agents provided with the Bandana framework.
 	// Add your own line here to run your own bot.
 	final static String[] randomBotCommand = {"java", "-jar", "agents/RandomBot.jar", "-log", "log", "-name", "RandomBot", "-fy", FINAL_YEAR};
-	final static String[] randomNegotiatorCommand = {"java", "-jar", "agents/RandomNegotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", FINAL_YEAR};
+	final static String[] randomNegotiatorCommand = {"java", "-jar", "target/random-negotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", FINAL_YEAR};
 	final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", FINAL_YEAR};
 	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", FINAL_YEAR};
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", FINAL_YEAR};

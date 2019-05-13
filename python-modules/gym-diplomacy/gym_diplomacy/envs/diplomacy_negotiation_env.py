@@ -70,8 +70,9 @@ def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     """
     deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
 
-    if action.size != 5:
-        raise ValueError("The array given does not have the correct number of elements.", action)
+    if action.size != 6:
+        raise ValueError("The array given does not have the correct number of elements. Expected {}, got {} from {}"
+                         .format(6, action.size, action))
 
     our_move: proto_message_pb2.DealData.MTOOrderData = proto_message_pb2.DealData.MTOOrderData()
     their_move: proto_message_pb2.DealData.MTOOrderData = proto_message_pb2.DealData.MTOOrderData()

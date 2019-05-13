@@ -1,6 +1,7 @@
 package cruz.agents;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.sun.tools.javac.util.Pair;
 import ddejonge.bandana.negoProtocol.BasicDeal;
 import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.OrderCommitment;
@@ -10,7 +11,6 @@ import es.csic.iiia.fabregues.dip.board.Phase;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.orders.*;
-import jdk.internal.vm.compiler.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -109,8 +109,8 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         Province ourDestinationProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getDestinationProvince());
         Pair<Integer, Phase> yearAndPhaseOfDeal = Utilities.calculatePhaseAndYear(this.agent.game.getYear(), this.agent.game.getPhase(), dealData.getPhasesFromNow());
 
-        Phase phaseOfDeal = yearAndPhaseOfDeal.getRight();
-        int yearOfDeal = yearAndPhaseOfDeal.getLeft();
+        Phase phaseOfDeal = yearAndPhaseOfDeal.snd;
+        int yearOfDeal = yearAndPhaseOfDeal.fst;
 
         Order ourOrder = new MTOOrder(
                 this.agent.me,

@@ -1,10 +1,11 @@
 package cruz.agents;
 
+import com.sun.tools.javac.util.Pair;
 import es.csic.iiia.fabregues.dip.board.Game;
 import es.csic.iiia.fabregues.dip.board.Phase;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
-import jdk.internal.vm.compiler.collections.Pair;
+
 
 import java.util.ArrayList;
 import java.util.Vector;
