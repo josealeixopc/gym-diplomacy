@@ -118,7 +118,7 @@ public class TournamentRunner {
 
             //2. Create a TournamentObserver to monitor the games and accumulate the results.
             // JC: Use "windowless = true" to run without any Diplomacy Monitor and, hence, being able to run on a server
-            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, false);
+            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, true);
 
             //3. Run the Negotiation Server.
             if (MODE) {
@@ -143,9 +143,9 @@ public class TournamentRunner {
                     // Bots for negotiation testing
                     if(MODE) {
                         //make sure that each player has a different name.
-                        if (i < numberOfParticipants - 1) {
-                            name = "RandomNegotiator " + i;
-                            command = randomNegotiatorCommand;
+                        if (i < numberOfParticipants - 3) {
+                            name = "ANACExampleNegotiator " + i;
+                            command = anacExampleBotCommand;
                         } else {
                             name = "OpenAIBotNegotiator " + i;
                             command = openAIBotNegotiatorCommand;

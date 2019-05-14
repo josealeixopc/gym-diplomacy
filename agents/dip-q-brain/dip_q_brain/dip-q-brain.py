@@ -45,7 +45,7 @@ os.makedirs(pickle_dir, exist_ok=True)
 ### CUSTOM GLOBAL CODE END
 
 def main(args):
-    train('ppo2', args.env_id, 400)
+    train('ppo2', args.env_id, args.num_steps)
     plot_results(log_dir)
 
 def make_env(env_id, rank, seed=0):
@@ -222,6 +222,7 @@ def plot_results(log_folder, title='Learning Curve'):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument('env_id', nargs='?', default='Diplomacy-v0', help='Select the environment to run')
+    parser.add_argument('--env_id', nargs='?', default='Diplomacy-v0', help='Select the environment to run')
+    parser.add_argument('--num_steps', type=int, help='The number of steps to train the agent')
     args = parser.parse_args()
     main(args)

@@ -25,12 +25,18 @@ import java.util.Random;
 
 public class OpenAINegotiator extends ANACNegotiator {
 
+    // Necessary for base player
     public Random random = new Random();
     DBraneTactics dBraneTactics;
-    // The OpenAI Adapter contains the necessary functions and fields to make the connection to the Open AI environment
+
+    /** The OpenAI Adapter that contains the necessary functions and fields to make the connection to the Open AI environment */
     OpenAIAdapterNegotiation openAIAdapter;
-    // If true, logger prints to console as well
+
+    /** Defines whether logs should be printed to console or not.*/
     boolean printToConsole = true;
+
+    /** Array of received proposals*/
+    ArrayList<DiplomacyProposal> receivedProposals;
 
     /**
      * You must implement a Constructor with exactly this signature.
@@ -46,6 +52,9 @@ public class OpenAINegotiator extends ANACNegotiator {
 
         // Create OpenAI Adapter
         this.openAIAdapter = new OpenAIAdapterNegotiation(this);
+
+        // Create array
+        this.receivedProposals = new ArrayList<>();
     }
 
     /**
@@ -206,15 +215,22 @@ public class OpenAINegotiator extends ANACNegotiator {
                     if (!outDated && consistencyReport == null) {
                         // DECIDE WHETHER OR NOT TO ACCEPT THE DEAL
 
-                        // In this simple scenario, we always reject incoming deals
-                        this.rejectProposal(receivedProposal.getId());
-                        this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, this.printToConsole);
+                        // In this scenario, use hypothetical number of SCs with new deal to determine whether we should accept it or not
+                        if(this.acceptProposal(receivedMessage)) {
+                            this.acceptProposal(receivedProposal.getId());
+                            this.getLogger().logln(me.getName() + ".negotiate()  Accepting: " + receivedProposal, this.printToConsole);
+                        }
 
-                        // This code simply flips a coin to determine whether to accept the proposal or not.
+                        // In this simple scenario, we always reject incoming deals
+                        // this.rejectProposal(receivedProposal.getId());
+                        // this.getLogger().logln(me.getName() + ".negotiate()  Rejecting: " + receivedProposal, this.printToConsole);
+
+                        // In this scenario, simply flip a coin to determine whether to accept the proposal or not.
                         // if (random.nextInt(2) == 0) { // accept with 50% probability.
                         //     this.acceptProposal(receivedProposal.getId());
                         //     this.getLogger().logln(me.getName() + ".negotiate()  Accepting: " + receivedProposal, this.printToConsole);
                         // }
+
                     }
 
                 } else if (receivedMessage.getPerformative().equals(DiplomacyNegoClient.CONFIRM)) {
@@ -507,6 +523,49 @@ public class OpenAINegotiator extends ANACNegotiator {
 
         return deal;
 
+    }
+
+    /**
+     * Function that determines whether a proposal should be accepted or not. If we earn more SCs with the deal than
+     * without it, we accept it. If we lose, we reject it. If it doesn't affect us, we only accept it if the power
+     * proposing has at least 2 SCs less than us (if it's quite weaker).
+     *
+     * @param receivedProposalMessage The message containing the proposal.
+     * @return True we should accept the deal. False otherwise.
+     */
+    private boolean acceptProposal(Message receivedProposalMessage) {
+
+        DiplomacyProposal receivedProposal = (DiplomacyProposal) receivedProposalMessage.getContent();
+
+        BasicDeal deal = (BasicDeal) receivedProposal.getProposedDeal();
+
+        List<BasicDeal> currentDeals = this.getConfirmedDeals();
+        List<BasicDeal> hypotheticalDeals = new ArrayList<>(currentDeals);
+        hypotheticalDeals.add(deal);
+
+        Plan basePlan = this.dBraneTactics.determineBestPlan(this.game, this.me, currentDeals);
+        Plan hypotheticalPlan = this.dBraneTactics.determineBestPlan(this.game, this.me, hypotheticalDeals);
+
+        if(hypotheticalPlan == null) {   // if for some reason plan returns null, reject new proposal
+            return false;
+        }
+
+        int balanceSCs = hypotheticalPlan.getValue() - basePlan.getValue();
+
+        if (balanceSCs > 0) {
+            // If we earn some SC from new deal, then accept it
+            return true;
+        }
+        else if (balanceSCs < 0) {
+            return false;
+        }
+        else {
+            Power proposingPower = this.game.getPower(receivedProposalMessage.getSender());
+
+            // If power proposing is at least 2 SCs behind us, accept deal (it may reciprocate later on)
+            // IF power proposing is stronger than that, reject deal
+            return proposingPower.getOwnedSCs().size() <= this.me.getOwnedSCs().size() - 2;
+        }
     }
 
     /**
