@@ -6,14 +6,14 @@ import ddejonge.bandana.dbraneTactics.Plan;
 import ddejonge.bandana.negoProtocol.*;
 import ddejonge.bandana.tools.Utilities;
 import ddejonge.negoServer.Message;
+import es.csic.iiia.fabregues.dip.board.Phase;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
-import es.csic.iiia.fabregues.dip.orders.HLDOrder;
-import es.csic.iiia.fabregues.dip.orders.MTOOrder;
-import es.csic.iiia.fabregues.dip.orders.Order;
+import es.csic.iiia.fabregues.dip.orders.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -566,6 +566,211 @@ public class OpenAINegotiator extends ANACNegotiator {
             // IF power proposing is stronger than that, reject deal
             return proposingPower.getOwnedSCs().size() <= this.me.getOwnedSCs().size() - 2;
         }
+    }
+
+    /**
+     * This methods returns ONE deal, to support a hold order in ONE random region. The deal is made randomly
+     * to a valid neighbour power.
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    private BasicDeal generateDefendUnitsMutual(int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        List<Power> negotiatingPowers = this.getNegotiatingPowers();
+        negotiatingPowers.remove(this.me);
+
+        // Choose random unit
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(this.me.getControlledRegions().size());
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.me.getControlledRegions().get(randomIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal with a random surrounding region.
+        for(Region adjacentRegion : adjacentRegions) {
+            Power controller = this.game.getController(adjacentRegion);
+            if(controller == null){
+                // if no one controls region, don't consider it
+                continue;
+            }
+            if (!negotiatingPowers.contains(controller)) {
+                // if it's a non-negotiating or if it's us, don't consider
+                continue;
+            }
+
+            HLDOrder hldOrderTheirs = new HLDOrder(controller, adjacentRegion);
+            HLDOrder hldOrderOurs = new HLDOrder(this.me, ourRegion);
+
+            SUPOrder supOrderTheirs = new SUPOrder(controller, ourRegion, hldOrderOurs);
+            SUPOrder supOrderOurs = new SUPOrder(this.me, adjacentRegion, hldOrderTheirs);
+
+            ocs.add(new OrderCommitment(year, phase, supOrderOurs));
+            ocs.add(new OrderCommitment(year, phase, supOrderTheirs));
+
+            BasicDeal deal = new BasicDeal(ocs, dmzs);
+            return deal;
+        }
+
+        return null;
+    }
+
+    /**
+     * This method returns ONE deal, where we choose a random Power and propose not invading (DMZ) each other's
+     * supply centers.
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    private BasicDeal generateDefendSupplyCentersMutual(int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        List<Power> negotiatingPowers = this.getNegotiatingPowers();
+        negotiatingPowers.remove(this.me);
+
+        List<Province> ourProvinces = this.me.getOwnedSCs();
+
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(negotiatingPowers.size());
+
+        // Try to get a deal with a random Power.
+        Power opponent = negotiatingPowers.get(randomIndex);
+
+        List<Province> provincesDMZ = new ArrayList<>();
+        provincesDMZ.addAll(opponent.getOwnedSCs());
+        provincesDMZ.addAll(ourProvinces);
+
+        List<Power> involvedPowers = new ArrayList<>();
+        involvedPowers.add(this.me);
+        involvedPowers.add(opponent);
+
+        dmzs.add(new DMZ(year, phase, involvedPowers, provincesDMZ));
+        return new BasicDeal(ocs, dmzs);
+    }
+
+    /**
+     * This methods returns ONE deal, to coordinate an attack on ONE random region,
+     * with the support of another random region.
+     *
+     * In this deal, WE are the main attackers (therefore we win the control).
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    private BasicDeal generateAttack(int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        List<Power> negotiatingPowers = this.getNegotiatingPowers();
+        negotiatingPowers.remove(this.me);
+
+        // Choose random unit
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(this.me.getControlledRegions().size());
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.me.getControlledRegions().get(randomIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal to attack a random surrounding region.
+        for(Region targetRegion : adjacentRegions) {
+            Power targetPower = this.game.getController(targetRegion);
+
+            List<Region> possibleSupports = new ArrayList<>(adjacentRegions);
+            possibleSupports.remove(targetRegion);
+
+            MTOOrder mtoOrder = new MTOOrder(this.me, ourRegion, targetRegion);
+
+            for(Region supportingRegion: possibleSupports) {
+                Power supportingPower = this.game.getController(supportingRegion);
+
+                if (supportingPower.equals(targetPower)) {
+                    // if the supporting power is the target, don't ask for help, obviously
+                    continue;
+                }
+
+                SUPMTOOrder supmtoOrder = new SUPMTOOrder(supportingPower, supportingRegion, mtoOrder);
+
+                ocs.add(new OrderCommitment(year, phase, mtoOrder));
+                ocs.add(new OrderCommitment(year, phase, supmtoOrder));
+
+                return new BasicDeal(ocs, dmzs);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * This methods returns ONE deal, to coordinate an attack on ONE random region,
+     * with the support of another random region.
+     *
+     * In this deal, THE OTHER OPPONENT is the main attacker (therefore they win the control).
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    private BasicDeal generateSupportAttack(int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        List<Power> negotiatingPowers = this.getNegotiatingPowers();
+        negotiatingPowers.remove(this.me);
+
+        // Choose random unit
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(this.me.getControlledRegions().size());
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.me.getControlledRegions().get(randomIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal to attack a random surrounding region.
+        for(Region targetRegion : adjacentRegions) {
+            Power targetPower = this.game.getController(targetRegion);
+
+            List<Region> possibleSupports = new ArrayList<>(adjacentRegions);
+            possibleSupports.remove(targetRegion);
+
+            for(Region regionToSupport: possibleSupports) {
+                Power powerToSupport = this.game.getController(regionToSupport);
+
+                if (powerToSupport.equals(targetPower)) {
+                    // if the supporting power is the target, don't ask for help, obviously
+                    continue;
+                }
+
+                MTOOrder mtoOrder = new MTOOrder(powerToSupport, ourRegion, targetRegion);
+                SUPMTOOrder supmtoOrder = new SUPMTOOrder(this.me, regionToSupport, mtoOrder);
+
+                ocs.add(new OrderCommitment(year, phase, mtoOrder));
+                ocs.add(new OrderCommitment(year, phase, supmtoOrder));
+
+                return new BasicDeal(ocs, dmzs);
+            }
+        }
+
+        return null;
     }
 
     /**
