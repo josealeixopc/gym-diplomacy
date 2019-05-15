@@ -29,6 +29,7 @@ NUMBER_OF_PLAYERS = 7
 NUMBER_OF_OPPONENTS = NUMBER_OF_PLAYERS - 1
 NUMBER_OF_PROVINCES = 75
 NUMBER_OF_PHASES_AHEAD = 20
+MAXIMUM_NUMBER_OF_SC = 18
 
 
 def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
@@ -74,23 +75,29 @@ def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     """
     deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
 
-    if action.size != 6:
-        raise ValueError("The array given does not have the correct number of elements. Expected {}, got {} from {}"
-                         .format(6, action.size, action))
+    defend_unit: proto_message_pb2.DealData.DefendUnitData = proto_message_pb2.DealData.DefendUnitData()
+    defend_sc: proto_message_pb2.DealData.DefendSCData = proto_message_pb2.DealData.DefendSCData()
+    attack_region: proto_message_pb2.DealData.AttackRegionData = proto_message_pb2.DealData.AttackRegionData()
+    support_attack_region: proto_message_pb2.DealData.SupportAttackRegionData = proto_message_pb2.DealData.SupportAttackRegionData()
 
-    our_move: proto_message_pb2.DealData.MTOOrderData = proto_message_pb2.DealData.MTOOrderData()
-    their_move: proto_message_pb2.DealData.MTOOrderData = proto_message_pb2.DealData.MTOOrderData()
+    defend_unit.execute = bool(action[0])
+    defend_unit.region = action[1]
 
-    our_move.startProvince = action[0]
-    our_move.destinationProvince = action[1]
+    defend_sc.execute = bool(action[2])
+    defend_sc.province = action[3]
 
-    their_move.startProvince = action[3]
-    their_move.destinationProvince = action[4]
+    attack_region.execute = bool(action[4])
+    attack_region.region = action[5]
 
-    deal_data.powerToPropose = action[2]
-    deal_data.ourMove.CopyFrom(our_move)
-    deal_data.theirMove.CopyFrom(their_move)
-    deal_data.phasesFromNow = action[5]
+    support_attack_region.execute = bool(action[6])
+    support_attack_region.region = action[7]
+
+    deal_data.defendUnit.CopyFrom(defend_unit)
+    deal_data.defendSC.CopyFrom(defend_sc)
+    deal_data.attackRegion.CopyFrom(attack_region)
+    deal_data.supportAttackRegion.CopyFrom(support_attack_region)
+
+    deal_data.phasesFromNow = action[8]
 
     return deal_data
 
@@ -139,20 +146,25 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
     def _init_action_space(self):
         # Action space:
         # [
-        # province to move OUR from,
-        # province to move OUR to,
-        # opponent to propose OC to,
-        # province for THEIR unit to move,
-        # destination province of THEIR unit,
-        # how many phases from now should it be done (0 means the current one)
+        # defend_unit binary, unit to defend,
+        # defend_sc binary, sc to defend,
+        # attack binary, region to attack,
+        # support_attack binary, region to attack,
+        # phases ahead
         # ]
         #
-        # Eg: Action [1, 2, 2, 5, 6, 2] proposes an order
-        # commitment for us to move from province 1 to 2 and an order commitment to player 2 for moving a unit from
-        # province 5 to 6, 2 phases from now
+        # Eg: Action [0, 2, 1, 5, 1, 14, 0, 2, 4]
+        # Proposes an order commitment:
+        # - with NO defend_unit
+        # - with defend_sc of province 5
+        # - with attack region 14
+        # - with NO support_attack
+        # - 4 phases ahead from the current one (0 means the same phase)
 
-        self.action_space = spaces.MultiDiscrete([NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES,
-                                                  NUMBER_OF_OPPONENTS, NUMBER_OF_PROVINCES, NUMBER_OF_PROVINCES,
+        self.action_space = spaces.MultiDiscrete([1, MAXIMUM_NUMBER_OF_SC,
+                                                  1, MAXIMUM_NUMBER_OF_SC,
+                                                  1, MAXIMUM_NUMBER_OF_SC,
+                                                  1, MAXIMUM_NUMBER_OF_SC,
                                                   NUMBER_OF_PHASES_AHEAD])
 
     def handle_request(self, request: bytearray) -> bytes:

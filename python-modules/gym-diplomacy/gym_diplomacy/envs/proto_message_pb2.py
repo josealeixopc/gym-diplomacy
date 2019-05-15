@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dip_q',
   syntax='proto3',
   serialized_options=_b('\n\013cruz.agents'),
-  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\xc1\x01\n\x0e\x42\x61ndanaRequest\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.BandanaRequest.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\"X\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x14\n\x10GET_DEAL_REQUEST\x10\x01\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x02\x12\x11\n\rSEND_GAME_END\x10\x03\"\xd6\x01\n\x14\x44iplomacyGymResponse\x12.\n\x04type\x18\x01 \x01(\x0e\x32 .dip_q.DiplomacyGymResponse.Type\x12\x1d\n\x04\x64\x65\x61l\x18\x02 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x03 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"D\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x0b\n\x07\x43ONFIRM\x10\x01\x12\r\n\tSEND_DEAL\x10\x02\x12\x13\n\x0fSEND_ACCEPTANCE\x10\x03\"\x95\x01\n\x1a\x44iplomacyGymOrdersResponse\x12\x34\n\x04type\x18\x01 \x01(\x0e\x32&.dip_q.DiplomacyGymOrdersResponse.Type\x12!\n\x06orders\x18\x02 \x01(\x0b\x32\x11.dip_q.OrdersData\"\x1e\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\t\n\x05VALID\x10\x01\"C\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\x12\x0c\n\x04unit\x18\x04 \x01(\x05\"\x83\x01\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\x12\x1c\n\x14previousActionReward\x18\x02 \x01(\x02\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08\x12\x0c\n\x04info\x18\x04 \x01(\t\x12\x0e\n\x06player\x18\x05 \x01(\x05\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"\xdd\x01\n\x08\x44\x65\x61lData\x12\x16\n\x0epowerToPropose\x18\x01 \x01(\x05\x12-\n\x07ourMove\x18\x02 \x01(\x0b\x32\x1c.dip_q.DealData.MTOOrderData\x12/\n\ttheirMove\x18\x03 \x01(\x0b\x32\x1c.dip_q.DealData.MTOOrderData\x12\x15\n\rphasesFromNow\x18\x04 \x01(\x05\x1a\x42\n\x0cMTOOrderData\x12\x15\n\rstartProvince\x18\x01 \x01(\x05\x12\x1b\n\x13\x64\x65stinationProvince\x18\x02 \x01(\x05\"?\n\tOrderData\x12\r\n\x05start\x18\x01 \x01(\x05\x12\x0e\n\x06\x61\x63tion\x18\x02 \x01(\x05\x12\x13\n\x0b\x64\x65stination\x18\x03 \x01(\x05\".\n\nOrdersData\x12 \n\x06orders\x18\x01 \x03(\x0b\x32\x10.dip_q.OrderDataB\r\n\x0b\x63ruz.agentsb\x06proto3')
+  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\xc1\x01\n\x0e\x42\x61ndanaRequest\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.BandanaRequest.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\"X\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x14\n\x10GET_DEAL_REQUEST\x10\x01\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x02\x12\x11\n\rSEND_GAME_END\x10\x03\"\xd6\x01\n\x14\x44iplomacyGymResponse\x12.\n\x04type\x18\x01 \x01(\x0e\x32 .dip_q.DiplomacyGymResponse.Type\x12\x1d\n\x04\x64\x65\x61l\x18\x02 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x03 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"D\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x0b\n\x07\x43ONFIRM\x10\x01\x12\r\n\tSEND_DEAL\x10\x02\x12\x13\n\x0fSEND_ACCEPTANCE\x10\x03\"\x95\x01\n\x1a\x44iplomacyGymOrdersResponse\x12\x34\n\x04type\x18\x01 \x01(\x0e\x32&.dip_q.DiplomacyGymOrdersResponse.Type\x12!\n\x06orders\x18\x02 \x01(\x0b\x32\x11.dip_q.OrdersData\"\x1e\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\t\n\x05VALID\x10\x01\"C\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\x12\x0c\n\x04unit\x18\x04 \x01(\x05\"\x83\x01\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\x12\x1c\n\x14previousActionReward\x18\x02 \x01(\x02\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08\x12\x0c\n\x04info\x18\x04 \x01(\t\x12\x0e\n\x06player\x18\x05 \x01(\x05\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"\xda\x03\n\x08\x44\x65\x61lData\x12\x32\n\ndefendUnit\x18\x01 \x01(\x0b\x32\x1e.dip_q.DealData.DefendUnitData\x12.\n\x08\x64\x65\x66\x65ndSC\x18\x02 \x01(\x0b\x32\x1c.dip_q.DealData.DefendSCData\x12\x36\n\x0c\x61ttackRegion\x18\x03 \x01(\x0b\x32 .dip_q.DealData.AttackRegionData\x12\x44\n\x13supportAttackRegion\x18\x04 \x01(\x0b\x32\'.dip_q.DealData.SupportAttackRegionData\x12\x15\n\rphasesFromNow\x18\x05 \x01(\x05\x1a\x31\n\x0e\x44\x65\x66\x65ndUnitData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\x1a\x31\n\x0c\x44\x65\x66\x65ndSCData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x10\n\x08province\x18\x02 \x01(\x05\x1a\x33\n\x10\x41ttackRegionData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\x1a:\n\x17SupportAttackRegionData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\"?\n\tOrderData\x12\r\n\x05start\x18\x01 \x01(\x05\x12\x0e\n\x06\x61\x63tion\x18\x02 \x01(\x05\x12\x13\n\x0b\x64\x65stination\x18\x03 \x01(\x05\".\n\nOrdersData\x12 \n\x06orders\x18\x01 \x03(\x0b\x32\x10.dip_q.OrderDataB\r\n\x0b\x63ruz.agentsb\x06proto3')
 )
 
 
@@ -367,22 +367,22 @@ _ACCEPTANCEDATA = _descriptor.Descriptor(
 )
 
 
-_DEALDATA_MTOORDERDATA = _descriptor.Descriptor(
-  name='MTOOrderData',
-  full_name='dip_q.DealData.MTOOrderData',
+_DEALDATA_DEFENDUNITDATA = _descriptor.Descriptor(
+  name='DefendUnitData',
+  full_name='dip_q.DealData.DefendUnitData',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='startProvince', full_name='dip_q.DealData.MTOOrderData.startProvince', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
+      name='execute', full_name='dip_q.DealData.DefendUnitData.execute', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='destinationProvince', full_name='dip_q.DealData.MTOOrderData.destinationProvince', index=1,
+      name='region', full_name='dip_q.DealData.DefendUnitData.region', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -400,8 +400,119 @@ _DEALDATA_MTOORDERDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=972,
-  serialized_end=1038,
+  serialized_start=1078,
+  serialized_end=1127,
+)
+
+_DEALDATA_DEFENDSCDATA = _descriptor.Descriptor(
+  name='DefendSCData',
+  full_name='dip_q.DealData.DefendSCData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='execute', full_name='dip_q.DealData.DefendSCData.execute', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='province', full_name='dip_q.DealData.DefendSCData.province', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1129,
+  serialized_end=1178,
+)
+
+_DEALDATA_ATTACKREGIONDATA = _descriptor.Descriptor(
+  name='AttackRegionData',
+  full_name='dip_q.DealData.AttackRegionData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='execute', full_name='dip_q.DealData.AttackRegionData.execute', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='region', full_name='dip_q.DealData.AttackRegionData.region', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1180,
+  serialized_end=1231,
+)
+
+_DEALDATA_SUPPORTATTACKREGIONDATA = _descriptor.Descriptor(
+  name='SupportAttackRegionData',
+  full_name='dip_q.DealData.SupportAttackRegionData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='execute', full_name='dip_q.DealData.SupportAttackRegionData.execute', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='region', full_name='dip_q.DealData.SupportAttackRegionData.region', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1233,
+  serialized_end=1291,
 )
 
 _DEALDATA = _descriptor.Descriptor(
@@ -412,29 +523,36 @@ _DEALDATA = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='powerToPropose', full_name='dip_q.DealData.powerToPropose', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
+      name='defendUnit', full_name='dip_q.DealData.defendUnit', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='ourMove', full_name='dip_q.DealData.ourMove', index=1,
+      name='defendSC', full_name='dip_q.DealData.defendSC', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='theirMove', full_name='dip_q.DealData.theirMove', index=2,
+      name='attackRegion', full_name='dip_q.DealData.attackRegion', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='phasesFromNow', full_name='dip_q.DealData.phasesFromNow', index=3,
-      number=4, type=5, cpp_type=1, label=1,
+      name='supportAttackRegion', full_name='dip_q.DealData.supportAttackRegion', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='phasesFromNow', full_name='dip_q.DealData.phasesFromNow', index=4,
+      number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -442,7 +560,7 @@ _DEALDATA = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_DEALDATA_MTOORDERDATA, ],
+  nested_types=[_DEALDATA_DEFENDUNITDATA, _DEALDATA_DEFENDSCDATA, _DEALDATA_ATTACKREGIONDATA, _DEALDATA_SUPPORTATTACKREGIONDATA, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -452,7 +570,7 @@ _DEALDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=817,
-  serialized_end=1038,
+  serialized_end=1291,
 )
 
 
@@ -496,8 +614,8 @@ _ORDERDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1040,
-  serialized_end=1103,
+  serialized_start=1293,
+  serialized_end=1356,
 )
 
 
@@ -527,8 +645,8 @@ _ORDERSDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1105,
-  serialized_end=1151,
+  serialized_start=1358,
+  serialized_end=1404,
 )
 
 _BANDANAREQUEST.fields_by_name['type'].enum_type = _BANDANAREQUEST_TYPE
@@ -542,9 +660,14 @@ _DIPLOMACYGYMORDERSRESPONSE.fields_by_name['type'].enum_type = _DIPLOMACYGYMORDE
 _DIPLOMACYGYMORDERSRESPONSE.fields_by_name['orders'].message_type = _ORDERSDATA
 _DIPLOMACYGYMORDERSRESPONSE_TYPE.containing_type = _DIPLOMACYGYMORDERSRESPONSE
 _OBSERVATIONDATA.fields_by_name['provinces'].message_type = _PROVINCEDATA
-_DEALDATA_MTOORDERDATA.containing_type = _DEALDATA
-_DEALDATA.fields_by_name['ourMove'].message_type = _DEALDATA_MTOORDERDATA
-_DEALDATA.fields_by_name['theirMove'].message_type = _DEALDATA_MTOORDERDATA
+_DEALDATA_DEFENDUNITDATA.containing_type = _DEALDATA
+_DEALDATA_DEFENDSCDATA.containing_type = _DEALDATA
+_DEALDATA_ATTACKREGIONDATA.containing_type = _DEALDATA
+_DEALDATA_SUPPORTATTACKREGIONDATA.containing_type = _DEALDATA
+_DEALDATA.fields_by_name['defendUnit'].message_type = _DEALDATA_DEFENDUNITDATA
+_DEALDATA.fields_by_name['defendSC'].message_type = _DEALDATA_DEFENDSCDATA
+_DEALDATA.fields_by_name['attackRegion'].message_type = _DEALDATA_ATTACKREGIONDATA
+_DEALDATA.fields_by_name['supportAttackRegion'].message_type = _DEALDATA_SUPPORTATTACKREGIONDATA
 _ORDERSDATA.fields_by_name['orders'].message_type = _ORDERDATA
 DESCRIPTOR.message_types_by_name['BandanaRequest'] = _BANDANAREQUEST
 DESCRIPTOR.message_types_by_name['DiplomacyGymResponse'] = _DIPLOMACYGYMRESPONSE
@@ -601,10 +724,31 @@ _sym_db.RegisterMessage(AcceptanceData)
 
 DealData = _reflection.GeneratedProtocolMessageType('DealData', (_message.Message,), dict(
 
-  MTOOrderData = _reflection.GeneratedProtocolMessageType('MTOOrderData', (_message.Message,), dict(
-    DESCRIPTOR = _DEALDATA_MTOORDERDATA,
+  DefendUnitData = _reflection.GeneratedProtocolMessageType('DefendUnitData', (_message.Message,), dict(
+    DESCRIPTOR = _DEALDATA_DEFENDUNITDATA,
     __module__ = 'proto_message_pb2'
-    # @@protoc_insertion_point(class_scope:dip_q.DealData.MTOOrderData)
+    # @@protoc_insertion_point(class_scope:dip_q.DealData.DefendUnitData)
+    ))
+  ,
+
+  DefendSCData = _reflection.GeneratedProtocolMessageType('DefendSCData', (_message.Message,), dict(
+    DESCRIPTOR = _DEALDATA_DEFENDSCDATA,
+    __module__ = 'proto_message_pb2'
+    # @@protoc_insertion_point(class_scope:dip_q.DealData.DefendSCData)
+    ))
+  ,
+
+  AttackRegionData = _reflection.GeneratedProtocolMessageType('AttackRegionData', (_message.Message,), dict(
+    DESCRIPTOR = _DEALDATA_ATTACKREGIONDATA,
+    __module__ = 'proto_message_pb2'
+    # @@protoc_insertion_point(class_scope:dip_q.DealData.AttackRegionData)
+    ))
+  ,
+
+  SupportAttackRegionData = _reflection.GeneratedProtocolMessageType('SupportAttackRegionData', (_message.Message,), dict(
+    DESCRIPTOR = _DEALDATA_SUPPORTATTACKREGIONDATA,
+    __module__ = 'proto_message_pb2'
+    # @@protoc_insertion_point(class_scope:dip_q.DealData.SupportAttackRegionData)
     ))
   ,
   DESCRIPTOR = _DEALDATA,
@@ -612,7 +756,10 @@ DealData = _reflection.GeneratedProtocolMessageType('DealData', (_message.Messag
   # @@protoc_insertion_point(class_scope:dip_q.DealData)
   ))
 _sym_db.RegisterMessage(DealData)
-_sym_db.RegisterMessage(DealData.MTOOrderData)
+_sym_db.RegisterMessage(DealData.DefendUnitData)
+_sym_db.RegisterMessage(DealData.DefendSCData)
+_sym_db.RegisterMessage(DealData.AttackRegionData)
+_sym_db.RegisterMessage(DealData.SupportAttackRegionData)
 
 OrderData = _reflection.GeneratedProtocolMessageType('OrderData', (_message.Message,), dict(
   DESCRIPTOR = _ORDERDATA,
