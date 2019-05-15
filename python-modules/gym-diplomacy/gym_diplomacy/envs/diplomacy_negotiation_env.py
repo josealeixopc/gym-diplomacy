@@ -31,6 +31,13 @@ NUMBER_OF_PROVINCES = 75
 NUMBER_OF_PHASES_AHEAD = 20
 MAXIMUM_NUMBER_OF_SC = 18
 
+class Greeter(proto_message_pb2.Gre):
+
+    def SayHello(self, request, context):
+        return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
+
+    def SayHelloAgain(self, request, context):
+        return helloworld_pb2.HelloReply(message='Hello again, %s!' % request.name)
 
 def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
     """

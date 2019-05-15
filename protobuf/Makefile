@@ -21,9 +21,16 @@ JAVA_OUT        := $(JAVA_RELATIVE_DEST_DIR)/$(JAVA_PACKAGE)/$(JAVA_NAME)
 all: $(PYTHON_OUT) $(JAVA_OUT)
 
 $(PYTHON_OUT) $(PYTHON_STUB_OUT): $(SRC)
-	$(CC) $(SRC) --plugin=protoc-gen-mypy=./protoc-gen-mypy --python_out=$(PYTHON_RELATIVE_DEST_DIR) --mypy_out=$(PYTHON_RELATIVE_DEST_DIR)
+	$(CC) $(SRC) --plugin=protoc-gen-mypy=./protoc-gen-mypy \
+	--plugin=protoc-gen-grpc_python=./grpc_python_plugin \
+	--grpc_python_out=$(PYTHON_RELATIVE_DEST_DIR) \
+	--python_out=$(PYTHON_RELATIVE_DEST_DIR) \
+	--mypy_out=$(PYTHON_RELATIVE_DEST_DIR)
+
 $(JAVA_OUT): $(SRC)
-	$(CC) $(SRC) --java_out=$(JAVA_RELATIVE_DEST_DIR)
+	$(CC) $(SRC) --plugin=protoc-gen-grpc-java=./protoc-gen-grpc-java-1.20.0-linux-x86_64.exe \
+	--grpc-java_out=$(JAVA_RELATIVE_DEST_DIR) \
+	--java_out=$(JAVA_RELATIVE_DEST_DIR) 
 
 clean:
 	$(RM) $(PYTHON_OUT)
