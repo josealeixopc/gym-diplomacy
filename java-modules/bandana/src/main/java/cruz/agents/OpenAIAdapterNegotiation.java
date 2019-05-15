@@ -252,6 +252,24 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
     }
 
     /**
+     * This method clips the given integer, in case it is greater than the size of the list of controlled regions.
+     *
+     * Because the DRL agent will provide an integer n where 0 <= n <= maximum_number_of_units, n may be larger
+     * than the number of CURRENT units. Therefore, we clip it, so that any n greater than our number of units maps to
+     * the maximum index possible.
+     * @param n
+     * @return
+     */
+    private int clipRegionIndex(int n) {
+        if(n >= this.agent.me.getControlledRegions().size()) {
+            return this.agent.me.getControlledRegions().size();
+        }
+        else {
+            return n;
+        }
+    }
+
+    /**
      * This function takes the number of supply centers (SCs) controlled in the previous observation (negotiation phase)
      * and returns the balance of SCs. A negative number means SCs were lost. A positive number means SCs were captured.
      * @return

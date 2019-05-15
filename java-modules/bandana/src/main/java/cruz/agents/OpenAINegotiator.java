@@ -12,10 +12,7 @@ import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
 import es.csic.iiia.fabregues.dip.orders.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @SuppressWarnings("Duplicates")
 
@@ -35,8 +32,15 @@ public class OpenAINegotiator extends ANACNegotiator {
     /** Defines whether logs should be printed to console or not.*/
     boolean printToConsole = true;
 
-    /** Array of received proposals*/
-    ArrayList<DiplomacyProposal> receivedProposals;
+    /** Ordered list of regions controlled. The default list of controlled regions may not be ordered.
+     * It's important for this list to be ordered, so that an action taken
+     * in the same state twice leads to the same outcome.*/
+    List<Region> orderedControlledRegions;
+
+    /** Ordered list of powers. The default list of powers may not be ordered.
+     * It's important for this list to be ordered, so that an action taken
+     * in the same state twice leads to the same outcome.*/
+    List<Power> orderedNegotiatingPowers;
 
     /**
      * You must implement a Constructor with exactly this signature.
@@ -52,9 +56,6 @@ public class OpenAINegotiator extends ANACNegotiator {
 
         // Create OpenAI Adapter
         this.openAIAdapter = new OpenAIAdapterNegotiation(this);
-
-        // Create array
-        this.receivedProposals = new ArrayList<>();
     }
 
     /**
@@ -114,6 +115,12 @@ public class OpenAINegotiator extends ANACNegotiator {
     public void negotiate(long negotiationDeadline) {
 
         this.getLogger().logln(me.getName() + ".negotiate() Negotiation deadline: " + negotiationDeadline, this.printToConsole);
+
+        // Set the ordered regions list to make deals consistent across equal states
+        this.orderedControlledRegions = this.sortRegionList(this.me.getControlledRegions());
+
+        // Set the ordered powers list to make deals consistent across equal states
+        this.orderedNegotiatingPowers = this.sortPowerList(this.getNegotiatingPowers());
 
         BasicDeal newDealToPropose = null;
 
@@ -576,7 +583,7 @@ public class OpenAINegotiator extends ANACNegotiator {
      * @param phase
      * @return
      */
-    private BasicDeal generateDefendUnitsMutual(int year, Phase phase) {
+    private BasicDeal generateDefendUnitsMutual(int regionIndex, int year, Phase phase) {
         List<OrderCommitment> ocs = new ArrayList<>();
         List<DMZ> dmzs = new ArrayList<>();
 
@@ -584,11 +591,9 @@ public class OpenAINegotiator extends ANACNegotiator {
         negotiatingPowers.remove(this.me);
 
         // Choose random unit
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(this.me.getControlledRegions().size());
 
         // An unit is addressed by the Region it occupies.
-        Region ourRegion = this.me.getControlledRegions().get(randomIndex);
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
 
         List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
 
@@ -631,7 +636,7 @@ public class OpenAINegotiator extends ANACNegotiator {
      * @param phase
      * @return
      */
-    private BasicDeal generateDefendSupplyCentersMutual(int year, Phase phase) {
+    private BasicDeal generateDefendSupplyCentersMutual(int powerIndex, int year, Phase phase) {
         List<OrderCommitment> ocs = new ArrayList<>();
         List<DMZ> dmzs = new ArrayList<>();
 
@@ -640,11 +645,8 @@ public class OpenAINegotiator extends ANACNegotiator {
 
         List<Province> ourProvinces = this.me.getOwnedSCs();
 
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(negotiatingPowers.size());
-
         // Try to get a deal with a random Power.
-        Power opponent = negotiatingPowers.get(randomIndex);
+        Power opponent = this.orderedNegotiatingPowers.get(powerIndex);
 
         List<Province> provincesDMZ = new ArrayList<>();
         provincesDMZ.addAll(opponent.getOwnedSCs());
@@ -668,19 +670,15 @@ public class OpenAINegotiator extends ANACNegotiator {
      * @param phase
      * @return
      */
-    private BasicDeal generateAttack(int year, Phase phase) {
+    private BasicDeal generateAttack(int regionIndex, int year, Phase phase) {
         List<OrderCommitment> ocs = new ArrayList<>();
         List<DMZ> dmzs = new ArrayList<>();
 
         List<Power> negotiatingPowers = this.getNegotiatingPowers();
         negotiatingPowers.remove(this.me);
 
-        // Choose random unit
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(this.me.getControlledRegions().size());
-
         // An unit is addressed by the Region it occupies.
-        Region ourRegion = this.me.getControlledRegions().get(randomIndex);
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
 
         List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
 
@@ -726,19 +724,15 @@ public class OpenAINegotiator extends ANACNegotiator {
      * @param phase
      * @return
      */
-    private BasicDeal generateSupportAttack(int year, Phase phase) {
+    private BasicDeal generateSupportAttack(int regionIndex, int year, Phase phase) {
         List<OrderCommitment> ocs = new ArrayList<>();
         List<DMZ> dmzs = new ArrayList<>();
 
         List<Power> negotiatingPowers = this.getNegotiatingPowers();
         negotiatingPowers.remove(this.me);
 
-        // Choose random unit
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(this.me.getControlledRegions().size());
-
         // An unit is addressed by the Region it occupies.
-        Region ourRegion = this.me.getControlledRegions().get(randomIndex);
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
 
         List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
 
@@ -771,6 +765,38 @@ public class OpenAINegotiator extends ANACNegotiator {
         }
 
         return null;
+    }
+
+    /**
+     * Returns an alphabetically ordered region list, according to its name.
+     * @param controlledRegions
+     */
+    private List<Region> sortRegionList(List<Region> controlledRegions) {
+        List<Region> orderedControlledRegions = new ArrayList<>(controlledRegions);
+        orderedControlledRegions.sort(new Comparator<Region>() {
+            @Override
+            public int compare(Region region, Region t1) {
+                return region.getName().compareToIgnoreCase(t1.getName());
+            }
+        });
+
+        return orderedControlledRegions;
+    }
+
+    /**
+     * Returns an alphabetically ordered region list, according to its name.
+     * @param powers
+     */
+    private List<Power> sortPowerList(List<Power> powers) {
+        List<Power> orderedPowers = new ArrayList<>(powers);
+        orderedPowers.sort(new Comparator<Power>() {
+            @Override
+            public int compare(Power power, Power t1) {
+                return power.getName().compareToIgnoreCase(t1.getName());
+            }
+        });
+
+        return orderedPowers;
     }
 
     /**
