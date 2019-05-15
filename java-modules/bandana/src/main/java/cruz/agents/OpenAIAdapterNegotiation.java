@@ -26,7 +26,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
     /** Reward given for capturing a Supply Center (SC). Losing a SC gives a negative reward with the same value. */
     private static final int CAPTURED_SC_REWARD = +100;
 
-    boolean dealWasAccepted = false;
+    int dealsAccepted = 0;
 
     // REWARD FIELDS END
 
@@ -266,10 +266,10 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
     protected float calculateReward() {
         float reward = 0;
         reward += this.balanceOfScs() * CAPTURED_SC_REWARD;
-        reward += (this.dealWasAccepted ? 1 : -1) * ACCEPTED_DEAL_REWARD;
+        reward += dealsAccepted * ACCEPTED_DEAL_REWARD;
 
         System.out.println("Balance of SCs: " + this.balanceOfScs());
-        System.out.println("Deal was accepted? " + this.dealWasAccepted);
+        System.out.println("Deals accepted: " + this.dealsAccepted);
 
         this.resetRewardValues();
 
@@ -278,7 +278,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
 
     protected void resetRewardValues() {
         // Reset deal was accepted back to false for the next observation
-        this.dealWasAccepted = false;
+        this.dealsAccepted = 0;
 
         // Set new number of SCs
         this.previousNumSc = this.getPower().getOwnedSCs().size();

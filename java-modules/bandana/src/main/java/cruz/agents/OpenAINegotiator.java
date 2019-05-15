@@ -262,7 +262,7 @@ public class OpenAINegotiator extends ANACNegotiator {
                     // the deal was not accepted.
                     if (proposedByMe) {
                         this.getLogger().logln(me.getName() + ".negotiate() Our deal with ID: " + confirmedProposal.getId() + " has been confirmed", this.printToConsole);
-                        this.openAIAdapter.dealWasAccepted = true;
+                        this.openAIAdapter.dealsAccepted++;
                     } else {
                         // do nothing, because we already assume the deal was not accepted
                     }
