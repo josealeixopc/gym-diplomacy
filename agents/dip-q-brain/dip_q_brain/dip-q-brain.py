@@ -45,7 +45,8 @@ os.makedirs(pickle_dir, exist_ok=True)
 ### CUSTOM GLOBAL CODE END
 
 def main(args):
-    train('ppo2', args.env_id, args.num_steps)
+    if not args.results_only:
+        train('ppo2', args.env_id, args.num_steps)
     plot_results(log_dir)
 
 def make_env(env_id, rank, seed=0):
@@ -224,5 +225,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
     parser.add_argument('--env_id', nargs='?', default='Diplomacy-v0', help='Select the environment to run')
     parser.add_argument('--num_steps', type=int, help='The number of steps to train the agent')
+    parser.add_argument('--results_only', '-r', action='store_true')
     args = parser.parse_args()
     main(args)

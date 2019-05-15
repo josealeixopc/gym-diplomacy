@@ -33,7 +33,7 @@ public class TournamentRunner {
 	final static String[] randomNegotiatorCommand = {"java", "-jar", "target/random-negotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", FINAL_YEAR};
 	final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", FINAL_YEAR};
 	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", FINAL_YEAR};
-	final static String[] dbraneExampleBotCommand = {"java", "-jar", "agents/D-BraneExampleBot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", FINAL_YEAR};
+	final static String[] dbraneExampleBotCommand = {"java", "-jar", "target/dbrane-example-bot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", FINAL_YEAR};
 	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
 	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", FINAL_YEAR};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
@@ -144,8 +144,8 @@ public class TournamentRunner {
                     if(MODE) {
                         //make sure that each player has a different name.
                         if (i < numberOfParticipants - 3) {
-                            name = "ANACExampleNegotiator " + i;
-                            command = anacExampleBotCommand;
+                            name = "DBraneNego " + i;
+                            command = dbraneExampleBotCommand;
                         } else {
                             name = "OpenAIBotNegotiator " + i;
                             command = openAIBotNegotiatorCommand;

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
+import ddejonge.bandana.anac.ANACPlayer;
 import es.csic.iiia.fabregues.dip.Player;
 import es.csic.iiia.fabregues.dip.board.Dislodgement;
 import es.csic.iiia.fabregues.dip.board.Game;
@@ -63,7 +64,7 @@ public class DBraneExampleBot extends Player{
 	public static final int DEFAULT_FINAL_YEAR = 2000; 
 	
 	//The time in milliseconds this agent takes to negotiate each round.
-	public final int NEGOTIATION_LENGTH = 3000; 
+	public final int NEGOTIATION_LENGTH = ANACPlayer.NEGOTIATION_LENGTH;
 	
 	/**
 	 * Main method to start the agent.
@@ -406,11 +407,6 @@ public class DBraneExampleBot extends Player{
 			logger.writeToFile();
 			return dbraneTactics.getWinterOrders(game, me, myAllies);
 		}
-		
-		
-		
-		
-		
 	}
 
 	

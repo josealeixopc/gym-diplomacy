@@ -148,6 +148,22 @@
                             </transformers>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>DBraneExampleBot-shade</id>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <outputFile>target/dbrane-example-bot.jar</outputFile>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>ddejonge.bandana.exampleAgents.DBraneExampleBot</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
