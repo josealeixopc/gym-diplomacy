@@ -90,24 +90,45 @@ message AcceptanceData {
 }
 
 message DealData {
-  message MTOOrderData {
-    // Province to move units FROM
-    int32 startProvince = 1;
+  message DefendUnitData {
+    // Whether or not the defend deal should be executed
+    bool execute = 1;
 
-    // Province to move units TO
-    int32 destinationProvince = 2;
+    // Region to defend
+    int32 region = 2;
   }
 
-  // Power we will propose our deal to
-  int32 powerToPropose = 1;
-  // The Move order we propose to execute
-  MTOOrderData ourMove = 2;
+  message DefendSCData {
+    // Whether or not the defend deal should be executed
+    bool execute = 1;
 
-  // The Move order we propose the other to execute
-  MTOOrderData theirMove = 3;
+    // Province to defend
+    int32 province = 2;
+  }
+
+  message AttackRegionData {
+    // Whether or not the attack deal should be executed
+    bool execute = 1;
+
+    // Region to attack
+    int32 region = 2;
+  }
+
+  message SupportAttackRegionData {
+    // Whether or not the support attack deal should be executed
+    bool execute = 1;
+
+    // Region to support attack
+    int32 region = 2;
+  }
+
+  DefendUnitData defendUnit = 1;
+  DefendSCData defendSC = 2;
+  AttackRegionData attackRegion = 3;
+  SupportAttackRegionData supportAttackRegion = 4;
 
   // How many phases from now should the order be executed
-  int32 phasesFromNow = 4;
+  int32 phasesFromNow = 5;
 }
 
 message OrderData {

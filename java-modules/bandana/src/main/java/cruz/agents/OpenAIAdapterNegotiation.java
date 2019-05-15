@@ -5,10 +5,7 @@ import ddejonge.bandana.negoProtocol.BasicDeal;
 import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.OrderCommitment;
 import ddejonge.bandana.tournament.GameResult;
-import es.csic.iiia.fabregues.dip.board.Game;
-import es.csic.iiia.fabregues.dip.board.Phase;
-import es.csic.iiia.fabregues.dip.board.Power;
-import es.csic.iiia.fabregues.dip.board.Province;
+import es.csic.iiia.fabregues.dip.board.*;
 import es.csic.iiia.fabregues.dip.orders.*;
 
 import java.util.*;
@@ -35,6 +32,16 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
 
     /** The agent instance attached to this adapter. */
     private OpenAINegotiator agent;
+
+    /** Ordered list of regions controlled. The default list of controlled regions may not be ordered.
+     * It's important for this list to be ordered, so that an action taken
+     * in the same state twice leads to the same outcome.*/
+    List<Region> orderedControlledRegions;
+
+    /** Ordered list of powers. The default list of powers may not be ordered.
+     * It's important for this list to be ordered, so that an action taken
+     * in the same state twice leads to the same outcome.*/
+    List<Power> orderedNegotiatingPowers;
 
     OpenAIAdapterNegotiation(OpenAINegotiator agent) {
         this.agent = agent;
@@ -81,7 +88,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
      *
      * @return A BasicDeal created with data from the Open AI module.
      */
-    public BasicDeal getDealFromDipQ() {
+    public List<BasicDeal> getDealsFromDipBrain() {
         try {
             byte[] message = generateRequestMessage();
 
@@ -93,19 +100,8 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
             }
 
             ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymResponse.parseFrom(response);
-            BasicDeal generatedDeal = this.generateDeal(diplomacyGymResponse.getDeal());
-
-            // If deal is invalid, give negative reward. If an invalid deal is returned, the game will deal with it, so
-            // we can still return it.
-            if(this.isDealValid(generatedDeal)) {
-                this.validAction = true;
-            }
-            else {
-                this.validAction = false;
-            }
-
-            return generatedDeal;
-
+            List<BasicDeal> dealsToPropose = this.generateDeals(diplomacyGymResponse.getDeal());
+            return dealsToPropose;
 
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
@@ -129,57 +125,41 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         return bandanaRequestBuilder.build().toByteArray();
     }
 
-    private BasicDeal generateDeal(ProtoMessage.DealData dealData) {
-        List<DMZ> dmzs = new ArrayList<>();
-        List<OrderCommitment> ocs = new ArrayList<>();
+    /**
+     * According to the data received from DipBrain DRL module, decide what deals should be proposed.
+     * @param dealData
+     * @return
+     */
+    private List<BasicDeal> generateDeals(ProtoMessage.DealData dealData) {
+        List<BasicDeal> deals = new ArrayList<>();
 
+        // Derive year and phase of deal from number of phases ahead
+        Map.Entry<Integer, Phase> phaseAndYear = Utilities.calculatePhaseAndYear(this.agent.game.getYear(), this.agent.game.getPhase(), dealData.getPhasesFromNow());
 
-        // Add MY order commitment
-        Province ourStartProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getStartProvince());
-        Province ourDestinationProvince = this.agent.game.getProvinces().get(dealData.getOurMove().getDestinationProvince());
-        Map.Entry<Integer, Phase> yearAndPhaseOfDeal = Utilities.calculatePhaseAndYear(this.agent.game.getYear(), this.agent.game.getPhase(), dealData.getPhasesFromNow());
+        int year = phaseAndYear.getKey();
+        Phase phase = phaseAndYear.getValue();
 
-        Phase phaseOfDeal = yearAndPhaseOfDeal.getValue();
-        int yearOfDeal = yearAndPhaseOfDeal.getKey();
-
-        Order ourOrder = new MTOOrder(
-                this.agent.me,
-                ourStartProvince.getRegions().get(0),
-                ourDestinationProvince.getRegions().get(0));
-
-        OrderCommitment ourOC = new OrderCommitment(yearOfDeal, phaseOfDeal, ourOrder);
-
-        ocs.add(ourOC);
-
-        // Add THEIR order commitment
-        Province theirStartProvince = this.agent.game.getProvinces().get(dealData.getTheirMove().getStartProvince());
-        Province theirDestinationProvince = this.agent.game.getProvinces().get(dealData.getTheirMove().getDestinationProvince());
-
-        String nameOfPowerToProposeTo = null;
-
-        /* Because we do not want to choose ourselves and we are index number 1 and NONE is 0, just add 2 to the index that comes
-         * from Gym. This is why we use NUMBER_OF_OPPONENTS instead of NUMBER_OF_PLAYERS in the environment. */
-        int trueOpponentPowerIndex = dealData.getPowerToPropose() + 2;
-
-        for (Map.Entry<String, Integer> entry : powerNameToInt.entrySet()) {
-            if (entry.getValue() == trueOpponentPowerIndex) {
-                nameOfPowerToProposeTo = entry.getKey();
-            }
+        // Only if execute is true
+        if(dealData.getDefendUnit().getExecute()) {
+            deals.add(generateDefendUnitsMutual(dealData.getDefendUnit().getRegion(), year, phase));
         }
 
-        assert nameOfPowerToProposeTo != null;
+        // Only if execute is true
+        if(dealData.getDefendSC().getExecute()) {
+            deals.add(generateDefendSupplyCentersMutual(dealData.getDefendSC().getProvince(), year, phase));
+        }
 
-        Order theirOrder = new MTOOrder(
-                this.agent.game.getPower(nameOfPowerToProposeTo),
-                theirStartProvince.getRegions().get(0),
-                theirDestinationProvince.getRegions().get(0)
-        );
+        // Only if execute is true
+        if(dealData.getAttackRegion().getExecute()) {
+            deals.add(generateAttack(dealData.getAttackRegion().getRegion(), year, phase));
+        }
 
-        OrderCommitment theirOC = new OrderCommitment(yearOfDeal, phaseOfDeal, theirOrder);
+        // Only if execute is true
+        if(dealData.getSupportAttackRegion().getExecute()) {
+            deals.add(generateSupportAttack(dealData.getAttackRegion().getRegion(), year, phase));
+        }
 
-        ocs.add(theirOC);
-
-        return new BasicDeal(ocs, dmzs);
+        return deals;
     }
 
     /**
@@ -336,5 +316,229 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         // }
 
         super.endOfGame(gameResult);
+    }
+
+    /**
+     * This methods returns ONE deal, to support a hold order in ONE random region. The deal is made randomly
+     * to a valid neighbour power.
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    private BasicDeal generateDefendUnitsMutual(int regionIndex, int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        List<Power> negotiatingPowers = this.agent.getNegotiatingPowers();
+        negotiatingPowers.remove(this.agent.me);
+
+        // Choose random unit
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal with a random surrounding region.
+        for(Region adjacentRegion : adjacentRegions) {
+            Power controller = this.agent.game.getController(adjacentRegion);
+            if(controller == null){
+                // if no one controls region, don't consider it
+                continue;
+            }
+            if (!negotiatingPowers.contains(controller)) {
+                // if it's a non-negotiating or if it's us, don't consider
+                continue;
+            }
+
+            HLDOrder hldOrderTheirs = new HLDOrder(controller, adjacentRegion);
+            HLDOrder hldOrderOurs = new HLDOrder(this.agent.me, ourRegion);
+
+            SUPOrder supOrderTheirs = new SUPOrder(controller, ourRegion, hldOrderOurs);
+            SUPOrder supOrderOurs = new SUPOrder(this.agent.me, adjacentRegion, hldOrderTheirs);
+
+            ocs.add(new OrderCommitment(year, phase, supOrderOurs));
+            ocs.add(new OrderCommitment(year, phase, supOrderTheirs));
+
+            BasicDeal deal = new BasicDeal(ocs, dmzs);
+            return deal;
+        }
+
+        return null;
+    }
+
+    /**
+     * This method returns ONE deal, where we choose a random Power and propose not invading (DMZ) each other's
+     * supply centers.
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    private BasicDeal generateDefendSupplyCentersMutual(int powerIndex, int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        List<Power> negotiatingPowers = this.agent.getNegotiatingPowers();
+        negotiatingPowers.remove(this.agent.me);
+
+        List<Province> ourProvinces = this.agent.me.getOwnedSCs();
+
+        // Try to get a deal with a random Power.
+        Power opponent = this.orderedNegotiatingPowers.get(powerIndex);
+
+        List<Province> provincesDMZ = new ArrayList<>();
+        provincesDMZ.addAll(opponent.getOwnedSCs());
+        provincesDMZ.addAll(ourProvinces);
+
+        List<Power> involvedPowers = new ArrayList<>();
+        involvedPowers.add(this.agent.me);
+        involvedPowers.add(opponent);
+
+        dmzs.add(new DMZ(year, phase, involvedPowers, provincesDMZ));
+        return new BasicDeal(ocs, dmzs);
+    }
+
+    /**
+     * This methods returns ONE deal, to coordinate an attack on ONE random region,
+     * with the support of another random region.
+     *
+     * In this deal, WE are the main attackers (therefore we win the control).
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    private BasicDeal generateAttack(int regionIndex, int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        List<Power> negotiatingPowers = this.agent.getNegotiatingPowers();
+        negotiatingPowers.remove(this.agent.me);
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal to attack a random surrounding region.
+        for(Region targetRegion : adjacentRegions) {
+            Power targetPower = this.agent.game.getController(targetRegion);
+
+            List<Region> possibleSupports = new ArrayList<>(adjacentRegions);
+            possibleSupports.remove(targetRegion);
+
+            MTOOrder mtoOrder = new MTOOrder(this.agent.me, ourRegion, targetRegion);
+
+            for(Region supportingRegion: possibleSupports) {
+                Power supportingPower = this.agent.game.getController(supportingRegion);
+
+                if (supportingPower.equals(targetPower)) {
+                    // if the supporting power is the target, don't ask for help, obviously
+                    continue;
+                }
+
+                SUPMTOOrder supmtoOrder = new SUPMTOOrder(supportingPower, supportingRegion, mtoOrder);
+
+                ocs.add(new OrderCommitment(year, phase, mtoOrder));
+                ocs.add(new OrderCommitment(year, phase, supmtoOrder));
+
+                return new BasicDeal(ocs, dmzs);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * This methods returns ONE deal, to coordinate an attack on ONE random region,
+     * with the support of another random region.
+     *
+     * In this deal, THE OTHER OPPONENT is the main attacker (therefore they win the control).
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    private BasicDeal generateSupportAttack(int regionIndex, int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        List<Power> negotiatingPowers = this.agent.getNegotiatingPowers();
+        negotiatingPowers.remove(this.agent.me);
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal to attack a random surrounding region.
+        for(Region targetRegion : adjacentRegions) {
+            Power targetPower = this.agent.game.getController(targetRegion);
+
+            List<Region> possibleSupports = new ArrayList<>(adjacentRegions);
+            possibleSupports.remove(targetRegion);
+
+            for(Region regionToSupport: possibleSupports) {
+                Power powerToSupport = this.agent.game.getController(regionToSupport);
+
+                if (powerToSupport.equals(targetPower)) {
+                    // if the supporting power is the target, don't ask for help, obviously
+                    continue;
+                }
+
+                MTOOrder mtoOrder = new MTOOrder(powerToSupport, ourRegion, targetRegion);
+                SUPMTOOrder supmtoOrder = new SUPMTOOrder(this.agent.me, regionToSupport, mtoOrder);
+
+                ocs.add(new OrderCommitment(year, phase, mtoOrder));
+                ocs.add(new OrderCommitment(year, phase, supmtoOrder));
+
+                return new BasicDeal(ocs, dmzs);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns an alphabetically ordered region list, according to its name.
+     * @param controlledRegions
+     */
+    private List<Region> sortRegionList(List<Region> controlledRegions) {
+        List<Region> orderedControlledRegions = new ArrayList<>(controlledRegions);
+        orderedControlledRegions.sort(new Comparator<Region>() {
+            @Override
+            public int compare(Region region, Region t1) {
+                return region.getName().compareToIgnoreCase(t1.getName());
+            }
+        });
+
+        return orderedControlledRegions;
+    }
+
+    /**
+     * Returns an alphabetically ordered region list, according to its name.
+     * @param powers
+     */
+    private List<Power> sortPowerList(List<Power> powers) {
+        List<Power> orderedPowers = new ArrayList<>(powers);
+        orderedPowers.sort(new Comparator<Power>() {
+            @Override
+            public int compare(Power power, Power t1) {
+                return power.getName().compareToIgnoreCase(t1.getName());
+            }
+        });
+
+        return orderedPowers;
     }
 }
