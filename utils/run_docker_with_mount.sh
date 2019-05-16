@@ -3,6 +3,8 @@
 # This will run the dip-q image, while mounting the /tmp/gym folder on the host's /tmp/gym, meaning that any change to that folder
 # will be reflected on the host's /tmp/gym folder as well.
 
+install -Dv /dev/null /tmp/dip
+
 docker run -d \
   -it \
   --rm \
