@@ -34,7 +34,8 @@ PYTHON_3_VERSION="3.7"  # For everything else
 
 # Install Python, Pip and Pipenv
 sudo apt-get install -y python${PYTHON_2_VERSION} python-pip
-sudo apt-get install -y python${PYTHON_3_VERSION} python3-pip
+sudo apt-get install -y python${PYTHON_3_VERSION}-dev python3-pip 
+# we need the -dev version of Python 3 because of stable-baselines dependencies (mpi4py in particular)
 
 python${PYTHON_3_VERSION} -m pip install -U pip
 sudo -H pip3 install pipenv -U
