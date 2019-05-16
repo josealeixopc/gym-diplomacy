@@ -49,35 +49,28 @@ public class OpenAIAdapterStrategy extends OpenAIAdapter{
      * @return List of Orders created with data from the OpenAI module.
      */
     public List<Order> getOrdersFromDeepDip() {
-        try {
-            this.agent.getLogger().logln("GAME STATUS: " + this.openAIObserver.getGameStatus(), true);
-            this.generatePowerNameToIntMap();
+        this.agent.getLogger().logln("GAME STATUS: " + this.openAIObserver.getGameStatus(), true);
+        this.generatePowerNameToIntMap();
 
-            ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
+        ProtoMessage.BandanaRequest.Builder bandanaRequestBuilder = ProtoMessage.BandanaRequest.newBuilder();
 
-            ProtoMessage.ObservationData observationData = this.generateObservationData();
+        ProtoMessage.ObservationData observationData = this.generateObservationData();
 
-            bandanaRequestBuilder.setObservation(observationData);
-            bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
+        bandanaRequestBuilder.setObservation(observationData);
+        bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
 
-            byte[] message = bandanaRequestBuilder.build().toByteArray();
+        ProtoMessage.BandanaRequest message = bandanaRequestBuilder.build();
 
-            byte[] response = this.socketClient.sendMessageAndReceiveResponse(message);
+        ProtoMessage.DiplomacyGymOrdersResponse diplomacyGymResponse = this.serviceClient.getTacticAction(message);
 
-            // If something went wrong with getting the response from Python module
-            if (response == null) {
-                return new ArrayList<>();
-            }
-
-            ProtoMessage.DiplomacyGymOrdersResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymOrdersResponse.parseFrom(response);
-            List<Order> generatedOrders = this.generateOrders(diplomacyGymResponse.getOrders());
-
-            return generatedOrders;
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+        // If something went wrong with getting the response from Python module
+        if (diplomacyGymResponse == null) {
+            return new ArrayList<>();
         }
 
-        return new ArrayList<>();
+        List<Order> generatedOrders = this.generateOrders(diplomacyGymResponse.getOrders());
+
+        return generatedOrders;
     }
 
     private List<Order> generateOrders(ProtoMessage.OrdersData ordersData) {

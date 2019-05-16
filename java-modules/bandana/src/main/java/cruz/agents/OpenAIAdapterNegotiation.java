@@ -89,29 +89,21 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
      * @return A BasicDeal created with data from the Open AI module.
      */
     public List<BasicDeal> getDealsFromDipBrain() {
-        try {
-            byte[] message = generateRequestMessage();
+        ProtoMessage.BandanaRequest message = generateRequestMessage();
 
-            byte[] response = this.socketClient.sendMessageAndReceiveResponse(message);
+        ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = this.serviceClient.getAction(message);
 
-            // If something went wrong with getting the response from Python module
-            if (response == null) {
-                return null;
-            }
-
-            ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymResponse.parseFrom(response);
-            List<BasicDeal> dealsToPropose = this.generateDeals(diplomacyGymResponse.getDeal());
-            return dealsToPropose;
-
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+        // If something went wrong with getting the response from Python module
+        if (diplomacyGymResponse == null) {
+            return null;
         }
 
-        return null;
+        List<BasicDeal> dealsToPropose = this.generateDeals(diplomacyGymResponse.getDeal());
+        return dealsToPropose;
     }
 
 
-    private byte[] generateRequestMessage() {
+    private ProtoMessage.BandanaRequest generateRequestMessage() {
         // Make sure the power to int map is updated with the current Powers in the game
         this.generatePowerNameToIntMap();
 
@@ -122,7 +114,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         bandanaRequestBuilder.setObservation(observationData);
         bandanaRequestBuilder.setType(ProtoMessage.BandanaRequest.Type.GET_DEAL_REQUEST);
 
-        return bandanaRequestBuilder.build().toByteArray();
+        return bandanaRequestBuilder.build();
     }
 
     /**

@@ -75,7 +75,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
     # When a type hint contains names that have not been defined yet, that definition may be expressed as a string
     # literal, to be resolved later. A situation where this occurs commonly is the definition of a container class,
     # where the class being defined occurs in the signature of some of the methods.
-    server: grpc.server
+    server: grpc.server = None
 
     # Env
 
@@ -323,13 +323,8 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
                 self.bandana_subprocess = None
 
     def _init_grpc_server(self):
-        self.server = DiplomacyGymServiceServicer.create_server()
+        self.server = DiplomacyGymServiceServicer.create_server(self)
         self.server.start()
-        try:
-            while True:
-                time.sleep(_ONE_DAY_IN_SECONDS)
-        except KeyboardInterrupt:
-            self.server.stop(0)
 
     def _terminate_grpc_server(self):
         self.server.stop(0)
@@ -350,10 +345,10 @@ class DiplomacyGymServiceServicer(proto_message_pb2_grpc.DiplomacyGymServiceServ
         return self.diplomacy_env.handle_request(request)
 
     @staticmethod
-    def create_server():
+    def create_server(diplomacy_env: DiplomacyEnv):
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         proto_message_pb2_grpc.add_DiplomacyGymServiceServicer_to_server(
-            DiplomacyGymServiceServicer(), server
+            DiplomacyGymServiceServicer(diplomacy_env), server
         )
         server.add_insecure_port('[::]:5000')
         return server

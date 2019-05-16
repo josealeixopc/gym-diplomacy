@@ -6,7 +6,6 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 
-
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -59,6 +58,10 @@ public class DiplomacyGymServiceClient {
         }
 
         return response;
+    }
+
+    public ProtoMessage.DiplomacyGymOrdersResponse getTacticAction(ProtoMessage.BandanaRequest request) {
+        throw new RuntimeException("This method has not been implemented.");
     }
 
     /**

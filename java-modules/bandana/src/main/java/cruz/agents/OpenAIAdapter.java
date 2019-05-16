@@ -39,8 +39,8 @@ public abstract class OpenAIAdapter {
     /** An Observer instance that allows us to know the current game state. It is used to know when the games has ended. */
     public OpenAIObserver openAIObserver;
 
-    /** The SocketClient instance used to send requests to the OpenAI Gym environment. */
-    protected SocketClient socketClient;
+    /** The DiplomacyGymServiceClient instance used to send requests to the OpenAI Gym environment. */
+    protected DiplomacyGymServiceClient serviceClient;
 
     OpenAIAdapter() {
         this.init();
@@ -50,7 +50,7 @@ public abstract class OpenAIAdapter {
         this.done = false;
         this.info = null;
         this.validAction = true;
-        this.socketClient = new SocketClient(5000);
+        this.serviceClient = new DiplomacyGymServiceClient("localhost", 5000);
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class OpenAIAdapter {
 
             // Terminate observer so it does not hang and cause exceptions.
             this.openAIObserver.exit();
-            this.socketClient.close();
+            this.serviceClient.shutdown();
         }
         catch (Exception e) {
             // do nothing
@@ -196,17 +196,15 @@ public abstract class OpenAIAdapter {
             ProtoMessage.ObservationData observationData = this.generateObservationData();
             bandanaRequestBuilder.setObservation(observationData);
 
-            byte[] message = bandanaRequestBuilder.build().toByteArray();
+            ProtoMessage.BandanaRequest message = bandanaRequestBuilder.build();
 
-            byte[] response = this.socketClient.sendMessageAndReceiveResponse(message);
+            ProtoMessage.DiplomacyGymResponse response = this.serviceClient.getAction(message);
 
             if (response == null) {
                 return;
             }
 
-            ProtoMessage.DiplomacyGymResponse diplomacyGymResponse = ProtoMessage.DiplomacyGymResponse.parseFrom(response);
-
-            if (diplomacyGymResponse.getType() != ProtoMessage.DiplomacyGymResponse.Type.CONFIRM) {
+            if (response.getType() != ProtoMessage.DiplomacyGymResponse.Type.CONFIRM) {
                 throw new Exception("The response from DiplomacyGym to the end of game notification is not 'CONFIRM'.");
             }
         } catch (Exception e) {

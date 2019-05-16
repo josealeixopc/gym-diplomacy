@@ -143,7 +143,7 @@ public class TournamentRunner {
                     // Bots for negotiation testing
                     if(MODE) {
                         //make sure that each player has a different name.
-                        if (i < numberOfParticipants - 3) {
+                        if (i < numberOfParticipants - 1) {
                             name = "DBraneNego " + i;
                             command = dbraneExampleBotCommand;
                         } else {
