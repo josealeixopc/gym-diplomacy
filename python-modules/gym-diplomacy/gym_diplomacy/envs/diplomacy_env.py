@@ -20,10 +20,8 @@ from gym_diplomacy.envs import proto_message_pb2_grpc, proto_message_pb2
 FORMAT = "%(levelname)s -- [%(filename)s:%(lineno)s - %(funcName)s()] %(message)s"
 logging.basicConfig(format=FORMAT)
 
-logging_level = 'DEBUG'
-level = getattr(logging, logging_level)
 logger = logging.getLogger(__name__)
-logger.setLevel(level)
+logger.setLevel(logging.CRITICAL)
 logger.disabled = False
 
 
@@ -181,8 +179,9 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
 
             # In this case we simply restart Bandana
             if self.bandana_subprocess is not None:
-                self._kill_bandana()
-                self._init_bandana(self.enable_bandana_output)
+                pass
+                # self._kill_bandana()
+                # self._init_bandana(self.enable_bandana_output)
             else:
                 self._init_bandana(self.enable_bandana_output)
 

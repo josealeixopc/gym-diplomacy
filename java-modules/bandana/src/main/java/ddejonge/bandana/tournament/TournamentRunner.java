@@ -52,7 +52,7 @@ public class TournamentRunner {
 	
 	public static void main(String[] args) throws IOException {
 		
-		int numberOfGames = 1;				//The number of games this tournament consists of.
+		int numberOfGames = Integer.MAX_VALUE;				//The number of games this tournament consists of.
 		
 		int deadlineForMovePhases = 60; 	//60 seconds for each SPR and FAL phases
 		int deadlineForRetreatPhases = 30;  //30 seconds for each SUM and AUT phases
@@ -143,7 +143,7 @@ public class TournamentRunner {
                     // Bots for negotiation testing
                     if(MODE) {
                         //make sure that each player has a different name.
-                        if (i < numberOfParticipants - 1) {
+                        if (i < numberOfParticipants - 3) {
                             name = "DBraneNego " + i;
                             command = dbraneExampleBotCommand;
                         } else {

@@ -9,3 +9,7 @@ To install all the necessary packages to run this, simply use `pipenv` and insta
 ```bash
 pipenv install --skip-lock  # skips the creation of the lock file
 ```
+
+## Running
+
+If running locally, you might want to spare your CPU. Use the [`nice`](https://www.computerhope.com/unix/unice.htm) command before the command to run the agent.
