@@ -13,24 +13,10 @@ arrays is done on the side of BANDANA. Therefore most messages have fields which
 
 
 // The greeting service definition.
-service Greeter {
+service DiplomacyGymService {
   // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {}
-
-  // Sends another greeting
-  rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+  rpc GetAction (BandanaRequest) returns (DiplomacyGymResponse) {}
 }
-
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
-}
-
 
 message BandanaRequest {
   enum Type {

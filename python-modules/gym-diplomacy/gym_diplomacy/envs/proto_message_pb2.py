@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='dip_q',
   syntax='proto3',
   serialized_options=_b('\n\013cruz.agents'),
-  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\x1c\n\x0cHelloRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1d\n\nHelloReply\x12\x0f\n\x07message\x18\x01 \x01(\t\"\xc1\x01\n\x0e\x42\x61ndanaRequest\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.BandanaRequest.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\"X\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x14\n\x10GET_DEAL_REQUEST\x10\x01\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x02\x12\x11\n\rSEND_GAME_END\x10\x03\"\xd6\x01\n\x14\x44iplomacyGymResponse\x12.\n\x04type\x18\x01 \x01(\x0e\x32 .dip_q.DiplomacyGymResponse.Type\x12\x1d\n\x04\x64\x65\x61l\x18\x02 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x03 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"D\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x0b\n\x07\x43ONFIRM\x10\x01\x12\r\n\tSEND_DEAL\x10\x02\x12\x13\n\x0fSEND_ACCEPTANCE\x10\x03\"\x95\x01\n\x1a\x44iplomacyGymOrdersResponse\x12\x34\n\x04type\x18\x01 \x01(\x0e\x32&.dip_q.DiplomacyGymOrdersResponse.Type\x12!\n\x06orders\x18\x02 \x01(\x0b\x32\x11.dip_q.OrdersData\"\x1e\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\t\n\x05VALID\x10\x01\"C\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\x12\x0c\n\x04unit\x18\x04 \x01(\x05\"\x83\x01\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\x12\x1c\n\x14previousActionReward\x18\x02 \x01(\x02\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08\x12\x0c\n\x04info\x18\x04 \x01(\t\x12\x0e\n\x06player\x18\x05 \x01(\x05\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"\xda\x03\n\x08\x44\x65\x61lData\x12\x32\n\ndefendUnit\x18\x01 \x01(\x0b\x32\x1e.dip_q.DealData.DefendUnitData\x12.\n\x08\x64\x65\x66\x65ndSC\x18\x02 \x01(\x0b\x32\x1c.dip_q.DealData.DefendSCData\x12\x36\n\x0c\x61ttackRegion\x18\x03 \x01(\x0b\x32 .dip_q.DealData.AttackRegionData\x12\x44\n\x13supportAttackRegion\x18\x04 \x01(\x0b\x32\'.dip_q.DealData.SupportAttackRegionData\x12\x15\n\rphasesFromNow\x18\x05 \x01(\x05\x1a\x31\n\x0e\x44\x65\x66\x65ndUnitData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\x1a\x31\n\x0c\x44\x65\x66\x65ndSCData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x10\n\x08province\x18\x02 \x01(\x05\x1a\x33\n\x10\x41ttackRegionData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\x1a:\n\x17SupportAttackRegionData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\"?\n\tOrderData\x12\r\n\x05start\x18\x01 \x01(\x05\x12\x0e\n\x06\x61\x63tion\x18\x02 \x01(\x05\x12\x13\n\x0b\x64\x65stination\x18\x03 \x01(\x05\".\n\nOrdersData\x12 \n\x06orders\x18\x01 \x03(\x0b\x32\x10.dip_q.OrderData2z\n\x07Greeter\x12\x34\n\x08SayHello\x12\x13.dip_q.HelloRequest\x1a\x11.dip_q.HelloReply\"\x00\x12\x39\n\rSayHelloAgain\x12\x13.dip_q.HelloRequest\x1a\x11.dip_q.HelloReply\"\x00\x42\r\n\x0b\x63ruz.agentsb\x06proto3')
+  serialized_pb=_b('\n\x13proto_message.proto\x12\x05\x64ip_q\"\xc1\x01\n\x0e\x42\x61ndanaRequest\x12(\n\x04type\x18\x01 \x01(\x0e\x32\x1a.dip_q.BandanaRequest.Type\x12+\n\x0bobservation\x18\x02 \x01(\x0b\x32\x16.dip_q.ObservationData\"X\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x14\n\x10GET_DEAL_REQUEST\x10\x01\x12\x1a\n\x16GET_ACCEPTANCE_REQUEST\x10\x02\x12\x11\n\rSEND_GAME_END\x10\x03\"\xd6\x01\n\x14\x44iplomacyGymResponse\x12.\n\x04type\x18\x01 \x01(\x0e\x32 .dip_q.DiplomacyGymResponse.Type\x12\x1d\n\x04\x64\x65\x61l\x18\x02 \x01(\x0b\x32\x0f.dip_q.DealData\x12)\n\nacceptance\x18\x03 \x01(\x0b\x32\x15.dip_q.AcceptanceData\"D\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\x0b\n\x07\x43ONFIRM\x10\x01\x12\r\n\tSEND_DEAL\x10\x02\x12\x13\n\x0fSEND_ACCEPTANCE\x10\x03\"\x95\x01\n\x1a\x44iplomacyGymOrdersResponse\x12\x34\n\x04type\x18\x01 \x01(\x0e\x32&.dip_q.DiplomacyGymOrdersResponse.Type\x12!\n\x06orders\x18\x02 \x01(\x0b\x32\x11.dip_q.OrdersData\"\x1e\n\x04Type\x12\x0b\n\x07INVALID\x10\x00\x12\t\n\x05VALID\x10\x01\"C\n\x0cProvinceData\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05owner\x18\x02 \x01(\x05\x12\n\n\x02sc\x18\x03 \x01(\x05\x12\x0c\n\x04unit\x18\x04 \x01(\x05\"\x83\x01\n\x0fObservationData\x12&\n\tprovinces\x18\x01 \x03(\x0b\x32\x13.dip_q.ProvinceData\x12\x1c\n\x14previousActionReward\x18\x02 \x01(\x02\x12\x0c\n\x04\x64one\x18\x03 \x01(\x08\x12\x0c\n\x04info\x18\x04 \x01(\t\x12\x0e\n\x06player\x18\x05 \x01(\x05\"\x10\n\x0e\x41\x63\x63\x65ptanceData\"\xda\x03\n\x08\x44\x65\x61lData\x12\x32\n\ndefendUnit\x18\x01 \x01(\x0b\x32\x1e.dip_q.DealData.DefendUnitData\x12.\n\x08\x64\x65\x66\x65ndSC\x18\x02 \x01(\x0b\x32\x1c.dip_q.DealData.DefendSCData\x12\x36\n\x0c\x61ttackRegion\x18\x03 \x01(\x0b\x32 .dip_q.DealData.AttackRegionData\x12\x44\n\x13supportAttackRegion\x18\x04 \x01(\x0b\x32\'.dip_q.DealData.SupportAttackRegionData\x12\x15\n\rphasesFromNow\x18\x05 \x01(\x05\x1a\x31\n\x0e\x44\x65\x66\x65ndUnitData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\x1a\x31\n\x0c\x44\x65\x66\x65ndSCData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x10\n\x08province\x18\x02 \x01(\x05\x1a\x33\n\x10\x41ttackRegionData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\x1a:\n\x17SupportAttackRegionData\x12\x0f\n\x07\x65xecute\x18\x01 \x01(\x08\x12\x0e\n\x06region\x18\x02 \x01(\x05\"?\n\tOrderData\x12\r\n\x05start\x18\x01 \x01(\x05\x12\x0e\n\x06\x61\x63tion\x18\x02 \x01(\x05\x12\x13\n\x0b\x64\x65stination\x18\x03 \x01(\x05\".\n\nOrdersData\x12 \n\x06orders\x18\x01 \x03(\x0b\x32\x10.dip_q.OrderData2X\n\x13\x44iplomacyGymService\x12\x41\n\tGetAction\x12\x15.dip_q.BandanaRequest\x1a\x1b.dip_q.DiplomacyGymResponse\"\x00\x42\r\n\x0b\x63ruz.agentsb\x06proto3')
 )
 
 
@@ -50,8 +50,8 @@ _BANDANAREQUEST_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=197,
-  serialized_end=285,
+  serialized_start=136,
+  serialized_end=224,
 )
 _sym_db.RegisterEnumDescriptor(_BANDANAREQUEST_TYPE)
 
@@ -80,8 +80,8 @@ _DIPLOMACYGYMRESPONSE_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=434,
-  serialized_end=502,
+  serialized_start=373,
+  serialized_end=441,
 )
 _sym_db.RegisterEnumDescriptor(_DIPLOMACYGYMRESPONSE_TYPE)
 
@@ -102,72 +102,10 @@ _DIPLOMACYGYMORDERSRESPONSE_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=624,
-  serialized_end=654,
+  serialized_start=563,
+  serialized_end=593,
 )
 _sym_db.RegisterEnumDescriptor(_DIPLOMACYGYMORDERSRESPONSE_TYPE)
-
-
-_HELLOREQUEST = _descriptor.Descriptor(
-  name='HelloRequest',
-  full_name='dip_q.HelloRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='dip_q.HelloRequest.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=30,
-  serialized_end=58,
-)
-
-
-_HELLOREPLY = _descriptor.Descriptor(
-  name='HelloReply',
-  full_name='dip_q.HelloReply',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='message', full_name='dip_q.HelloReply.message', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=60,
-  serialized_end=89,
-)
 
 
 _BANDANAREQUEST = _descriptor.Descriptor(
@@ -204,8 +142,8 @@ _BANDANAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=92,
-  serialized_end=285,
+  serialized_start=31,
+  serialized_end=224,
 )
 
 
@@ -250,8 +188,8 @@ _DIPLOMACYGYMRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=288,
-  serialized_end=502,
+  serialized_start=227,
+  serialized_end=441,
 )
 
 
@@ -289,8 +227,8 @@ _DIPLOMACYGYMORDERSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=505,
-  serialized_end=654,
+  serialized_start=444,
+  serialized_end=593,
 )
 
 
@@ -341,8 +279,8 @@ _PROVINCEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=656,
-  serialized_end=723,
+  serialized_start=595,
+  serialized_end=662,
 )
 
 
@@ -400,8 +338,8 @@ _OBSERVATIONDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=726,
-  serialized_end=857,
+  serialized_start=665,
+  serialized_end=796,
 )
 
 
@@ -424,8 +362,8 @@ _ACCEPTANCEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=859,
-  serialized_end=875,
+  serialized_start=798,
+  serialized_end=814,
 )
 
 
@@ -462,8 +400,8 @@ _DEALDATA_DEFENDUNITDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1139,
-  serialized_end=1188,
+  serialized_start=1078,
+  serialized_end=1127,
 )
 
 _DEALDATA_DEFENDSCDATA = _descriptor.Descriptor(
@@ -499,8 +437,8 @@ _DEALDATA_DEFENDSCDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1190,
-  serialized_end=1239,
+  serialized_start=1129,
+  serialized_end=1178,
 )
 
 _DEALDATA_ATTACKREGIONDATA = _descriptor.Descriptor(
@@ -536,8 +474,8 @@ _DEALDATA_ATTACKREGIONDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1241,
-  serialized_end=1292,
+  serialized_start=1180,
+  serialized_end=1231,
 )
 
 _DEALDATA_SUPPORTATTACKREGIONDATA = _descriptor.Descriptor(
@@ -573,8 +511,8 @@ _DEALDATA_SUPPORTATTACKREGIONDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1294,
-  serialized_end=1352,
+  serialized_start=1233,
+  serialized_end=1291,
 )
 
 _DEALDATA = _descriptor.Descriptor(
@@ -631,8 +569,8 @@ _DEALDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=878,
-  serialized_end=1352,
+  serialized_start=817,
+  serialized_end=1291,
 )
 
 
@@ -676,8 +614,8 @@ _ORDERDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1354,
-  serialized_end=1417,
+  serialized_start=1293,
+  serialized_end=1356,
 )
 
 
@@ -707,8 +645,8 @@ _ORDERSDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1419,
-  serialized_end=1465,
+  serialized_start=1358,
+  serialized_end=1404,
 )
 
 _BANDANAREQUEST.fields_by_name['type'].enum_type = _BANDANAREQUEST_TYPE
@@ -731,8 +669,6 @@ _DEALDATA.fields_by_name['defendSC'].message_type = _DEALDATA_DEFENDSCDATA
 _DEALDATA.fields_by_name['attackRegion'].message_type = _DEALDATA_ATTACKREGIONDATA
 _DEALDATA.fields_by_name['supportAttackRegion'].message_type = _DEALDATA_SUPPORTATTACKREGIONDATA
 _ORDERSDATA.fields_by_name['orders'].message_type = _ORDERDATA
-DESCRIPTOR.message_types_by_name['HelloRequest'] = _HELLOREQUEST
-DESCRIPTOR.message_types_by_name['HelloReply'] = _HELLOREPLY
 DESCRIPTOR.message_types_by_name['BandanaRequest'] = _BANDANAREQUEST
 DESCRIPTOR.message_types_by_name['DiplomacyGymResponse'] = _DIPLOMACYGYMRESPONSE
 DESCRIPTOR.message_types_by_name['DiplomacyGymOrdersResponse'] = _DIPLOMACYGYMORDERSRESPONSE
@@ -743,20 +679,6 @@ DESCRIPTOR.message_types_by_name['DealData'] = _DEALDATA
 DESCRIPTOR.message_types_by_name['OrderData'] = _ORDERDATA
 DESCRIPTOR.message_types_by_name['OrdersData'] = _ORDERSDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
-HelloRequest = _reflection.GeneratedProtocolMessageType('HelloRequest', (_message.Message,), dict(
-  DESCRIPTOR = _HELLOREQUEST,
-  __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.HelloRequest)
-  ))
-_sym_db.RegisterMessage(HelloRequest)
-
-HelloReply = _reflection.GeneratedProtocolMessageType('HelloReply', (_message.Message,), dict(
-  DESCRIPTOR = _HELLOREPLY,
-  __module__ = 'proto_message_pb2'
-  # @@protoc_insertion_point(class_scope:dip_q.HelloReply)
-  ))
-_sym_db.RegisterMessage(HelloReply)
 
 BandanaRequest = _reflection.GeneratedProtocolMessageType('BandanaRequest', (_message.Message,), dict(
   DESCRIPTOR = _BANDANAREQUEST,
@@ -856,36 +778,27 @@ _sym_db.RegisterMessage(OrdersData)
 
 DESCRIPTOR._options = None
 
-_GREETER = _descriptor.ServiceDescriptor(
-  name='Greeter',
-  full_name='dip_q.Greeter',
+_DIPLOMACYGYMSERVICE = _descriptor.ServiceDescriptor(
+  name='DiplomacyGymService',
+  full_name='dip_q.DiplomacyGymService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=1467,
-  serialized_end=1589,
+  serialized_start=1406,
+  serialized_end=1494,
   methods=[
   _descriptor.MethodDescriptor(
-    name='SayHello',
-    full_name='dip_q.Greeter.SayHello',
+    name='GetAction',
+    full_name='dip_q.DiplomacyGymService.GetAction',
     index=0,
     containing_service=None,
-    input_type=_HELLOREQUEST,
-    output_type=_HELLOREPLY,
-    serialized_options=None,
-  ),
-  _descriptor.MethodDescriptor(
-    name='SayHelloAgain',
-    full_name='dip_q.Greeter.SayHelloAgain',
-    index=1,
-    containing_service=None,
-    input_type=_HELLOREQUEST,
-    output_type=_HELLOREPLY,
+    input_type=_BANDANAREQUEST,
+    output_type=_DIPLOMACYGYMRESPONSE,
     serialized_options=None,
   ),
 ])
-_sym_db.RegisterServiceDescriptor(_GREETER)
+_sym_db.RegisterServiceDescriptor(_DIPLOMACYGYMSERVICE)
 
-DESCRIPTOR.services_by_name['Greeter'] = _GREETER
+DESCRIPTOR.services_by_name['DiplomacyGymService'] = _DIPLOMACYGYMSERVICE
 
 # @@protoc_insertion_point(module_scope)

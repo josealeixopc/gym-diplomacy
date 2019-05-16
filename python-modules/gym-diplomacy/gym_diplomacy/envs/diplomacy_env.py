@@ -6,10 +6,16 @@ import socketserver
 import subprocess
 import threading
 import typing
+import time
+from concurrent import futures
 from abc import ABCMeta, abstractmethod
 
 import gym
+# noinspection PyPackageRequirements
+import grpc
 import numpy as np
+
+from gym_diplomacy.envs import proto_message_pb2_grpc, proto_message_pb2
 
 FORMAT = "%(levelname)s -- [%(filename)s:%(lineno)s - %(funcName)s()] %(message)s"
 logging.basicConfig(format=FORMAT)
@@ -19,6 +25,9 @@ level = getattr(logging, logging_level)
 logger = logging.getLogger(__name__)
 logger.setLevel(level)
 logger.disabled = False
+
+
+_ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 
 class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
@@ -66,7 +75,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
     # When a type hint contains names that have not been defined yet, that definition may be expressed as a string
     # literal, to be resolved later. A situation where this occurs commonly is the definition of a container class,
     # where the class being defined occurs in the signature of some of the methods.
-    server: 'DiplomacyThreadedTCPServer' = None
+    server: grpc.server
 
     # Env
 
@@ -179,7 +188,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
 
             # If server has not been initialized, create server
             if self.server is None:
-                self._init_socket_server()
+                self._init_grpc_server()
 
             # Wait until the observation field has been set, by receiving the observation from Bandana
             while self.observation is None:
@@ -236,7 +245,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
         self._kill_bandana()
 
         if self.server is not None:
-            self._terminate_socket_server()
+            self._terminate_grpc_server()
 
         self.termination_complete = True
 
@@ -313,133 +322,39 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
                 # Set current process to None
                 self.bandana_subprocess = None
 
-    def _init_socket_server(self):
-        self.server = DiplomacyThreadedTCPServer(self, 5000, DiplomacyTCPHandler)
+    def _init_grpc_server(self):
+        self.server = DiplomacyGymServiceServicer.create_server()
+        self.server.start()
+        try:
+            while True:
+                time.sleep(_ONE_DAY_IN_SECONDS)
+        except KeyboardInterrupt:
+            self.server.stop(0)
 
-        # DON'T DO 'with self.server'!!!
-        # This is used in the docs, but maybe because shutdown is executed inside the same 'with' context, it doesn't
-        # work
-        self.server_thread = threading.Thread(target=self.server.serve_forever)
-
-        # Exit the server thread when the main thread terminates
-        self.server_thread.daemon = True
-        self.server_thread.start()
-        logger.info("Started ThreadedTCPServer daemon thread.")
-
-    def _terminate_socket_server(self):
-        with self.server:
-            self.server.shutdown()
-            self.server.server_close()
-            logger.info("Shut down ThreadedTCPServer.")
+    def _terminate_grpc_server(self):
+        self.server.stop(0)
 
     @abstractmethod
-    def handle_request(self, request: bytearray) -> bytes:
+    def handle_request(self, request: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
         pass
 
 
-class DiplomacyThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
-    port: int
-    host: str
-    # typing.Type[A] means any subclass of A
-    handler_request_class: typing.Type[socketserver.BaseRequestHandler]
+class DiplomacyGymServiceServicer(proto_message_pb2_grpc.DiplomacyGymServiceServicer):
+
     diplomacy_env: DiplomacyEnv
 
-    def __init__(self,
-                 diplomacy_env: DiplomacyEnv,
-                 port: int,
-                 request_handler_class: typing.Type[socketserver.BaseRequestHandler],
-                 host='localhost'):
+    def __init__(self, diplomacy_env):
         self.diplomacy_env = diplomacy_env
-        self.port = port
-        self.host = host
-        self.address = (self.host, self.port)
-        self.handler_request_class = request_handler_class
 
-        # bind_and_activate means that the constructor will bind and activate the server right away
-        # Because we want to set up the reuse address flag, this should not be the case, and we bind and activate
-        # manually
-        super(DiplomacyThreadedTCPServer, self).__init__(self.address,
-                                                         self.handler_request_class,
-                                                         bind_and_activate=False)
-        self.allow_reuse_address = True
-        self.server_bind()
-        self.server_activate()
-        logger.info("Server bound and activated at address: {}".format(self.server_address))
+    def GetAction(self, request: proto_message_pb2.BandanaRequest, context):
+        return self.diplomacy_env.handle_request(request)
 
-    def shutdown(self):
-        super().shutdown()
-        logger.info("Shutting down server.")
+    @staticmethod
+    def create_server():
+        server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+        proto_message_pb2_grpc.add_DiplomacyGymServiceServicer_to_server(
+            DiplomacyGymServiceServicer(), server
+        )
+        server.add_insecure_port('[::]:5000')
+        return server
 
-
-class DiplomacyTCPHandler(socketserver.BaseRequestHandler):
-    """
-    The request handler class for our server.
-
-    It is instantiated once per connection to the server, and must
-    override the handle() method to implement communication to the
-    client.
-    """
-
-    def recv_all(self, n):
-        # Helper function to recv n bytes or return None if EOF is hit
-        data = b''
-        while len(data) < n:
-            packet = self.request.recv(n - len(data))
-            if not packet:
-                return None
-            data += packet
-        return data
-
-    def handle(self):
-
-        self.request.setblocking(10)
-
-        while True:
-            data_length_bytes: bytes = self.recv_all(4)
-
-            # If recv read an empty request b'', then client has closed the connection
-            if not data_length_bytes:
-                break
-
-            # DON'T DO strip() ON THE DATA_LENGTH PACKET. It might delete what Python thinks is whitespace but
-            # it actually is a byte that makes part of the integer.
-            data_length: int = int.from_bytes(data_length_bytes, byteorder='big')
-
-            # Don't do strip() on data either (be sure to check if there is some error if you do use)
-            data: bytes = self.recv_all(data_length)
-
-            if self.server.diplomacy_env is not None:
-                response: bytes = self.server.diplomacy_env.handle_request(bytearray(data))
-            else:
-                logger.warning("'diplomacy_env' is None in DiplomacyTCPHandler. Assuming it's for debug reasons. "
-                               "Otherwise, fix.")
-                response: bytes = data.upper()
-
-            self.request.sendall(len(response).to_bytes(4, byteorder='big'))
-            self.request.sendall(response)
-
-
-if __name__ == '__main__':
-    # Testing
-    server = DiplomacyThreadedTCPServer(None, 5000, DiplomacyTCPHandler)
-
-    # DON'T DO 'with self.server'!!!
-    # This is used in the docs, but maybe because shutdown is executed inside the same 'with' context, it doesn't
-    # work
-    server_thread = threading.Thread(target=server.serve_forever)
-
-    # Exit the server thread when the main thread terminates
-    server_thread.daemon = True
-    server_thread.start()
-    logger.info("Started ThreadedTCPServer daemon thread.")
-
-    while input("Terminate? (y/n) ") not in 'y':
-        pass
-
-    with server:
-        server.shutdown()
-        server.server_close()
-
-    import sys
-
-    sys.exit()

@@ -31,14 +31,6 @@ NUMBER_OF_PROVINCES = 75
 NUMBER_OF_PHASES_AHEAD = 20
 MAXIMUM_NUMBER_OF_SC = 18
 
-class Greeter(proto_message_pb2.Gre):
-
-    def SayHello(self, request, context):
-        return helloworld_pb2.HelloReply(message='Hello, %s!' % request.name)
-
-    def SayHelloAgain(self, request, context):
-        return helloworld_pb2.HelloReply(message='Hello again, %s!' % request.name)
-
 def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
     """
     This function takes a Protobuf ObservationData and generates the necessary information for the agent to act.
@@ -174,31 +166,27 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
                                                   1, MAXIMUM_NUMBER_OF_SC,
                                                   NUMBER_OF_PHASES_AHEAD])
 
-    def handle_request(self, request: bytearray) -> bytes:
-        request_data: proto_message_pb2.BandanaRequest = proto_message_pb2.BandanaRequest()
-        request_data.ParseFromString(request)
-
+    def handle_request(self, request: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
         logger.info("Executing _handle of request...")
 
-        if request_data.type is proto_message_pb2.BandanaRequest.INVALID:
+        if request.type is proto_message_pb2.BandanaRequest.INVALID:
             raise ValueError("Type of BandanaRequest is 'INVALID'. Something bad happened on BANDANA side.",
-                             request_data)
+                             request)
 
-        elif request_data.type is proto_message_pb2.BandanaRequest.GET_DEAL_REQUEST:
-            response_data = self._handle_get_deal_request(request_data)
+        elif request.type is proto_message_pb2.BandanaRequest.GET_DEAL_REQUEST:
+            response = self._handle_get_deal_request(request)
 
-        elif request_data.type is proto_message_pb2.BandanaRequest.SEND_GAME_END:
-            response_data = self._handle_send_game_end_request(request_data)
+        elif request.type is proto_message_pb2.BandanaRequest.SEND_GAME_END:
+            response = self._handle_send_game_end_request(request)
 
         else:
-            raise NotImplementedError("There is no handle for request of type '{}'.".format(request_data.type))
+            raise NotImplementedError("There is no handle for request of type '{}'.".format(request.type))
 
         logger.info("Returning handler response.")
 
-        # Using this just for IDE autocompletion
-        response_data: proto_message_pb2.DiplomacyGymResponse = response_data
+        response: proto_message_pb2.DiplomacyGymResponse = response
 
-        return response_data.SerializeToString()
+        return response
 
     def _handle_get_deal_request(self,
                                  request_data: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:

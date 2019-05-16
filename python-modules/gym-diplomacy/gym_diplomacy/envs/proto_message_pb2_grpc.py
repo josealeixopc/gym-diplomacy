@@ -4,7 +4,7 @@ import grpc
 import proto_message_pb2 as proto__message__pb2
 
 
-class GreeterStub(object):
+class DiplomacyGymServiceStub(object):
   """*
   It's important that the communication between modules remains as simple as possible.
 
@@ -20,19 +20,14 @@ class GreeterStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.SayHello = channel.unary_unary(
-        '/dip_q.Greeter/SayHello',
-        request_serializer=proto__message__pb2.HelloRequest.SerializeToString,
-        response_deserializer=proto__message__pb2.HelloReply.FromString,
-        )
-    self.SayHelloAgain = channel.unary_unary(
-        '/dip_q.Greeter/SayHelloAgain',
-        request_serializer=proto__message__pb2.HelloRequest.SerializeToString,
-        response_deserializer=proto__message__pb2.HelloReply.FromString,
+    self.GetAction = channel.unary_unary(
+        '/dip_q.DiplomacyGymService/GetAction',
+        request_serializer=proto__message__pb2.BandanaRequest.SerializeToString,
+        response_deserializer=proto__message__pb2.DiplomacyGymResponse.FromString,
         )
 
 
-class GreeterServicer(object):
+class DiplomacyGymServiceServicer(object):
   """*
   It's important that the communication between modules remains as simple as possible.
 
@@ -42,34 +37,22 @@ class GreeterServicer(object):
   The greeting service definition.
   """
 
-  def SayHello(self, request, context):
+  def GetAction(self, request, context):
     """Sends a greeting
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def SayHelloAgain(self, request, context):
-    """Sends another greeting
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
 
-
-def add_GreeterServicer_to_server(servicer, server):
+def add_DiplomacyGymServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'SayHello': grpc.unary_unary_rpc_method_handler(
-          servicer.SayHello,
-          request_deserializer=proto__message__pb2.HelloRequest.FromString,
-          response_serializer=proto__message__pb2.HelloReply.SerializeToString,
-      ),
-      'SayHelloAgain': grpc.unary_unary_rpc_method_handler(
-          servicer.SayHelloAgain,
-          request_deserializer=proto__message__pb2.HelloRequest.FromString,
-          response_serializer=proto__message__pb2.HelloReply.SerializeToString,
+      'GetAction': grpc.unary_unary_rpc_method_handler(
+          servicer.GetAction,
+          request_deserializer=proto__message__pb2.BandanaRequest.FromString,
+          response_serializer=proto__message__pb2.DiplomacyGymResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'dip_q.Greeter', rpc_method_handlers)
+      'dip_q.DiplomacyGymService', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))
