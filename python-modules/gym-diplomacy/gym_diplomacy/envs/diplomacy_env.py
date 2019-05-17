@@ -17,11 +17,11 @@ import numpy as np
 
 from gym_diplomacy.envs import proto_message_pb2_grpc, proto_message_pb2
 
-FORMAT = "%(levelname)s -- [%(filename)s:%(lineno)s - %(funcName)s()] %(message)s"
+FORMAT = "%(asctime)s %(levelname)s -- [%(filename)s:%(lineno)s - %(funcName)s()] %(message)s"
 logging.basicConfig(format=FORMAT)
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.CRITICAL)
+logger.setLevel(logging.DEBUG)
 logger.disabled = False
 
 
@@ -140,6 +140,8 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
             logger.debug("'waiting_for_action' has been set to true. Setting global action to generated action...")
 
             self.action = action
+
+            logger.info("Action to take: {}".format(action))
 
             self.waiting_for_action = False
             # After setting 'waiting_for_action' to false, the 'handle' function should send the chosen action

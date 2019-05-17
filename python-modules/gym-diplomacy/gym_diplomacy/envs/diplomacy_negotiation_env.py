@@ -8,7 +8,7 @@ from gym import spaces
 from gym_diplomacy.envs import diplomacy_env
 from gym_diplomacy.envs import proto_message_pb2
 
-FORMAT = "%(levelname)s -- [%(filename)s:%(lineno)s - %(funcName)s()] %(message)s"
+FORMAT = "%(asctime)s %(levelname)s -- [%(filename)s:%(lineno)s - %(funcName)s()] %(message)s"
 logging.basicConfig(format=FORMAT)
 
 logger = logging.getLogger(__name__)
@@ -159,10 +159,10 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
         # - with NO support_attack
         # - 4 phases ahead from the current one (0 means the same phase)
 
-        self.action_space = spaces.MultiDiscrete([1, MAXIMUM_NUMBER_OF_SC,
-                                                  1, MAXIMUM_NUMBER_OF_SC,
-                                                  1, MAXIMUM_NUMBER_OF_SC,
-                                                  1, MAXIMUM_NUMBER_OF_SC,
+        self.action_space = spaces.MultiDiscrete([2, MAXIMUM_NUMBER_OF_SC,
+                                                  2, MAXIMUM_NUMBER_OF_SC,
+                                                  2, MAXIMUM_NUMBER_OF_SC,
+                                                  2, MAXIMUM_NUMBER_OF_SC,
                                                   NUMBER_OF_PHASES_AHEAD])
 
     def handle_request(self, request: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:

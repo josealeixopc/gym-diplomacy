@@ -37,8 +37,11 @@ sudo apt-get install -y python${PYTHON_2_VERSION} python-pip
 sudo apt-get install -y python${PYTHON_3_VERSION}-dev python3-pip 
 # we need the -dev version of Python 3 because of stable-baselines dependencies (mpi4py in particular)
 
-# we also need to install the mpi dev library
+# we also need to install the mpi dev library and ssh (because mpi depends on it)
 sudo apt-get install -y libopenmpi-dev
+sudo apt-get install -y ssh
+
+# wth is even mpi
 
 python${PYTHON_3_VERSION} -m pip install -U pip
 sudo -H pip3 install pipenv -U

@@ -98,8 +98,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
             return null;
         }
 
-        List<BasicDeal> dealsToPropose = this.generateDeals(diplomacyGymResponse.getDeal());
-        return dealsToPropose;
+        return this.generateDeals(diplomacyGymResponse.getDeal());
     }
 
 
@@ -125,6 +124,13 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
     private List<BasicDeal> generateDeals(ProtoMessage.DealData dealData) {
         List<BasicDeal> deals = new ArrayList<>();
 
+        // Get current controlled regions and then create an ordered list with them to be use in deal generation
+        this.orderedControlledRegions = this.sortRegionList(this.agent.me.getControlledRegions());
+
+        // Get the current negotiating powers and then create an ordered list for deal generation without us in the list
+        this.orderedNegotiatingPowers = this.sortPowerList(this.agent.getNegotiatingPowers());
+        this.orderedNegotiatingPowers.remove(this.agent.me);
+
         // Derive year and phase of deal from number of phases ahead
         Map.Entry<Integer, Phase> phaseAndYear = Utilities.calculatePhaseAndYear(this.agent.game.getYear(), this.agent.game.getPhase(), dealData.getPhasesFromNow());
 
@@ -133,22 +139,41 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
 
         // Only if execute is true
         if(dealData.getDefendUnit().getExecute()) {
-            deals.add(generateDefendUnitsMutual(dealData.getDefendUnit().getRegion(), year, phase));
+            int clippedRegionIndex = this.clipRegionIndex(dealData.getDefendUnit().getRegion());
+            BasicDeal generatedDeal = generateDefendUnitsMutual(clippedRegionIndex, year, phase);
+
+            if (generatedDeal != null) {
+                // if we could find a deal
+                deals.add(generatedDeal);
+            }
         }
 
         // Only if execute is true
         if(dealData.getDefendSC().getExecute()) {
-            deals.add(generateDefendSupplyCentersMutual(dealData.getDefendSC().getProvince(), year, phase));
+            int clippedProvinceIndex = this.clipProvinceIndex(dealData.getDefendSC().getProvince());
+            deals.add(generateDefendSupplyCentersMutual(clippedProvinceIndex, year, phase));
         }
 
         // Only if execute is true
         if(dealData.getAttackRegion().getExecute()) {
-            deals.add(generateAttack(dealData.getAttackRegion().getRegion(), year, phase));
+            int clippedRegionIndex = this.clipRegionIndex(dealData.getAttackRegion().getRegion());
+            BasicDeal generatedDeal = generateAttack(clippedRegionIndex, year, phase);
+
+            if (generatedDeal != null) {
+                // if we could find a deal
+                deals.add(generatedDeal);
+            }
         }
 
         // Only if execute is true
         if(dealData.getSupportAttackRegion().getExecute()) {
-            deals.add(generateSupportAttack(dealData.getAttackRegion().getRegion(), year, phase));
+            int clippedRegionIndex = this.clipRegionIndex(dealData.getSupportAttackRegion().getRegion());
+            BasicDeal generatedDeal = generateSupportAttack(clippedRegionIndex, year, phase);
+
+            if (generatedDeal != null) {
+                // if we could find a deal
+                deals.add(generatedDeal);
+            }
         }
 
         return deals;
@@ -234,7 +259,25 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
      */
     private int clipRegionIndex(int n) {
         if(n >= this.agent.me.getControlledRegions().size()) {
-            return this.agent.me.getControlledRegions().size();
+            return this.agent.me.getControlledRegions().size() - 1;
+        }
+        else {
+            return n;
+        }
+    }
+
+    /**
+     * This method clips the given integer, in case it is greater than the size of the list of controlled SCs/provinces.
+     *
+     * Because the DRL agent will provide an integer n where 0 <= n <= maximum_number_of_provinces, n may be larger
+     * than the number of CURRENT units. Therefore, we clip it, so that any n greater than our number of SCs maps to
+     * the maximum index possible.
+     * @param n
+     * @return
+     */
+    private int clipProvinceIndex(int n) {
+        if(n >= this.agent.me.getOwnedSCs().size()) {
+            return this.agent.me.getOwnedSCs().size() - 1;
         }
         else {
             return n;
@@ -322,9 +365,6 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         List<OrderCommitment> ocs = new ArrayList<>();
         List<DMZ> dmzs = new ArrayList<>();
 
-        List<Power> negotiatingPowers = this.agent.getNegotiatingPowers();
-        negotiatingPowers.remove(this.agent.me);
-
         // Choose random unit
 
         // An unit is addressed by the Region it occupies.
@@ -342,7 +382,7 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
                 // if no one controls region, don't consider it
                 continue;
             }
-            if (!negotiatingPowers.contains(controller)) {
+            if (!this.orderedNegotiatingPowers.contains(controller)) {
                 // if it's a non-negotiating or if it's us, don't consider
                 continue;
             }
@@ -375,9 +415,6 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         List<OrderCommitment> ocs = new ArrayList<>();
         List<DMZ> dmzs = new ArrayList<>();
 
-        List<Power> negotiatingPowers = this.agent.getNegotiatingPowers();
-        negotiatingPowers.remove(this.agent.me);
-
         List<Province> ourProvinces = this.agent.me.getOwnedSCs();
 
         // Try to get a deal with a random Power.
@@ -409,9 +446,6 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         List<OrderCommitment> ocs = new ArrayList<>();
         List<DMZ> dmzs = new ArrayList<>();
 
-        List<Power> negotiatingPowers = this.agent.getNegotiatingPowers();
-        negotiatingPowers.remove(this.agent.me);
-
         // An unit is addressed by the Region it occupies.
         Region ourRegion = this.orderedControlledRegions.get(regionIndex);
 
@@ -432,8 +466,18 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
             for(Region supportingRegion: possibleSupports) {
                 Power supportingPower = this.agent.game.getController(supportingRegion);
 
+                if (supportingPower == null) {
+                    // if the region is not controlled by anyone, find a new one that is
+                    continue;
+                }
+
                 if (supportingPower.equals(targetPower)) {
                     // if the supporting power is the target, don't ask for help, obviously
+                    continue;
+                }
+
+                if (!this.orderedNegotiatingPowers.contains(supportingPower)) {
+                    // if the supporting power does not negotiate
                     continue;
                 }
 
@@ -463,9 +507,6 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
         List<OrderCommitment> ocs = new ArrayList<>();
         List<DMZ> dmzs = new ArrayList<>();
 
-        List<Power> negotiatingPowers = this.agent.getNegotiatingPowers();
-        negotiatingPowers.remove(this.agent.me);
-
         // An unit is addressed by the Region it occupies.
         Region ourRegion = this.orderedControlledRegions.get(regionIndex);
 
@@ -484,8 +525,18 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
             for(Region regionToSupport: possibleSupports) {
                 Power powerToSupport = this.agent.game.getController(regionToSupport);
 
+                if (powerToSupport == null) {
+                    // if the region is not controlled by anyone, find a new one that is
+                    continue;
+                }
+
                 if (powerToSupport.equals(targetPower)) {
                     // if the supporting power is the target, don't ask for help, obviously
+                    continue;
+                }
+
+                if (!this.orderedNegotiatingPowers.contains(powerToSupport)) {
+                    // if the supporting power does not negotiate
                     continue;
                 }
 
