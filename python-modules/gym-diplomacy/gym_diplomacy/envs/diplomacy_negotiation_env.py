@@ -73,6 +73,10 @@ def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     """
     deal_data: proto_message_pb2.DealData = proto_message_pb2.DealData()
 
+    if action is None:
+        # If action is none, return a default deal data
+        return deal_data
+
     defend_unit: proto_message_pb2.DealData.DefendUnitData = proto_message_pb2.DealData.DefendUnitData()
     defend_sc: proto_message_pb2.DealData.DefendSCData = proto_message_pb2.DealData.DefendSCData()
     attack_region: proto_message_pb2.DealData.AttackRegionData = proto_message_pb2.DealData.AttackRegionData()

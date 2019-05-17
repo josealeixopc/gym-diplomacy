@@ -176,14 +176,22 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
             space.
         """
         try:
+            logger.info("Executing 'reset' function...")
+
             # Set or reset current observation to None
             self.observation = None
 
             # In this case we simply restart Bandana
             if self.bandana_subprocess is not None:
-                pass
-                # self._kill_bandana()
-                # self._init_bandana(self.enable_bandana_output)
+                if not self.waiting_for_action:
+                    pass
+                    # self._kill_bandana()
+                    # self._init_bandana(self.enable_bandana_output)
+                else:
+                    # If agent tries to reset environment while we are waiting for action, then we need to send an invalid
+                    # action back to the request that was left hanging and simply continue
+                    self.action = None
+                    self.waiting_for_action = False
             else:
                 self._init_bandana(self.enable_bandana_output)
 
@@ -239,7 +247,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
         garbage collected or when the program exits.
         """
 
-        logger.info("Closing environment.")
+        logger.info("Executing 'close' function.")
 
         self.closing = True
 
@@ -251,7 +259,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
         self.termination_complete = True
 
     def clean_up(self):
-        logger.info("Cleaning up environment.")
+        logger.info("Executing 'clean_up' function.")
 
         if not self.termination_complete:
             self.close()
