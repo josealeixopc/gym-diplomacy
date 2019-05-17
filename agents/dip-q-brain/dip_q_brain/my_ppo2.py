@@ -116,8 +116,8 @@ class PPO2(ActorCriticRLModel):
                 n_batch_step = None
                 n_batch_train = None
                 if issubclass(self.policy, RecurrentActorCriticPolicy):
-                    assert self.n_envs % self.nminibatches == 0, "For recurrent policies, "\
-                        "the number of environments run in parallel should be a multiple of nminibatches."
+                    assert self.n_envs % self.nminibatches == 0, "For recurrent policies, " \
+                                                                 "the number of environments run in parallel should be a multiple of nminibatches."
                     n_batch_step = self.n_envs
                     n_batch_train = self.n_batch // self.nminibatches
 
@@ -382,9 +382,12 @@ class PPO2(ActorCriticRLModel):
 
         self._save_to_file(save_path, data=data, params=params)
 
-    def save_tf_session(self, save_path):
-        saver = tf.train.Saver()
-        saver.save(sess, save_path)
+    def save_tf(self, save_path):
+        with self.graph.as_default():
+            saver = tf.train.Saver()
+            self.sess.run(self.params)
+            saver.save(self.sess, save_path)
+
 
 class Runner(AbstractEnvRunner):
     def __init__(self, *, env, model, n_steps, gamma, lam):

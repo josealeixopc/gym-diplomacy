@@ -1,30 +1,37 @@
 import tensorflow as tf
 import cloudpickle
 import os
-from pprint import pprint
+
+from stable_baselines.common.tf_util import save_state
+import tensorflow as tf
+from tensorflow.python.framework import graph_util
 
 from my_ppo2 import PPO2
 
-def _load_from_file(load_path):
-  if isinstance(load_path, str):
-      if not os.path.exists(load_path):
-          if os.path.exists(load_path + ".pkl"):
-              load_path += ".pkl"
-          else:
-              raise ValueError("Error: the file {} could not be found".format(load_path))
-
-      with open(load_path, "rb") as file:
-          data, params = cloudpickle.load(file)
-  else:
-      # Here load_path is a file-like object, not a path
-      data, params = cloudpickle.load(load_path)
-
-  return data, params
-
-model = _load_from_file("pickles/ppo2-test-pickle.pkl")
+models_dir = "models/"
 
 
-pprint(model)
+def save_model_from_pickle(load_path):
+    model = PPO2.load(load_path, env=None)
+
+    os.makedirs(models_dir, exist_ok=True)
+    model_file = models_dir + "model"
+
+    save_state(model_file, sess=model.sess)
+
+
+def load_model_from_tf(load_path):
+    tf.reset_default_graph()
+
+    # Add ops to save and restore all the variables.
+    saver = tf.train.Saver()
+
+    # Later, launch the model, use the saver to restore variables from disk, and
+    # do some work with the model.
+    with tf.Session() as sess:
+        # Restore variables from disk.
+        saver.restore(sess, load_path)
+
 
 # Add ops to save and restore all the variables.
 # saver = tf.train.Saver()
@@ -35,3 +42,6 @@ pprint(model)
 #   # Save the variables to disk.
 #   save_path = saver.save(sess, "tmp/model.ckpt")
 #   print("Model saved in path: %s" % save_path)
+
+if __name__ == '__main__':
+    load_model_from_tf("pickles/ppo2-test-pickle.pkl")

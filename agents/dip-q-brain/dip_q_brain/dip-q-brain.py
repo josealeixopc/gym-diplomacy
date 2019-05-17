@@ -104,7 +104,7 @@ def load_model(algorithm, gym_env_id):
                 raise Exception("Algorithm not supported: {}".format(algorithm))
 
             logger.info(
-                "Loading existing pickle file for environment {} with {} steps of training with algorithm {} and policy '{}'.".format(
+                "Loading existing pickle file for environment {} with algorithm {} and policy '{}'.".format(
                     gym_env_id, algorithm, model.policy))
 
             return model
@@ -157,6 +157,7 @@ def callback(_locals, _globals):
                 # Example for saving best model
                 logger.info("Saving new best model")
                 _locals['self'].save(pickle_dir + 'ppo2_best_model.pkl')
+                _locals['self'].save_tf(pickle_dir + 'ppo2_best_model_tf.pkl')
     n_steps += 1
     # Returning False will stop training early
     return True
