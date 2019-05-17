@@ -30,11 +30,11 @@ public class TournamentRunner {
 	//Command lines to start the various agents provided with the Bandana framework.
 	// Add your own line here to run your own bot.
 	final static String[] randomBotCommand = {"java", "-jar", "agents/RandomBot.jar", "-log", "log", "-name", "RandomBot", "-fy", FINAL_YEAR};
-	final static String[] randomNegotiatorCommand = {"java", "-jar", "target/random-negotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", FINAL_YEAR};
+	final static String[] randomNegotiatorCommand = {"java", "-jar", "artifacts/random-negotiator.jar", "-log", "log", "-name", "RandomNegotiator", "-fy", FINAL_YEAR};
 	final static String[] dumbBot_1_4_Command = {"java", "-jar", "agents/DumbBot-1.4.jar", "-log", "log", "-name", "DumbBot", "-fy", FINAL_YEAR};
 	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", FINAL_YEAR};
-	final static String[] dbraneExampleBotCommand = {"java", "-jar", "target/dbrane-example-bot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", FINAL_YEAR};
-	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "target/open-ai-negotiator.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
+	final static String[] dbraneExampleBotCommand = {"java", "-jar", "artifacts/dbrane-example-bot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", FINAL_YEAR};
+	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "artifacts/open-ai-negotiator.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
 	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", FINAL_YEAR};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
 
@@ -143,7 +143,7 @@ public class TournamentRunner {
                     // Bots for negotiation testing
                     if(MODE) {
                         //make sure that each player has a different name.
-                        if (i < numberOfParticipants - 3) {
+                        if (i < numberOfParticipants - 1) {
                             name = "DBraneNego " + i;
                             command = dbraneExampleBotCommand;
                         } else {

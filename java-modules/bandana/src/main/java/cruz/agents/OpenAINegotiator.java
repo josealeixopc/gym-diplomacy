@@ -308,9 +308,14 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                 }
                 else {
-                    for(BasicDeal deal: dealsToPropose) {
-                        this.proposeDeal(deal);
-                        this.getLogger().logln(me.getName() + ".negotiate() Proposing: " + deal, this.printToConsole);
+                    if(dealsToPropose.size() == 0) {
+                        this.getLogger().logln(me.getName() + ".negotiate() We are not proposing deals this round.");
+                    }
+                    else {
+                        for (BasicDeal deal : dealsToPropose) {
+                            this.proposeDeal(deal);
+                            this.getLogger().logln(me.getName() + ".negotiate() Proposing: " + deal, this.printToConsole);
+                        }
                     }
                 }
 
