@@ -104,7 +104,7 @@ public class OpenAINegotiator extends ANACNegotiator {
     @Override
     public void negotiate(long negotiationDeadline) {
 
-        this.getLogger().logln(me.getName() + ".negotiate() Negotiation deadline: " + negotiationDeadline, this.printToConsole);
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation BEGINNING. Deadline: " + negotiationDeadline, this.printToConsole);
 
         boolean alreadyProposed = false;
 
@@ -282,9 +282,8 @@ public class OpenAINegotiator extends ANACNegotiator {
                 } else {
 
                     //We have received any other kind of message.
-                    // this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), this.printToConsole);
+                    this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), this.printToConsole);
                 }
-
             }
 
             //STEP 2:  try to find a proposal to make, and if we do find one, propose it.

@@ -1,6 +1,8 @@
 # This Dockerfile creates a Docker container with every dependency needed to/debug run the project.
 # The Java artifacts should be generated BEFORE creating this image when using "deploy" mode, because JDK is not installed in this mode. 
 
+# REMEMBER TO DEAL WITH .dockerignore IF YOU WISH TO BUILD JAVA CODE INSIDE CONTAINER!!!
+
 FROM ubuntu:18.04
 
 ENV DIP_Q_WORK_DIR="/usr/src/app"
