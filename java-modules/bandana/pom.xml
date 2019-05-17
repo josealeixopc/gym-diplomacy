@@ -118,6 +118,11 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.tensorflow:*</exclude>
+                                </excludes>
+                            </artifactSet>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -133,6 +138,13 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>io.grpc:*</exclude>
+                                    <exclude>com.google:*</exclude>
+                                    <exclude>org.tensorflow:*</exclude>
+                                </excludes>
+                            </artifactSet>
                             <outputFile>artifacts/tournament-runner.jar</outputFile>
                             <transformers>
                                 <transformer
@@ -149,6 +161,11 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.tensorflow:*</exclude>
+                                </excludes>
+                            </artifactSet>
                             <outputFile>artifacts/open-ai-negotiator.jar</outputFile>
                             <transformers>
                                 <transformer
@@ -165,6 +182,13 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>io.grpc:*</exclude>
+                                    <exclude>com.google:*</exclude>
+                                    <exclude>org.tensorflow:*</exclude>
+                                </excludes>
+                            </artifactSet>
                             <outputFile>artifacts/random-negotiator.jar</outputFile>
                             <transformers>
                                 <transformer
@@ -181,6 +205,13 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>io.grpc:*</exclude>
+                                    <exclude>com.google:*</exclude>
+                                    <exclude>org.tensorflow:*</exclude>
+                                </excludes>
+                            </artifactSet>
                             <outputFile>artifacts/dbrane-example-bot.jar</outputFile>
                             <transformers>
                                 <transformer
