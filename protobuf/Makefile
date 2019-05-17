@@ -3,7 +3,9 @@
 #
 
 CC          :=protoc
-SRC         :=proto_message.proto
+SRC         :=gym_diplomacy/envs/proto_message/proto_message.proto
+
+# The SRC is a bit odd, because of this: https://github.com/grpc/grpc/issues/9575#issuecomment-293934506
 
 PYTHON_NAME :=proto_message_pb2.py
 PYTHON_STUB_NAME :=proto_message_pb2.pyi
@@ -11,7 +13,7 @@ PYTHON_GRPC_NAME :=proto_message_pb2_grpc.py
 
 JAVA_NAME :=ProtoMessage.java
 
-PYTHON_RELATIVE_DEST_DIR := ../python-modules/gym-diplomacy/gym_diplomacy/envs
+PYTHON_RELATIVE_DEST_DIR := ../python-modules/gym-diplomacy	# The rest of the path comes from the path of the proto file (SRC)
 JAVA_RELATIVE_DEST_DIR   := ../java-modules/bandana/src/main/java
 
 JAVA_PACKAGE := cruz/agents

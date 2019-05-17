@@ -22,7 +22,7 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.20.0)",
-    comments = "Source: proto_message.proto")
+    comments = "Source: gym_diplomacy/envs/proto_message/proto_message.proto")
 public final class DiplomacyGymServiceGrpc {
 
   private DiplomacyGymServiceGrpc() {}

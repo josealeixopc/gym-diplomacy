@@ -4,6 +4,10 @@ This folder contains the [Protobuf](https://developers.google.com/protocol-buffe
 
 The Makefile creates the message and service classes for Python and Java from the Protobuf file.
 
+## Folder structure
+
+The folder structure for the `.proto` file is a bit odd because of an issue with the gRPC plugin. The workaround consist of doing [this](https://github.com/grpc/grpc/issues/9575#issuecomment-293934506).
+
 ## Makefile structure
 
 The Makefile runs a `protoc` command, therefore `protoc` must be installed in the machine or a pre-built binary must be used, as described [here](https://github.com/protocolbuffers/protobuf).

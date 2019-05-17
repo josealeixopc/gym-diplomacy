@@ -6,7 +6,7 @@ import numpy as np
 from gym import spaces
 
 from gym_diplomacy.envs import diplomacy_env
-from gym_diplomacy.envs import proto_message_pb2
+from gym_diplomacy.envs.proto_message import proto_message_pb2
 
 FORMAT = "%(asctime)s %(levelname)s -- [%(filename)s:%(lineno)s - %(funcName)s()] %(message)s"
 logging.basicConfig(format=FORMAT)
