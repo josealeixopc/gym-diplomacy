@@ -36,7 +36,7 @@ public class TournamentRunner {
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "artifacts/dbrane-example-bot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", FINAL_YEAR};
 	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "artifacts/open-ai-negotiator.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
 	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", FINAL_YEAR};
-	final static String[] anacExampleBotCommand = {"java", "-jar", "agents/AnacExampleNegotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
+	final static String[] anacExampleBotCommand = {"java", "-jar", "artifacts/anac-example-negotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
 
 
     // JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
@@ -144,8 +144,8 @@ public class TournamentRunner {
                     if(MODE) {
                         //make sure that each player has a different name.
                         if (i < numberOfParticipants - 1) {
-                            name = "DBraneNego " + i;
-                            command = dbraneExampleBotCommand;
+                            name = "ANACExampleNegotiator " + i;
+                            command = anacExampleBotCommand;
                         } else {
                             name = "OpenAIBotNegotiator " + i;
                             command = openAIBotNegotiatorCommand;

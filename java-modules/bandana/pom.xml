@@ -176,7 +176,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>RandomNegotiator-shade</id>
+                        <id>ANACExampleNegotiator-shade</id>
                         <goals>
                             <goal>shade</goal>
                         </goals>
@@ -189,7 +189,7 @@
                                     <exclude>org.tensorflow:*</exclude>
                                 </excludes>
                             </artifactSet>
-                            <outputFile>artifacts/random-negotiator.jar</outputFile>
+                            <outputFile>artifacts/anac-example-negotiator.jar</outputFile>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
