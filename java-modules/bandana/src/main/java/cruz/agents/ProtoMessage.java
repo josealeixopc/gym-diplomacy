@@ -6036,12 +6036,12 @@ public final class ProtoMessage {
 
       /**
        * <pre>
-       * Province to defend
+       * Power to make deal with
        * </pre>
        *
-       * <code>int32 province = 2;</code>
+       * <code>int32 allyPower = 2;</code>
        */
-      int getProvince();
+      int getAllyPower();
     }
     /**
      * Protobuf type {@code dip_q.DealData.DefendSCData}
@@ -6089,7 +6089,7 @@ public final class ProtoMessage {
               }
               case 16: {
 
-                province_ = input.readInt32();
+                allyPower_ = input.readInt32();
                 break;
               }
               default: {
@@ -6137,17 +6137,17 @@ public final class ProtoMessage {
         return execute_;
       }
 
-      public static final int PROVINCE_FIELD_NUMBER = 2;
-      private int province_;
+      public static final int ALLYPOWER_FIELD_NUMBER = 2;
+      private int allyPower_;
       /**
        * <pre>
-       * Province to defend
+       * Power to make deal with
        * </pre>
        *
-       * <code>int32 province = 2;</code>
+       * <code>int32 allyPower = 2;</code>
        */
-      public int getProvince() {
-        return province_;
+      public int getAllyPower() {
+        return allyPower_;
       }
 
       private byte memoizedIsInitialized = -1;
@@ -6167,8 +6167,8 @@ public final class ProtoMessage {
         if (execute_ != false) {
           output.writeBool(1, execute_);
         }
-        if (province_ != 0) {
-          output.writeInt32(2, province_);
+        if (allyPower_ != 0) {
+          output.writeInt32(2, allyPower_);
         }
         unknownFields.writeTo(output);
       }
@@ -6183,9 +6183,9 @@ public final class ProtoMessage {
           size += com.google.protobuf.CodedOutputStream
             .computeBoolSize(1, execute_);
         }
-        if (province_ != 0) {
+        if (allyPower_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(2, province_);
+            .computeInt32Size(2, allyPower_);
         }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
@@ -6204,8 +6204,8 @@ public final class ProtoMessage {
 
         if (getExecute()
             != other.getExecute()) return false;
-        if (getProvince()
-            != other.getProvince()) return false;
+        if (getAllyPower()
+            != other.getAllyPower()) return false;
         if (!unknownFields.equals(other.unknownFields)) return false;
         return true;
       }
@@ -6220,8 +6220,8 @@ public final class ProtoMessage {
         hash = (37 * hash) + EXECUTE_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getExecute());
-        hash = (37 * hash) + PROVINCE_FIELD_NUMBER;
-        hash = (53 * hash) + getProvince();
+        hash = (37 * hash) + ALLYPOWER_FIELD_NUMBER;
+        hash = (53 * hash) + getAllyPower();
         hash = (29 * hash) + unknownFields.hashCode();
         memoizedHashCode = hash;
         return hash;
@@ -6357,7 +6357,7 @@ public final class ProtoMessage {
           super.clear();
           execute_ = false;
 
-          province_ = 0;
+          allyPower_ = 0;
 
           return this;
         }
@@ -6386,7 +6386,7 @@ public final class ProtoMessage {
         public cruz.agents.ProtoMessage.DealData.DefendSCData buildPartial() {
           cruz.agents.ProtoMessage.DealData.DefendSCData result = new cruz.agents.ProtoMessage.DealData.DefendSCData(this);
           result.execute_ = execute_;
-          result.province_ = province_;
+          result.allyPower_ = allyPower_;
           onBuilt();
           return result;
         }
@@ -6438,8 +6438,8 @@ public final class ProtoMessage {
           if (other.getExecute() != false) {
             setExecute(other.getExecute());
           }
-          if (other.getProvince() != 0) {
-            setProvince(other.getProvince());
+          if (other.getAllyPower() != 0) {
+            setAllyPower(other.getAllyPower());
           }
           this.mergeUnknownFields(other.unknownFields);
           onChanged();
@@ -6508,40 +6508,40 @@ public final class ProtoMessage {
           return this;
         }
 
-        private int province_ ;
+        private int allyPower_ ;
         /**
          * <pre>
-         * Province to defend
+         * Power to make deal with
          * </pre>
          *
-         * <code>int32 province = 2;</code>
+         * <code>int32 allyPower = 2;</code>
          */
-        public int getProvince() {
-          return province_;
+        public int getAllyPower() {
+          return allyPower_;
         }
         /**
          * <pre>
-         * Province to defend
+         * Power to make deal with
          * </pre>
          *
-         * <code>int32 province = 2;</code>
+         * <code>int32 allyPower = 2;</code>
          */
-        public Builder setProvince(int value) {
+        public Builder setAllyPower(int value) {
           
-          province_ = value;
+          allyPower_ = value;
           onChanged();
           return this;
         }
         /**
          * <pre>
-         * Province to defend
+         * Power to make deal with
          * </pre>
          *
-         * <code>int32 province = 2;</code>
+         * <code>int32 allyPower = 2;</code>
          */
-        public Builder clearProvince() {
+        public Builder clearAllyPower() {
           
-          province_ = 0;
+          allyPower_ = 0;
           onChanged();
           return this;
         }
@@ -10302,7 +10302,7 @@ public final class ProtoMessage {
       "ta\022&\n\tprovinces\030\001 \003(\0132\023.dip_q.ProvinceDa" +
       "ta\022\034\n\024previousActionReward\030\002 \001(\002\022\014\n\004done" +
       "\030\003 \001(\010\022\014\n\004info\030\004 \001(\t\022\016\n\006player\030\005 \001(\005\"\020\n\016" +
-      "AcceptanceData\"\332\003\n\010DealData\0222\n\ndefendUni" +
+      "AcceptanceData\"\333\003\n\010DealData\0222\n\ndefendUni" +
       "t\030\001 \001(\0132\036.dip_q.DealData.DefendUnitData\022" +
       ".\n\010defendSC\030\002 \001(\0132\034.dip_q.DealData.Defen" +
       "dSCData\0226\n\014attackRegion\030\003 \001(\0132 .dip_q.De" +
@@ -10310,16 +10310,16 @@ public final class ProtoMessage {
       "Region\030\004 \001(\0132\'.dip_q.DealData.SupportAtt" +
       "ackRegionData\022\025\n\rphasesFromNow\030\005 \001(\005\0321\n\016" +
       "DefendUnitData\022\017\n\007execute\030\001 \001(\010\022\016\n\006regio" +
-      "n\030\002 \001(\005\0321\n\014DefendSCData\022\017\n\007execute\030\001 \001(\010" +
-      "\022\020\n\010province\030\002 \001(\005\0323\n\020AttackRegionData\022\017" +
-      "\n\007execute\030\001 \001(\010\022\016\n\006region\030\002 \001(\005\032:\n\027Suppo" +
-      "rtAttackRegionData\022\017\n\007execute\030\001 \001(\010\022\016\n\006r" +
-      "egion\030\002 \001(\005\"?\n\tOrderData\022\r\n\005start\030\001 \001(\005\022" +
-      "\016\n\006action\030\002 \001(\005\022\023\n\013destination\030\003 \001(\005\".\n\n" +
-      "OrdersData\022 \n\006orders\030\001 \003(\0132\020.dip_q.Order" +
-      "Data2X\n\023DiplomacyGymService\022A\n\tGetAction" +
-      "\022\025.dip_q.BandanaRequest\032\033.dip_q.Diplomac" +
-      "yGymResponse\"\000B\r\n\013cruz.agentsb\006proto3"
+      "n\030\002 \001(\005\0322\n\014DefendSCData\022\017\n\007execute\030\001 \001(\010" +
+      "\022\021\n\tallyPower\030\002 \001(\005\0323\n\020AttackRegionData\022" +
+      "\017\n\007execute\030\001 \001(\010\022\016\n\006region\030\002 \001(\005\032:\n\027Supp" +
+      "ortAttackRegionData\022\017\n\007execute\030\001 \001(\010\022\016\n\006" +
+      "region\030\002 \001(\005\"?\n\tOrderData\022\r\n\005start\030\001 \001(\005" +
+      "\022\016\n\006action\030\002 \001(\005\022\023\n\013destination\030\003 \001(\005\".\n" +
+      "\nOrdersData\022 \n\006orders\030\001 \003(\0132\020.dip_q.Orde" +
+      "rData2X\n\023DiplomacyGymService\022A\n\tGetActio" +
+      "n\022\025.dip_q.BandanaRequest\032\033.dip_q.Diploma" +
+      "cyGymResponse\"\000B\r\n\013cruz.agentsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10386,7 +10386,7 @@ public final class ProtoMessage {
     internal_static_dip_q_DealData_DefendSCData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dip_q_DealData_DefendSCData_descriptor,
-        new java.lang.String[] { "Execute", "Province", });
+        new java.lang.String[] { "Execute", "AllyPower", });
     internal_static_dip_q_DealData_AttackRegionData_descriptor =
       internal_static_dip_q_DealData_descriptor.getNestedTypes().get(2);
     internal_static_dip_q_DealData_AttackRegionData_fieldAccessorTable = new

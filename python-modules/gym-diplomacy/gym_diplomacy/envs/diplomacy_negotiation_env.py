@@ -82,7 +82,7 @@ def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
     defend_unit.region = action[1]
 
     defend_sc.execute = bool(action[2])
-    defend_sc.province = action[3]
+    defend_sc.allyPower = action[3]
 
     attack_region.execute = bool(action[4])
     attack_region.region = action[5]
@@ -145,7 +145,7 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
         # Action space:
         # [
         # defend_unit binary, unit to defend,
-        # defend_sc binary, sc to defend,
+        # defend_sc binary, power to make deal with,
         # attack binary, region to attack,
         # support_attack binary, region to attack,
         # phases ahead
@@ -160,7 +160,7 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
         # - 4 phases ahead from the current one (0 means the same phase)
 
         self.action_space = spaces.MultiDiscrete([2, MAXIMUM_NUMBER_OF_SC,
-                                                  2, MAXIMUM_NUMBER_OF_SC,
+                                                  2, NUMBER_OF_OPPONENTS,
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   NUMBER_OF_PHASES_AHEAD])

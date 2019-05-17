@@ -231,7 +231,7 @@ public class OpenAINegotiator extends ANACNegotiator {
 
                     DiplomacyProposal confirmedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    // this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, this.printToConsole);
+                    this.getLogger().logln(me.getName() + ".negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, this.printToConsole);
 
                     BasicDeal confirmedDeal = (BasicDeal) confirmedProposal.getProposedDeal();
 
@@ -332,6 +332,8 @@ public class OpenAINegotiator extends ANACNegotiator {
 
         //whenever you like, you can also propose a draw to all other surviving players:
         //this.proposeDraw();
+
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation FINISHED this round!", this.printToConsole);
     }
 
 

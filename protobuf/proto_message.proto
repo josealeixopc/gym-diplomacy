@@ -109,8 +109,8 @@ message DealData {
     // Whether or not the defend deal should be executed
     bool execute = 1;
 
-    // Province to defend
-    int32 province = 2;
+    // Power to make deal with
+    int32 allyPower = 2;
   }
 
   message AttackRegionData {

@@ -150,8 +150,8 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
 
         // Only if execute is true
         if(dealData.getDefendSC().getExecute()) {
-            int clippedProvinceIndex = this.clipProvinceIndex(dealData.getDefendSC().getProvince());
-            deals.add(generateDefendSupplyCentersMutual(clippedProvinceIndex, year, phase));
+            int clippedPowerIndex = this.clipPowerIndex(dealData.getDefendSC().getAllyPower());
+            deals.add(generateDefendSupplyCentersMutual(clippedPowerIndex, year, phase));
         }
 
         // Only if execute is true
@@ -278,6 +278,25 @@ public class OpenAIAdapterNegotiation extends OpenAIAdapter {
     private int clipProvinceIndex(int n) {
         if(n >= this.agent.me.getOwnedSCs().size()) {
             return this.agent.me.getOwnedSCs().size() - 1;
+        }
+        else {
+            return n;
+        }
+    }
+
+    /**
+     * This method clips the given integer, in case it is greater than the size of the list of negotiating powers.
+     *
+     * Because the DRL agent will provide an integer n where 0 <= n <= number_of_players, n may be larger
+     * than the number of CURRENT negotiating powers.
+     * Therefore, we clip it, so that any n greater than the number of negotiating powers
+     * to the maximum index possible.
+     * @param n
+     * @return
+     */
+    private int clipPowerIndex(int n) {
+        if(n >= this.orderedNegotiatingPowers.size()) {
+            return this.orderedNegotiatingPowers.size() - 1;
         }
         else {
             return n;
