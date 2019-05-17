@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# This will run the dip-q image, while mounting the /tmp/gym folder on the host's /tmp/gym, meaning that any change to that folder
-# will be reflected on the host's /tmp/gym folder as well.
-
-mkdir -p ~/dip-out
+# This will run the dip-q image, while mounting the current folder on the host's /tmp/dip, meaning that any change to that folder
+# will be reflected on the host's folder as well.
 
 docker run -d \
   -it \
   --rm \
   --name dip-q \
-  --mount type=bind,source="~/dip-out",target="/tmp/dip" \
+  --mount type=bind,source="$(pwd)",target="/tmp/dip" \
   registry.gitlab.com/jazzchipc/dip-q:latest
