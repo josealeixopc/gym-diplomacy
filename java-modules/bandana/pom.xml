@@ -193,7 +193,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ddejonge.bandana.exampleAgents.RandomNegotiator</mainClass>
+                                    <mainClass>ddejonge.bandana.exampleAgents.ANACExampleNegotiator</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
