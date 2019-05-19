@@ -40,7 +40,7 @@ verbose_level = 1
 
 # Create log dir
 current_time_string = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-log_dir = "../../../dip-log/gym/"
+log_dir = "/tmp/dip-log/gym/"
 pickle_dir = log_dir + "pickles/"
 os.makedirs(log_dir, exist_ok=True)
 os.makedirs(pickle_dir, exist_ok=True)
@@ -157,8 +157,7 @@ def callback(_locals, _globals):
                 best_mean_reward = mean_reward
                 # Example for saving best model
                 logger.info("Saving new best model")
-                _locals['self'].save(pickle_dir + 'ppo2-test-pickle.pkl')
-                _locals['self'].save_checkpoint(pickle_dir + 'ppo2-test-pickle.pkl')
+                _locals['self'].save(pickle_dir + 'ppo2-best-model.pkl')
 
     n_steps += 1
     # Returning False will stop training early

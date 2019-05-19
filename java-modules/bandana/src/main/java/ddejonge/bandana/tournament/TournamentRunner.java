@@ -48,17 +48,17 @@ public class TournamentRunner {
 	// where the results of the tournament will be logged.
 	// final static String LOG_FOLDER = "log";
 
-    final static String LOG_FOLDER = System.getProperty("user.dir") +
-            "/../../dip-log/bandana";
-	
-	
-	public static void main(String[] args) throws IOException {
+    final static String LOG_FOLDER = "/tmp/dip-log/bandana/";
+
+
+
+    public static void main(String[] args) throws IOException {
 		
 		int numberOfGames = Integer.MAX_VALUE;				//The number of games this tournament consists of.
 		
-		int deadlineForMovePhases = 60; 	//60 seconds for each SPR and FAL phases
-		int deadlineForRetreatPhases = 30;  //30 seconds for each SUM and AUT phases
-		int deadlineForBuildPhases = 30;  	//30 seconds for each WIN phase
+		int deadlineForMovePhases = 6; 	//60 seconds for each SPR and FAL phases
+		int deadlineForRetreatPhases = 3;  //30 seconds for each SUM and AUT phases
+		int deadlineForBuildPhases = 3;  	//30 seconds for each WIN phase
 
 		int finalYear = Integer.parseInt(FINAL_YEAR); 	//The year after which the agents in each game are supposed to propose a draw to each other.
 		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.)

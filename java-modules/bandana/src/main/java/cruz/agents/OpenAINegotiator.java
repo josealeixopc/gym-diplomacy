@@ -30,7 +30,7 @@ public class OpenAINegotiator extends ANACNegotiator {
     OpenAIAdapterNegotiation openAIAdapter;
 
     /** Defines whether logs should be printed to console or not.*/
-    boolean printToConsole = true;
+    private boolean printToConsole = false;
 
     /**
      * You must implement a Constructor with exactly this signature.

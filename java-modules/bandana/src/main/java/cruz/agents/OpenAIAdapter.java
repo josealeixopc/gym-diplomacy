@@ -61,7 +61,7 @@ public abstract class OpenAIAdapter {
      * TODO (low-prio): Figure out how to create an Observer without needing a logging path.
      */
     private void createObserver() {
-        String openAIObserverPath = "/tmp/dip/bandana/OpenAIObserver-logs" + File.separator + "OpenAIObserver" + Logger.getDateString();
+        String openAIObserverPath = "/tmp/dip-out/bandana/OpenAIObserver-logs" + File.separator + "OpenAIObserver" + Logger.getDateString();
         File logFile = new File(openAIObserverPath);
         logFile.mkdirs();
 

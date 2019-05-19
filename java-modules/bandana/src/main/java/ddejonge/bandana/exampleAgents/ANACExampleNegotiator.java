@@ -56,6 +56,8 @@ public class ANACExampleNegotiator extends ANACNegotiator {
     public Random random = new Random();
     DBraneTactics dBraneTactics;
 
+    private boolean printToConsole = false;
+
 
     //Constructor
 
@@ -88,8 +90,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
         //The location of the log file can be set through the command line option -log.
         // it is not necessary to call getLogger().enable() because this is already automatically done by the ANACNegotiator class.
 
-        boolean printToConsole = true; //if set to true the text will be written to file, as well as printed to the standard output stream. If set to false it will only be written to file.
-        this.getLogger().logln("game is starting!", printToConsole);
+        this.getLogger().logln("game is starting!", this.printToConsole);
 
     }
 
@@ -99,7 +100,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
 
         BasicDeal newDealToPropose = null;
 
-        this.getLogger().logln(me.getName() + ".negotiate() Negotiation BEGINNING! Duration: " + (negotiationDeadline - System.currentTimeMillis()), true);
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation BEGINNING! Duration: " + (negotiationDeadline - System.currentTimeMillis()), this.printToConsole);
 
 
         //This loop repeats 2 steps. The first step is to handle any incoming messages,
@@ -124,7 +125,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
 
                     DiplomacyProposal acceptedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    this.getLogger().logln("ANACExampleNegotiator.negotiate() Received acceptance from " + receivedMessage.getSender() + ": " + acceptedProposal, true);
+                    this.getLogger().logln("ANACExampleNegotiator.negotiate() Received acceptance from " + receivedMessage.getSender() + ": " + acceptedProposal, this.printToConsole);
 
                     // Here we can handle any incoming acceptances.
                     // This random negotiator doesn't do anything with such messages however.
@@ -140,7 +141,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
 
                     DiplomacyProposal receivedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    this.getLogger().logln("ANACExampleNegotiator.negotiate() Received proposal: " + receivedProposal, true);
+                    this.getLogger().logln("ANACExampleNegotiator.negotiate() Received proposal: " + receivedProposal, this.printToConsole);
 
                     BasicDeal deal = (BasicDeal) receivedProposal.getProposedDeal();
 
@@ -193,7 +194,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
                         // This agent simply flips a coin to determine whether to accept the proposal or not.
                         if (random.nextInt(2) == 0) { // accept with 50% probability.
                             this.acceptProposal(receivedProposal.getId());
-                            this.getLogger().logln("ANACExampleNegotiator.negotiate()  Accepting: " + receivedProposal, true);
+                            this.getLogger().logln("ANACExampleNegotiator.negotiate()  Accepting: " + receivedProposal, this.printToConsole);
                         }
                     }
 
@@ -205,7 +206,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
 
                     DiplomacyProposal confirmedProposal = (DiplomacyProposal) receivedMessage.getContent();
 
-                    this.getLogger().logln("ANACExampleNegotiator.negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, true);
+                    this.getLogger().logln("ANACExampleNegotiator.negotiate() RECEIVED CONFIRMATION OF: " + confirmedProposal, this.printToConsole);
 
                     BasicDeal confirmedDeal = (BasicDeal) confirmedProposal.getProposedDeal();
 
@@ -244,7 +245,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
 
                     //We have received any other kind of message.
 
-                    this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), true);
+                    this.getLogger().logln("Received a message of unhandled type: " + receivedMessage.getPerformative() + ". Message content: " + receivedMessage.getContent().toString(), this.printToConsole);
 
                 }
 
@@ -258,7 +259,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
 
                 if (newDealToPropose != null) {
 
-                    this.getLogger().logln("ANACExampleNegotiator.negotiate() Proposing: " + newDealToPropose, true);
+                    this.getLogger().logln("ANACExampleNegotiator.negotiate() Proposing: " + newDealToPropose, this.printToConsole);
                     this.proposeDeal(newDealToPropose);
 
                 }
@@ -276,7 +277,7 @@ public class ANACExampleNegotiator extends ANACNegotiator {
         //whenever you like, you can also propose a draw to all other surviving players:
         //this.proposeDraw();
 
-        this.getLogger().logln(me.getName() + ".negotiate() Negotiation ENDING! Current time minus deadline: " + (negotiationDeadline - System.currentTimeMillis()), true);
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation ENDING! Current time minus deadline: " + (negotiationDeadline - System.currentTimeMillis()), this.printToConsole);
     }
 
 
