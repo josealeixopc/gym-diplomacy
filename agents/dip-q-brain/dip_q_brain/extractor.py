@@ -1,47 +1,24 @@
-import tensorflow as tf
-import cloudpickle
 import os
-
-from stable_baselines.common.tf_util import save_state
+from stable_baselines.common import tf_util
 import tensorflow as tf
-from tensorflow.python.framework import graph_util
+import shutil
 
 from my_ppo2 import PPO2
 
-models_dir = "models/"
 
+def generate_checkpoint_from_model(model_path, checkpoint_name):
+    model = PPO2.load(model_path)
 
-def save_model_from_pickle(load_path):
-    model = PPO2.load(load_path, env=None)
+    with model.graph.as_default():
+        sess = tf_util.make_session(graph=model.graph)
+        tf.global_variables_initializer().run(session=sess)
 
-    os.makedirs(models_dir, exist_ok=True)
-    model_file = models_dir + "model"
+        if os.path.exists(checkpoint_name):
+            shutil.rmtree(checkpoint_name)
 
-    save_state(model_file, sess=model.sess)
+        tf.saved_model.simple_save(sess, checkpoint_name, inputs={"obs": model.act_model.obs_ph},
+                                   outputs={"action": model.action_ph})
 
-
-def load_model_from_tf(load_path):
-    tf.reset_default_graph()
-
-    # Add ops to save and restore all the variables.
-    saver = tf.train.Saver()
-
-    # Later, launch the model, use the saver to restore variables from disk, and
-    # do some work with the model.
-    with tf.Session() as sess:
-        # Restore variables from disk.
-        saver.restore(sess, load_path)
-
-
-# Add ops to save and restore all the variables.
-# saver = tf.train.Saver()
-
-# Later, launch the model, initialize the variables, do some work, and save the
-# variables to disk.
-# with tf.Session() as sess:
-#   # Save the variables to disk.
-#   save_path = saver.save(sess, "tmp/model.ckpt")
-#   print("Model saved in path: %s" % save_path)
 
 if __name__ == '__main__':
-    load_model_from_tf("pickles/ppo2-test-pickle.pkl")
+    generate_checkpoint_from_model("pickles/ppo2-test-pickle.pkl", "checkpoint")

@@ -47,7 +47,9 @@ public class TournamentRunner {
 	//Main folder where all the logs are stored. For each tournament a new folder will be created inside this folder
 	// where the results of the tournament will be logged.
 	// final static String LOG_FOLDER = "log";
-    final static String LOG_FOLDER = "/tmp/dip/bandana";
+
+    final static String LOG_FOLDER = System.getProperty("user.dir") +
+            "/../../dip-log/bandana";
 	
 	
 	public static void main(String[] args) throws IOException {

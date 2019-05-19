@@ -3,6 +3,7 @@ import os
 import re
 from pprint import pprint
 from datetime import datetime
+from os.path import expanduser
 
 import gym
 # This import is needed to register the environment, even if it gives an "unused" warning
@@ -39,7 +40,7 @@ verbose_level = 1
 
 # Create log dir
 current_time_string = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-log_dir = "/tmp/dip/gym/"
+log_dir = "../../../dip-log/gym/"
 pickle_dir = log_dir + "pickles/"
 os.makedirs(log_dir, exist_ok=True)
 os.makedirs(pickle_dir, exist_ok=True)
@@ -156,8 +157,9 @@ def callback(_locals, _globals):
                 best_mean_reward = mean_reward
                 # Example for saving best model
                 logger.info("Saving new best model")
-                _locals['self'].save(pickle_dir + 'ppo2_best_model.pkl')
-                _locals['self'].save_tf(pickle_dir + 'ppo2_best_model_tf.pkl')
+                _locals['self'].save(pickle_dir + 'ppo2-test-pickle.pkl')
+                _locals['self'].save_checkpoint(pickle_dir + 'ppo2-test-pickle.pkl')
+
     n_steps += 1
     # Returning False will stop training early
     return True

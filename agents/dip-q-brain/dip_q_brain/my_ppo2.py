@@ -382,11 +382,9 @@ class PPO2(ActorCriticRLModel):
 
         self._save_to_file(save_path, data=data, params=params)
 
-    def save_tf(self, save_path):
-        with self.graph.as_default():
-            saver = tf.train.Saver()
-            self.sess.run(self.params)
-            saver.save(self.sess, save_path)
+    def save_checkpoint(self, save_path):
+        tf.saved_model.simple_save(self.sess, save_path, inputs={"obs": self.act_model.obs_ph},
+                                   outputs={"action": self.action_ph})
 
 
 class Runner(AbstractEnvRunner):

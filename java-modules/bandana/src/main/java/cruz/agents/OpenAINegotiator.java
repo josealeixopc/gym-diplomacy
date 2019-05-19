@@ -104,7 +104,7 @@ public class OpenAINegotiator extends ANACNegotiator {
     @Override
     public void negotiate(long negotiationDeadline) {
 
-        this.getLogger().logln(me.getName() + ".negotiate() Negotiation BEGINNING. Deadline: " + negotiationDeadline, this.printToConsole);
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation BEGINNING. Duration: " + (negotiationDeadline - System.currentTimeMillis()), this.printToConsole);
 
         boolean alreadyProposed = false;
 
@@ -261,7 +261,7 @@ public class OpenAINegotiator extends ANACNegotiator {
                     // JC: If our only deal this round was accepted and confirmed, trigger accepted deal. If not, we will consider that
                     // the deal was not accepted.
                     if (proposedByMe) {
-                        this.getLogger().logln(me.getName() + ".negotiate() Our deal with ID: " + confirmedProposal.getId() + " has been confirmed", this.printToConsole);
+                        this.getLogger().logln(me.getName() + ".negotiate() OUR deal with ID: " + confirmedProposal.getId() + " has been confirmed", this.printToConsole);
                         this.openAIAdapter.dealsAccepted++;
                     } else {
                         // do nothing, because we already assume the deal was not accepted
@@ -332,7 +332,7 @@ public class OpenAINegotiator extends ANACNegotiator {
         //whenever you like, you can also propose a draw to all other surviving players:
         //this.proposeDraw();
 
-        this.getLogger().logln(me.getName() + ".negotiate() Negotiation FINISHED this round!", this.printToConsole);
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation ENDING. Deadline minus current time: " + (negotiationDeadline - System.currentTimeMillis()), this.printToConsole);
     }
 
 

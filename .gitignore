@@ -17,3 +17,6 @@
 
 # Egg instalation files
 *.egg-info
+
+# Diplomacy log folder
+dip-log/

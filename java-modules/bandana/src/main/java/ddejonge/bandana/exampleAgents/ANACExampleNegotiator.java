@@ -99,6 +99,8 @@ public class ANACExampleNegotiator extends ANACNegotiator {
 
         BasicDeal newDealToPropose = null;
 
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation BEGINNING! Duration: " + (negotiationDeadline - System.currentTimeMillis()), true);
+
 
         //This loop repeats 2 steps. The first step is to handle any incoming messages,
         // while the second step tries to find deals to propose to the other negotiators.
@@ -262,17 +264,19 @@ public class ANACExampleNegotiator extends ANACNegotiator {
                 }
             }
 
-            try {
-                Thread.sleep(250);
-            } catch (InterruptedException e) {
-            }
-
+            // Wait before next cycle (commented because negotiation only lasts 100ms on my custom configuration)
+            // try {
+            //     Thread.sleep(250);
+            // } catch (InterruptedException e) {
+            // }
 
         }
 
 
         //whenever you like, you can also propose a draw to all other surviving players:
         //this.proposeDraw();
+
+        this.getLogger().logln(me.getName() + ".negotiate() Negotiation ENDING! Current time minus deadline: " + (negotiationDeadline - System.currentTimeMillis()), true);
     }
 
 
