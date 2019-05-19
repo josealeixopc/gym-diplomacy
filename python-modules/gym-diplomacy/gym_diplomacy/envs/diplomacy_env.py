@@ -98,6 +98,8 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
 
     enable_bandana_output = True
 
+    previous_step_end_time = 0
+
     def __init__(self):
         # Make sure the program calls clean up, even if it exits abruptly
         atexit.register(self.clean_up)
@@ -113,7 +115,7 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
     def _init_action_space(self):
         pass
 
-    def step(self, action):
+    def step(self, action: np.ndarray):
         """Run one timestep of the environment's dynamics. When end of
         episode is reached, you are responsible for calling `reset()`
         to reset this environment's state.
@@ -158,12 +160,20 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
             while self.waiting_for_observation_to_be_processed:
                 pass
 
+            if self.previous_step_end_time != 0:
+                # If it's not the first step
+                logger.info("Time between last and current step: {:.3f} ms.".format(time.time() -
+                                                                                    self.previous_step_end_time))
+
             logger.debug("New observation has been processed.")
 
             logger.info("Finished executing 'step' number {}: ".format(self.current_step_number))
             logger.info("\t-observation: {}".format(self.observation))
             logger.info("\t-reward: {}".format(self.reward))
             logger.info("\t-done: {}".format(self.done))
+
+            self.previous_step_end_time = time.time()
+
             return self.observation, self.reward, self.done, self.info
 
         except Exception as e:

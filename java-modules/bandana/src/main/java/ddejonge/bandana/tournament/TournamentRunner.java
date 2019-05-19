@@ -54,7 +54,7 @@ public class TournamentRunner {
 
     public static void main(String[] args) throws IOException {
 		
-		int numberOfGames = 100000;				//The number of games this tournament consists of.
+		int numberOfGames = 1000000;				//The number of games this tournament consists of.
 		
 		int deadlineForMovePhases = 6; 	//60 seconds for each SPR and FAL phases
 		int deadlineForRetreatPhases = 3;  //30 seconds for each SUM and AUT phases
