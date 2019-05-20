@@ -91,10 +91,10 @@ def load_model(algorithm, gym_env_id):
         # we demonstrate its usefulness in the next examples
         env = DummyVecEnv([lambda: env])  # The algorithms require a vectorized environment to run
 
-    existing_pickle_files = utils.get_files_with_pattern(pickle_dir, algorithm + r'_' + gym_env_id + r'_(.*)_steps.pkl')
+    existing_pickle_files = utils.get_files_with_pattern(pickle_dir, r'(.*)' + algorithm + "-best-model.pkl")
 
     for file_name in existing_pickle_files:
-        search = re.search(algorithm + r'_' + gym_env_id + r'_(.*)_steps.pkl', file_name)
+        search = re.search(r'(.*)' + algorithm + "-best-model.pkl", file_name)
 
         if search:
             if algorithm == 'deepq':

@@ -13,55 +13,113 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
+
 public class MakeWeightsClass {
     static ArrayList<ArrayList<ArrayList<Double>>> listOfWeightMatrices = new ArrayList<>();
 
     public static void main (String args[]){
-        MakeWeightsClass mwc = new MakeWeightsClass();
         setWeightsMatrices();
-        mwc.createIt();
+        createIt();
     }
 
-    public void createIt() {
+    public static void createIt() {
         try {
             for (int i = 0; i < listOfWeightMatrices.size(); i++) {
                 String packagePath = "src/main/java/cruz/anacUtils";
-                String className = "MyWeightsMatrix" + i;
-                String classSource = packagePath + "/" + className + ".java";
 
-                FileWriter aWriter = new FileWriter(classSource, false);
-                aWriter.write("package cruz.anacUtils;\n");
-                aWriter.write("import java.util.ArrayList;\n" +
-                        "import java.util.List;\n");
-                aWriter.write("public class "+ className + "{\n");
+                if (i < 2) {
+                    int numOfFiles = 0;
+                    int maxNumOfRows = 100;
+                    int currentNumOfRows = 0;
+                    boolean finishedProcessing = false;
 
-                ArrayList<ArrayList<Double>> currentMatrix = listOfWeightMatrices.get(i);
-                aWriter.write("\tstatic double[][] matrix = {\n");
+                    while(!finishedProcessing) {
 
-                for(int j = 0; j < currentMatrix.size(); j++) {
-                    aWriter.write("{");
-                    ArrayList<Double> currentRow = currentMatrix.get(j);
+                        String className = "MyWeightsMatrix" + i + "" + numOfFiles;
+                        String classSource = packagePath + "/" + className + ".java";
+                        FileWriter aWriter = new FileWriter(classSource, false);
+                        aWriter.write("package cruz.anacUtils;\n");
+                        aWriter.write("public class " + className + "{\n");
 
-                    for(int k = 0; k < currentRow.size(); k++) {
-                        aWriter.write(currentRow.get(k).toString());
+                        ArrayList<ArrayList<Double>> currentMatrix = listOfWeightMatrices.get(i);
+                        aWriter.write("\tstatic double[][] matrix = {\n");
 
-                        if(k != currentRow.size() - 1) {
-                            aWriter.write(", ");
+                        while (currentNumOfRows < currentMatrix.size()) {
+                            aWriter.write("{");
+                            ArrayList<Double> currentRow = currentMatrix.get(currentNumOfRows);
+
+                            for (int k = 0; k < currentRow.size(); k++) {
+                                aWriter.write(currentRow.get(k).toString());
+
+                                if (k != currentRow.size() - 1) {
+                                    aWriter.write(", ");
+                                }
+                            }
+
+                            aWriter.write("}");
+
+                            if (currentNumOfRows != currentMatrix.size() - 1) {
+                                aWriter.write(",\n");
+                            }
+
+                            currentNumOfRows++;
+
+                            if(currentNumOfRows % maxNumOfRows == 0) {
+                                break;
+                            }
+
+                            if(currentNumOfRows == currentMatrix.size() - 1) {
+                                finishedProcessing = true;
+                            }
+                        }
+
+                        aWriter.write("};\n");
+
+                        aWriter.write("}\n");
+                        aWriter.flush();
+                        aWriter.close();
+
+                        numOfFiles++;
+                    }
+                }
+                else {
+                    String className = "MyWeightsMatrix" + i + "0";
+                    String classSource = packagePath + "/" + className + ".java";
+                    FileWriter aWriter = new FileWriter(classSource, false);
+                    aWriter.write("package cruz.anacUtils;\n");
+                    aWriter.write("public class "+ className + "{\n");
+
+                    ArrayList<ArrayList<Double>> currentMatrix = listOfWeightMatrices.get(i);
+                    aWriter.write("\tstatic double[][] matrix = {\n");
+
+                    for(int j = 0; j < currentMatrix.size(); j++) {
+                        aWriter.write("{");
+                        ArrayList<Double> currentRow = currentMatrix.get(j);
+
+                        for(int k = 0; k < currentRow.size(); k++) {
+                            aWriter.write(currentRow.get(k).toString());
+
+                            if(k != currentRow.size() - 1) {
+                                aWriter.write(", ");
+                            }
+                        }
+
+                        aWriter.write("}");
+
+                        if(j != currentMatrix.size() - 1) {
+                            aWriter.write(",\n");
                         }
                     }
 
-                    aWriter.write("}");
+                    aWriter.write("};\n");
 
-                    if(j != currentMatrix.size() - 1) {
-                        aWriter.write(",\n");
-                    }
+                    aWriter.write("}\n");
+                    aWriter.flush();
+                    aWriter.close();
                 }
 
-                aWriter.write("};\n");
 
-                aWriter.write("}\n");
-                aWriter.flush();
-                aWriter.close();
             }
         }
         catch(Exception e){
