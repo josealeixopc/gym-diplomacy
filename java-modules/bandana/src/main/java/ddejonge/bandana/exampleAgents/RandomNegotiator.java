@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import ddejonge.bandana.anac.ANACPlayer;
 import ddejonge.bandana.negoProtocol.DMZ;
 import ddejonge.bandana.negoProtocol.BasicDeal;
 import ddejonge.bandana.negoProtocol.DiplomacyNegoClient;
@@ -344,7 +343,7 @@ public class RandomNegotiator extends Player{
 
 	void negotiate(){
 		
-		long negotiationDeadline = System.currentTimeMillis() + ANACPlayer.NEGOTIATION_LENGTH;
+		long negotiationDeadline = System.currentTimeMillis() + 3000;
 		
 		//This loop repeats 2 steps. The first step is to handle any incoming messages, 
 		// while the second step tries to find deals to propose to the other negotiators.

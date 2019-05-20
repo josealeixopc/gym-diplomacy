@@ -56,9 +56,9 @@ public class TournamentRunner {
 		
 		int numberOfGames = 1000000;				//The number of games this tournament consists of.
 		
-		int deadlineForMovePhases = 6; 	//60 seconds for each SPR and FAL phases
-		int deadlineForRetreatPhases = 3;  //30 seconds for each SUM and AUT phases
-		int deadlineForBuildPhases = 3;  	//30 seconds for each WIN phase
+		int deadlineForMovePhases = 5; 	//60 seconds for each SPR and FAL phases
+		int deadlineForRetreatPhases = 2;  //30 seconds for each SUM and AUT phases
+		int deadlineForBuildPhases = 2;  	//30 seconds for each WIN phase
 
 		int finalYear = Integer.parseInt(FINAL_YEAR); 	//The year after which the agents in each game are supposed to propose a draw to each other.
 		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.)

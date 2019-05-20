@@ -60,4 +60,8 @@ public class Utilities {
 
         return new AbstractMap.SimpleEntry<>(nextYear, nextPhase);
     }
+
+    public static void createWeightClass() {
+
+    }
 }

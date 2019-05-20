@@ -157,7 +157,7 @@ def callback(_locals, _globals):
                 best_mean_reward = mean_reward
                 # Example for saving best model
                 logger.info("Saving new best model")
-                _locals['self'].save(pickle_dir + 'ppo2-best-model.pkl')
+                _locals['self'].save(pickle_dir + current_time_string + '-ppo2-best-model.pkl')
 
     n_steps += 1
     # Returning False will stop training early
@@ -212,7 +212,7 @@ def plot_results(log_dir, title='Learning Curve'):
     :param title: (str) the title of the task to plot
     """
     x, y = ts2xy(load_results(log_dir), 'timesteps')
-    y = moving_average(y, window=1)
+    y = moving_average(y, window=10)
     # Truncate x
     x = x[len(x) - len(y):]
 

@@ -37,7 +37,7 @@ public class TFAdapterNegotiation {
         b.close();
     }
 
-    private static float[] predict(Session sess, Tensor inputTensor) {
+    public static float[] predict(Session sess, Tensor inputTensor) {
         Tensor result = sess.runner()
                 .feed("input/Ob", inputTensor)
                 .fetch("output/strided_slice").run().get(0);
