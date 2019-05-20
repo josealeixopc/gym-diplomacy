@@ -1,6 +1,7 @@
 package cruz.agents;
 
 import com.google.gson.Gson;
+import cruz.anacUtils.MyWeightsMatrixAll;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +13,18 @@ public class MyNeuralNetwork {
      * Code related to operations comes from here: https://gist.github.com/Jeraldy/7d4262db0536d27906b1e397662512bc
      */
 
-    public double[][] predict(double[][] input, Vector<double[][]> weights) {
+    public static double[][] predict(double[][] input) {
+        return predict(input, MyWeightsMatrixAll.weightMatrices);
+    }
+
+    public static double[][] predict(double[][] input, List<double[][]> weightMatrices) {
         double[][] currMatrix = input;
         double[][] resultMatrix = null;
 
-        for (double[][] weight : weights) {
-            resultMatrix = multiply(currMatrix, weight);
+        for (double[][] weightMatrix : weightMatrices) {
+            resultMatrix = multiply(currMatrix, weightMatrix);
             resultMatrix = softmax(resultMatrix);
+            currMatrix = resultMatrix;
         }
 
         return resultMatrix;
@@ -80,14 +86,12 @@ public class MyNeuralNetwork {
         return z;
     }
 
-    public static ArrayList<double[][]> getMatrices() {
-        Gson gson = new Gson();
-        // double[][][] matrices = gson.fromJson(WeightsData.json);
-        return null;
-    }
-
     public static void main(String[] args) {
-
+        double[][] input = {
+                {0, 1, 2},
+                {0, 2, 3}
+        };
+        predict(input);
     }
 
 }

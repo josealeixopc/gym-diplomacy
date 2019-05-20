@@ -12,13 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class MakeWeightsClass {
-    String packagePath = "src/main/java/cruz/agents";
-    String className = "MyWeights";
-    String classSource = packagePath + "/" + className + ".txt";
-
     static ArrayList<ArrayList<ArrayList<Double>>> listOfWeightMatrices = new ArrayList<>();
 
     public static void main (String args[]){
@@ -29,15 +24,19 @@ public class MakeWeightsClass {
 
     public void createIt() {
         try {
-            FileWriter aWriter = new FileWriter(classSource, false);
-            aWriter.write("package cruz.agents;\n");
-            aWriter.write("import java.util.ArrayList;\n" +
-                    "import java.util.List;\n");
-            aWriter.write("public class "+ className + "{\n");
-
             for (int i = 0; i < listOfWeightMatrices.size(); i++) {
+                String packagePath = "src/main/java/cruz/anacUtils";
+                String className = "MyWeightsMatrix" + i;
+                String classSource = packagePath + "/" + className + ".java";
+
+                FileWriter aWriter = new FileWriter(classSource, false);
+                aWriter.write("package cruz.anacUtils;\n");
+                aWriter.write("import java.util.ArrayList;\n" +
+                        "import java.util.List;\n");
+                aWriter.write("public class "+ className + "{\n");
+
                 ArrayList<ArrayList<Double>> currentMatrix = listOfWeightMatrices.get(i);
-                aWriter.write("\tdouble[][] m" + i + " = {\n");
+                aWriter.write("\tstatic double[][] matrix = {\n");
 
                 for(int j = 0; j < currentMatrix.size(); j++) {
                     aWriter.write("{");
@@ -53,26 +52,17 @@ public class MakeWeightsClass {
 
                     aWriter.write("}");
 
-                    if(j != currentRow.size() - 1) {
+                    if(j != currentMatrix.size() - 1) {
                         aWriter.write(",\n");
                     }
                 }
 
                 aWriter.write("};\n");
+
+                aWriter.write("}\n");
+                aWriter.flush();
+                aWriter.close();
             }
-
-
-            aWriter.write("\tstatic List<double[][]> weightMatrices = new ArrayList<>() {{\n");
-
-            for (int i = 0; i < listOfWeightMatrices.size(); i++) {
-                aWriter.write("add(m" + i + ");\n");
-            }
-
-            aWriter.write("}};\n\n");
-
-            aWriter.write("}\n");
-            aWriter.flush();
-            aWriter.close();
         }
         catch(Exception e){
             e.printStackTrace();
