@@ -7,16 +7,15 @@ import ddejonge.bandana.exampleAgents.ANACExampleNegotiator;
 import ddejonge.bandana.negoProtocol.*;
 import ddejonge.bandana.tools.Utilities;
 import ddejonge.negoServer.Message;
+import es.csic.iiia.fabregues.dip.board.Phase;
 import es.csic.iiia.fabregues.dip.board.Power;
 import es.csic.iiia.fabregues.dip.board.Province;
 import es.csic.iiia.fabregues.dip.board.Region;
-import es.csic.iiia.fabregues.dip.orders.HLDOrder;
-import es.csic.iiia.fabregues.dip.orders.MTOOrder;
-import es.csic.iiia.fabregues.dip.orders.Order;
+import es.csic.iiia.fabregues.dip.orders.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
+@SuppressWarnings("Duplicates")
 
 public class DipBrain extends ANACNegotiator {
     /**
@@ -49,7 +48,21 @@ public class DipBrain extends ANACNegotiator {
     public Random random = new Random();
     DBraneTactics dBraneTactics;
 
-    private boolean printToConsole = false;
+    /** Defines whether logs should be printed to console or not.*/
+    private boolean printToConsole = true;
+
+    /** Ordered list of regions controlled. The default list of controlled regions may not be ordered.
+     * It's important for this list to be ordered, so that an action taken
+     * in the same state twice leads to the same outcome.*/
+    List<Region> orderedControlledRegions;
+
+    /** Ordered list of powers. The default list of powers may not be ordered.
+     * It's important for this list to be ordered, so that an action taken
+     * in the same state twice leads to the same outcome.*/
+    List<Power> orderedNegotiatingPowers;
+
+    /** A map containing an integer ID of each power, in order to be able to map a power to an integer and vice-versa. */
+    protected Map<String, Integer> powerNameToInt;
 
 
     //Constructor
@@ -84,7 +97,6 @@ public class DipBrain extends ANACNegotiator {
         // it is not necessary to call getLogger().enable() because this is already automatically done by the ANACNegotiator class.
 
         this.getLogger().logln("game is starting!", this.printToConsole);
-
     }
 
     @Override
@@ -96,10 +108,10 @@ public class DipBrain extends ANACNegotiator {
     @Override
     public void negotiate(long negotiationDeadline) {
 
-        BasicDeal newDealToPropose = null;
-
         this.getLogger().logln(me.getName() + ".negotiate() Negotiation BEGINNING! Duration: " + (negotiationDeadline - System.currentTimeMillis()), this.printToConsole);
 
+        boolean alreadyProposed = false;
+        this.generatePowerNameToIntMap();
 
         //This loop repeats 2 steps. The first step is to handle any incoming messages,
         // while the second step tries to find deals to propose to the other negotiators.
@@ -189,10 +201,10 @@ public class DipBrain extends ANACNegotiator {
 
                     if (!outDated && consistencyReport == null) {
 
-                        // This agent simply flips a coin to determine whether to accept the proposal or not.
-                        if (random.nextInt(2) == 0) { // accept with 50% probability.
+                        // Decide whether or not to accept
+                        if(this.acceptProposal(receivedMessage)) {
                             this.acceptProposal(receivedProposal.getId());
-                            this.getLogger().logln("ANACExampleNegotiator.negotiate()  Accepting: " + receivedProposal, this.printToConsole);
+                            this.getLogger().logln(me.getName() + ".negotiate()  Accepting: " + receivedProposal, this.printToConsole);
                         }
                     }
 
@@ -251,23 +263,40 @@ public class DipBrain extends ANACNegotiator {
 
 
             //STEP 2:  try to find a proposal to make, and if we do find one, propose it.
+            if (!alreadyProposed) { //we only make proposals once per round, so we skip this if we have already proposed something.
 
-            if (newDealToPropose == null) { //we only make one proposal per round, so we skip this if we have already proposed something.
-                newDealToPropose = searchForNewDealToPropose();
+                // JC: It is here that the OpenAI module is called to generate a new deal
+                ProtoMessage.ObservationData observationData = this.generateObservationData();
+                double[][] input = MyNeuralNetwork.observationToInput(observationData);
+                double [][] output = MyNeuralNetwork.predict(input);
+                ProtoMessage.DealData dealData = MyNeuralNetwork.outputToDealData(output);
+                List<BasicDeal> dealsToPropose = this.generateDeals(dealData);
 
-                if (newDealToPropose != null) {
-
-                    this.getLogger().logln("ANACExampleNegotiator.negotiate() Proposing: " + newDealToPropose, this.printToConsole);
-                    this.proposeDeal(newDealToPropose);
-
+                // JC: If the Python module does not return anything or connection could not be made, use the default function to find deals
+                if (dealsToPropose == null) {
+                    this.getLogger().logln("No deal was received from DipQ. Proceeding with default deal proposal.", this.printToConsole);
+                    this.getLogger().logln(me.getName() + ".negotiate() Could not find any deal to propose.", this.printToConsole);
                 }
+                else {
+                    if(dealsToPropose.size() == 0) {
+                        this.getLogger().logln(me.getName() + ".negotiate() We are not proposing deals this round.");
+                    }
+                    else {
+                        for (BasicDeal deal : dealsToPropose) {
+                            this.proposeDeal(deal);
+                            this.getLogger().logln(me.getName() + ".negotiate() Proposing: " + deal, this.printToConsole);
+                        }
+                    }
+                }
+
+                alreadyProposed = true;
             }
 
             // Wait before next cycle (commented because negotiation only lasts 100ms on my custom configuration)
-            // try {
-            //     Thread.sleep(250);
-            // } catch (InterruptedException e) {
-            // }
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+            }
 
         }
 
@@ -278,201 +307,472 @@ public class DipBrain extends ANACNegotiator {
         this.getLogger().logln(me.getName() + ".negotiate() Negotiation ENDING! Current time minus deadline: " + (negotiationDeadline - System.currentTimeMillis()), this.printToConsole);
     }
 
+    /**
+     * Function that determines whether a proposal should be accepted or not. If we earn more SCs with the deal than
+     * without it, we accept it. If we lose, we reject it. If it doesn't affect us, we only accept it if the power
+     * proposing has at least 2 SCs less than us (if it's quite weaker).
+     *
+     * @param receivedProposalMessage The message containing the proposal.
+     * @return True we should accept the deal. False otherwise.
+     */
+    protected boolean acceptProposal(Message receivedProposalMessage) {
 
-    BasicDeal searchForNewDealToPropose() {
+        DiplomacyProposal receivedProposal = (DiplomacyProposal) receivedProposalMessage.getContent();
 
-        BasicDeal bestDeal = null;
-        Plan bestPlan = null;
+        BasicDeal deal = (BasicDeal) receivedProposal.getProposedDeal();
 
-        //Get a copy of our list of current commitments.
-        List<BasicDeal> commitments = this.getConfirmedDeals();
+        List<BasicDeal> currentDeals = this.getConfirmedDeals();
+        List<BasicDeal> hypotheticalDeals = new ArrayList<>(currentDeals);
+        hypotheticalDeals.add(deal);
 
-        //First, let's see what happens if we do not make any new commitments.
-        bestPlan = this.dBraneTactics.determineBestPlan(game, me, commitments);
+        Plan basePlan = this.dBraneTactics.determineBestPlan(this.game, this.me, currentDeals);
+        Plan hypotheticalPlan = this.dBraneTactics.determineBestPlan(this.game, this.me, hypotheticalDeals);
 
-        //If our current commitments are already inconsistent then we certainly
-        // shouldn't make any more commitments.
-        if (bestPlan == null) {
-            return null;
+        if(hypotheticalPlan == null) {   // if for some reason plan returns null, reject new proposal
+            return false;
         }
 
-        //let's generate 10 random deals and pick the best one.
-        for (int i = 0; i < 10; i++) {
+        int balanceSCs = hypotheticalPlan.getValue() - basePlan.getValue();
 
-            //generate a random deal.
-            BasicDeal randomDeal = generateRandomDeal();
+        if (balanceSCs > 0) {
+            // If we earn some SC from new deal, then accept it
+            return true;
+        }
+        else if (balanceSCs < 0) {
+            return false;
+        }
+        else {
+            Power proposingPower = this.game.getPower(receivedProposalMessage.getSender());
 
-            if (randomDeal == null) {
+            // If power proposing is at least 2 SCs behind us, accept deal (it may reciprocate later on)
+            // IF power proposing is stronger than that, reject deal
+            return proposingPower.getOwnedSCs().size() <= this.me.getOwnedSCs().size() - 2;
+        }
+    }
+
+    /**
+     * According to the data received from DipBrain DRL module, decide what deals should be proposed.
+     * @param dealData
+     * @return
+     */
+    private List<BasicDeal> generateDeals(ProtoMessage.DealData dealData) {
+        List<BasicDeal> deals = new ArrayList<>();
+
+        // Get current controlled regions and then create an ordered list with them to be use in deal generation
+        this.orderedControlledRegions = this.sortRegionList(this.me.getControlledRegions());
+
+        // Get the current negotiating powers and then create an ordered list for deal generation without us in the list
+        this.orderedNegotiatingPowers = this.sortPowerList(this.getNegotiatingPowers());
+        this.orderedNegotiatingPowers.remove(this.me);
+
+        // Derive year and phase of deal from number of phases ahead
+        Map.Entry<Integer, Phase> phaseAndYear = cruz.agents.Utilities.calculatePhaseAndYear(this.game.getYear(), this.game.getPhase(), dealData.getPhasesFromNow());
+
+        int year = phaseAndYear.getKey();
+        Phase phase = phaseAndYear.getValue();
+
+        // Only if execute is true
+        if(dealData.getDefendUnit().getExecute()) {
+            int clippedRegionIndex = this.clipRegionIndex(dealData.getDefendUnit().getRegion());
+            BasicDeal generatedDeal = generateDefendUnitsMutual(clippedRegionIndex, year, phase);
+
+            if (generatedDeal != null) {
+                // if we could find a deal
+                deals.add(generatedDeal);
+            }
+        }
+
+        // Only if execute is true
+        if(dealData.getDefendSC().getExecute()) {
+            int clippedPowerIndex = this.clipPowerIndex(dealData.getDefendSC().getAllyPower());
+            deals.add(generateDefendSupplyCentersMutual(clippedPowerIndex, year, phase));
+        }
+
+        // Only if execute is true
+        if(dealData.getAttackRegion().getExecute()) {
+            int clippedRegionIndex = this.clipRegionIndex(dealData.getAttackRegion().getRegion());
+            BasicDeal generatedDeal = generateAttack(clippedRegionIndex, year, phase);
+
+            if (generatedDeal != null) {
+                // if we could find a deal
+                deals.add(generatedDeal);
+            }
+        }
+
+        // Only if execute is true
+        if(dealData.getSupportAttackRegion().getExecute()) {
+            int clippedRegionIndex = this.clipRegionIndex(dealData.getSupportAttackRegion().getRegion());
+            BasicDeal generatedDeal = generateSupportAttack(clippedRegionIndex, year, phase);
+
+            if (generatedDeal != null) {
+                // if we could find a deal
+                deals.add(generatedDeal);
+            }
+        }
+
+        return deals;
+    }
+
+    /**
+     * This methods returns ONE deal, to support a hold order in ONE random region. The deal is made randomly
+     * to a valid neighbour power.
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    protected BasicDeal generateDefendUnitsMutual(int regionIndex, int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        // Choose random unit
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal with a random surrounding region.
+        for(Region adjacentRegion : adjacentRegions) {
+            Power controller = this.game.getController(adjacentRegion);
+            if(controller == null){
+                // if no one controls region, don't consider it
+                continue;
+            }
+            if (!this.orderedNegotiatingPowers.contains(controller)) {
+                // if it's a non-negotiating or if it's us, don't consider
                 continue;
             }
 
+            HLDOrder hldOrderTheirs = new HLDOrder(controller, adjacentRegion);
+            HLDOrder hldOrderOurs = new HLDOrder(this.me, ourRegion);
 
-            //add it to the list containing our existing commitments so that dBraneTactics can determine a plan.
-            commitments.add(randomDeal);
+            SUPOrder supOrderTheirs = new SUPOrder(controller, ourRegion, hldOrderOurs);
+            SUPOrder supOrderOurs = new SUPOrder(this.me, adjacentRegion, hldOrderTheirs);
 
+            ocs.add(new OrderCommitment(year, phase, supOrderOurs));
+            ocs.add(new OrderCommitment(year, phase, supOrderTheirs));
 
-            //Ask the D-Brane Tactical Module what it would do under these commitments.
-            Plan plan = this.dBraneTactics.determineBestPlan(game, me, commitments);
-
-            //Check if the returned plan is better than the best plan found so far.
-            if (plan != null && plan.getValue() > bestPlan.getValue()) {
-                bestPlan = plan;
-                bestDeal = randomDeal;
-            }
-
-
-            //Remove the randomDeal from the list, for the next iteration.
-            commitments.remove(commitments.size() - 1);
-
-            //NOTE: the value returned by plan.getValue() represents the number of Supply Centers that the D-Brane Tactical Module
-            // expects to conquer in the current round under the given commitments.
-            //
-            // Of course, this is only a rough indication of which plan is truly the "best". After all, sometimes it is better
-            // not to try to conquer as many Supply Centers as you can directly, but rather organize your armies and only attack in a later
-            // stage.
-            // Therefore, you may want to implement your own algorithm to determine which plan is the best.
-            // You can call plan.getMyOrders() to retrieve the complete list of orders that D-Brane has chosen for you under the given commitments.
-
+            BasicDeal deal = new BasicDeal(ocs, dmzs);
+            return deal;
         }
 
+        return null;
+    }
 
-        return bestDeal;
+    /**
+     * This method returns ONE deal, where we choose a random Power and propose not invading (DMZ) each other's
+     * supply centers.
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    protected BasicDeal generateDefendSupplyCentersMutual(int powerIndex, int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
 
+        List<Province> ourProvinces = this.me.getOwnedSCs();
 
+        // Try to get a deal with a random Power.
+        Power opponent = this.orderedNegotiatingPowers.get(powerIndex);
+
+        List<Province> provincesDMZ = new ArrayList<>();
+        provincesDMZ.addAll(opponent.getOwnedSCs());
+        provincesDMZ.addAll(ourProvinces);
+
+        List<Power> involvedPowers = new ArrayList<>();
+        involvedPowers.add(this.me);
+        involvedPowers.add(opponent);
+
+        dmzs.add(new DMZ(year, phase, involvedPowers, provincesDMZ));
+        return new BasicDeal(ocs, dmzs);
+    }
+
+    /**
+     * This methods returns ONE deal, to coordinate an attack on ONE random region,
+     * with the support of another random region.
+     *
+     * In this deal, WE are the main attackers (therefore we win the control).
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    protected BasicDeal generateAttack(int regionIndex, int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal to attack a random surrounding region.
+        for(Region targetRegion : adjacentRegions) {
+            Power targetPower = this.game.getController(targetRegion);
+
+            List<Region> possibleSupports = new ArrayList<>(adjacentRegions);
+            possibleSupports.remove(targetRegion);
+
+            MTOOrder mtoOrder = new MTOOrder(this.me, ourRegion, targetRegion);
+
+            for(Region supportingRegion: possibleSupports) {
+                Power supportingPower = this.game.getController(supportingRegion);
+
+                if (supportingPower == null) {
+                    // if the region is not controlled by anyone, find a new one that is
+                    continue;
+                }
+
+                if (supportingPower.equals(targetPower)) {
+                    // if the supporting power is the target, don't ask for help, obviously
+                    continue;
+                }
+
+                if (!this.orderedNegotiatingPowers.contains(supportingPower)) {
+                    // if the supporting power does not negotiate
+                    continue;
+                }
+
+                SUPMTOOrder supmtoOrder = new SUPMTOOrder(supportingPower, supportingRegion, mtoOrder);
+
+                ocs.add(new OrderCommitment(year, phase, mtoOrder));
+                ocs.add(new OrderCommitment(year, phase, supmtoOrder));
+
+                return new BasicDeal(ocs, dmzs);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * This methods returns ONE deal, to coordinate an attack on ONE random region,
+     * with the support of another random region.
+     *
+     * In this deal, THE OTHER OPPONENT is the main attacker (therefore they win the control).
+     *
+     * @param year
+     * @param phase
+     * @return
+     */
+    protected BasicDeal generateSupportAttack(int regionIndex, int year, Phase phase) {
+        List<OrderCommitment> ocs = new ArrayList<>();
+        List<DMZ> dmzs = new ArrayList<>();
+
+        // An unit is addressed by the Region it occupies.
+        Region ourRegion = this.orderedControlledRegions.get(regionIndex);
+
+        List<Region> adjacentRegions = ourRegion.getAdjacentRegions();
+
+        // Shuffle in order to randomize the process
+        Collections.shuffle(adjacentRegions);
+
+        // Try to get a deal to attack a random surrounding region.
+        for(Region targetRegion : adjacentRegions) {
+            Power targetPower = this.game.getController(targetRegion);
+
+            List<Region> possibleSupports = new ArrayList<>(adjacentRegions);
+            possibleSupports.remove(targetRegion);
+
+            for(Region regionToSupport: possibleSupports) {
+                Power powerToSupport = this.game.getController(regionToSupport);
+
+                if (powerToSupport == null) {
+                    // if the region is not controlled by anyone, find a new one that is
+                    continue;
+                }
+
+                if (powerToSupport.equals(targetPower)) {
+                    // if the supporting power is the target, don't ask for help, obviously
+                    continue;
+                }
+
+                if (!this.orderedNegotiatingPowers.contains(powerToSupport)) {
+                    // if the supporting power does not negotiate
+                    continue;
+                }
+
+                MTOOrder mtoOrder = new MTOOrder(powerToSupport, ourRegion, targetRegion);
+                SUPMTOOrder supmtoOrder = new SUPMTOOrder(this.me, regionToSupport, mtoOrder);
+
+                ocs.add(new OrderCommitment(year, phase, mtoOrder));
+                ocs.add(new OrderCommitment(year, phase, supmtoOrder));
+
+                return new BasicDeal(ocs, dmzs);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns an alphabetically ordered region list, according to its name.
+     * @param controlledRegions
+     */
+    protected List<Region> sortRegionList(List<Region> controlledRegions) {
+        List<Region> orderedControlledRegions = new ArrayList<>(controlledRegions);
+        orderedControlledRegions.sort(new Comparator<Region>() {
+            @Override
+            public int compare(Region region, Region t1) {
+                return region.getName().compareToIgnoreCase(t1.getName());
+            }
+        });
+
+        return orderedControlledRegions;
+    }
+
+    /**
+     * Returns an alphabetically ordered region list, according to its name.
+     * @param powers
+     */
+    protected List<Power> sortPowerList(List<Power> powers) {
+        List<Power> orderedPowers = new ArrayList<>(powers);
+        orderedPowers.sort(new Comparator<Power>() {
+            @Override
+            public int compare(Power power, Power t1) {
+                return power.getName().compareToIgnoreCase(t1.getName());
+            }
+        });
+
+        return orderedPowers;
     }
 
 
-    public BasicDeal generateRandomDeal() {
-
-
-        //Get the names of all the powers that are connected to the negotiation server and which have not been eliminated.
-        List<Power> aliveNegotiatingPowers = this.getNegotiatingPowers();
-
-        //if there are less than 2 negotiating powers left alive (only me), then it makes no sense to negotiate.
-        int numAliveNegoPowers = aliveNegotiatingPowers.size();
-        if (numAliveNegoPowers < 2) {
-            return null;
+    /**
+     * This method clips the given integer, in case it is greater than the size of the list of controlled regions.
+     *
+     * Because the DRL agent will provide an integer n where 0 <= n <= maximum_number_of_units, n may be larger
+     * than the number of CURRENT units. Therefore, we clip it, so that any n greater than our number of units maps to
+     * the maximum index possible.
+     * @param n
+     * @return
+     */
+    private int clipRegionIndex(int n) {
+        if(n >= this.me.getControlledRegions().size()) {
+            return this.me.getControlledRegions().size() - 1;
         }
-
-
-        //Let's generate 3 random demilitarized zones.
-        List<DMZ> demilitarizedZones = new ArrayList<DMZ>(3);
-        for (int i = 0; i < 3; i++) {
-
-            //1. Create a list of powers
-            ArrayList<Power> powers = new ArrayList<Power>(2);
-
-            //1a. add myself to the list
-            powers.add(me);
-
-            //1b. add a random other power to the list.
-            Power randomPower = me;
-            while (randomPower.equals(me)) {
-
-                int numNegoPowers = aliveNegotiatingPowers.size();
-                randomPower = aliveNegotiatingPowers.get(random.nextInt(numNegoPowers));
-            }
-            powers.add(randomPower);
-
-            //2. Create a list containing 3 random provinces.
-            ArrayList<Province> provinces = new ArrayList<Province>();
-            for (int j = 0; j < 3; j++) {
-                int numProvinces = this.game.getProvinces().size();
-                Province randomProvince = this.game.getProvinces().get(random.nextInt(numProvinces));
-                provinces.add(randomProvince);
-            }
-
-
-            //This agent only generates deals for the current year and phase.
-            // However, you can pick any year and phase here, as long as they do not lie in the past.
-            // (actually, you can also propose deals for rounds in the past, but it doesn't make any sense
-            //  since you obviously cannot obey such deals).
-            demilitarizedZones.add(new DMZ(game.getYear(), game.getPhase(), powers, provinces));
-
+        else {
+            return n;
         }
+    }
 
-
-        //let's generate 3 random OrderCommitments
-        List<OrderCommitment> randomOrderCommitments = new ArrayList<OrderCommitment>();
-
-
-        //get all units of the negotiating powers.
-        List<Region> units = new ArrayList<Region>();
-        for (Power power : aliveNegotiatingPowers) {
-            units.addAll(power.getControlledRegions());
+    /**
+     * This method clips the given integer, in case it is greater than the size of the list of controlled SCs/provinces.
+     *
+     * Because the DRL agent will provide an integer n where 0 <= n <= maximum_number_of_provinces, n may be larger
+     * than the number of CURRENT units. Therefore, we clip it, so that any n greater than our number of SCs maps to
+     * the maximum index possible.
+     * @param n
+     * @return
+     */
+    private int clipProvinceIndex(int n) {
+        if(n >= this.me.getOwnedSCs().size()) {
+            return this.me.getOwnedSCs().size() - 1;
         }
-
-
-        for (int i = 0; i < 3; i++) {
-
-            //Pick a random unit and remove it from the list
-            if (units.size() == 0) {
-                break;
-            }
-            Region randomUnit = units.remove(random.nextInt(units.size()));
-
-            //Get the corresponding power
-            Power power = game.getController(randomUnit);
-
-            //Determine a list of potential destinations for the unit.
-            // a Region is a potential destination for a unit if it is adjacent to that unit (or it is the current location of the unit)
-            //  and the Province is not demilitarized for the Power controlling that unit.
-            List<Region> potentialDestinations = new ArrayList<Region>();
-
-            //Create a list of adjacent regions, including the current location of the unit.
-            List<Region> adjacentRegions = new ArrayList<>(randomUnit.getAdjacentRegions());
-            adjacentRegions.add(randomUnit);
-
-            for (Region adjacentRegion : adjacentRegions) {
-
-                Province adjacentProvince = adjacentRegion.getProvince();
-
-                //Check that the adjacent Region is not demilitarized for the power controlling the unit.
-                boolean isDemilitarized = false;
-                for (DMZ dmz : demilitarizedZones) {
-                    if (dmz.getPowers().contains(power) && dmz.getProvinces().contains(adjacentProvince)) {
-                        isDemilitarized = true;
-                        break;
-                    }
-
-                }
-
-                //If it is not demilitarized, then we can add the region to the list of potential destinations.
-                if (!isDemilitarized) {
-                    potentialDestinations.add(adjacentRegion);
-                }
-            }
-
-
-            int numPotentialDestinations = potentialDestinations.size();
-            if (numPotentialDestinations > 0) {
-
-                Region randomDestination = potentialDestinations.get(random.nextInt(numPotentialDestinations));
-
-                Order randomOrder;
-                if (randomDestination.equals(randomUnit)) {
-                    randomOrder = new HLDOrder(power, randomUnit);
-                } else {
-                    randomOrder = new MTOOrder(power, randomUnit, randomDestination);
-                }
-                // Of course we could also propose random support orders, but we don't do that here.
-
-
-                //We only generate deals for the current year and phase.
-                // However, you can pick any year and phase here, as long as they do not lie in the past.
-                // (actually, you can also propose deals for rounds in the past, but it doesn't make any sense
-                //  since you obviously cannot obey such deals).
-                randomOrderCommitments.add(new OrderCommitment(game.getYear(), game.getPhase(), randomOrder));
-            }
-
+        else {
+            return n;
         }
+    }
 
-        BasicDeal deal = new BasicDeal(randomOrderCommitments, demilitarizedZones);
-
-
-        return deal;
-
+    /**
+     * This method clips the given integer, in case it is greater than the size of the list of negotiating powers.
+     *
+     * Because the DRL agent will provide an integer n where 0 <= n <= number_of_players, n may be larger
+     * than the number of CURRENT negotiating powers.
+     * Therefore, we clip it, so that any n greater than the number of negotiating powers
+     * to the maximum index possible.
+     * @param n
+     * @return
+     */
+    private int clipPowerIndex(int n) {
+        if(n >= this.orderedNegotiatingPowers.size()) {
+            return this.orderedNegotiatingPowers.size() - 1;
+        }
+        else {
+            return n;
+        }
     }
 
 
+    protected ProtoMessage.ObservationData generateObservationData() {
+
+        ProtoMessage.ObservationData.Builder observationDataBuilder = ProtoMessage.ObservationData.newBuilder();
+
+        Map<String, ProtoMessage.ProvinceData.Builder> nameToProvinceDataBuilder = new HashMap<>();
+
+        // FIRST PROCESS ALL PROVINCES
+        Vector<Province> provinces = this.game.getProvinces();
+
+        int id = 1;
+
+        for (Province p : provinces) {
+            ProtoMessage.ProvinceData.Builder provinceDataBuilder = ProtoMessage.ProvinceData.newBuilder();
+            int isSc = p.isSC() ? 1 : 0;
+
+            provinceDataBuilder.setId(id);
+            provinceDataBuilder.setSc(isSc);
+
+            nameToProvinceDataBuilder.put(p.getName(), provinceDataBuilder);
+
+            id++;
+        }
+
+        // THEN ADD THE OWNERS & UNITS OF EACH PROVINCE
+        List<Power> powers = this.game.getPowers();
+        for (Power pow : powers) {
+            for (Province p : pow.getOwnedSCs()) {
+                // Get the correspondent province builder and add the current owner of the province
+                ProtoMessage.ProvinceData.Builder provinceDataBuilder = nameToProvinceDataBuilder.get(p.getName());
+                provinceDataBuilder.setOwner(powerNameToInt.get(pow.getName()));
+            }
+
+            for (Region r : pow.getControlledRegions()) {
+                Province p = r.getProvince();
+
+                // Get the correspondent province builder and add the current owner of the province
+                ProtoMessage.ProvinceData.Builder provinceDataBuilder = nameToProvinceDataBuilder.get(p.getName());
+                provinceDataBuilder.setOwner(powerNameToInt.get(pow.getName()));
+                provinceDataBuilder.setUnit(powerNameToInt.get(pow.getName()));
+            }
+        }
+
+        // ADD CREATED PROVINCES TO OBSERVATION
+        for (Map.Entry<String, ProtoMessage.ProvinceData.Builder> entry : nameToProvinceDataBuilder.entrySet()) {
+            observationDataBuilder.addProvinces(entry.getValue().build());
+        }
+
+
+        String agent_name = this.me.getName();
+        observationDataBuilder.setPlayer(powerNameToInt.get(agent_name));
+
+        return observationDataBuilder.build();
+    }
+
+    protected void generatePowerNameToIntMap() {
+        this.powerNameToInt = new HashMap<>();
+        this.powerNameToInt.put("NONE", 0);
+
+        // Order alphabetically in ordered to maintain consistent order in case they are not always ordered the same way
+        List<Power> powers = this.game.getPowers();
+        powers.sort(new Comparator<Power>() {
+            @Override
+            public int compare(Power p1, Power p2) {
+                return p1.getName().compareToIgnoreCase(p2.getName());
+            }
+        });
+
+        int id = 1;
+        for(Power pow : powers) {
+            powerNameToInt.put(pow.getName(), id);
+            id++;
+        }
+    }
 }

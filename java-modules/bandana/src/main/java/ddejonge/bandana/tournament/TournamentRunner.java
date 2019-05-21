@@ -38,6 +38,9 @@ public class TournamentRunner {
 	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", FINAL_YEAR};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "artifacts/anac-example-negotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
 
+    final static String[] myDBraneBotCommand = {"java", "-jar", "agents/my-dbrane/my-dbrane.jar", "-log", "log", "-name", "MyDBrane", "-fy", FINAL_YEAR};
+    final static String[] dipBrainBotCommand = {"java", "-jar", "artifacts/dip-brain.jar", "-log", "log", "-name", "DipBrain", "-fy", FINAL_YEAR};
+
 
     // JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
     final static String[] openAIBotNegotiatorCommandDebug = {"java", "-agentlib:jdwp=transport=dt_socket,server=n,address=5005,suspend=y", "-jar", "target/open-ai-negotiator.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
@@ -120,7 +123,7 @@ public class TournamentRunner {
 
             //2. Create a TournamentObserver to monitor the games and accumulate the results.
             // JC: Use "windowless = true" to run without any Diplomacy Monitor and, hence, being able to run on a server
-            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, true);
+            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, false);
 
             //3. Run the Negotiation Server.
             if (MODE) {
@@ -145,12 +148,12 @@ public class TournamentRunner {
                     // Bots for negotiation testing
                     if(MODE) {
                         //make sure that each player has a different name.
-                        if (i < numberOfParticipants - 1) {
-                            name = "ANACExampleNegotiator " + i;
-                            command = anacExampleBotCommand;
+                        if (i < numberOfParticipants - 4) {
+                            name = "MyDBrane " + i;
+                            command = myDBraneBotCommand;
                         } else {
-                            name = "OpenAIBotNegotiator " + i;
-                            command = openAIBotNegotiatorCommand;
+                            name = "DipBrain " + i;
+                            command = dipBrainBotCommand;
                         }
                     }
                     // Bots for tactics testing

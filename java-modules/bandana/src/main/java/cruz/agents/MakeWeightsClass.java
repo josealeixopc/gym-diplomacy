@@ -135,17 +135,20 @@ public class MakeWeightsClass {
             JsonReader reader = new JsonReader(new FileReader(jsonPath));
             ArrayList<ArrayList<Object>> listOfJsonLists = gson.fromJson(reader, type);
 
+            // The order is pi layer, vf layer, pi layer, vf layer, ...
+            // Check the extractor.py file for details
+            // We want the policy weights, which correspond to the ACTOR (from GitHub issue)
+            // "The “Critic” estimates the value function. This could be the action-value (the Q value) or state-value (the V value).
+            // The “Actor” updates the policy distribution in the direction suggested by the Critic (such as with policy gradients)." Source: https://towardsdatascience.com/understanding-actor-critic-methods-931b97b6df3f
+
+            boolean isPiLayer = true;
+            int index = 0;
+
             for(ArrayList<Object> element: listOfJsonLists) {
-                Object valueOfM = element.get(0);
-                boolean isWeightMatrix = false; // if it's not a weight matrix, it's a result matrix
-
-                if(valueOfM instanceof List<?>) {
-                    isWeightMatrix = true;
-                }
-
-                if(isWeightMatrix) {
+                if(index == 0 || index == 4 || index == 10) {
                     listOfWeightMatrices.add((ArrayList<ArrayList<Double>>) convertObjectToList(element));
                 }
+                index++;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

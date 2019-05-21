@@ -227,6 +227,28 @@
                             </transformers>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>DipBrain-shade</id>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>io.grpc:*</exclude>
+                                    <exclude>org.tensorflow:*</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <outputFile>artifacts/dip-brain.jar</outputFile>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>cruz.agents.DipBrain</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

@@ -23,14 +23,24 @@ def generate_checkpoint_from_model(model_path, checkpoint_name):
                                    outputs={"action": model.action_ph})
 
 
+
 def get_params_from_model(model_path):
+    """
+    Gets the neural network parameters from the model. From what I gather, given that it is a PPO model, it has two neural
+    networks: one for the policy function (pi Tensors) and another for the value function (vf Tensors). These parameters
+    include the weights and the bias of a given layer.
+
+    From the code, it looks like the action is calculated with the value function. Therefore, we will use those in the Java side.
+    One little problem is that the bias are all zero, don't know why. Therefore we'll only use weights.
+    :param model_path:
+    :return:
+    """
     model = PPO2.load(model_path)
 
     with model.graph.as_default():
         sess = tf_util.make_session(graph=model.graph)
         tf.global_variables_initializer().run(session=sess)
         params = sess.run(model.params)
-        print(params)
 
         params_savable = []
         for matrix in params:
@@ -44,4 +54,4 @@ def get_params_from_model(model_path):
 
 if __name__ == '__main__':
     # generate_checkpoint_from_model("pickles/ppo2-test-pickle.pkl", "checkpoint")
-    get_params_from_model("/home/jazz/Documents/openai-results/dip-log-cloud-1/dip-log/gym/pickles/ppo2-best-model.pkl")
+    get_params_from_model("/home/jazz/Documents/openai-results/dip-log/gym/pickles/2019-05-20-23-24-56-ppo2-best-model.pkl")
