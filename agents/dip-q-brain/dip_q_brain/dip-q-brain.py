@@ -212,7 +212,7 @@ def plot_results(log_dir, title='Learning Curve'):
     :param title: (str) the title of the task to plot
     """
     x, y = ts2xy(load_results(log_dir), 'timesteps')
-    y = moving_average(y, window=10)
+    y = moving_average(y, window=30)
     # Truncate x
     x = x[len(x) - len(y):]
 

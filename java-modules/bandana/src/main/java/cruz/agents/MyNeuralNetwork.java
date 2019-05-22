@@ -131,11 +131,12 @@ public class MyNeuralNetwork {
 
     public static int getRelativeIndexOfHigherValueBetweenBounds(double[] arr, int minIndex, int delta) {
         int maxRelativeIndex = -1;
-        double maxValue = Double.MIN_VALUE;
+        double maxValue = -1000000;
 
         for(int i = 0; i < delta; i++) {
             if(arr[minIndex + i] > maxValue) {
                 maxRelativeIndex = i;
+                maxValue = arr[minIndex + i];
             }
         }
 
