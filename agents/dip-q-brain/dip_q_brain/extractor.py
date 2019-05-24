@@ -10,6 +10,15 @@ from my_ppo2 import PPO2
 
 
 def generate_checkpoint_from_model(model_path, checkpoint_name):
+    """
+    Saves a TF session and graph checkpoint from an OpenAI Gym model. This function allows the model's graph and
+    session to be loaded using the TensorFlow API. While the mehtod used has been deprecated, it's the simples choice
+    to load in Java.
+
+    :param model_path:
+    :param checkpoint_name:
+    :return:
+    """
     model = PPO2.load(model_path)
 
     with model.graph.as_default():
@@ -19,15 +28,34 @@ def generate_checkpoint_from_model(model_path, checkpoint_name):
         tf.saved_model.simple_save(model.sess, checkpoint_name, inputs={"obs": model.act_model.obs_ph},
                                    outputs={"action": model.action_ph})
 
-        obs = np.ones(((1,) + model.act_model.ob_space.shape))
-        # obs[0][12] = 1
-        # obs[0][11] = 1
-        # obs[0][10] = 1
+
+def get_action_from_model(model, obs: np.ndarray):
+    """
+    Gets the action for a environment observation. This function takes the model's graph and session and calculates
+    its output for a given observation. The TF operation is given by the `deterministic_action`. The shape of the
+    observation is given by the attribute `obs_ph`.
+
+    :param model:
+    :param obs:
+    :return:
+    """
+
+    with model.graph.as_default():
 
         action = model.sess.run([model.act_model.deterministic_action],
                                 {model.act_model.obs_ph: obs})
 
-        print(action)
+        return action
+
+
+def generate_random_observation(model):
+    # TODO: Make it truly random
+    obs = np.ones(((1,) + model.act_model.ob_space.shape))
+    obs[0][12] = 1
+    obs[0][11] = 1
+    obs[0][10] = 1
+
+    return obs
 
 
 def save_params_from_model(model_path, destination_path):
@@ -58,7 +86,4 @@ def save_params_from_model(model_path, destination_path):
 
 
 if __name__ == '__main__':
-    generate_checkpoint_from_model(
-        "/home/jazz/Documents/openai-results/dip-log/gym/pickles/2019-05-20-23-24-56-ppo2-best-model.pkl", "checkpoint")
-    # save_params_from_model("/home/jazz/Documents/openai-results/dip-log/gym/pickles/2019-05-20-23-24-56-ppo2-best-model.pkl", "path.json")
     pass
