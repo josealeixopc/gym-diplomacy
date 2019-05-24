@@ -168,7 +168,7 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   NUMBER_OF_PHASES_AHEAD])
-
+        
     def handle_request(self, request: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
         logger.info("Executing _handle of request...")
 

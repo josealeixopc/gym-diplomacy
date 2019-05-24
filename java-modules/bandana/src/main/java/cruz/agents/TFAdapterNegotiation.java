@@ -1,6 +1,8 @@
 package cruz.agents;
 
 import org.tensorflow.*;
+import org.tensorflow.op.core.TensorForestTreeDeserialize;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -25,24 +27,38 @@ public class TFAdapterNegotiation {
 
             try (Session sess = b.session()) {
 
-                float[][] inputData = {{1.8095541f,  2.2624320f,  3.5591793f, 1.3286867f}};
-                Tensor input = Tensor.create(inputData, Float.class);
+                int[][] inputData = new int[1][151];
 
+                for (int i = 0; i < inputData.length; i++) {
+                    for (int j = 0; j < inputData[i].length; j++) {
+                        inputData[i][j] = 1;
+                    }
+                }
 
-                float[] output = predict(sess, input);
-                System.out.println("Output: " + Arrays.toString(output));
+                Tensor input = Tensor.create(inputData, Integer.class);
+
+                int[][] output = predict(sess, input);
+                int[] action = output[0];
+
+                System.out.println("Action to take: " + Arrays.toString(action));
+
             }
         }
 
         b.close();
     }
 
-    public static float[] predict(Session sess, Tensor inputTensor) {
+    public static int[][] predict(Session sess, Tensor inputTensor) {
         Tensor result = sess.runner()
                 .feed("input/Ob", inputTensor)
-                .fetch("output/strided_slice").run().get(0);
-        float[] outputBuffer = new float[1];
+                .fetch("output/Cast_1:0").run().get(0);
+        int[][] outputBuffer = new int[1][9];
         result.copyTo(outputBuffer);
         return outputBuffer;
+    }
+
+    public static float[][] generateInputData(ProtoMessage.ObservationData observationData) {
+        // int inputSize = observationData.getProvincesCount() ...;
+        return null;
     }
 }

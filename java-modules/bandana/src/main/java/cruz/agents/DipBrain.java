@@ -267,10 +267,10 @@ public class DipBrain extends ANACNegotiator {
 
                 // JC: It is here that the OpenAI module is called to generate a new deal
                 ProtoMessage.ObservationData observationData = this.generateObservationData();
-                double[][] input = MyNeuralNetwork.observationToInput(observationData);
-                double [][] output = MyNeuralNetwork.predict(input);
-                ProtoMessage.DealData dealData = MyNeuralNetwork.outputToDealData(output);
-                List<BasicDeal> dealsToPropose = this.generateDeals(dealData);
+                // double[][] input = MyNeuralNetwork.observationToInput(observationData);
+                // double [][] output = MyNeuralNetwork.predict(input);
+                // ProtoMessage.DealData dealData = MyNeuralNetwork.outputToDealData(output);
+                List<BasicDeal> dealsToPropose = this.generateDeals(null);
 
                 // JC: If the Python module does not return anything or connection could not be made, use the default function to find deals
                 if (dealsToPropose == null) {
