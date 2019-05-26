@@ -148,12 +148,12 @@ public class TournamentRunner {
                     // Bots for negotiation testing
                     if(MODE) {
                         //make sure that each player has a different name.
-                        if (i < numberOfParticipants - 4) {
+                        if (i < numberOfParticipants - 8) {
                             name = "MyDBrane " + i;
                             command = myDBraneBotCommand;
                         } else {
-                            name = "DipBrain " + i;
-                            command = dipBrainBotCommand;
+                            name = "OpenAINegotiator " + i;
+                            command = openAIBotNegotiatorCommand;
                         }
                     }
                     // Bots for tactics testing

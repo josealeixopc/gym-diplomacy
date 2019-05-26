@@ -1,2 +1,3 @@
 from gym_diplomacy.envs.diplomacy_negotiation_env import DiplomacyNegotiationEnv
 from gym_diplomacy.envs.diplomacy_strategy_env import DiplomacyStrategyEnv
+from gym_diplomacy.envs.diplomacy_negotiation_multi_agent_env import DiplomacyNegotiationMultiAgentEnv

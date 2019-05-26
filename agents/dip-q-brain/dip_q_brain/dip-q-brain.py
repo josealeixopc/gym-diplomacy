@@ -123,8 +123,8 @@ def load_model(algorithm, gym_env_id):
 
 
 def train(algorithm, gym_env_id, total_timesteps):
-    if algorithm != 'ppo2' and algorithm != 'deepq':
-        logger.error("Given algorithm '{}' is not available. Only 'ppo2' and 'deepq'")
+    if algorithm != 'ppo2' and algorithm != 'deepq' and algorithm != 'ppo2-ma':
+        logger.error("Given algorithm '{}' is not available. Only 'ppo2', 'ppo2-ma' and 'deepq'")
         return None
 
     model = load_model(algorithm, gym_env_id)
@@ -136,7 +136,7 @@ def train(algorithm, gym_env_id, total_timesteps):
 
 def callback(_locals, _globals):
     """
-    Callback called at each step (for DQN an others) or after n steps (see ACER or PPO2)
+    Callback called at each step (for DQN an others) or after n steps (see ACER or PPO2MA)
     :param _locals: (dict)
     :param _globals: (dict)
     """
