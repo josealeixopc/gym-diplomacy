@@ -30,7 +30,7 @@ public class OpenAINegotiator extends ANACNegotiator {
     OpenAIAdapterNegotiation openAIAdapter;
 
     /** Defines whether logs should be printed to console or not.*/
-    private boolean printToConsole = false;
+    private boolean printToConsole = true;
 
     /** Ordered list of regions controlled. The default list of controlled regions may not be ordered.
      * It's important for this list to be ordered, so that an action taken
@@ -299,13 +299,15 @@ public class OpenAINegotiator extends ANACNegotiator {
             //STEP 2:  try to find a proposal to make, and if we do find one, propose it.
             if (!alreadyProposed) { //we only make proposals once per round, so we skip this if we have already proposed something.
 
+                this.getLogger().logln(me.getName() + ".negotiate() Getting deals from DipQBrain...", this.printToConsole);
+
                 // JC: It is here that the OpenAI module is called to generate a new deal
                 ProtoMessage.DealData dealsToProposeData = this.openAIAdapter.getDealsDataFromDipBrain();
                 List<BasicDeal> dealsToPropose = this.generateDeals(dealsToProposeData);
 
                 // JC: If the Python module does not return anything or connection could not be made, use the default function to find deals
                 if (dealsToPropose == null) {
-                    this.getLogger().logln("No deal was received from DipQ. Proceeding with default deal proposal.", this.printToConsole);
+                    this.getLogger().logln(me.getName() + ".negotiate() No deal was received from DipQ. Proceeding with default deal proposal.", this.printToConsole);
                     BasicDeal backupDeal = searchForNewDealToPropose();
 
                     if(backupDeal != null) {
@@ -333,10 +335,10 @@ public class OpenAINegotiator extends ANACNegotiator {
             }
 
             // Wait before next cycle (commented because negotiation only lasts 100ms on my custom configuration)
-            // try {
-            //     Thread.sleep(250);
-            // } catch (InterruptedException e) {
-            // }
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+            }
         }
 
 
@@ -347,7 +349,7 @@ public class OpenAINegotiator extends ANACNegotiator {
     }
 
     /**
-     * According to the data received from DipBrain DRL module, decide what deals should be proposed.
+     * According to the data received from DipBrainANAC DRL module, decide what deals should be proposed.
      * @param dealData
      * @return
      */

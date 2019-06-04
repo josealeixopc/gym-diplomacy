@@ -211,7 +211,7 @@ class PPO2(ActorCriticRLModel):
     def _train_step(self, learning_rate, cliprange, obs, returns, masks, actions, values, neglogpacs, update,
                     writer, states=None):
         """
-        Training of PPO2MA Algorithm
+        Training of PPO2 Algorithm
         :param learning_rate: (float) learning rate
         :param cliprange: (float) Clipping factor
         :param obs: (np.ndarray) The current observation of the environment

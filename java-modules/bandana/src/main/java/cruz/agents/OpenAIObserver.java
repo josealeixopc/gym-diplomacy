@@ -83,9 +83,14 @@ public class OpenAIObserver extends Observer {
 
     }
 
+    /**
+     * Handle end of phase.
+     */
     @Override
     public void afterOldPhase() {
-
+        if(!this.game.getNonDeadPowers().contains(this.openAIAdapter.getPower())) {
+            // If our power is already dead, make sure to tell DipQBrain not to send actions to us
+        }
     }
 
     @Override

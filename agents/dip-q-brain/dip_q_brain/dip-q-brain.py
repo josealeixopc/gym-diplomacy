@@ -9,6 +9,7 @@ import gym
 # This import is needed to register the environment, even if it gives an "unused" warning
 # noinspection PyUnresolvedReferences
 import gym_diplomacy
+from gym_diplomacy.envs import DiplomacyNegotiationMultiAgentEnv
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,11 +20,15 @@ from stable_baselines.common import set_global_seeds
 from stable_baselines.bench import Monitor
 from stable_baselines.results_plotter import load_results, ts2xy
 
+from ma_bench import MAMonitor
+from ma_dummy_vec_env import MADummyVecEnv
 from my_deepq import DQN
 from my_ppo2 import PPO2
 import utils
 
 import logging
+
+from my_ppo2_multi_agent import PPO2MA
 
 FORMAT = "%(asctime)s %(levelname)-8s -- [%(filename)s:%(lineno)s - %(funcName)20s()] %(message)s"
 logging.basicConfig(format=FORMAT)
@@ -50,7 +55,7 @@ os.makedirs(pickle_dir, exist_ok=True)
 
 def main(args):
     if not args.results_only:
-        train('ppo2', args.env_id, args.num_steps)
+        train('ppo2-ma', args.env_id, args.num_steps)
     plot_results(log_dir)
 
 
@@ -85,11 +90,11 @@ def load_model(algorithm, gym_env_id):
     else:
         gym_env = gym.make(gym_env_id)
         monitor_file_path = log_dir + current_time_string + "-monitor.csv"
-        env = Monitor(gym_env, monitor_file_path, allow_early_resets=True)
+        env = MAMonitor(gym_env, monitor_file_path, allow_early_resets=True)
 
         # vectorized environments allow to easily multiprocess training
         # we demonstrate its usefulness in the next examples
-        env = DummyVecEnv([lambda: env])  # The algorithms require a vectorized environment to run
+        env = MADummyVecEnv([lambda: env])  # The algorithms require a vectorized environment to run
 
     existing_pickle_files = utils.get_files_with_pattern(pickle_dir, r'(.*)' + algorithm + "-best-model.pkl")
 
@@ -118,6 +123,8 @@ def load_model(algorithm, gym_env_id):
         model = DQN(policy='MlpPolicy', env=env, verbose=verbose_level)
     if algorithm == 'ppo2':
         model = PPO2(policy='MlpPolicy', env=env, verbose=verbose_level)
+    if algorithm == 'ppo2-ma':
+        model = PPO2MA(policy='MlpPolicy', env=env, verbose=verbose_level, num_agents=4)
 
     return model
 
@@ -226,7 +233,7 @@ def plot_results(log_dir, title='Learning Curve'):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument('--env_id', nargs='?', default='Diplomacy-v0', help='Select the environment to run')
+    parser.add_argument('--env_id', nargs='?', default='Diplomacy_Negotiation_MA-v0', help='Select the environment to run')
     parser.add_argument('--num_steps', type=int, help='The number of steps to train the agent')
     parser.add_argument('--results_only', '-r', action='store_true')
     args = parser.parse_args()

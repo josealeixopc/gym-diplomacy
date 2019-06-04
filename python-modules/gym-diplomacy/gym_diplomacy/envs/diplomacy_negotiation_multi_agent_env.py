@@ -19,6 +19,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger.disabled = False
 
+NUMBER_OF_AGENTS = 4
+
 
 # GLOBAL VARIABLES
 
@@ -26,7 +28,7 @@ logger.disabled = False
 class DiplomacyNegotiationMultiAgentEnv(diplomacy_negotiation_env.DiplomacyNegotiationEnv):
     # Set multi-agent flag to true
     multi_agent_env = True
-    n_agents = NUMBER_OF_PLAYERS
+    n_agents = NUMBER_OF_AGENTS
 
     agents_power_id: typing.List[int] = []
     action_list: typing.List[np.ndarray] = [None] * n_agents
@@ -39,7 +41,7 @@ class DiplomacyNegotiationMultiAgentEnv(diplomacy_negotiation_env.DiplomacyNegot
     waiting_for_action_list: typing.List[bool] = [False] * n_agents
     waiting_for_observation_to_be_processed_list: typing.List[bool] = [True] * n_agents
 
-    enable_bandana_output = False
+    enable_bandana_output = True
 
     def __init__(self):
         super().__init__()
@@ -79,11 +81,13 @@ class DiplomacyNegotiationMultiAgentEnv(diplomacy_negotiation_env.DiplomacyNegot
         # - with NO support_attack
         # - 4 phases ahead from the current one (0 means the same phase)
 
-        self.action_space = spaces.MultiDiscrete([2, MAXIMUM_NUMBER_OF_SC,
-                                                  2, NUMBER_OF_OPPONENTS,
-                                                  2, MAXIMUM_NUMBER_OF_SC,
-                                                  2, MAXIMUM_NUMBER_OF_SC,
-                                                  NUMBER_OF_PHASES_AHEAD])
+        action_space_description = [2, MAXIMUM_NUMBER_OF_SC,
+                                    2, NUMBER_OF_OPPONENTS,
+                                    2, MAXIMUM_NUMBER_OF_SC,
+                                    2, MAXIMUM_NUMBER_OF_SC,
+                                    NUMBER_OF_PHASES_AHEAD]
+
+        self.action_space = spaces.MultiDiscrete(action_space_description)
 
     def step(self, actions: typing.List[np.ndarray]):
         """Run one timestep of the environment's dynamics. When end of
@@ -128,7 +132,15 @@ class DiplomacyNegotiationMultiAgentEnv(diplomacy_negotiation_env.DiplomacyNegot
 
             logger.debug("Waiting for new observation to be processed...")
 
+            # When a player loses, it will not make a call, therefore we set a timeout and assume any player that
+            # hasn't request an action has been eliminated from the game
+            time_to_timeout = 0.5
+            timeout = time.time() + time_to_timeout  # timeout after ten seconds
+
             while any(self.waiting_for_observation_to_be_processed_list):
+                if time.time() > timeout:
+                    if not all(self.waiting_for_observation_to_be_processed_list):
+                        break
                 pass
 
             if self.previous_step_end_time != 0:
@@ -140,7 +152,7 @@ class DiplomacyNegotiationMultiAgentEnv(diplomacy_negotiation_env.DiplomacyNegot
 
             self.previous_step_end_time = time.time()
 
-            return self.observation_list, self.reward_list, self.done_list, self.info_list
+            return self.observation_list, self.reward_list, all(self.done_list), self.info_list
 
         except Exception as e:
             self.clean_up()
@@ -189,7 +201,7 @@ class DiplomacyNegotiationMultiAgentEnv(diplomacy_negotiation_env.DiplomacyNegot
         raise NotImplementedError
 
     def handle_request(self, request: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
-        logger.info("Executing _handle of request...")
+        logger.info("Executing _handle of request for player {}...".format(request.observation.player))
 
         if request.type is proto_message_pb2.BandanaRequest.INVALID:
             raise ValueError("Type of BandanaRequest is 'INVALID'. Something bad happened on BANDANA side.",
@@ -204,7 +216,7 @@ class DiplomacyNegotiationMultiAgentEnv(diplomacy_negotiation_env.DiplomacyNegot
         else:
             raise NotImplementedError("There is no handle for request of type '{}'.".format(request.type))
 
-        logger.info("Returning handler response.")
+        logger.info("Returning handler response to player {}.".format(request.observation.player))
 
         response: proto_message_pb2.DiplomacyGymResponse = response
 
@@ -272,16 +284,27 @@ class DiplomacyNegotiationMultiAgentEnv(diplomacy_negotiation_env.DiplomacyNegot
         logger.debug("Handling 'SEND_GAME_END'.")
 
         observation_data: proto_message_pb2.ObservationData = request_data.observation
-        self.observation, self.reward, self.done, self.info = observation_data_to_observation(observation_data)
+        observation, reward, done, info = observation_data_to_observation(observation_data)
 
-        if not self.done:
+        if not done:
             raise ValueError("Received game end notification, but value of 'done' is not 'True'.")
+
+        power_id: int = request_data.observation.player
+
+        index: int = self.agents_power_id.index(power_id)
+
+        self.observation_list[index] = observation
+        self.reward_list[index] = reward
+        self.done_list[index] = done
+        self.info_list[index] = info
 
         response_data: proto_message_pb2.DiplomacyGymResponse = proto_message_pb2.DiplomacyGymResponse()
         response_data.type = proto_message_pb2.DiplomacyGymResponse.CONFIRM
 
-        self.waiting_for_action[request_data.observation.player - 1] = False
+        # No longer waiting for request from BANDANA to be processed
+        self.waiting_for_observation_to_be_processed_list[index] = False
 
-        self.waiting_for_observation_to_be_processed = False
+        # Waiting for action from the agent
+        self.waiting_for_action_list[index] = False
 
         return response_data

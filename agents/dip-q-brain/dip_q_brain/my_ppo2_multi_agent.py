@@ -43,7 +43,7 @@ class PPO2MA(ActorCriticRLModel):
     def __init__(self, policy, env, gamma=0.99, n_steps=128, ent_coef=0.01, learning_rate=2.5e-4, vf_coef=0.5,
                  max_grad_norm=0.5, lam=0.95, nminibatches=4, noptepochs=4, cliprange=0.2, verbose=0,
                  tensorboard_log=None, _init_setup_model=True, policy_kwargs=None,
-                 full_tensorboard_log=False):
+                 full_tensorboard_log=False, num_agents=1):
 
         super(PPO2MA, self).__init__(policy=policy, env=env, verbose=verbose, requires_vec_env=True,
                                      _init_setup_model=_init_setup_model, policy_kwargs=policy_kwargs)
@@ -60,6 +60,7 @@ class PPO2MA(ActorCriticRLModel):
         self.noptepochs = noptepochs
         self.tensorboard_log = tensorboard_log
         self.full_tensorboard_log = full_tensorboard_log
+        self.num_agents = num_agents
 
         self.graph = None
         self.sess = None
@@ -299,10 +300,14 @@ class PPO2MA(ActorCriticRLModel):
                             timestep = self.num_timesteps // update_fac + ((self.noptepochs * self.n_batch + epoch_num *
                                                                             self.n_batch + start) // batch_size)
                             end = start + batch_size
-                            mbinds = inds[start:end]
-                            slices = (arr[mbinds] for arr in (obs, returns, masks, actions, values, neglogpacs))
-                            mb_loss_vals.append(self._train_step(lr_now, cliprangenow, *slices, writer=writer,
-                                                                 update=timestep))
+
+                            # Run a train step with the batch from each agent
+                            for i in range(self.num_agents):
+                                mbinds = inds[start:end]
+                                slices = (arr[mbinds] for arr in
+                                          (obs[i], returns[i], masks[i], actions[i], values[i], neglogpacs[i]))
+                                mb_loss_vals.append(self._train_step(lr_now, cliprangenow, *slices, writer=writer,
+                                                                     update=timestep))
                     self.num_timesteps += (self.n_batch * self.noptepochs) // batch_size * update_fac
                 else:  # recurrent version
                     update_fac = self.n_batch // self.nminibatches // self.noptepochs // self.n_steps + 1
@@ -397,7 +402,19 @@ class Runner(AbstractEnvRunner):
         :param gamma: (float) Discount factor
         :param lam: (float) Factor for trade-off of bias vs variance for Generalized Advantage Estimator
         """
-        super().__init__(env=env, model=model, n_steps=n_steps)
+        self.env = env
+        self.model = model
+        n_env = env.num_envs
+        self.batch_ob_shape = (n_env * n_steps,) + env.observation_space.shape
+        self.obs = []
+        list_obs = env.reset()
+        for i in range(model.num_agents):
+            self.obs.append(np.zeros((n_env,) + env.observation_space.shape, dtype=env.observation_space.dtype.name))
+            self.obs[:][i] = list_obs[i]
+
+        self.n_steps = n_steps
+        self.states = model.initial_state
+        self.dones = [False for _ in range(n_env)]
         self.lam = lam
         self.gamma = gamma
 
@@ -416,50 +433,70 @@ class Runner(AbstractEnvRunner):
         """
         # mb stands for minibatch
         mb_obs, mb_rewards, mb_actions, mb_values, mb_dones, mb_neglogpacs = [], [], [], [], [], []
-        mb_states = self.states
-        ep_infos = []
-        for _ in range(self.n_steps):
-            actions, values, self.states, neglogpacs = self.model.step(self.obs, self.states, self.dones)
-            mb_obs.append(self.obs.copy())
-            mb_actions.append(actions)
-            mb_values.append(values)
-            mb_neglogpacs.append(neglogpacs)
-            mb_dones.append(self.dones)
-            clipped_actions = actions
-            # Clip the actions to avoid out of bound error
-            if isinstance(self.env.action_space, gym.spaces.Box):
-                clipped_actions = np.clip(actions, self.env.action_space.low, self.env.action_space.high)
-            self.obs[:], rewards, self.dones, infos = self.env.step(clipped_actions)
-            for info in infos:
-                maybe_ep_info = info.get('episode')
-                if maybe_ep_info is not None:
-                    ep_infos.append(maybe_ep_info)
-            mb_rewards.append(rewards)
-        # batch of steps to batch of rollouts
-        mb_obs = np.asarray(mb_obs, dtype=self.obs.dtype)
-        mb_rewards = np.asarray(mb_rewards, dtype=np.float32)
-        mb_actions = np.asarray(mb_actions)
-        mb_values = np.asarray(mb_values, dtype=np.float32)
-        mb_neglogpacs = np.asarray(mb_neglogpacs, dtype=np.float32)
-        mb_dones = np.asarray(mb_dones, dtype=np.bool)
-        last_values = self.model.value(self.obs, self.states, self.dones)
-        # discount/bootstrap off value fn
-        mb_advs = np.zeros_like(mb_rewards)
-        true_reward = np.copy(mb_rewards)
-        last_gae_lam = 0
-        for step in reversed(range(self.n_steps)):
-            if step == self.n_steps - 1:
-                nextnonterminal = 1.0 - self.dones
-                nextvalues = last_values
-            else:
-                nextnonterminal = 1.0 - mb_dones[step + 1]
-                nextvalues = mb_values[step + 1]
-            delta = mb_rewards[step] + self.gamma * nextvalues * nextnonterminal - mb_values[step]
-            mb_advs[step] = last_gae_lam = delta + self.gamma * self.lam * nextnonterminal * last_gae_lam
-        mb_returns = mb_advs + mb_values
 
-        mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward = \
-            map(swap_and_flatten, (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward))
+        mb_returns = []
+        true_reward = []
+
+        # Create minibatches for each agent
+        for i in range(self.model.num_agents):
+            mb_obs.append([])
+            mb_rewards.append([])
+            mb_actions.append([])
+            mb_values.append([])
+            mb_neglogpacs.append([])
+
+            mb_returns.append(None)
+            true_reward.append(None)
+
+        mb_states = self.states
+
+        for _ in range(self.n_steps):
+            clipped_actions_list = [[]]  # clipped_actions contains an array of actions, each for a different agent
+            for i in range(self.model.num_agents):
+                actions, values, self.states, neglogpacs = self.model.step(self.obs[i], self.states, self.dones)
+                mb_obs[i].append(self.obs.copy())
+                mb_actions[i].append(actions)
+                mb_values[i].append(values)
+                mb_neglogpacs[i].append(neglogpacs)
+                mb_dones.append(self.dones)
+                clipped_actions = actions[0]
+                # Clip the actions to avoid out of bound error
+                if isinstance(self.env.action_space, gym.spaces.Box):
+                    clipped_actions = np.clip(actions[0], self.env.action_space.low, self.env.action_space.high)
+
+                clipped_actions_list[0].append(clipped_actions)
+
+            self.obs[:], rewards, self.dones, infos = self.env.step(clipped_actions_list)
+            mb_rewards.append(rewards)
+
+        for i in range(self.model.num_agents):
+            # batch of steps to batch of rollouts
+
+            mb_obs[i] = np.asarray(mb_obs[i], dtype=self.obs[i].dtype)
+            mb_rewards[i] = np.asarray(mb_rewards[i], dtype=np.float32)
+            mb_actions[i] = np.asarray(mb_actions[i])
+            mb_values[i] = np.asarray(mb_values[i], dtype=np.float32)
+            mb_neglogpacs[i] = np.asarray(mb_neglogpacs[i], dtype=np.float32)
+            mb_dones[i] = np.asarray(mb_dones[i], dtype=np.bool)
+            last_values = self.model.value(self.obs[i], self.states, self.dones[i])
+
+            # discount/bootstrap off value fn
+            mb_advs = np.zeros_like(mb_rewards[i])
+            true_reward = np.copy(mb_rewards[i])
+            last_gae_lam = 0
+            for step in reversed(range(self.n_steps)):
+                if step == self.n_steps - 1:
+                    nextnonterminal = 1.0 - self.dones
+                    nextvalues = last_values
+                else:
+                    nextnonterminal = 1.0 - mb_dones[step + 1]
+                    nextvalues = mb_values[step + 1]
+                delta = mb_rewards[step] + self.gamma * nextvalues * nextnonterminal - mb_values[step]
+                mb_advs[step] = last_gae_lam = delta + self.gamma * self.lam * nextnonterminal * last_gae_lam
+            mb_returns[i] = mb_advs + mb_values
+
+            mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward = \
+                map(swap_and_flatten, (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, true_reward))
 
         return mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs, mb_states, ep_infos, true_reward
 

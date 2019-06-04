@@ -39,7 +39,7 @@ public class TournamentRunner {
 	final static String[] anacExampleBotCommand = {"java", "-jar", "artifacts/anac-example-negotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
 
     final static String[] myDBraneBotCommand = {"java", "-jar", "agents/my-dbrane/my-dbrane.jar", "-log", "log", "-name", "MyDBrane", "-fy", FINAL_YEAR};
-    final static String[] dipBrainBotCommand = {"java", "-jar", "artifacts/dip-brain.jar", "-log", "log", "-name", "DipBrain", "-fy", FINAL_YEAR};
+    final static String[] dipBrainBotCommand = {"java", "-jar", "artifacts/dip-brain.jar", "-log", "log", "-name", "DipBrainANAC", "-fy", FINAL_YEAR};
 
 
     // JC: This command allows a remote debugger to connect to the .jar file JVM, allowing debugging in runtime
@@ -59,9 +59,9 @@ public class TournamentRunner {
 		
 		int numberOfGames = 1000000;				//The number of games this tournament consists of.
 		
-		int deadlineForMovePhases = 5; 	//60 seconds for each SPR and FAL phases
-		int deadlineForRetreatPhases = 2;  //30 seconds for each SUM and AUT phases
-		int deadlineForBuildPhases = 2;  	//30 seconds for each WIN phase
+		int deadlineForMovePhases = 6; 	    //60 seconds for each SPR and FAL phases
+		int deadlineForRetreatPhases = 3;   //30 seconds for each SUM and AUT phases
+		int deadlineForBuildPhases = 3;  	//30 seconds for each WIN phase
 
 		int finalYear = Integer.parseInt(FINAL_YEAR); 	//The year after which the agents in each game are supposed to propose a draw to each other.
 		// (It depends on the implementation of the players whether this will indeed happen or not, so this may not always work.)
@@ -148,9 +148,9 @@ public class TournamentRunner {
                     // Bots for negotiation testing
                     if(MODE) {
                         //make sure that each player has a different name.
-                        if (i < numberOfParticipants - 8) {
-                            name = "MyDBrane " + i;
-                            command = myDBraneBotCommand;
+                        if (i < numberOfParticipants - 4) {
+                            name = "ANACExample " + i;
+                            command = anacExampleBotCommand;
                         } else {
                             name = "OpenAINegotiator " + i;
                             command = openAIBotNegotiatorCommand;
