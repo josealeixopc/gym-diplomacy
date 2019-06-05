@@ -17,6 +17,7 @@ from stable_baselines.results_plotter import load_results, ts2xy
 import utils
 from my_deepq import DQN
 from my_ppo2 import PPO2
+from stable_baselines.a2c import A2C
 from plotter import plot_results
 
 FORMAT = "%(asctime)s %(levelname)-8s -- [%(filename)s:%(lineno)s - %(funcName)20s()] %(message)s"
@@ -120,6 +121,10 @@ def train(algorithm, gym_env_id, total_timesteps):
     if algorithm != 'ppo2' and algorithm != 'deepq':
         logger.error("Given algorithm '{}' is not available. Only 'ppo2' and 'deepq'")
         return None
+
+    if algorithm == 'deepq':
+        logger.warn("The 'deepq' algorithm may not work with large action spaces. If the action space is too big, "
+                    "and there isn't enough RAM, the program will crash.")
 
     model = load_model(algorithm, gym_env_id)
 

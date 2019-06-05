@@ -155,7 +155,8 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
     functionality over time.
     """
 
-    action_space_type: str = MULTI_DISCRETE_ACTION_SPACE
+    # action_space_type: str = MULTI_DISCRETE_ACTION_SPACE
+    action_space_type: str = DISCRETE_ACTION_SPACE
 
     def render(self, mode='human'):
         raise NotImplementedError
@@ -195,11 +196,16 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
         # - with NO support_attack
         # - 4 phases ahead from the current one (0 means the same phase)
 
+        # Set action space as multi discrete by default
         self.action_space = spaces.MultiDiscrete([2, MAXIMUM_NUMBER_OF_SC,
                                                   2, NUMBER_OF_OPPONENTS,
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   NUMBER_OF_PHASES_AHEAD])
+
+        # If we want a discrete action space (for DeepQ Network, for example), use the default action space to create it
+        if self.action_space_type == DISCRETE_ACTION_SPACE:
+            self.action_space = spaces.Discrete(int(np.prod(self.action_space.nvec)))
 
     def handle_request(self, request: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
         logger.info("Executing _handle of request...")
@@ -261,7 +267,13 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
                 return response_data
 
         # Once we have the action, send it as a deal
-        deal_data: proto_message_pb2.DealData = action_to_deal_data(self.action)
+
+        if self.action_space_type == DISCRETE_ACTION_SPACE:
+            true_action = discrete_to_multi_discrete_action(self.action, self.action_space.nvec)
+            deal_data: proto_message_pb2.DealData = action_to_deal_data(true_action)
+        else:
+            deal_data: proto_message_pb2.DealData = action_to_deal_data(self.action)
+
         response_data.deal.CopyFrom(deal_data)
 
         return response_data
