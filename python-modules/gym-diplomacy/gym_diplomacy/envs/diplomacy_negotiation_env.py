@@ -1,5 +1,4 @@
 import logging
-import pprint
 import time
 
 import numpy as np
@@ -27,8 +26,12 @@ logger.disabled = False
 NUMBER_OF_PLAYERS = 7
 NUMBER_OF_OPPONENTS = NUMBER_OF_PLAYERS - 1
 NUMBER_OF_PROVINCES = 75
-NUMBER_OF_PHASES_AHEAD = 20
+NUMBER_OF_PHASES_AHEAD = 10
 MAXIMUM_NUMBER_OF_SC = 18
+
+MULTI_DISCRETE_ACTION_SPACE = 'multi-discrete'
+DISCRETE_ACTION_SPACE = 'discrete'
+
 
 def observation_data_to_observation(observation_data: proto_message_pb2.ObservationData) -> np.array:
     """
@@ -63,6 +66,33 @@ def observation_data_to_observation(observation_data: proto_message_pb2.Observat
     info = {"info_string": observation_data.info}
 
     return observation, reward, done, info
+
+
+def discrete_to_multi_discrete_action(action: int, action_space_nvec: np.ndarray) -> np.ndarray:
+    # To convert from multi-discrete to discrete action space, we must create a new "number base".
+    # For instance, to convert a given integer (base 10) to a number of another base, we can use:
+    # https://cs.stackexchange.com/a/10321
+    # Given a vector with the dimensions of a matrix (nvec), we can map all possible combinations to a single number
+    # using a number base with those dimensions.
+    """
+    Converts a discrete action to the true action array it corresponds to.
+    :param action:
+    :param action_space_nvec:
+    :return:
+    """
+    action_arr = np.zeros(len(action_space_nvec))
+    base_index = 0
+    element_index = 0
+
+    while action > 0:
+        current_base = action_space_nvec[base_index]
+        action_arr[element_index] = action % current_base
+        action = action // current_base
+
+        base_index += 1
+        element_index += 1
+
+    return np.asarray(action_arr)
 
 
 def action_to_deal_data(action: np.ndarray) -> proto_message_pb2.DealData:
@@ -125,6 +155,8 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
     functionality over time.
     """
 
+    action_space_type: str = MULTI_DISCRETE_ACTION_SPACE
+
     def render(self, mode='human'):
         raise NotImplementedError
 
@@ -138,7 +170,7 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
 
         # Extend for each province
         for i in range(NUMBER_OF_PROVINCES):
-            observation_space_description.extend([NUMBER_OF_PLAYERS + 1, 2])    # +1 because of the NONE power
+            observation_space_description.extend([NUMBER_OF_PLAYERS + 1, 2])  # +1 because of the NONE power
 
         # Extend for the ID of the power we are controlling
         observation_space_description.extend([NUMBER_OF_PLAYERS])
@@ -168,7 +200,7 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   NUMBER_OF_PHASES_AHEAD])
-        
+
     def handle_request(self, request: proto_message_pb2.BandanaRequest) -> proto_message_pb2.DiplomacyGymResponse:
         logger.info("Executing _handle of request...")
 
@@ -256,4 +288,4 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
 
 
 if __name__ == "__main__":
-    gym = DiplomacyNegotiationEnv()
+    pass

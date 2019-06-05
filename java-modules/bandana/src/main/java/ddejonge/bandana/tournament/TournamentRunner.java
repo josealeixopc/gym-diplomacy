@@ -35,7 +35,7 @@ public class TournamentRunner {
 	final static String[] dbrane_1_1_Command = {"java", "-jar", "agents/D-Brane-1.1.jar", "-log", "log", "-name", "D-Brane", "-fy", FINAL_YEAR};
 	final static String[] dbraneExampleBotCommand = {"java", "-jar", "artifacts/dbrane-example-bot.jar", "-log", "log", "-name", "DBraneExampleBot", "-fy", FINAL_YEAR};
 	final static String[] openAIBotNegotiatorCommand = {"java", "-jar", "artifacts/open-ai-negotiator.jar", "-log", "log", "-name", "OpenAINegotiator", "-fy", FINAL_YEAR};
-	final static String[] deepDipCommand = {"java", "-jar", "target/DeepDip-0.1-shaded.jar", "-log", "log", "-name", "DeepDip", "-fy", FINAL_YEAR};
+	final static String[] deepDipCommand = {"java", "-jar", "artifacts/deep-dip.jar", "-log", "log", "-name", "DeepDip", "-fy", FINAL_YEAR};
 	final static String[] anacExampleBotCommand = {"java", "-jar", "artifacts/anac-example-negotiator.jar", "-log", "log", "-name", "AnacExampleNegotiator", "-fy", FINAL_YEAR};
 
     final static String[] myDBraneBotCommand = {"java", "-jar", "agents/my-dbrane/my-dbrane.jar", "-log", "log", "-name", "MyDBrane", "-fy", FINAL_YEAR};
@@ -148,7 +148,7 @@ public class TournamentRunner {
                     // Bots for negotiation testing
                     if(MODE) {
                         //make sure that each player has a different name.
-                        if (i < numberOfParticipants - 4) {
+                        if (i < numberOfParticipants - 1) {
                             name = "ANACExample " + i;
                             command = anacExampleBotCommand;
                         } else {

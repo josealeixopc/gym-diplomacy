@@ -2,17 +2,14 @@ import atexit
 import logging
 import os
 import signal
-import socketserver
 import subprocess
-import threading
-import typing
 import time
-from concurrent import futures
 from abc import ABCMeta, abstractmethod
+from concurrent import futures
 
-import gym
 # noinspection PyPackageRequirements
 import grpc
+import gym
 import numpy as np
 
 from gym_diplomacy.envs.proto_message import proto_message_pb2_grpc, proto_message_pb2

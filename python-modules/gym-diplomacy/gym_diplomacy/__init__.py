@@ -11,12 +11,6 @@ register(
 )
 
 register(
-    id='Diplomacy_Negotiation_MA-v0',
-    entry_point='gym_diplomacy.envs:DiplomacyNegotiationMultiAgentEnv'
-)
-
-
-register(
     id='Diplomacy_Strategy-v0',
     entry_point='gym_diplomacy.envs:DiplomacyStrategyEnv'
 )
