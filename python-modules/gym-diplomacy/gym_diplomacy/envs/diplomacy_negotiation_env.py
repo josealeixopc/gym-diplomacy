@@ -155,8 +155,8 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
     functionality over time.
     """
 
-    # action_space_type: str = MULTI_DISCRETE_ACTION_SPACE
-    action_space_type: str = DISCRETE_ACTION_SPACE
+    action_space_type: str = MULTI_DISCRETE_ACTION_SPACE
+    # action_space_type: str = DISCRETE_ACTION_SPACE
 
     def render(self, mode='human'):
         raise NotImplementedError

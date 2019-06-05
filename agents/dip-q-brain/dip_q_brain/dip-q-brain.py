@@ -45,7 +45,7 @@ os.makedirs(pickle_dir, exist_ok=True)
 
 def main(args):
     if not args.results_only:
-        train('ppo2', args.env_id, args.num_steps)
+        train(args.algorithm, args.env_id, args.num_steps)
     plot_results(log_dir)
 
 
@@ -194,6 +194,7 @@ def evaluate(env, model, num_steps=1000):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
+    parser.add_argument('--algorithm', nargs='?', default='ppo2', help='Choose the algorithm to use.')
     parser.add_argument('--env_id', nargs='?', default='Diplomacy_Negotiation-v0',
                         help='Select the environment to run')
     parser.add_argument('--num_steps', type=int, help='The number of steps to train the agent')
