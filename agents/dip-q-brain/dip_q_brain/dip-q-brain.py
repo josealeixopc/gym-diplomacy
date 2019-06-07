@@ -88,6 +88,9 @@ def load_model(algorithm, gym_env_id):
 
     existing_pickle_files = utils.get_files_with_pattern(pickle_dir, r'(.*)' + algorithm + "-best-model.pkl")
 
+    # Sort files in reverse alphabetical order, so that models with newer dates are chosen first.
+    existing_pickle_files.sort(reverse=True)
+
     for file_name in existing_pickle_files:
         search = re.search(r'(.*)' + algorithm + "-best-model.pkl", file_name)
 
@@ -100,8 +103,8 @@ def load_model(algorithm, gym_env_id):
                 raise Exception("Algorithm not supported: {}".format(algorithm))
 
             logger.info(
-                "Loading existing pickle file for environment {} with algorithm {} and policy '{}'.".format(
-                    gym_env_id, algorithm, model.policy))
+                "Loading existing pickle file '{}' for environment {} with algorithm {} and policy '{}'.".format(
+                    file_name, gym_env_id, algorithm, model.policy))
 
             return model
 
