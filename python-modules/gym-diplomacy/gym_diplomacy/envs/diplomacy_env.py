@@ -3,6 +3,7 @@ import logging
 import os
 import signal
 import subprocess
+import sys
 import time
 from abc import ABCMeta, abstractmethod
 from concurrent import futures
@@ -206,9 +207,31 @@ class DiplomacyEnv(gym.Env, metaclass=ABCMeta):
             if self.server is None:
                 self._init_grpc_server()
 
+            logger.info("Waiting for first observation of the game...")
+
+            time_to_timeout = 10
+            timeout = time.time() + time_to_timeout  # timeout after ten seconds
+            tries = 0
+
             # Wait until the observation field has been set, by receiving the observation from Bandana
             while self.observation is None:
+                # If the first observation is taking too long, try to restart Bandana
+                if time.time() > timeout:
+                    logger.warn("Timed out waiting for observation. Restarting bandana process.")
+                    self._kill_bandana()
+                    self._init_bandana(self.enable_bandana_output)
+                    timeout = time.time() + time_to_timeout
+                    tries += 1
+
+                if tries > 3:
+                    logger.error("Tried to start Bandana '{}' times with no success. Terminating program.".format(tries))
+                    self.clean_up()
+                    # Terminate after clean up
+                    sys.exit(-1)
+
                 pass
+
+            logger.info("Received first observation.")
 
             return self.observation
 

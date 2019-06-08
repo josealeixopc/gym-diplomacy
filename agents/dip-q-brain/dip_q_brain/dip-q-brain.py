@@ -1,4 +1,5 @@
 import argparse
+import csv
 import logging
 import os
 import re
@@ -10,6 +11,7 @@ import gym
 import gym_diplomacy
 import numpy as np
 from stable_baselines.bench import Monitor
+from stable_baselines.bench.monitor import LoadMonitorResultsError
 from stable_baselines.common import set_global_seeds
 from stable_baselines.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines.results_plotter import load_results, ts2xy
@@ -29,7 +31,7 @@ logger.disabled = False
 
 ### CUSTOM GLOBAL CODE BEGIN
 
-saving_interval = 1  # 1 update is equivalent to 128 steps
+saving_interval = 1  # 1 update is equivalent to 128 steps in PPO because of the mini-batches
 best_mean_reward, n_steps = -np.inf, 0
 verbose_level = 1
 
@@ -37,8 +39,11 @@ verbose_level = 1
 current_time_string = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 log_dir = "/tmp/dip-log/gym/"
 pickle_dir = log_dir + "pickles/"
+tensorboard_dir = log_dir + "tensorboard/"
+
 os.makedirs(log_dir, exist_ok=True)
 os.makedirs(pickle_dir, exist_ok=True)
+os.makedirs(tensorboard_dir, exist_ok=True)
 
 
 ### CUSTOM GLOBAL CODE END
@@ -68,6 +73,8 @@ def make_env(env_id, rank, seed=0):
 
 
 def load_model(algorithm, gym_env_id):
+    global best_mean_reward
+
     model = None
 
     multiprocess = False
@@ -96,15 +103,24 @@ def load_model(algorithm, gym_env_id):
 
         if search:
             if algorithm == 'deepq':
-                model = DQN.load(file_name, env=env, verbose=verbose_level)
+                model = DQN.load(file_name, env=env, verbose=verbose_level, tensorboard_log=tensorboard_dir)
             elif algorithm == 'ppo2':
-                model = PPO2.load(file_name, env=env, verbose=verbose_level)
+                model = PPO2.load(file_name, env=env, verbose=verbose_level, tensorboard_log=tensorboard_dir)
             else:
                 raise Exception("Algorithm not supported: {}".format(algorithm))
 
             logger.info(
                 "Loading existing pickle file '{}' for environment {} with algorithm {} and policy '{}'.".format(
                     file_name, gym_env_id, algorithm, model.policy))
+
+            logger.info("Searching for previous best mean reward of algorithm '{}'...".format(algorithm))
+
+            best_mean_reward = get_best_mean_reward_from_results()
+
+            if best_mean_reward != -np.inf:
+                logger.info("Found previous best mean reward: {}".format(best_mean_reward))
+            else:
+                logger.info("Could not find previous best mean reward. Starting with: {}".format(best_mean_reward))
 
             return model
 
@@ -113,9 +129,9 @@ def load_model(algorithm, gym_env_id):
             gym_env_id, algorithm))
 
     if algorithm == 'deepq':
-        model = DQN(policy='MlpPolicy', env=env, verbose=verbose_level)
+        model = DQN(policy='MlpPolicy', env=env, verbose=verbose_level, tensorboard_log=tensorboard_dir)
     if algorithm == 'ppo2':
-        model = PPO2(policy='MlpPolicy', env=env, verbose=verbose_level)
+        model = PPO2(policy='MlpPolicy', env=env, verbose=verbose_level, tensorboard_log=tensorboard_dir)
 
     return model
 
@@ -160,13 +176,15 @@ def callback(_locals, _globals):
                 # Example for saving best model
                 logger.info("Saving new best model")
                 _locals['self'].save(pickle_dir + current_time_string + '-ppo2-best-model.pkl')
+                logger.info("Saving new best mean reward.")
+                save_best_mean_reward(float(best_mean_reward))
 
     n_steps += 1
     # Returning False will stop training early
     return True
 
 
-def evaluate(env, model, num_steps=1000):
+def evaluate(env, model, num_steps=100):
     """
     Evaluate a RL agent
     :param env:
@@ -189,10 +207,32 @@ def evaluate(env, model, num_steps=1000):
             obs = env.reset()
             episode_rewards.append(0.0)
     # Compute mean reward for the last 100 episodes
-    mean_100ep_reward = round(np.mean(episode_rewards[-100:]), 1)
+    mean_100ep_reward = round(float(np.mean(episode_rewards[-100:])), 1)
     print("Mean reward:", mean_100ep_reward, "Num episodes:", len(episode_rewards))
 
     return mean_100ep_reward
+
+
+def save_best_mean_reward(reward: float):
+    best_mean_reward_file_name = log_dir + current_time_string + "-best-mean-reward.csv"
+    f = open(best_mean_reward_file_name, 'a')
+    f.write("{}\n".format(reward))
+    f.close()
+
+
+def get_best_mean_reward_from_results():
+    existing_reward_files = utils.get_files_with_pattern(log_dir, r'(.*)' + "-best-mean-reward.csv")
+    existing_reward_files.sort(reverse=True)
+
+    if len(existing_reward_files) == 0:
+        return -np.inf
+
+    with open(existing_reward_files[0], 'r') as f:
+        # Get latest reward
+        last_row = list(csv.reader(f))[-1]
+
+        # Each row has only one element: the reward
+        return float(last_row[0])
 
 
 if __name__ == '__main__':

@@ -28,7 +28,7 @@ def plot_results(log_folder, title='Learning Curve'):
     :param title: (str) the title of the task to plot
     """
     num_episodes, rewards = ts2xy(load_results(log_folder), 'episodes')
-    rewards = moving_average(rewards, window=20)
+    rewards = moving_average(rewards, window=100)
     # Truncate x
     num_episodes = num_episodes[len(num_episodes) - len(rewards):]
 
