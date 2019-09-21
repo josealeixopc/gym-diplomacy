@@ -1,0 +1,720 @@
+game 1: 
+1. 'ANACExample 3' RUS 17
+2. 'ANACExample 1' TUR 8
+3. 'ANACExample 0' FRA 7
+4. 'ANACExample 4' ENG 2
+5. 'ANACExample 5' GER 1918
+6. 'OpenAINegotiator 6' ITA 1913
+7. 'ANACExample 2' AUS 1909
+
+game 2: 
+1. 'ANACExample 0' ENG 8
+2. 'ANACExample 5' TUR 8
+3. 'ANACExample 2' AUS 5
+4. 'OpenAINegotiator 6' FRA 4
+5. 'ANACExample 3' GER 4
+6. 'ANACExample 4' RUS 3
+7. 'ANACExample 1' ITA 2
+
+game 3: 
+1. 'ANACExample 0' ENG 7
+2. 'ANACExample 1' TUR 7
+3. 'ANACExample 3' FRA 6
+4. 'ANACExample 2' GER 5
+5. 'ANACExample 4' AUS 4
+6. 'ANACExample 5' RUS 4
+7. 'OpenAINegotiator 6' ITA 1
+
+game 4: 
+1. 'OpenAINegotiator 6' RUS 11
+2. 'ANACExample 1' FRA 7
+3. 'ANACExample 4' GER 6
+4. 'ANACExample 2' TUR 6
+5. 'ANACExample 3' ENG 3
+6. 'ANACExample 5' ITA 1
+7. 'ANACExample 0' AUS 1913
+
+game 5: 
+1. 'ANACExample 5' AUS 8
+2. 'OpenAINegotiator 6' ENG 7
+3. 'ANACExample 3' FRA 6
+4. 'ANACExample 2' RUS 5
+5. 'ANACExample 0' TUR 5
+6. 'ANACExample 1' GER 3
+7. 'ANACExample 4' ITA 1920
+
+game 6: 
+1. 'ANACExample 0' RUS 19
+2. 'ANACExample 4' TUR 8
+3. 'ANACExample 1' ENG 4
+4. 'ANACExample 3' FRA 3
+5. 'ANACExample 5' ITA 1917
+6. 'OpenAINegotiator 6' GER 1915
+7. 'ANACExample 2' AUS 1914
+
+game 7: 
+1. 'ANACExample 1' TUR 11
+2. 'ANACExample 5' GER 9
+3. 'ANACExample 4' AUS 6
+4. 'ANACExample 0' ENG 4
+5. 'ANACExample 2' FRA 2
+6. 'OpenAINegotiator 6' RUS 2
+7. 'ANACExample 3' ITA 1915
+
+game 8: 
+1. 'ANACExample 5' RUS 18
+2. 'ANACExample 4' FRA 6
+3. 'ANACExample 0' TUR 6
+4. 'OpenAINegotiator 6' ENG 2
+5. 'ANACExample 3' ITA 2
+6. 'ANACExample 2' GER 1912
+7. 'ANACExample 1' AUS 1908
+
+game 9: 
+1. 'ANACExample 1' AUS 10
+2. 'ANACExample 5' ENG 9
+3. 'ANACExample 3' TUR 5
+4. 'ANACExample 0' FRA 4
+5. 'ANACExample 4' GER 3
+6. 'ANACExample 2' RUS 3
+7. 'OpenAINegotiator 6' ITA 1914
+
+game 10: 
+1. 'ANACExample 4' RUS 17
+2. 'ANACExample 0' ENG 6
+3. 'ANACExample 3' TUR 5
+4. 'ANACExample 1' FRA 4
+5. 'ANACExample 5' GER 1
+6. 'ANACExample 2' ITA 1
+7. 'OpenAINegotiator 6' AUS 1909
+
+game 11: 
+1. 'ANACExample 1' RUS 11
+2. 'ANACExample 3' GER 6
+3. 'OpenAINegotiator 6' TUR 6
+4. 'ANACExample 5' ENG 5
+5. 'ANACExample 0' FRA 4
+6. 'ANACExample 2' ITA 2
+7. 'ANACExample 4' AUS 1916
+
+game 12: 
+1. 'ANACExample 3' RUS 18
+2. 'ANACExample 4' FRA 7
+3. 'ANACExample 0' GER 4
+4. 'ANACExample 2' ENG 3
+5. 'ANACExample 1' ITA 2
+6. 'ANACExample 5' TUR 1917
+7. 'OpenAINegotiator 6' AUS 1911
+
+game 13: 
+1. 'ANACExample 5' ENG 10
+2. 'ANACExample 2' GER 7
+3. 'ANACExample 3' TUR 6
+4. 'ANACExample 4' AUS 5
+5. 'ANACExample 1' RUS 3
+6. 'OpenAINegotiator 6' ITA 2
+7. 'ANACExample 0' FRA 1
+
+game 14: 
+1. 'ANACExample 1' RUS 15
+2. 'ANACExample 3' FRA 9
+3. 'ANACExample 0' ENG 5
+4. 'ANACExample 4' TUR 5
+5. 'OpenAINegotiator 6' AUS 1916
+6. 'ANACExample 5' ITA 1916
+7. 'ANACExample 2' GER 1913
+
+game 15: 
+1. 'ANACExample 5' RUS 16
+2. 'ANACExample 1' FRA 9
+3. 'ANACExample 2' ENG 3
+4. 'ANACExample 0' GER 3
+5. 'ANACExample 4' TUR 3
+6. 'OpenAINegotiator 6' ITA 1915
+7. 'ANACExample 3' AUS 1912
+
+game 16: 
+1. 'ANACExample 4' RUS 14
+2. 'ANACExample 0' ENG 9
+3. 'ANACExample 2' ITA 4
+4. 'OpenAINegotiator 6' GER 3
+5. 'ANACExample 5' TUR 3
+6. 'ANACExample 1' FRA 1
+7. 'ANACExample 3' AUS 1909
+
+game 17: 
+1. 'OpenAINegotiator 6' GER 8
+2. 'ANACExample 1' ITA 8
+3. 'ANACExample 4' AUS 6
+4. 'ANACExample 0' TUR 5
+5. 'ANACExample 2' RUS 4
+6. 'ANACExample 5' ENG 2
+7. 'ANACExample 3' FRA 1
+
+game 18: 
+1. 'ANACExample 4' AUS 8
+2. 'OpenAINegotiator 6' ENG 8
+3. 'ANACExample 3' FRA 5
+4. 'ANACExample 1' TUR 5
+5. 'ANACExample 2' GER 4
+6. 'ANACExample 5' ITA 4
+7. 'ANACExample 0' RUS 1920
+
+game 19: 
+1. 'ANACExample 1' TUR 8
+2. 'ANACExample 3' ENG 7
+3. 'ANACExample 4' AUS 6
+4. 'ANACExample 5' GER 6
+5. 'ANACExample 2' FRA 5
+6. 'ANACExample 0' ITA 2
+7. 'OpenAINegotiator 6' RUS 1914
+
+game 20: 
+1. 'ANACExample 2' TUR 8
+2. 'ANACExample 1' ENG 6
+3. 'OpenAINegotiator 6' GER 6
+4. 'ANACExample 0' RUS 6
+5. 'ANACExample 5' FRA 5
+6. 'ANACExample 4' ITA 3
+7. 'ANACExample 3' AUS 1911
+
+game 21: 
+1. 'ANACExample 4' GER 13
+2. 'ANACExample 0' TUR 13
+3. 'ANACExample 2' FRA 4
+4. 'ANACExample 5' ENG 3
+5. 'ANACExample 3' ITA 1
+6. 'OpenAINegotiator 6' AUS 1915
+7. 'ANACExample 1' RUS 1911
+
+game 22: 
+1. 'ANACExample 0' RUS 13
+2. 'ANACExample 4' TUR 8
+3. 'ANACExample 1' ENG 7
+4. 'ANACExample 2' FRA 3
+5. 'ANACExample 3' GER 3
+6. 'OpenAINegotiator 6' AUS 1914
+7. 'ANACExample 5' ITA 1910
+
+game 23: 
+1. 'ANACExample 4' RUS 16
+2. 'ANACExample 2' ENG 8
+3. 'OpenAINegotiator 6' TUR 6
+4. 'ANACExample 0' FRA 2
+5. 'ANACExample 3' ITA 2
+6. 'ANACExample 5' GER 1912
+7. 'ANACExample 1' AUS 1909
+
+game 24: 
+1. 'ANACExample 0' RUS 18
+2. 'OpenAINegotiator 6' FRA 5
+3. 'ANACExample 3' TUR 5
+4. 'ANACExample 2' ITA 4
+5. 'ANACExample 5' ENG 2
+6. 'ANACExample 4' GER 1911
+7. 'ANACExample 1' AUS 1907
+
+game 25: 
+1. 'ANACExample 1' RUS 18
+2. 'ANACExample 0' TUR 7
+3. 'ANACExample 2' FRA 5
+4. 'ANACExample 5' ENG 2
+5. 'ANACExample 4' GER 1
+6. 'OpenAINegotiator 6' ITA 1
+7. 'ANACExample 3' AUS 1911
+
+game 26: 
+1. 'ANACExample 1' GER 10
+2. 'ANACExample 2' TUR 8
+3. 'ANACExample 3' ENG 5
+4. 'ANACExample 4' FRA 5
+5. 'ANACExample 0' AUS 4
+6. 'ANACExample 5' ITA 1
+7. 'OpenAINegotiator 6' RUS 1
+
+game 27: 
+1. 'ANACExample 5' RUS 18
+2. 'ANACExample 2' TUR 8
+3. 'ANACExample 0' ENG 4
+4. 'ANACExample 3' FRA 3
+5. 'OpenAINegotiator 6' AUS 1
+6. 'ANACExample 4' ITA 1916
+7. 'ANACExample 1' GER 1913
+
+game 28: 
+1. 'ANACExample 0' RUS 8
+2. 'ANACExample 5' TUR 7
+3. 'ANACExample 3' GER 5
+4. 'OpenAINegotiator 6' ENG 4
+5. 'ANACExample 1' FRA 4
+6. 'ANACExample 4' AUS 3
+7. 'ANACExample 2' ITA 3
+
+game 29: 
+1. 'ANACExample 2' RUS 20
+2. 'ANACExample 5' FRA 5
+3. 'ANACExample 0' TUR 4
+4. 'OpenAINegotiator 6' ENG 3
+5. 'ANACExample 1' ITA 2
+6. 'ANACExample 3' GER 1911
+7. 'ANACExample 4' AUS 1908
+
+game 30: 
+1. 'ANACExample 0' RUS 15
+2. 'OpenAINegotiator 6' TUR 6
+3. 'ANACExample 4' FRA 5
+4. 'ANACExample 2' GER 5
+5. 'ANACExample 1' ITA 2
+6. 'ANACExample 3' ENG 1
+7. 'ANACExample 5' AUS 1918
+
+game 31: 
+1. 'ANACExample 3' TUR 10
+2. 'ANACExample 0' ENG 8
+3. 'ANACExample 2' GER 5
+4. 'ANACExample 5' FRA 4
+5. 'ANACExample 4' RUS 3
+6. 'OpenAINegotiator 6' AUS 2
+7. 'ANACExample 1' ITA 2
+
+game 32: 
+1. 'ANACExample 4' RUS 7
+2. 'ANACExample 5' TUR 7
+3. 'OpenAINegotiator 6' GER 6
+4. 'ANACExample 3' FRA 5
+5. 'ANACExample 1' AUS 4
+6. 'ANACExample 0' ENG 3
+7. 'ANACExample 2' ITA 2
+
+game 33: 
+1. 'OpenAINegotiator 6' RUS 18
+2. 'ANACExample 3' FRA 6
+3. 'ANACExample 4' ENG 5
+4. 'ANACExample 2' ITA 3
+5. 'ANACExample 0' TUR 2
+6. 'ANACExample 5' GER 1917
+7. 'ANACExample 1' AUS 1912
+
+game 34: 
+1. 'ANACExample 2' AUS 16
+2. 'ANACExample 1' ENG 9
+3. 'ANACExample 0' FRA 5
+4. 'ANACExample 3' TUR 3
+5. 'ANACExample 4' GER 1
+6. 'ANACExample 5' RUS 1917
+7. 'OpenAINegotiator 6' ITA 1911
+
+game 35: 
+1. 'ANACExample 0' ENG 10
+2. 'ANACExample 3' FRA 7
+3. 'ANACExample 4' AUS 6
+4. 'ANACExample 5' TUR 6
+5. 'ANACExample 1' RUS 4
+6. 'ANACExample 2' GER 1
+7. 'OpenAINegotiator 6' ITA 1912
+
+game 36: 
+1. 'ANACExample 1' RUS 17
+2. 'ANACExample 2' FRA 10
+3. 'ANACExample 5' ENG 4
+4. 'ANACExample 4' TUR 3
+5. 'OpenAINegotiator 6' ITA 1918
+6. 'ANACExample 0' GER 1915
+7. 'ANACExample 3' AUS 1910
+
+game 37: 
+1. 'ANACExample 2' RUS 8
+2. 'ANACExample 0' FRA 7
+3. 'ANACExample 5' AUS 6
+4. 'ANACExample 3' TUR 5
+5. 'ANACExample 1' ENG 3
+6. 'ANACExample 4' GER 3
+7. 'OpenAINegotiator 6' ITA 2
+
+game 38: 
+1. 'OpenAINegotiator 6' AUS 8
+2. 'ANACExample 2' GER 7
+3. 'ANACExample 4' TUR 6
+4. 'ANACExample 1' FRA 5
+5. 'ANACExample 5' RUS 5
+6. 'ANACExample 0' ENG 3
+7. 'ANACExample 3' ITA 1915
+
+game 39: 
+1. 'ANACExample 0' RUS 17
+2. 'OpenAINegotiator 6' FRA 7
+3. 'ANACExample 3' TUR 5
+4. 'ANACExample 4' ITA 3
+5. 'ANACExample 2' ENG 2
+6. 'ANACExample 1' GER 1917
+7. 'ANACExample 5' AUS 1915
+
+game 40: 
+1. 'ANACExample 2' FRA 7
+2. 'ANACExample 3' ENG 6
+3. 'ANACExample 5' TUR 6
+4. 'ANACExample 4' GER 5
+5. 'ANACExample 0' RUS 5
+6. 'OpenAINegotiator 6' AUS 4
+7. 'ANACExample 1' ITA 1
+
+game 41: 
+1. 'OpenAINegotiator 6' RUS 18
+2. 'ANACExample 1' ENG 5
+3. 'ANACExample 4' FRA 4
+4. 'ANACExample 5' TUR 4
+5. 'ANACExample 0' ITA 3
+6. 'ANACExample 2' GER 1913
+7. 'ANACExample 3' AUS 1910
+
+game 42: 
+1. 'ANACExample 5' ENG 12
+2. 'ANACExample 2' AUS 6
+3. 'ANACExample 0' RUS 5
+4. 'ANACExample 1' TUR 5
+5. 'ANACExample 4' FRA 4
+6. 'OpenAINegotiator 6' ITA 2
+7. 'ANACExample 3' GER 1914
+
+game 43: 
+1. 'ANACExample 1' RUS 18
+2. 'ANACExample 4' ENG 5
+3. 'ANACExample 5' FRA 5
+4. 'ANACExample 2' ITA 4
+5. 'ANACExample 0' TUR 2
+6. 'OpenAINegotiator 6' GER 1914
+7. 'ANACExample 3' AUS 1906
+
+game 44: 
+1. 'ANACExample 2' ENG 8
+2. 'OpenAINegotiator 6' TUR 6
+3. 'ANACExample 3' AUS 5
+4. 'ANACExample 5' GER 5
+5. 'ANACExample 4' ITA 4
+6. 'ANACExample 0' FRA 3
+7. 'ANACExample 1' RUS 3
+
+game 45: 
+1. 'ANACExample 4' ITA 15
+2. 'ANACExample 3' RUS 10
+3. 'ANACExample 2' ENG 5
+4. 'ANACExample 5' TUR 3
+5. 'ANACExample 1' FRA 1
+6. 'OpenAINegotiator 6' GER 1916
+7. 'ANACExample 0' AUS 1912
+
+game 46: 
+1. 'ANACExample 2' ITA 12
+2. 'ANACExample 4' ENG 6
+3. 'ANACExample 5' GER 5
+4. 'ANACExample 0' RUS 4
+5. 'ANACExample 1' TUR 4
+6. 'ANACExample 3' FRA 3
+7. 'OpenAINegotiator 6' AUS 1913
+
+game 47: 
+1. 'ANACExample 2' RUS 13
+2. 'ANACExample 4' TUR 7
+3. 'ANACExample 0' ENG 5
+4. 'ANACExample 1' GER 5
+5. 'OpenAINegotiator 6' FRA 4
+6. 'ANACExample 3' ITA 1918
+7. 'ANACExample 5' AUS 1917
+
+game 48: 
+1. 'ANACExample 5' RUS 11
+2. 'OpenAINegotiator 6' GER 7
+3. 'ANACExample 0' TUR 6
+4. 'ANACExample 4' FRA 4
+5. 'ANACExample 3' ENG 3
+6. 'ANACExample 2' ITA 3
+7. 'ANACExample 1' AUS 1918
+
+game 49: 
+1. 'OpenAINegotiator 6' ENG 9
+2. 'ANACExample 0' AUS 7
+3. 'ANACExample 2' FRA 5
+4. 'ANACExample 5' RUS 4
+5. 'ANACExample 1' TUR 4
+6. 'ANACExample 3' GER 3
+7. 'ANACExample 4' ITA 2
+
+game 50: 
+1. 'ANACExample 1' RUS 17
+2. 'ANACExample 2' TUR 7
+3. 'ANACExample 3' ENG 5
+4. 'ANACExample 4' FRA 3
+5. 'ANACExample 0' ITA 2
+6. 'OpenAINegotiator 6' GER 1917
+7. 'ANACExample 5' AUS 1910
+
+game 51: 
+1. 'ANACExample 0' GER 9
+2. 'ANACExample 3' ENG 7
+3. 'OpenAINegotiator 6' FRA 5
+4. 'ANACExample 2' RUS 5
+5. 'ANACExample 1' ITA 4
+6. 'ANACExample 4' TUR 4
+7. 'ANACExample 5' AUS 1907
+
+game 52: 
+1. 'ANACExample 1' RUS 18
+2. 'ANACExample 2' ENG 5
+3. 'ANACExample 0' FRA 5
+4. 'ANACExample 4' GER 3
+5. 'OpenAINegotiator 6' TUR 3
+6. 'ANACExample 3' AUS 1919
+7. 'ANACExample 5' ITA 1910
+
+game 53: 
+1. 'ANACExample 5' TUR 12
+2. 'ANACExample 0' ENG 10
+3. 'ANACExample 1' FRA 5
+4. 'ANACExample 2' AUS 4
+5. 'ANACExample 4' GER 2
+6. 'ANACExample 3' ITA 1
+7. 'OpenAINegotiator 6' RUS 1920
+
+game 54: 
+1. 'ANACExample 0' GER 6
+2. 'ANACExample 1' RUS 6
+3. 'ANACExample 5' TUR 6
+4. 'OpenAINegotiator 6' FRA 5
+5. 'ANACExample 4' AUS 4
+6. 'ANACExample 2' ENG 4
+7. 'ANACExample 3' ITA 3
+
+game 55: 
+1. 'ANACExample 2' TUR 14
+2. 'ANACExample 1' ENG 7
+3. 'ANACExample 5' FRA 5
+4. 'ANACExample 3' GER 5
+5. 'ANACExample 4' RUS 2
+6. 'ANACExample 0' ITA 1
+7. 'OpenAINegotiator 6' AUS 1915
+
+game 56: 
+1. 'ANACExample 2' RUS 18
+2. 'ANACExample 1' TUR 6
+3. 'ANACExample 0' ENG 3
+4. 'ANACExample 5' FRA 3
+5. 'OpenAINegotiator 6' GER 2
+6. 'ANACExample 4' ITA 2
+7. 'ANACExample 3' AUS 1908
+
+game 57: 
+1. 'ANACExample 1' RUS 17
+2. 'ANACExample 0' GER 6
+3. 'ANACExample 4' FRA 5
+4. 'ANACExample 5' ENG 3
+5. 'ANACExample 2' TUR 3
+6. 'OpenAINegotiator 6' ITA 1919
+7. 'ANACExample 3' AUS 1915
+
+game 58: 
+1. 'ANACExample 5' ITA 10
+2. 'ANACExample 3' RUS 9
+3. 'ANACExample 2' FRA 5
+4. 'ANACExample 1' TUR 5
+5. 'ANACExample 0' GER 3
+6. 'OpenAINegotiator 6' ENG 2
+7. 'ANACExample 4' AUS 1918
+
+game 59: 
+1. 'ANACExample 3' RUS 18
+2. 'ANACExample 0' FRA 8
+3. 'ANACExample 5' ENG 3
+4. 'ANACExample 4' TUR 3
+5. 'ANACExample 1' GER 2
+6. 'OpenAINegotiator 6' ITA 1917
+7. 'ANACExample 2' AUS 1909
+
+game 60: 
+1. 'ANACExample 5' RUS 16
+2. 'OpenAINegotiator 6' TUR 6
+3. 'ANACExample 3' FRA 5
+4. 'ANACExample 2' ENG 4
+5. 'ANACExample 1' ITA 2
+6. 'ANACExample 0' AUS 1
+7. 'ANACExample 4' GER 1913
+
+game 61: 
+1. 'OpenAINegotiator 6' TUR 12
+2. 'ANACExample 0' FRA 6
+3. 'ANACExample 5' GER 6
+4. 'ANACExample 1' RUS 6
+5. 'ANACExample 3' ENG 3
+6. 'ANACExample 2' ITA 1
+7. 'ANACExample 4' AUS 1919
+
+game 62: 
+1. 'ANACExample 3' RUS 19
+2. 'ANACExample 5' FRA 7
+3. 'ANACExample 0' ITA 3
+4. 'ANACExample 1' TUR 3
+5. 'ANACExample 4' AUS 1
+6. 'OpenAINegotiator 6' ENG 1
+7. 'ANACExample 2' GER 1912
+
+game 63: 
+1. 'ANACExample 2' RUS 11
+2. 'ANACExample 3' FRA 6
+3. 'ANACExample 5' TUR 6
+4. 'ANACExample 0' GER 5
+5. 'ANACExample 1' ENG 4
+6. 'ANACExample 4' ITA 2
+7. 'OpenAINegotiator 6' AUS 1915
+
+game 64: 
+1. 'ANACExample 2' RUS 8
+2. 'ANACExample 5' FRA 5
+3. 'OpenAINegotiator 6' TUR 5
+4. 'ANACExample 3' AUS 4
+5. 'ANACExample 1' ENG 4
+6. 'ANACExample 4' GER 4
+7. 'ANACExample 0' ITA 4
+
+game 65: 
+1. 'ANACExample 2' ENG 8
+2. 'ANACExample 1' RUS 7
+3. 'ANACExample 0' GER 6
+4. 'ANACExample 5' TUR 6
+5. 'ANACExample 3' AUS 4
+6. 'OpenAINegotiator 6' ITA 2
+7. 'ANACExample 4' FRA 1
+
+game 66: 
+1. 'ANACExample 2' RUS 18
+2. 'ANACExample 3' FRA 5
+3. 'ANACExample 0' TUR 5
+4. 'ANACExample 5' ITA 3
+5. 'ANACExample 1' GER 2
+6. 'OpenAINegotiator 6' ENG 1
+7. 'ANACExample 4' AUS 1910
+
+game 67: 
+1. 'ANACExample 3' RUS 18
+2. 'ANACExample 1' FRA 8
+3. 'ANACExample 2' TUR 4
+4. 'OpenAINegotiator 6' ENG 3
+5. 'ANACExample 5' ITA 1
+6. 'ANACExample 4' GER 1913
+7. 'ANACExample 0' AUS 1905
+
+game 68: 
+1. 'ANACExample 2' RUS 10
+2. 'ANACExample 4' FRA 7
+3. 'ANACExample 5' ENG 6
+4. 'ANACExample 3' TUR 5
+5. 'ANACExample 1' GER 4
+6. 'ANACExample 0' ITA 2
+7. 'OpenAINegotiator 6' AUS 1910
+
+game 69: 
+1. 'ANACExample 4' GER 13
+2. 'ANACExample 1' TUR 13
+3. 'OpenAINegotiator 6' ENG 4
+4. 'ANACExample 0' FRA 4
+5. 'ANACExample 2' AUS 1920
+6. 'ANACExample 5' ITA 1920
+7. 'ANACExample 3' RUS 1919
+
+game 70: 
+1. 'ANACExample 3' RUS 18
+2. 'ANACExample 0' ENG 4
+3. 'OpenAINegotiator 6' FRA 4
+4. 'ANACExample 5' ITA 4
+5. 'ANACExample 4' TUR 4
+6. 'ANACExample 1' GER 1914
+7. 'ANACExample 2' AUS 1912
+
+game 71: 
+1. 'ANACExample 4' RUS 15
+2. 'ANACExample 0' ENG 6
+3. 'ANACExample 3' FRA 6
+4. 'ANACExample 5' TUR 5
+5. 'ANACExample 1' ITA 2
+6. 'ANACExample 2' GER 1918
+7. 'OpenAINegotiator 6' AUS 1912
+
+game 72: 
+1. 'ANACExample 4' RUS 9
+2. 'ANACExample 5' TUR 9
+3. 'ANACExample 3' GER 6
+4. 'ANACExample 1' ENG 4
+5. 'ANACExample 0' ITA 4
+6. 'OpenAINegotiator 6' FRA 2
+7. 'ANACExample 2' AUS 1911
+
+game 73: 
+1. 'ANACExample 4' RUS 9
+2. 'ANACExample 0' TUR 7
+3. 'ANACExample 5' FRA 6
+4. 'ANACExample 2' GER 5
+5. 'ANACExample 3' ENG 4
+6. 'ANACExample 1' AUS 2
+7. 'OpenAINegotiator 6' ITA 1
+
+game 74: 
+1. 'ANACExample 1' RUS 12
+2. 'ANACExample 3' GER 6
+3. 'ANACExample 5' TUR 5
+4. 'OpenAINegotiator 6' FRA 4
+5. 'ANACExample 4' ITA 4
+6. 'ANACExample 0' ENG 3
+7. 'ANACExample 2' AUS 1916
+
+game 75: 
+1. 'ANACExample 5' TUR 10
+2. 'ANACExample 3' RUS 9
+3. 'ANACExample 1' ENG 5
+4. 'ANACExample 4' GER 5
+5. 'ANACExample 0' FRA 3
+6. 'OpenAINegotiator 6' AUS 1
+7. 'ANACExample 2' ITA 1
+
+game 76: 
+1. 'OpenAINegotiator 6' RUS 19
+2. 'ANACExample 4' FRA 6
+3. 'ANACExample 2' GER 3
+4. 'ANACExample 0' ITA 3
+5. 'ANACExample 1' ENG 2
+6. 'ANACExample 3' TUR 1
+7. 'ANACExample 5' AUS 1908
+
+game 77: 
+1. 'ANACExample 4' ITA 12
+2. 'OpenAINegotiator 6' ENG 7
+3. 'ANACExample 2' GER 5
+4. 'ANACExample 0' TUR 5
+5. 'ANACExample 5' RUS 3
+6. 'ANACExample 3' FRA 2
+7. 'ANACExample 1' AUS 1906
+
+game 78: 
+1. 'ANACExample 2' RUS 13
+2. 'OpenAINegotiator 6' FRA 7
+3. 'ANACExample 5' TUR 7
+4. 'ANACExample 1' ENG 5
+5. 'ANACExample 4' ITA 2
+6. 'ANACExample 3' GER 1918
+7. 'ANACExample 0' AUS 1914
+
+game 79: 
+1. 'ANACExample 4' RUS 18
+2. 'OpenAINegotiator 6' FRA 7
+3. 'ANACExample 0' TUR 6
+4. 'ANACExample 1' ENG 3
+5. 'ANACExample 5' GER 1919
+6. 'ANACExample 3' ITA 1919
+7. 'ANACExample 2' AUS 1909
+
+game 80: 
+1. 'ANACExample 1' RUS 7
+2. 'OpenAINegotiator 6' FRA 5
+3. 'ANACExample 5' GER 5
+4. 'ANACExample 0' TUR 5
+5. 'ANACExample 3' AUS 4
+6. 'ANACExample 2' ENG 4
+7. 'ANACExample 4' ITA 4
+

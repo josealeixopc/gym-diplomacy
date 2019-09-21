@@ -45,4 +45,5 @@ RUN chmod +x ./utils/install-dependencies-dip-q-brain.sh
 RUN ./utils/install-dependencies-dip-q-brain.sh
 
 WORKDIR ${DIP_Q_WORK_DIR}/agents/dip-q-brain/dip_q_brain
-CMD ["pipenv", "run", "python", "dip-q-brain.py", "--env_id", "Diplomacy_Negotiation-v0", "--num_steps", "100000"]
+# CMD ["pipenv", "run", "python", "dip-q-brain.py", "--env_id", "Diplomacy_Negotiation-v0", "--num_steps", "100000"]
+CMD ["pipenv", "run", "python", "dip-q-brain.py", "-e"]

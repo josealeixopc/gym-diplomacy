@@ -123,7 +123,7 @@ public class TournamentRunner {
 
             //2. Create a TournamentObserver to monitor the games and accumulate the results.
             // JC: Use "windowless = true" to run without any Diplomacy Monitor and, hence, being able to run on a server
-            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, true);
+            tournamentObserver = new TournamentObserver(tournamentLogFolderPath, scoreCalculators, numberOfGames, numberOfParticipants, false);
 
             //3. Run the Negotiation Server.
             if (MODE) {

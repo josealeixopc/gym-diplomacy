@@ -49,6 +49,12 @@ os.makedirs(tensorboard_dir, exist_ok=True)
 ### CUSTOM GLOBAL CODE END
 
 def main(args):
+    if args.evaluate_only:
+        print("Evaluating model...")
+        model = load_model('ppo2', 'Diplomacy_Negotiation-v0')
+        evaluate(model.env, model)
+        return
+
     if not args.results_only:
         train(args.algorithm, args.env_id, args.num_steps)
     plot_results(log_dir)
@@ -164,7 +170,7 @@ def callback(_locals, _globals):
     if (n_steps + 1) % saving_interval == 0:
         # Evaluate policy training performance
         x, y = ts2xy(load_results(log_dir), 'timesteps')
-        if len(x) > 0:
+        if len(x) > 0 and len(y) >= 100:
             mean_reward = np.mean(y[-100:])
             logger.info("{} timesteps".format(x[-1]))
             logger.info(
@@ -184,17 +190,22 @@ def callback(_locals, _globals):
     return True
 
 
-def evaluate(env, model, num_steps=100):
+def evaluate(env, model, num_episodes=100):
     """
     Evaluate a RL agent
     :param env:
     :param model: (BaseRLModel object) the RL Agent
-    :param num_steps: (int) number of timesteps to evaluate it
+    :param num_episodes: (int) number of episodes to evaluate it
     :return: (float) Mean reward for the last 100 episodes
     """
     episode_rewards = [0.0]
     obs = env.reset()
-    for i in range(num_steps):
+    current_num_episodes = 0
+
+    while True:
+        if current_num_episodes == num_episodes:
+            break
+
         # _states are only useful when using LSTM policies
         action, _states = model.predict(obs)
         # here, action, rewards and dones are arrays
@@ -206,6 +217,8 @@ def evaluate(env, model, num_steps=100):
         if dones[0]:
             obs = env.reset()
             episode_rewards.append(0.0)
+            current_num_episodes += 1
+
     # Compute mean reward for the last 100 episodes
     mean_100ep_reward = round(float(np.mean(episode_rewards[-100:])), 1)
     print("Mean reward:", mean_100ep_reward, "Num episodes:", len(episode_rewards))
@@ -242,5 +255,6 @@ if __name__ == '__main__':
                         help='Select the environment to run')
     parser.add_argument('--num_steps', type=int, help='The number of steps to train the agent')
     parser.add_argument('--results_only', '-r', action='store_true')
+    parser.add_argument('--evaluate_only', '-e', action='store_true')
     args = parser.parse_args()
     main(args)

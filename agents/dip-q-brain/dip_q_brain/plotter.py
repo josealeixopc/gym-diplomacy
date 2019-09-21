@@ -28,7 +28,7 @@ def plot_results(log_folder, title='Learning Curve'):
     :param title: (str) the title of the task to plot
     """
     num_episodes, rewards = ts2xy(load_results(log_folder), 'episodes')
-    rewards = moving_average(rewards, window=100)
+    rewards = moving_average(rewards, window=10)
     # Truncate x
     num_episodes = num_episodes[len(num_episodes) - len(rewards):]
 
@@ -42,6 +42,6 @@ def plot_results(log_folder, title='Learning Curve'):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument('log_dir', nargs='?', help='Select the directory with the logs.')
+    parser.add_argument('log_dir', help='Select the directory with the logs.')
     args = parser.parse_args()
     plot_results(args.log_dir)

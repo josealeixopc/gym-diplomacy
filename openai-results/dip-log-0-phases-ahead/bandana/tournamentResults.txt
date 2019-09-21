@@ -1,0 +1,49 @@
+'ANACExample 3': 
+games played: 80
+Solo Victories: 5 (av. = 0.063)
+Supply Centers: 372 (av. = 4.65)
+Points: 144 (av. = 1.8)
+Average Rank: 4.231
+
+'ANACExample 1': 
+games played: 80
+Solo Victories: 3 (av. = 0.038)
+Supply Centers: 439 (av. = 5.488)
+Points: 134 (av. = 1.675)
+Average Rank: 3.856
+
+'ANACExample 2': 
+games played: 80
+Solo Victories: 3 (av. = 0.038)
+Supply Centers: 412 (av. = 5.15)
+Points: 129 (av. = 1.613)
+Average Rank: 3.844
+
+'OpenAINegotiator 6': 
+games played: 80
+Solo Victories: 3 (av. = 0.038)
+Supply Centers: 288 (av. = 3.6)
+Points: 101 (av. = 1.263)
+Average Rank: 4.581
+
+'ANACExample 0': 
+games played: 80
+Solo Victories: 2 (av. = 0.025)
+Supply Centers: 423 (av. = 5.288)
+Points: 121 (av. = 1.513)
+Average Rank: 3.675
+
+'ANACExample 5': 
+games played: 80
+Solo Victories: 2 (av. = 0.025)
+Supply Centers: 386 (av. = 4.825)
+Points: 107 (av. = 1.338)
+Average Rank: 3.788
+
+'ANACExample 4': 
+games played: 80
+Solo Victories: 1 (av. = 0.013)
+Supply Centers: 400 (av. = 5.0)
+Points: 110 (av. = 1.375)
+Average Rank: 4.025
+

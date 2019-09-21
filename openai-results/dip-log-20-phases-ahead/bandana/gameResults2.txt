@@ -1,0 +1,99 @@
+game 1: 
+1. 'ANACExample 0' RUS 7
+2. 'ANACExample 4' ENG 5
+3. 'ANACExample 1' FRA 5
+4. 'ANACExample 3' TUR 5
+5. 'OpenAINegotiator 6' AUS 4
+6. 'ANACExample 2' GER 4
+7. 'ANACExample 5' ITA 4
+
+game 2: 
+1. 'OpenAINegotiator 6' TUR 9
+2. 'ANACExample 5' ENG 6
+3. 'ANACExample 1' GER 6
+4. 'ANACExample 4' FRA 5
+5. 'ANACExample 2' RUS 4
+6. 'ANACExample 3' AUS 3
+7. 'ANACExample 0' ITA 1
+
+game 3: 
+1. 'ANACExample 1' ENG 13
+2. 'OpenAINegotiator 6' TUR 8
+3. 'ANACExample 4' RUS 6
+4. 'ANACExample 2' AUS 2
+5. 'ANACExample 0' FRA 2
+6. 'ANACExample 3' ITA 2
+7. 'ANACExample 5' GER 1
+
+game 4: 
+1. 'ANACExample 2' RUS 19
+2. 'ANACExample 0' FRA 5
+3. 'ANACExample 5' ITA 4
+4. 'OpenAINegotiator 6' TUR 4
+5. 'ANACExample 3' ENG 2
+6. 'ANACExample 4' AUS 1912
+7. 'ANACExample 1' GER 1910
+
+game 5: 
+1. 'ANACExample 2' ITA 13
+2. 'OpenAINegotiator 6' RUS 7
+3. 'ANACExample 3' ENG 5
+4. 'ANACExample 4' GER 5
+5. 'ANACExample 1' TUR 4
+6. 'ANACExample 0' FRA 1915
+7. 'ANACExample 5' AUS 1908
+
+game 6: 
+1. 'ANACExample 2' TUR 11
+2. 'ANACExample 1' ENG 5
+3. 'ANACExample 3' FRA 5
+4. 'ANACExample 4' GER 5
+5. 'OpenAINegotiator 6' RUS 5
+6. 'ANACExample 0' AUS 2
+7. 'ANACExample 5' ITA 1
+
+game 7: 
+1. 'ANACExample 1' ITA 7
+2. 'ANACExample 0' RUS 7
+3. 'ANACExample 3' GER 6
+4. 'ANACExample 2' TUR 5
+5. 'ANACExample 4' AUS 4
+6. 'OpenAINegotiator 6' ENG 3
+7. 'ANACExample 5' FRA 2
+
+game 8: 
+1. 'ANACExample 4' RUS 18
+2. 'ANACExample 1' FRA 5
+3. 'ANACExample 5' TUR 4
+4. 'ANACExample 3' ITA 3
+5. 'ANACExample 2' ENG 2
+6. 'OpenAINegotiator 6' GER 2
+7. 'ANACExample 0' AUS 1910
+
+game 9: 
+1. 'OpenAINegotiator 6' ENG 7
+2. 'ANACExample 2' RUS 7
+3. 'ANACExample 1' TUR 7
+4. 'ANACExample 3' AUS 5
+5. 'ANACExample 4' FRA 4
+6. 'ANACExample 0' GER 3
+7. 'ANACExample 5' ITA 1
+
+game 10: 
+1. 'ANACExample 0' TUR 8
+2. 'OpenAINegotiator 6' RUS 7
+3. 'ANACExample 4' FRA 5
+4. 'ANACExample 2' GER 5
+5. 'ANACExample 3' AUS 4
+6. 'ANACExample 5' ENG 4
+7. 'ANACExample 1' ITA 1
+
+game 11: 
+1. 'ANACExample 1' RUS 18
+2. 'ANACExample 0' FRA 6
+3. 'ANACExample 2' TUR 4
+4. 'ANACExample 3' ENG 3
+5. 'OpenAINegotiator 6' ITA 3
+6. 'ANACExample 4' GER 1911
+7. 'ANACExample 5' AUS 1908
+

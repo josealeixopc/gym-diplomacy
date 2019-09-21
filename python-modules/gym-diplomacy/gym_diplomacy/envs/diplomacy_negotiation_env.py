@@ -26,7 +26,7 @@ logger.disabled = False
 NUMBER_OF_PLAYERS = 7
 NUMBER_OF_OPPONENTS = NUMBER_OF_PLAYERS - 1
 NUMBER_OF_PROVINCES = 75
-NUMBER_OF_PHASES_AHEAD = 10
+NUMBER_OF_PHASES_AHEAD = 9
 MAXIMUM_NUMBER_OF_SC = 18
 
 MULTI_DISCRETE_ACTION_SPACE = 'multi-discrete'
@@ -201,7 +201,7 @@ class DiplomacyNegotiationEnv(diplomacy_env.DiplomacyEnv):
                                                   2, NUMBER_OF_OPPONENTS,
                                                   2, MAXIMUM_NUMBER_OF_SC,
                                                   2, MAXIMUM_NUMBER_OF_SC,
-                                                  NUMBER_OF_PHASES_AHEAD])
+                                                  NUMBER_OF_PHASES_AHEAD + 1])  # +1 is the current phase
 
         # If we want a discrete action space (for DeepQ Network, for example), use the default action space to create it
         if self.action_space_type == DISCRETE_ACTION_SPACE:
