@@ -1,12 +1,22 @@
-# dip-q
+# gym-diplomacy
 
-This repository contains the source code for the Diplomacy Open AI Gym environment and for the agent that'll play the game.
+This repository contains the source code for a Diplomacy Open AI Gym that uses [BANDANA](https://www.iiia.csic.es/~davedejonge/bandana/) as game engine.
+
+It is the code used for my [Master's thesis](https://repositorio-aberto.up.pt/handle/10216/121252) for the Software Engineering and Computer Science degree at FEUP. The state and action structure used were also published as a [paper](https://link.springer.com/chapter/10.1007/978-3-030-30241-2_5).
+
+The agent is capable **only** of negotiating. The tactical plays are made by the [D-Brane](https://link.springer.com/article/10.1007/s10489-017-0919-y) player.
 
 ## Arquitecture
 
-TODO
+The conceptual diagram of this project:
+
+![Conceptual Diagram](./docs/images/conceptual-diagram-gym-diplomacy.png)
 
 ## Directory structure
+
+### agents
+
+This directory contains the code for custom RL agents that were created for training.
 
 ### java-modules
 
@@ -18,15 +28,11 @@ This directory contains the Protobuf messages that are exchanged between modules
 
 ### python-modules
 
-This directory contains all the Python modules. This include the Diplomacy Open AI environment and the Python module (`dip-q-brain`) that acts on that environment.
-
-### tutorials
-
-This directory is only for sand-boxing purposes, such as experimenting new tools and frameworks.
+This directory contains all the Python modules for developing the environment.
 
 ## Running
 
-### With Docker
+The recommended way to install and run this environment is using Docker, as it contains a lot of depencies.
 
 To run with Docker, you must first build the Java artifacts using `mvn package`. Then simply build the Dockerfile in the root of this directory:
 
@@ -41,17 +47,3 @@ To run a container and navigate inside:
 ``` bash
 docker run --rm -it dip-q:latest
 ```
-
-#### Strategic agent
-
-**Don't forget to set tup the `TournamentRunner` class in order to run the strategic board, player and adapter.**
-
-To run the strategic agent inside the container, navigate to the `deepdip` folder and run the following command:
-
-```bash
-pipenv run python deepdip_brain.py
-```
-
-#### Negotiation agent
-
-TODO

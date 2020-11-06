@@ -38,19 +38,15 @@ WORKDIR ${DIP_Q_WORK_DIR}/agents/dip-q-brain
 RUN chmod +x ./install-essential.sh
 RUN ./install-essential.sh
 
-# Install heavy Python packages for deepdip
-RUN mkdir -p ${DIP_Q_WORK_DIR}/agents/deepdip
-COPY agents/deepdip/install-essential.sh ${DIP_Q_WORK_DIR}/agents/deepdip
-
-WORKDIR ${DIP_Q_WORK_DIR}/agents/deepdip
-RUN chmod +x ./install-essential.sh
-RUN ./install-essential.sh
-
 # Note: these packages are installed beforehand because this way the.
 # image won't take much time to build when changes are made to the code.
 
 # Install Python packages afterwards
 WORKDIR ${DIP_Q_WORK_DIR}
 COPY . .
-RUN chmod +x ./utils/install-dependencies.sh
-RUN ./utils/install-dependencies.sh
+RUN chmod +x ./utils/install-dependencies-dip-q-brain.sh
+RUN ./utils/install-dependencies-dip-q-brain.sh
+
+WORKDIR ${DIP_Q_WORK_DIR}/agents/dip-q-brain/dip_q_brain
+# CMD ["pipenv", "run", "python", "dip-q-brain.py", "--env_id", "Diplomacy_Negotiation-v0", "--num_steps", "100000"]
+CMD ["pipenv", "run", "python", "dip-q-brain.py", "-e"]
